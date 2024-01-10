@@ -13,6 +13,7 @@ class DepotDataController extends GetxController {
   DepotDataModel? depotDataModel;
   var depotId = 0.obs;
   var regionId = 0.obs;
+  var selectDepot = false.obs;
 
   // @override
   // Future<void> onInit() async {
@@ -20,7 +21,7 @@ class DepotDataController extends GetxController {
   //   fetchData(regionId: regionId.toInt());
   // }
 
-  fetchData({required int regionId}) async {
+ Future fetchData({required int regionId}) async {
     try {
       isLoading(true);
       print('Depot Data api called');

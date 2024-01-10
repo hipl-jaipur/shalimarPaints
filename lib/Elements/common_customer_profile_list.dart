@@ -1,3 +1,5 @@
+import 'dart:math' show cos, sqrt, asin;
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -27,10 +29,10 @@ class CustomerProfileList extends StatefulWidget {
 class _CustomerProfileListState extends State<CustomerProfileList> {
   SetActivityDetailDataController controller =
       Get.put(SetActivityDetailDataController());
-      
 
   String? _currentAddress;
   Position? _currentPosition;
+  var distance;
 
   Future<void> _getCurrentPosition() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -42,13 +44,27 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
         _currentPosition = position;
         prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
         prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
-
-        
       });
 
+      distance = calculateDistance(
+        prefs.getDouble("LAT"),
+        prefs.getDouble("LNG"),
+        widget.customerList[widget.index].latitude,
+        widget.customerList[widget.index].latitude,
+      );
+      print("Distance: $distance");
     }).catchError((e) {
       debugPrint(e);
     });
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 
   Future<bool> _handleLocationPermission() async {
@@ -133,6 +149,14 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
               textAlign: TextAlign.center,
             ),
           ),
+          Text(distance != null ? "Distance:$distance" : "",
+              style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400)),
+          SizedBox(
+            height: 5,
+          ),
           SizedBox(
             height: 10,
           ),
@@ -144,10 +168,10 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                   child: GestureDetector(
                     onTap: () {
                       controller.fetchData(
-                          levelCode: widget.customerList[widget.index].levelCode
-                              .toString(),
-                          isOnSite: true,
-                         );
+                        levelCode: widget.customerList[widget.index].levelCode
+                            .toString(),
+                        isOnSite: true,
+                      );
                       showSnackBar(
                           "You are CheckedIn at",
                           widget.customerList[widget.index].levelName
@@ -157,7 +181,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                       Get.to(CheckInPage(), arguments: [
                         widget.customerList[widget.index].levelName,
                         widget.customerList[widget.index].levelCode.toString(),
-                        widget.customerList[widget.index].address1.toString(), true
+                        widget.customerList[widget.index].address1.toString(),
+                        true
                       ]);
                     },
                     child: Container(
@@ -180,10 +205,10 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                   child: GestureDetector(
                     onTap: () {
                       controller.fetchData(
-                          levelCode: widget.customerList[widget.index].levelCode
-                              .toString(),
-                          isOnSite: false,
-                          );
+                        levelCode: widget.customerList[widget.index].levelCode
+                            .toString(),
+                        isOnSite: false,
+                      );
                       showSnackBar(
                           "You are CheckedIn at",
                           widget.customerList[widget.index].levelName
@@ -193,7 +218,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                       Get.to(CheckInPage(), arguments: [
                         widget.customerList[widget.index].levelName,
                         widget.customerList[widget.index].levelCode.toString(),
-                        widget.customerList[widget.index].address1.toString(),false
+                        widget.customerList[widget.index].address1.toString(),
+                        false
                       ]);
                     },
                     child: Container(

@@ -2,7 +2,7 @@ class RegionDataModel {
   RegionDataModel({
       bool? status, 
       String? message, 
-      List<Data>? data,}){
+      List<RegionList>? data,}){
     _status = status;
     _message = message;
     _data = data;
@@ -14,23 +14,23 @@ class RegionDataModel {
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(RegionList.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<Data>? _data;
+  List<RegionList>? _data;
 RegionDataModel copyWith({  bool? status,
   String? message,
-  List<Data>? data,
+  List<RegionList>? data,
 }) => RegionDataModel(  status: status ?? _status,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get status => _status;
   String? get message => _message;
-  List<Data>? get data => _data;
+  List<RegionList>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -44,8 +44,8 @@ RegionDataModel copyWith({  bool? status,
 
 }
 
-class Data {
-  Data({
+class RegionList {
+  RegionList({
       num? regionId, 
       String? regionCode, 
       String? regionName, 
@@ -72,7 +72,7 @@ class Data {
     _updatedOn = updatedOn;
 }
 
-  Data.fromJson(dynamic json) {
+  RegionList.fromJson(dynamic json) {
     _regionId = json['region_id'];
     _regionCode = json['region_code'];
     _regionName = json['region_name'];
@@ -98,7 +98,7 @@ class Data {
   num? _isValid;
   String? _createdOn;
   String? _updatedOn;
-Data copyWith({  num? regionId,
+  RegionList copyWith({  num? regionId,
   String? regionCode,
   String? regionName,
   num? regionmgrId,
@@ -110,7 +110,7 @@ Data copyWith({  num? regionId,
   num? isValid,
   String? createdOn,
   String? updatedOn,
-}) => Data(  regionId: regionId ?? _regionId,
+}) => RegionList(  regionId: regionId ?? _regionId,
   regionCode: regionCode ?? _regionCode,
   regionName: regionName ?? _regionName,
   regionmgrId: regionmgrId ?? _regionmgrId,

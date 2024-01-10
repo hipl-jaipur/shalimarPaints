@@ -5,46 +5,36 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
-import 'package:shalimar/Model/region_data_model.dart';
 import 'package:shalimar/utils/consts.dart';
 
-class RegionDataController extends GetxController {
+class ImageUploadController extends GetxController {
   var isLoading = false.obs;
-  RegionDataModel? regionDataModel;
-  var zoneId = 0.obs;
-  var regionId = 0.obs;
-    var selectRegion = false.obs;
 
-  // @override
-  // Future<void> onInit() async {
-  //   super.onInit();
-  //   fetchData(zoneId: zoneId.toInt());
-  // }
-
- Future fetchData({required int zoneId}) async {
+  fetchData(String img64, String fileExt) async {
     try {
       isLoading(true);
-      print('Region Data api called');
 
-      final body = {
-        "RegionId": 0,
-        "ZoneId": zoneId,
-      };
+      print('Image Upload API called');
 
+      final body = {"FileUploadData": img64.toString(), "FileExt": "jpg"};
+
+      // Map<String, String> requestHeaders = {
+      //   'Content-Type': 'application/json',
+      // };
       Map<String, String> requestHeaders = {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
       };
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getRegionData),
+      final res = await http.post(Uri.parse(AppConstants.uploadImage),
           body: jsonEncode(body), headers: requestHeaders);
 
       print(res);
 
       if (kDebugMode) {
-        print("******Regiom Data Api Call****");
-        print(AppConstants.getRegionData);
+        print("******Image Upload API called****");
+        print(AppConstants.uploadImage);
         print(requestHeaders);
         print(body);
         print(res.statusCode);
@@ -58,13 +48,9 @@ class RegionDataController extends GetxController {
 
       if (res.statusCode == 200) {
         if (data != null) {
-          if (data['Data'] != null) {
-            var result = jsonDecode(res.body);
-            regionDataModel = RegionDataModel.fromJson(result);
-          } else {
-            showSnackBar("Error!!", data['Message'], Colors.redAccent);
-            return null;
-          }
+          var result = jsonDecode(res.body);
+          // prefs.setInt('ActivityDetailID', result['ActivityDetailID']);
+          // print("ActivityDetailID: ${result['ActivityDetailID']}");
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;

@@ -11,6 +11,7 @@ import 'package:shalimar/utils/consts.dart';
 class PlantDataController extends GetxController {
   var isLoading = false.obs;
   PlantDataModel? plantDataModel;
+  var plantID = 0;
   
   @override
   Future<void> onInit() async {

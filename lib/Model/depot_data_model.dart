@@ -2,7 +2,7 @@ class DepotDataModel {
   DepotDataModel({
       bool? status, 
       String? message, 
-      List<Data>? data,}){
+      List<DepotList>? data,}){
     _status = status;
     _message = message;
     _data = data;
@@ -14,23 +14,23 @@ class DepotDataModel {
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(DepotList.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<Data>? _data;
+  List<DepotList>? _data;
 DepotDataModel copyWith({  bool? status,
   String? message,
-  List<Data>? data,
+  List<DepotList>? data,
 }) => DepotDataModel(  status: status ?? _status,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get status => _status;
   String? get message => _message;
-  List<Data>? get data => _data;
+  List<DepotList>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -44,8 +44,8 @@ DepotDataModel copyWith({  bool? status,
 
 }
 
-class Data {
-  Data({
+class DepotList {
+  DepotList({
       num? depotId, 
       String? depotCode, 
       String? depotName, 
@@ -72,7 +72,7 @@ class Data {
     _updatedOn = updatedOn;
 }
 
-  Data.fromJson(dynamic json) {
+  DepotList.fromJson(dynamic json) {
     _depotId = json['depot_id'];
     _depotCode = json['depot_code'];
     _depotName = json['depot_name'];
@@ -98,7 +98,7 @@ class Data {
   num? _isValid;
   String? _createdOn;
   String? _updatedOn;
-Data copyWith({  num? depotId,
+  DepotList copyWith({  num? depotId,
   String? depotCode,
   String? depotName,
   num? depotmgrId,
@@ -110,7 +110,7 @@ Data copyWith({  num? depotId,
   num? isValid,
   String? createdOn,
   String? updatedOn,
-}) => Data(  depotId: depotId ?? _depotId,
+}) => DepotList(  depotId: depotId ?? _depotId,
   depotCode: depotCode ?? _depotCode,
   depotName: depotName ?? _depotName,
   depotmgrId: depotmgrId ?? _depotmgrId,

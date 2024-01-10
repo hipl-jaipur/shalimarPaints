@@ -10,6 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SetActivityDetailDataController extends GetxController {
   var isLoading = false.obs;
+  var isTimerVisible = false.obs;
+  var levelName = "".obs;
+  var levelCode = "".obs;
+  var levelAddress = "".obs;
+
+
+  
 
   fetchData(
       {required String levelCode,
@@ -27,6 +34,8 @@ class SetActivityDetailDataController extends GetxController {
       print(isOnSite);
       print("LNG : $LNG");
       print("LAT : $LAT");
+
+      isTimerVisible.value = isOnSite;
 
       final body = {
         "ActivityDetailID": 0,

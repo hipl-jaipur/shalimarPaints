@@ -12,6 +12,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SubCategoryDataController extends GetxController {
   var isLoading = false.obs;
   SubCatagoryDataModel? subCatagoryDataModel;
+  var subCategoryID = 0;
+
+    // List<SubCategory> subCategoryList = [].obs; 
+  var subCategoryList = <dynamic>[].obs;
+
+
+
 
 
   @override
@@ -64,6 +71,8 @@ class SubCategoryDataController extends GetxController {
           if (data['Data'] != null) {
             var result = jsonDecode(res.body);
             subCatagoryDataModel = SubCatagoryDataModel.fromJson(result);
+            subCategoryList.add(result['Data']);
+            print("subCatData : $subCategoryList");
           } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);
             return null;

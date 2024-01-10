@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shalimar/Controller/plant_data_controller.dart';
 import 'package:shalimar/Controller/product_data_controller.dart';
+import 'package:shalimar/Controller/set_customer_complaint_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
+import 'package:shalimar/Controller/upload_image_controller.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -29,6 +32,14 @@ class ComplainPageState extends State<ComplainPage> {
   ProductDataController productDataController =
       Get.put(ProductDataController());
 
+  SetCustomerComplaintDataController complaintController =
+      Get.put(SetCustomerComplaintDataController());
+
+  ImageUploadController uploadImageController =
+      Get.put(ImageUploadController());
+
+  TextEditingController searchPlantController = TextEditingController();
+
   String plantDropdownvalue = 'Plant';
   int plantID = 0;
 
@@ -39,7 +50,6 @@ class ComplainPageState extends State<ComplainPage> {
   String productCode = "";
 
   DateTime selectedDate = DateTime.now();
-  TextEditingController _dateController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -50,23 +60,105 @@ class ComplainPageState extends State<ComplainPage> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        _dateController.text = '${picked.toLocal()}'.split(' ')[0];
+        complaintController.dateController.text =
+            '${picked.toLocal()}'.split(' ')[0];
       });
     }
   }
 
-  // File? image, downloadURL;
-  List<XFile> _images = [];
+  final List<File> _images = [];
+
+  File? _imageFile;
+  String? _base64Image;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        print("ImageList1: $_imageFile");
+        _images.add(_imageFile!);
+      });
+
+      Uint8List bytes = _imageFile!.readAsBytesSync();
+      String base64Image = base64Encode(bytes);
+      print("ImageList2: $base64Image");
+
+      // getUint8ListFromFile(_imageFile!);
+
+      // final bytes = io.File(pickedFile.path).readAsBytesSync();
+      // String img64 = base64Encode(bytes);
+      // print("ImageList2: $img64");
+
+      //  uploadImageController.fetchData(img64, "jpg");
+
+      //convert Path to File
+      // Uint8List imagebytes = await _imageFile!.readAsBytes(); //convert to bytes
+      // String base64string = base64.encode(imagebytes);
+      // print("ImageList2: $base64string");
+      // Uint8List decodedbytes = base64.decode(base64string);
+      // print("ImageList3: $decodedbytes");
+
+      // Uint8List _bytes = await _imageFile!.readAsBytes();
+      // String base64String = base64.encode(_bytes);
+      // print("ImageList2 : $base64String");
+
+      // List<int> imageBytes = File(pickedFile.path).readAsBytesSync();
+      // print(imageBytes);
+      // String base64Image = base64Encode(imageBytes);
+      // print("ImageList2: $base64Image");
+
+      // final bytes = File(pickedFile.path).readAsBytesSync();
+      // String _base64Image = "data:image/png;base64," + base64Encode(bytes);
+
+      // print("ImageList3 : $_base64Image");
+
+      // _convertImageToBase64();
+    }
+  }
+
+  Future<Uint8List> getUint8ListFromFile(File picture) async {
+    List<int> imageBase64 = picture.readAsBytesSync();
+    String imageAsString = base64Encode(imageBase64);
+    Uint8List uint8list = base64.decode(imageAsString);
+    print("ImageList0 : $uint8list");
+    print("ImageList00 : $imageAsString");
+    return uint8list;
+  }
+
+  Future<void> _convertImageToBase64() async {
+    if (_imageFile == null) {
+      return;
+    }
+
+    final bytes = await _imageFile!.readAsBytes();
+    final base64String = base64Encode(bytes);
+
+    setState(() {
+      _base64Image = base64String;
+      print("ImageList2: $_base64Image");
+    });
+  }
 
   // Future pickImage() async {
   //   try {
   //     final image = await ImagePicker()
   //         .pickImage(source: ImageSource.camera, imageQuality: 24);
   //     if (image == null) return;
-  //     final imageTemp = File(image.path);
+  //     final imageTemp = XFile(image.path);
+  //     print("ImageList1: ${image.path}");
+
   //     setState(() {
-  //       this.image = imageTemp;
+  //       // _images.add(imageTemp);
+  //       final _imageFile = File(image.path);
+  //       print("ImageList2: $imageTemp");
+  //       // print("ImageList3: $_images");
+  //       print("ImageList4: ${_imageFile}");
+  //       // _images.add(_imageFile);
   //     });
+  //     _convertImageToBase64();
   //   } on PlatformException catch (e) {
   //     if (kDebugMode) {
   //       print('Failed to pick image: $e');
@@ -74,21 +166,43 @@ class ComplainPageState extends State<ComplainPage> {
   //   }
   // }
 
-  Future<void> _getImage() async {
-    if (await Permission.camera.request().isGranted) {
-      XFile? image = await ImagePicker().pickImage(
-        source: ImageSource.camera,
-      );
+  // Future<void> _convertImageToBase64() async {
+  //   if (_imageFile == null) {
+  //     return;
+  //   }
 
-      if (image != null) {
-        setState(() {
-          _images.add(image);
-        });
-      }
-    } else {
-      print('Permission denied');
-    }
+  //   final bytes = await _imageFile!.readAsBytes();
+  //   final image = img.decodeImage(Uint8List.fromList(bytes));
+
+  //   // List<int> imageBytes = widget.fileData.readAsBytesSync();
+  //   // print(imageBytes);
+  //   // String base64Image = base64Encode(imageBytes);
+
+  //   if (image != null) {
+  //     final base64String =
+  //         base64Encode(Uint8List.fromList(img.encodePng(image)));
+  //     setState(() {
+  //       _base64Image = base64String;
+  //       print("ImageList5: ${_base64Image}");
+  //     });
+  //   }
+  // }
+
+  final _formKey = GlobalKey<FormState>();
+
+  // List<SubCategory>? subCategoryList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    subCategoryDataController.subCategoryList;
+    print(subCategoryDataController.subCategoryList);
   }
+
+  String selectedValue = '';
+  TextEditingController searchController = TextEditingController();
+  List<String> options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 
   @override
   Widget build(BuildContext context) {
@@ -103,635 +217,951 @@ class ComplainPageState extends State<ComplainPage> {
                   fit: BoxFit.fill,
                 )),
             Positioned(
-              child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: Icon(
-                              Icons.arrow_circle_left,
-                              color: Colors.white,
-                              size: 40,
-                            )),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Complain",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Complain Management",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        Text(
-                          "View Instructions",
-                          style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.white,
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Complain Details",
-                                      style: TextStyle(
-                                          color: primaryColor,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "Please fill out our complaint here",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    DropdownButtonFormField<SubCategory>(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20.0, 0.0, 20.0, 0.0),
-                                        border: OutlineInputBorder(),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            )),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  Colors.black), //<-- SEE HERE
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                      ),
-                                      isExpanded: true,
-                                      // Initial Value
-                                      // value: ,
-                                      hint: subCatDropdownvalue == "" ||
-                                              subCatDropdownvalue == null
-                                          ? Text("Sub Category")
-                                          : Text(subCatDropdownvalue),
-                                      // Down Arrow Icon
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-
-                                      // Array list of items
-                                      items: subCategoryDataController
-                                          .subCatagoryDataModel!.data!
-                                          .map((SubCategory option) {
-                                        return DropdownMenuItem<SubCategory>(
-                                          value: option,
-                                          child: Text(option.subcategoryName
-                                              .toString()),
-                                        );
-                                      }).toList(),
-                                      // After selecting the desired option,it will
-                                      // change button value to selected value
-                                      onChanged: (val) {
-                                        subCategoryID =
-                                            val!.subCategoryID!.toInt();
-                                        print("subCategory ID: $subCategoryID");
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    DropdownButtonFormField<Product>(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20.0, 0.0, 20.0, 0.0),
-                                        border: OutlineInputBorder(),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            )),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  Colors.black), //<-- SEE HERE
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                      ),
-                                      isExpanded: true,
-                                      // Initial Value
-                                      // value: ,
-                                      hint: productDropdownvalue == "" ||
-                                              productDropdownvalue == null
-                                          ? Text("Product")
-                                          : Text(productDropdownvalue),
-                                      // Down Arrow Icon
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-
-                                      // Array list of items
-                                      items: productDataController
-                                                  .productDataModel !=
-                                              null
-                                          ? productDataController
-                                              .productDataModel!.data!
-                                              .map((Product option) {
-                                              return DropdownMenuItem<Product>(
-                                                value: option,
-                                                child: Text(
-                                                    "${option.productcode} - ${option.productdesc}"
-                                                        .toString()),
-                                              );
-                                            }).toList()
-                                          : List.empty(),
-                                      // After selecting the desired option,it will
-                                      // change button value to selected value
-                                      onChanged: (val) {
-                                        productCode = val!.productcode!;
-                                        print("productCode: $productCode");
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    TextFormField(
-                                      enabled: true,
-                                      maxLines: 1,
-                                      cursorColor: Colors.black,
-                                      style: TextStyle(color: Colors.black),
-                                      decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20.0, 0.0, 20.0, 0.0),
-                                          border: OutlineInputBorder(),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(3)),
-                                              borderSide: BorderSide(
-                                                color: Colors.black,
-                                              )),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors
-                                                    .black), //<-- SEE HERE
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          hintText: "Enter Batch Number",
-                                          hintStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          labelText: "Enter Batch Number",
-                                          labelStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          focusColor: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    DropdownButtonFormField<Data>(
-                                      decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20.0, 0.0, 20.0, 0.0),
-                                        border: OutlineInputBorder(),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            )),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  Colors.black), //<-- SEE HERE
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                      ),
-                                      isExpanded: true,
-                                      // Initial Value
-                                      // value: ,
-                                      hint: plantDropdownvalue == "" ||
-                                              plantDropdownvalue == null
-                                          ? Text("Plant")
-                                          : Text(plantDropdownvalue),
-                                      // Down Arrow Icon
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-
-                                      // Array list of items
-                                      items: plantDataController
-                                          .plantDataModel!.data!
-                                          .map((Data option) {
-                                        return DropdownMenuItem<Data>(
-                                          value: option,
-                                          child:
-                                              Text(option.plantname.toString()),
-                                        );
-                                      }).toList(),
-                                      // After selecting the desired option,it will
-                                      // change button value to selected value
-                                      onChanged: (val) {
-                                        plantID = val!.plantid!.toInt();
-                                        print("Plant ID: $plantID");
-                                        setState(() {});
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Text(
-                                      "Capture Batch Images",
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.topLeft,
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.black),
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      width: double.infinity,
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                              child: ListView.builder(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  itemCount: _images.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Image.file(
-                                                        File(_images[index]
-                                                            .path),
-                                                        height: 150,
-                                                        width: 150,
-                                                      ),
-                                                    );
-                                                  })),
-                                          IconButton(
-                                            icon: Icon(
-                                              Icons.add_box_rounded,
-                                              size: 80,
-                                            ),
-                                            onPressed: () async {
-                                              // pickImage();
-                                              await _getImage;
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    TextFormField(
-                                      onTap: () {
-                                        _selectDate(context);
-                                      },
-                                      controller: _dateController,
-                                      readOnly: true,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          "${selectedDate.toLocal()}"
-                                              .split(' ')[0];
-                                        });
-                                      },
-                                      enabled: true,
-                                      maxLines: 1,
-                                      cursorColor: Colors.black,
-                                      style: TextStyle(color: Colors.black),
-                                      decoration: InputDecoration(
-                                          prefixIcon:
-                                              Icon(Icons.calendar_month),
-                                          contentPadding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20.0, 0.0, 20.0, 0.0),
-                                          border: OutlineInputBorder(),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(3)),
-                                              borderSide: BorderSide(
-                                                color: Colors.black,
-                                              )),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors
-                                                    .black), //<-- SEE HERE
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          hintText: "Manufacturing Date",
-                                          hintStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          labelText: "Manufacturing Date",
-                                          labelStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          focusColor: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    TextFormField(
-                                      enabled: true,
-                                      maxLines: 1,
-                                      cursorColor: Colors.black,
-                                      style: TextStyle(color: Colors.black),
-                                      decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20.0, 0.0, 20.0, 0.0),
-                                          border: OutlineInputBorder(),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(3)),
-                                              borderSide: BorderSide(
-                                                color: Colors.black,
-                                              )),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors
-                                                    .black), //<-- SEE HERE
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          hintText: "Damaged Qty",
-                                          hintStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          labelText: "Damaged Qty",
-                                          labelStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          focusColor: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    TextFormField(
-                                      enabled: true,
-                                      maxLines: 2,
-                                      cursorColor: Colors.black,
-                                      style: TextStyle(color: Colors.black),
-                                      decoration: InputDecoration(
-                                          contentPadding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20.0, 40.0, 20.0, 0.0),
-                                          border: OutlineInputBorder(),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(3)),
-                                              borderSide: BorderSide(
-                                                color: Colors.black,
-                                              )),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors
-                                                    .black), //<-- SEE HERE
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          hintText: "Description",
-                                          hintStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          labelText: "Description",
-                                          labelStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          focusColor: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    CustomButton(
-                                      btnName: "Submit",
-                                      onPressed: () {},
-                                    )
-                                  ]),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Card(
-                              child: SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Service Ticket Status",
-                                    style: TextStyle(
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                  Text(
-                                    "For Shalimar",
-                                    style: TextStyle(
-                                        color: blackTextColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                    enabled: false,
-                                    maxLines: 1,
-                                    cursorColor: Colors.black,
-                                    style: TextStyle(color: Colors.black),
-                                    decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20.0, 0.0, 20.0, 0.0),
-                                        border: OutlineInputBorder(),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            )),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  Colors.black), //<-- SEE HERE
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        hintText: "Fresh Desk Ticket No",
-                                        hintStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        labelText: "Fresh Desk Ticket No",
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        focusColor: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                    enabled: false,
-                                    maxLines: 1,
-                                    cursorColor: Colors.black,
-                                    style: TextStyle(color: Colors.black),
-                                    decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20.0, 0.0, 20.0, 0.0),
-                                        border: OutlineInputBorder(),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            )),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  Colors.black), //<-- SEE HERE
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        hintText: "Ticket Date",
-                                        hintStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        labelText: "Ticket Date",
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        focusColor: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                    enabled: false,
-                                    maxLines: 2,
-                                    cursorColor: Colors.black,
-                                    style: TextStyle(color: Colors.black),
-                                    decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20.0, 40.0, 20.0, 0.0),
-                                        border: OutlineInputBorder(),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            )),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  Colors.black), //<-- SEE HERE
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        hintText: "Status",
-                                        hintStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        labelText: "Status",
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        focusColor: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                    enabled: false,
-                                    maxLines: 2,
-                                    cursorColor: Colors.black,
-                                    style: TextStyle(color: Colors.black),
-                                    decoration: InputDecoration(
-                                        contentPadding:
-                                            const EdgeInsets.fromLTRB(
-                                                20.0, 40.0, 20.0, 0.0),
-                                        border: OutlineInputBorder(),
-                                        focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(3)),
-                                            borderSide: BorderSide(
-                                              color: Colors.black,
-                                            )),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  Colors.black), //<-- SEE HERE
-                                          borderRadius:
-                                              BorderRadius.circular(5.0),
-                                        ),
-                                        hintText: "Remark",
-                                        hintStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        labelText: "Remark",
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        focusColor: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                ],
+              child: Obx(
+                () => productDataController.isLoading.value
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 20,
                               ),
-                            ),
-                          )),
-                        )
-                      ],
-                    ),
-                  )),
-            ),
+                              IconButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_circle_left,
+                                    color: Colors.white,
+                                    size: 40,
+                                  )),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Complain",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "Complain Management",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Text(
+                                "View Instructions",
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white,
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Form(
+                                      key: _formKey,
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Complain Details",
+                                              style: TextStyle(
+                                                  color: primaryColor,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Please fill out our complaint here",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            DropdownButtonFormField<
+                                                SubCategory>(
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20.0, 0.0, 20.0, 0.0),
+                                                border: OutlineInputBorder(),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    3)),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.black,
+                                                        )),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors
+                                                          .black), //<-- SEE HERE
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                              ),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.categoryName!
+                                                        .isEmpty) {
+                                                  return "The Subcategory Name is required.";
+                                                }
+                                                return null;
+                                              },
+                                              isExpanded: true,
+                                              // Initial Value
+                                              // value: ,
+                                              hint: subCatDropdownvalue == "" ||
+                                                      subCatDropdownvalue ==
+                                                          null
+                                                  ? Text("Sub Category")
+                                                  : Text(subCatDropdownvalue),
+                                              // Down Arrow Icon
+                                              icon: const Icon(
+                                                  Icons.keyboard_arrow_down),
+
+                                              // Array list of items
+                                              items:
+                                                  // [
+                                                  //   DropdownMenuItem<SubCategory>(
+                                                  //     value: "",
+                                                  //     child: TextFormField(
+                                                  //       controller:
+                                                  //           searchPlantController,
+                                                  //       decoration: InputDecoration(
+                                                  //         contentPadding:
+                                                  //             const EdgeInsets
+                                                  //                 .fromLTRB(20.0,
+                                                  //                 0.0, 20.0, 0.0),
+                                                  //         focusedBorder:
+                                                  //             OutlineInputBorder(
+                                                  //                 borderRadius:
+                                                  //                     BorderRadius
+                                                  //                         .all(Radius
+                                                  //                             .circular(
+                                                  //                                 3)),
+                                                  //                 borderSide:
+                                                  //                     BorderSide(
+                                                  //                   color: Colors
+                                                  //                       .black,
+                                                  //                 )),
+                                                  //         enabledBorder:
+                                                  //             OutlineInputBorder(
+                                                  //           borderSide: BorderSide(
+                                                  //               color:
+                                                  //                   Colors.black),
+                                                  //         ),
+                                                  //         labelText: 'Search Plant',
+                                                  //         labelStyle: TextStyle(
+                                                  //             color: Colors.black),
+                                                  //         border:
+                                                  //             OutlineInputBorder(),
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  //   // for (String option in subCategoryDataController.subCategoryList)
+                                                  //   //   DropdownMenuItem<SubCategory>(
+                                                  //   //     value: option,
+                                                  //   //     child: option
+                                                  //   //             .toLowerCase()
+                                                  //   //             .contains(
+                                                  //   //                 searchPlantController
+                                                  //   //                     .text
+                                                  //   //                     .toLowerCase())
+                                                  //   //         ? Text(option)
+                                                  //   //         : SizedBox(),
+                                                  //   //   ),
+                                                  //   subCategoryDataController
+                                                  //       .subCatagoryDataModel!.data!
+                                                  //       .map((SubCategory option) {
+                                                  //     return DropdownMenuItem<
+                                                  //         SubCategory>(
+                                                  //       value: option,
+                                                  //       child: Text(option
+                                                  //           .subcategoryName
+                                                  //           .toString()),
+                                                  //     );
+                                                  //   }).toList(),
+                                                  // ],
+
+                                                  subCategoryDataController
+                                                      .subCatagoryDataModel!
+                                                      .data!
+                                                      .map(
+                                                          (SubCategory option) {
+                                                return DropdownMenuItem<
+                                                    SubCategory>(
+                                                  value: option,
+                                                  child: Text(option
+                                                      .subcategoryName
+                                                      .toString()),
+                                                );
+                                              }).toList(),
+
+                                              // After selecting the desired option,it will
+                                              // change button value to selected value
+                                              onChanged: (val) {
+                                                subCategoryID =
+                                                    val!.subCategoryID!.toInt();
+                                                print(
+                                                    "subCategory ID: $subCategoryID");
+                                                setState(() {});
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            DropdownButtonFormField<Product>(
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20.0, 0.0, 20.0, 0.0),
+                                                border: OutlineInputBorder(),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    3)),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.black,
+                                                        )),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors
+                                                          .black), //<-- SEE HERE
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                              ),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.productcategoryname!
+                                                        .isEmpty) {
+                                                  return "The Product is required.";
+                                                }
+                                                return null;
+                                              },
+                                              isExpanded: true,
+                                              // Initial Value
+                                              // value: ,
+                                              hint: productDropdownvalue ==
+                                                          "" ||
+                                                      productDropdownvalue ==
+                                                          null
+                                                  ? Text("Product")
+                                                  : Text(productDropdownvalue),
+                                              // Down Arrow Icon
+                                              icon: const Icon(
+                                                  Icons.keyboard_arrow_down),
+
+                                              // Array list of items
+                                              items: productDataController
+                                                          .productDataModel !=
+                                                      null
+                                                  ? productDataController
+                                                      .productDataModel!.data!
+                                                      .map((Product option) {
+                                                      return DropdownMenuItem<
+                                                          Product>(
+                                                        value: option,
+                                                        child: Text(
+                                                            "${option.productcode} - ${option.productdesc}"
+                                                                .toString()),
+                                                      );
+                                                    }).toList()
+                                                  : List.empty(),
+                                              // After selecting the desired option,it will
+                                              // change button value to selected value
+                                              onChanged: (val) {
+                                                productCode = val!.productcode!;
+                                                print(
+                                                    "productCode: $productCode");
+                                                setState(() {});
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextFormField(
+                                              controller: complaintController
+                                                  .batchNumberController,
+                                              enabled: true,
+                                              maxLines: 1,
+                                              cursorColor: Colors.black,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              decoration: InputDecoration(
+                                                  contentPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          20.0, 0.0, 20.0, 0.0),
+                                                  border: OutlineInputBorder(),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors
+                                                            .black), //<-- SEE HERE
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0),
+                                                  ),
+                                                  hintText:
+                                                      "Enter Batch Number",
+                                                  hintStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  labelText:
+                                                      "Enter Batch Number",
+                                                  labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  focusColor: Colors.black),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return "The Batch Number is required.";
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            DropdownButtonFormField<Data>(
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.plantname!.isEmpty) {
+                                                  return "The Plant is required.";
+                                                }
+                                                return null;
+                                              },
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        20.0, 0.0, 20.0, 0.0),
+                                                border: OutlineInputBorder(),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    3)),
+                                                        borderSide: BorderSide(
+                                                          color: Colors.black,
+                                                        )),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors
+                                                          .black), //<-- SEE HERE
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                ),
+                                              ),
+                                              isExpanded: true,
+                                              // Initial Value
+                                              // value: ,
+                                              hint: plantDropdownvalue == "" ||
+                                                      plantDropdownvalue == null
+                                                  ? Text("Plant")
+                                                  : Text(plantDropdownvalue),
+                                              // Down Arrow Icon
+                                              icon: const Icon(
+                                                  Icons.keyboard_arrow_down),
+
+                                              // Array list of items
+                                              items:
+
+                                                  // [
+                                                  //   DropdownMenuItem<String>(
+                                                  //     value: 'Other',
+                                                  //     child:
+                                                  // TextFormField(
+                                                  //       controller: searchPlantController,
+                                                  //       decoration: InputDecoration(
+                                                  //         contentPadding:
+                                                  //             const EdgeInsets.fromLTRB(
+                                                  //                 20.0, 0.0, 20.0, 0.0),
+                                                  //         focusedBorder:
+                                                  //             OutlineInputBorder(
+                                                  //                 borderRadius:
+                                                  //                     BorderRadius.all(
+                                                  //                         Radius.circular(
+                                                  //                             3)),
+                                                  //                 borderSide: BorderSide(
+                                                  //                   color: Colors.black,
+                                                  //                 )),
+                                                  //         enabledBorder:
+                                                  //             OutlineInputBorder(
+                                                  //           borderSide: BorderSide(
+                                                  //               color: Colors.black),
+                                                  //         ),
+                                                  //         labelText: 'Search Plant',
+                                                  //         labelStyle: TextStyle(
+                                                  //             color: Colors.black),
+                                                  //         border: OutlineInputBorder(),
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  //   for (String option in plantList)
+                                                  //     DropdownMenuItem<String>(
+                                                  //       value: option,
+                                                  //       child: option
+                                                  //               .toLowerCase()
+                                                  //               .contains(
+                                                  //                   searchPlantController
+                                                  //                       .text
+                                                  //                       .toLowerCase())
+                                                  //           ? Text(option)
+                                                  //           : SizedBox(),
+                                                  //     ),
+                                                  // ],
+
+                                                  plantDataController
+                                                      .plantDataModel!.data!
+                                                      .map((Data option) {
+                                                var items = [
+                                                  DropdownMenuItem<Data>(
+                                                    value: option,
+                                                    child: TextFormField(
+                                                      controller:
+                                                          searchPlantController,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        contentPadding:
+                                                            const EdgeInsets
+                                                                .fromLTRB(20.0,
+                                                                0.0, 20.0, 0.0),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            3)),
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Colors
+                                                                      .black,
+                                                                )),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .black),
+                                                        ),
+                                                        labelText:
+                                                            'Search Plant',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  DropdownMenuItem<Data>(
+                                                    value: option,
+                                                    child: Text(option.plantname
+                                                        .toString()),
+                                                  )
+                                                ];
+                                                return DropdownMenuItem<Data>(
+                                                  value: option,
+                                                  child: Text(option.plantname
+                                                      .toString()),
+                                                );
+                                              }).toList(),
+
+                                              // After selecting the desired option,it will
+                                              // change button value to selected value
+                                              onChanged: (val) {
+                                                plantID = val!.plantid!.toInt();
+                                                print("Plant ID: $plantID");
+                                                setState(() {});
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Text(
+                                              "Capture Batch Images",
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Container(
+                                              alignment: Alignment.topLeft,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.black),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              width: double.infinity,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: SizedBox(
+                                                    height: 100.0,
+                                                    child: ListView.builder(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        itemCount:
+                                                            _images.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(5.0),
+                                                            child: Image.file(
+                                                              fit: BoxFit.fill,
+                                                              File(
+                                                                  _images[index]
+                                                                      .path),
+                                                              height: 100,
+                                                              width: 80,
+                                                            ),
+                                                          );
+                                                        }),
+                                                  )),
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.add_box_rounded,
+                                                      size: 80,
+                                                    ),
+                                                    onPressed: () {
+                                                      // _pickImage;
+                                                      // pickImage();
+                                                      // _getImage;
+                                                      _pickImage();
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextFormField(
+                                              onTap: () {
+                                                _selectDate(context);
+                                              },
+                                              controller: complaintController
+                                                  .dateController,
+                                              readOnly: true,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  "${selectedDate.toLocal()}"
+                                                      .split(' ')[0];
+                                                });
+                                              },
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return "The Manufacture Date is required.";
+                                                }
+                                                return null;
+                                              },
+                                              enabled: true,
+                                              maxLines: 1,
+                                              cursorColor: Colors.black,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              decoration: InputDecoration(
+                                                  prefixIcon: Icon(Icons
+                                                      .calendar_month),
+                                                  contentPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          20.0, 0.0, 20.0, 0.0),
+                                                  border: OutlineInputBorder(),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors
+                                                            .black), //<-- SEE HERE
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0),
+                                                  ),
+                                                  hintText:
+                                                      "Manufacturing Date",
+                                                  hintStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  labelText:
+                                                      "Manufacturing Date",
+                                                  labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  focusColor: Colors.black),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextFormField(
+                                              controller: complaintController
+                                                  .damagedQtyController,
+                                              enabled: true,
+                                              maxLines: 1,
+                                              cursorColor: Colors.black,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              decoration: InputDecoration(
+                                                  contentPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          20.0, 0.0, 20.0, 0.0),
+                                                  border: OutlineInputBorder(),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors
+                                                            .black), //<-- SEE HERE
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0),
+                                                  ),
+                                                  hintText: "Damaged Qty",
+                                                  hintStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  labelText: "Damaged Qty",
+                                                  labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  focusColor: Colors.black),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return "The Damaged Qty is required.";
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextFormField(
+                                              controller: complaintController
+                                                  .descriptionController,
+                                              enabled: true,
+                                              maxLines: 2,
+                                              cursorColor: Colors.black,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              decoration: InputDecoration(
+                                                  contentPadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          20.0,
+                                                          40.0,
+                                                          20.0,
+                                                          0.0),
+                                                  border: OutlineInputBorder(),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderSide: BorderSide(
+                                                        color: Colors
+                                                            .black), //<-- SEE HERE
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5.0),
+                                                  ),
+                                                  hintText: "Description",
+                                                  hintStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  labelText: "Description",
+                                                  labelStyle: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                  focusColor: Colors.black),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return "The Description is required.";
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            CustomButton(
+                                              btnName: "Submit",
+                                              onPressed: () {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  complaintController.fetchData(
+                                                      SubCategoryID:
+                                                          subCategoryID,
+                                                      ProductCode: productCode,
+                                                      PlantID: plantID,
+                                                      CustomerCode:
+                                                          Get.arguments,
+                                                      context: context);
+                                                }
+                                              },
+                                            )
+                                          ]),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Card(
+                                    child: SingleChildScrollView(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Service Ticket Status",
+                                          style: TextStyle(
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        Text(
+                                          "For Shalimar",
+                                          style: TextStyle(
+                                              color: blackTextColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextFormField(
+                                          enabled: false,
+                                          maxLines: 1,
+                                          cursorColor: Colors.black,
+                                          style: TextStyle(color: Colors.black),
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20.0, 0.0, 20.0, 0.0),
+                                              border: OutlineInputBorder(),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(3)),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.black,
+                                                  )),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors
+                                                        .black), //<-- SEE HERE
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                              ),
+                                              hintText: "Fresh Desk Ticket No",
+                                              hintStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              labelText: "Fresh Desk Ticket No",
+                                              labelStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              focusColor: Colors.black),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextFormField(
+                                          enabled: false,
+                                          maxLines: 1,
+                                          cursorColor: Colors.black,
+                                          style: TextStyle(color: Colors.black),
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20.0, 0.0, 20.0, 0.0),
+                                              border: OutlineInputBorder(),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(3)),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.black,
+                                                  )),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors
+                                                        .black), //<-- SEE HERE
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                              ),
+                                              hintText: "Ticket Date",
+                                              hintStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              labelText: "Ticket Date",
+                                              labelStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              focusColor: Colors.black),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextFormField(
+                                          enabled: false,
+                                          maxLines: 2,
+                                          cursorColor: Colors.black,
+                                          style: TextStyle(color: Colors.black),
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20.0, 40.0, 20.0, 0.0),
+                                              border: OutlineInputBorder(),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(3)),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.black,
+                                                  )),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors
+                                                        .black), //<-- SEE HERE
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                              ),
+                                              hintText: "Status",
+                                              hintStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              labelText: "Status",
+                                              labelStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              focusColor: Colors.black),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextFormField(
+                                          enabled: false,
+                                          maxLines: 2,
+                                          cursorColor: Colors.black,
+                                          style: TextStyle(color: Colors.black),
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20.0, 40.0, 20.0, 0.0),
+                                              border: OutlineInputBorder(),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(3)),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.black,
+                                                  )),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors
+                                                        .black), //<-- SEE HERE
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
+                                              ),
+                                              hintText: "Remark",
+                                              hintStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              labelText: "Remark",
+                                              labelStyle: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                              focusColor: Colors.black),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                              )
+                            ],
+                          ),
+                        )),
+              ),
+            )
           ],
         ),
       ),

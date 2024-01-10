@@ -2,7 +2,7 @@ class TerriotoryDataModel {
   TerriotoryDataModel({
       bool? status, 
       String? message, 
-      List<Data>? data,}){
+      List<TerriotoryList>? data,}){
     _status = status;
     _message = message;
     _data = data;
@@ -14,23 +14,23 @@ class TerriotoryDataModel {
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(TerriotoryList.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<Data>? _data;
+  List<TerriotoryList>? _data;
 TerriotoryDataModel copyWith({  bool? status,
   String? message,
-  List<Data>? data,
+  List<TerriotoryList>? data,
 }) => TerriotoryDataModel(  status: status ?? _status,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get status => _status;
   String? get message => _message;
-  List<Data>? get data => _data;
+  List<TerriotoryList>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -44,8 +44,8 @@ TerriotoryDataModel copyWith({  bool? status,
 
 }
 
-class Data {
-  Data({
+class TerriotoryList {
+  TerriotoryList({
       num? territoryid, 
       String? territoryCode, 
       String? territoryName, 
@@ -72,7 +72,7 @@ class Data {
     _updatedOn = updatedOn;
 }
 
-  Data.fromJson(dynamic json) {
+  TerriotoryList.fromJson(dynamic json) {
     _territoryid = json['territoryid'];
     _territoryCode = json['territory_code'];
     _territoryName = json['territory_name'];
@@ -98,7 +98,7 @@ class Data {
   num? _isValid;
   String? _createdOn;
   String? _updatedOn;
-Data copyWith({  num? territoryid,
+  TerriotoryList copyWith({  num? territoryid,
   String? territoryCode,
   String? territoryName,
   num? territorymgrId,
@@ -110,7 +110,7 @@ Data copyWith({  num? territoryid,
   num? isValid,
   String? createdOn,
   String? updatedOn,
-}) => Data(  territoryid: territoryid ?? _territoryid,
+}) => TerriotoryList(  territoryid: territoryid ?? _territoryid,
   territoryCode: territoryCode ?? _territoryCode,
   territoryName: territoryName ?? _territoryName,
   territorymgrId: territorymgrId ?? _territorymgrId,

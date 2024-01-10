@@ -15,6 +15,23 @@ class GetAvailableStockDataController extends GetxController {
   var totalAmount = "".obs;
   AvailableStockDataModel? availableStockDataModel;
 
+  // double totalPriceSum(int todoListId) {
+  //   return ItemsPrice.where((item) => item.todoListId == todoListId)
+  //       .fold(0.0, (sum, item) => sum + item['price']);
+  // }
+
+  // List<Map<String, Object>> get totalItemsQty {
+  //   return List.generate(1, (index) {
+  //     var totalQtySum = 0.0;
+  //     for (var i = 0; i < toDo.length; i++) {
+  //       totalQtySum = toDo[index].amount + totalQtySum;
+  //     }
+  //     return {
+  //       'qty': totalSum,
+  //     };
+  //   }).toList();
+  // }
+
   fetchData({required customerCode}) async {
     try {
       isLoading(true);

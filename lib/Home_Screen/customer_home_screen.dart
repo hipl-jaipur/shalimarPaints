@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shalimar/Controller/zone_data_controller.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_zone_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
+import 'package:shalimar/Home_Screen/OutStanding_Module/outstabding_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
@@ -212,27 +213,32 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                               ),
                             ),
                           ),
-                          Container(
-                            child: Card(
-                              child: Center(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.people_alt_rounded,
-                                    color: primaryColor,
-                                    size: 40,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('OutStanding',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              )),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(OutStandingScreen());
+                            },
+                            child: Container(
+                              child: Card(
+                                child: Center(
+                                    child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.people_alt_rounded,
+                                      color: primaryColor,
+                                      size: 40,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text('OutStanding',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                )),
+                              ),
                             ),
                           ),
                         ],

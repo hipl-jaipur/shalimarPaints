@@ -20,5 +20,7 @@ class AppConstants {
   static const String getSubCategoryData = "${BASE_URL}GetCustomerComplaintSubCategoryData";
   static const String getProductData = "${BASE_URL}GetProductData";
   static const String uploadImage = "${BASE_URL}api/File/UploadMobileFile";
+  static const String setCustomerComplaintData = "${BASE_URL}SetCustomerComplaintData";
+    static const String getustomerOsData = "${BASE_URL}GetCustomerOSData";
 
 }

@@ -41,6 +41,7 @@ class _CheckInPageState extends State<CheckInPage> {
       Get.put(ProductDataController());
 
   var customerProfileData = Get.arguments;
+
   Timer? _timer;
   int _start = 0;
 
@@ -94,7 +95,7 @@ class _CheckInPageState extends State<CheckInPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Visibility(
-                                  visible: Get.arguments[3],
+                                  visible: customerProfileData[3],
                                   child: Container(
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
@@ -263,11 +264,7 @@ class _CheckInPageState extends State<CheckInPage> {
                             CheckInCardView(
                               title: "Make Complain",
                               onPressed: () {
-                                // subCategoryDataController
-                                //     .fetchSubCategoryData();
-                                // productDataController.fetchProductData();
-                                // plantDataController.fetchPlantData();
-                                Get.to(ComplainPage());
+                                Get.to(ComplainPage(), arguments: customerProfileData[1]);
                               },
                             ),
                             CheckInCardView(

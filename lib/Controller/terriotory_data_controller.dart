@@ -14,6 +14,7 @@ class TerriotoryDataController extends GetxController {
   var depotId = 0.obs;
   var territoryId = 0.obs;
   var noRecord = "".obs;
+    var selectTerritory = false.obs;
 
   // @override
   // Future<void> onInit() async {
@@ -21,7 +22,7 @@ class TerriotoryDataController extends GetxController {
   //   fetchData(depotId: depotId.toInt());
   // }
 
-  fetchData({required int depotId}) async {
+ Future fetchData({required int depotId}) async {
     try {
       isLoading(true);
       print('Terriotory Data api called');
@@ -58,10 +59,13 @@ class TerriotoryDataController extends GetxController {
           if (data['Data'] != null && data['Data'].isNotEmpty) {
             var result = jsonDecode(res.body);
             terriotoryDataModel = TerriotoryDataModel.fromJson(result);
+            return terriotoryDataModel;
           } else {
             noRecord.value = "No Record Found";
             // showSnackBar("Error!!", data['Message'], Colors.redAccent);
             // return null;
+            return terriotoryDataModel;
+
           }
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
