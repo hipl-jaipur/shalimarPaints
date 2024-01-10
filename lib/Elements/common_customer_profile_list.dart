@@ -46,12 +46,16 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
         prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
       });
 
-      distance = calculateDistance(
-        prefs.getDouble("LAT"),
-        prefs.getDouble("LNG"),
-        widget.customerList[widget.index].latitude,
-        widget.customerList[widget.index].latitude,
-      );
+      distance = widget.customerList[widget.index].latitude &&
+              widget.customerList[widget.index].longitude != null
+          ? calculateDistance(
+              prefs.getDouble("LAT"),
+              prefs.getDouble("LNG"),
+              widget.customerList[widget.index].latitude,
+              widget.customerList[widget.index].latitude,
+            )
+          : "";
+
       print("Distance: $distance");
     }).catchError((e) {
       debugPrint(e);
@@ -62,8 +66,11 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     var p = 0.017453292519943295;
     var c = cos;
     var a = 0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+        c((lat2 != null ? lat2 : 0.0 - lat1) * p) / 2 +
+        c(lat1 * p) *
+            c(lat2 != null ? lat2 : 0.0 * p) *
+            (1 - c((lon2 != null ? lon2 : 0.0 - lon1) * p)) /
+            2;
     return 12742 * asin(sqrt(a));
   }
 

@@ -41,8 +41,8 @@ class SetActivityDetailDataController extends GetxController {
         "ActivityDetailID": 0,
         "ActivityID": isOnSite ? checkinOnsite : checkinOffsite,
         "CustomerCode": levelCode,
-        // "UserID": EmployeeId,
-        "UserID": 358,
+        "UserID": EmployeeId,
+        // "UserID": 358,
         "Latitude": LAT,
         "Longitude": LNG,
         "IsValid": 1

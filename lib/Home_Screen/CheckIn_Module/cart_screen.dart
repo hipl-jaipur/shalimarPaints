@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shalimar/Elements/commom_snackbar_widget.dart';
+import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Elements/common_cart_widget.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/checkin_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
@@ -15,7 +14,9 @@ class MyCartPage extends StatefulWidget {
 }
 
 class _MyCartPageState extends State<MyCartPage> {
-    final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  SetOrderDataController setOrderDataController =
+      Get.put(SetOrderDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class _MyCartPageState extends State<MyCartPage> {
                         height: 20,
                       ),
                       TextFormField(
+                        controller: setOrderDataController.remarkController,
                         cursorColor: Colors.white,
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -120,14 +122,15 @@ class _MyCartPageState extends State<MyCartPage> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                showSnackBar("Success", "Create Successfully",
-                                    Colors.greenAccent);
-                                Get.off(CheckInPage());
+                                setOrderDataController.fetchData(context);
+                                // showSnackBar("Success", "Create Successfully",
+                                //     Colors.greenAccent);
+                                // Get.off(CheckInPage());
+
                                 // Navigator.pop(context);
                                 // Navigator.of(context).pushAndRemoveUntil(
                                 //   MaterialPageRoute(
                                 //     builder: (context) => CheckInPage()), ModalRoute.withName('/'));
-                                
                               },
                               child: Container(
                                 height: 50,

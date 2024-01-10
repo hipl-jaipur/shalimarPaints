@@ -33,8 +33,8 @@ class SetCustomerNoteDataController extends GetxController {
         "Note": noteController.text,
         // "ActivityID": activityDetailID,
         "ActivityID": 3,
-        // "UserID": EmployeeId,
-        "UserID": 358,
+        "UserID": EmployeeId,
+        // "UserID": 358,
         "Latitude": LAT,
         "Longitude": LNG
       };

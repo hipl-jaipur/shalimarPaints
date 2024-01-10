@@ -5,7 +5,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shalimar/Controller/login_controller.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
 import 'package:shalimar/Elements/custom_text_field.dart';
-import 'package:shalimar/Home_Screen/home_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
@@ -74,12 +73,12 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   isTrue: true,
                                   obscureText: false,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return "The Email is required.";
-                                  //   }
-                                  //   return null;
-                                  // },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "The Email is required.";
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 CustomTextField(
                                   controller:
@@ -113,15 +112,15 @@ class _LoginPageState extends State<LoginPage> {
                                           : const Icon(Icons.visibility),
                                     ),
                                   ),
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return "The Password is required.";
-                                  //   }
-                                  //   if (value.length < 6) {
-                                  //     return "The password field must be at least 6 characters";
-                                  //   }
-                                  //   return null;
-                                  // },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "The Password is required.";
+                                    }
+                                    if (value.length < 6) {
+                                      return "The password field must be at least 6 characters";
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -147,10 +146,10 @@ class _LoginPageState extends State<LoginPage> {
                                   child: CustomButton(
                                     btnName: 'Login Now',
                                     onPressed: () {
-                                      Get.to(MyHomePage());
-                                      // if (_formKey.currentState!.validate()) {
-                                      //   loginController.loginCall();
-                                      // }
+                                      // Get.to(MyHomePage());
+                                      if (_formKey.currentState!.validate()) {
+                                        loginController.loginCall();
+                                      }
                                     },
                                   ),
                                 ),

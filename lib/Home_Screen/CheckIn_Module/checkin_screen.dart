@@ -6,6 +6,7 @@ import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/plant_data_controller.dart';
 import 'package:shalimar/Controller/product_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
+import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Elements/common_card_view_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/collect_payment_screen.dart';
@@ -19,7 +20,8 @@ import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
 class CheckInPage extends StatefulWidget {
-  const CheckInPage({super.key});
+  // String Tag;
+   CheckInPage({super.key });
 
   @override
   State<CheckInPage> createState() => _CheckInPageState();
@@ -40,7 +42,15 @@ class _CheckInPageState extends State<CheckInPage> {
   ProductDataController productDataController =
       Get.put(ProductDataController());
 
+  SetOrderDataController setOrderDataController =
+      Get.put(SetOrderDataController());
+
+  // var customerProfileData = Tag != "orderSuccess" ? Get.arguments : null;
+
+  
   var customerProfileData = Get.arguments;
+
+   
 
   Timer? _timer;
   int _start = 0;
@@ -251,8 +261,12 @@ class _CheckInPageState extends State<CheckInPage> {
                                 stockController.totalAmount.value = "";
                                 stockController.isVisible.value = false;
                                 stockController.fetchData(
-                                    customerCode: Get.arguments[1]);
-                                Get.to(TakeOrderPage());
+                                    customerCode: customerProfileData[1]);
+                                setOrderDataController.customerCode.value =
+                                    customerProfileData[1];
+
+                                Get.to(TakeOrderPage()
+                                   );
                               },
                             ),
                             CheckInCardView(
@@ -264,7 +278,8 @@ class _CheckInPageState extends State<CheckInPage> {
                             CheckInCardView(
                               title: "Make Complain",
                               onPressed: () {
-                                Get.to(ComplainPage(), arguments: customerProfileData[1]);
+                                Get.to(ComplainPage(),
+                                    arguments: customerProfileData[1]);
                               },
                             ),
                             CheckInCardView(

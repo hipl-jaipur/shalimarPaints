@@ -29,8 +29,8 @@ class CustomerHireDataController extends GetxController {
       print('CustomerHireData api called');
 
       final body = {
-        // "EmployeeId": employeeId,
-        "EmployeeId": 358,
+        "EmployeeId": employeeId,
+        // "EmployeeId": 358,
       };
 
       Map<String, String> requestHeaders = {
