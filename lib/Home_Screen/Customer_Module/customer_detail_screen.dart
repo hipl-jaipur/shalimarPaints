@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Elements/common_customer_profile_list.dart';
-import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
 class MyCustomerDetailsPage extends StatefulWidget {
-  const MyCustomerDetailsPage({super.key});
+  const  MyCustomerDetailsPage({super.key});
 
   @override
   State<MyCustomerDetailsPage> createState() => _MyCustomerDetailsPageState();
 }
 
 class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
+  final TextEditingController _searchController = TextEditingController();
+  var customerName = Get.arguments[0];
+  var terriotoryData = Get.put(CustomerHireDataController());
+  
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    terriotoryData
+          .getCustomerHireData(Get.arguments[1])
+          .then((value) {
+        if (value != null) {
+          // Get.to(MyCustomerDetailsPage(), arguments: terriotoryDataModel.data![index].territoryName.toString());
+        }
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,78 +44,157 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                   fit: BoxFit.fill,
                 )),
             Positioned(
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      searchBar(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Customer - E11",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
-                              Text("Count: 22",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400)),
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(
+              child: Obx(
+                () => terriotoryData.isLoading.value
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextField(
+                              controller: _searchController,
+                              textInputAction: TextInputAction.search,
+                              textCapitalization: TextCapitalization.words,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: const EdgeInsets.fromLTRB(
+                                    20.0, 0.0, 20.0, 0.0),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                      color: Color(0xffECE6E6),
+                                    )),
+                                disabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                      color: Color(0xffECE6E6),
+                                    )),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                      color: Color(0xffECE6E6),
+                                    )),
+                                hintText: 'Search',
+                                prefixIcon: IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_circle_left,
+                                      color: primaryColor,
+                                      size: 40,
+                                    )),
+                                suffixIcon: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.sort_rounded,
+                                      color: primaryColor,
+                                      size: 40,
+                                    )),
+                              ),
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "Add Customer",
-                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Customer - ${customerName}",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    Text(
+                                        "Count: ${terriotoryData.filteredList.length}",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400)),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 5.0,
-                                ),
-                                Icon(
-                                  Icons.add_box_rounded,
-                                  size: 30,
-                                  color: primaryColor,
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Add Customer",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Icon(
+                                        Icons.add_box_rounded,
+                                        size: 30,
+                                        color: primaryColor,
+                                      )
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height,
-                        child: ListView.builder(
-                          itemCount: 22,
-                          itemBuilder: (context, index) {
-                            return CustomerProfileList();
-                          },
+                            SizedBox(
+                              height: 20,
+                            ),
+                            terriotoryData.filteredList.length == 0
+                                ? Card(
+                                    child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(15.0),
+                                            child: Text("No Record Found",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold)))),
+                                  )
+                                :
+                                 Expanded(
+                                    child: ListView.builder(
+                                      itemCount:
+                                          terriotoryData.filteredList.length,
+                                      itemBuilder: (context, index) {
+                                        return terriotoryData
+                                                .filteredList[index].levelName!.toLowerCase()
+                                                .contains(_searchController.text
+                                                    .toLowerCase())
+                                            ? CustomerProfileList(
+                                                context: context,
+                                                index: index,
+                                                customerList:
+                                                    terriotoryData.filteredList)
+                                            : SizedBox();
+                                      },
+                                    ),
+                                  )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
+                      ),
               ),
-            ),
+            )
           ],
         ),
       ),

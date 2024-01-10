@@ -10,6 +10,8 @@ class ViewOpenOrderPage extends StatefulWidget {
 }
 
 class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
+    final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +33,7 @@ class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
                       height: 20,
                     ),
 
-                    searchBar(),
+                    searchBar(_searchController),
                     
                     SizedBox(
                       height: 20,

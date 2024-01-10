@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
+import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 
 class TakeOrderList extends StatefulWidget {
   int index;
-  TakeOrderList({super.key, required this.index, });
+  BuildContext context;
+  AvailableStockDataModel availableStockDataModel;
+
+  TakeOrderList({
+    super.key,
+    required this.index,
+    required this.context,
+    required this.availableStockDataModel,
+  });
 
   @override
   State<TakeOrderList> createState() => _TakeOrderListState();
 }
 
 class _TakeOrderListState extends State<TakeOrderList> {
+  GetAvailableStockDataController stockDataController =
+      Get.put(GetAvailableStockDataController());
   int counter = 0;
-
-
 
   @override
   void initState() {
@@ -31,12 +42,14 @@ class _TakeOrderListState extends State<TakeOrderList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("10011145000900 - She colza Yellow Ral 1021",
+              Text(
+                  "${widget.availableStockDataModel.data![widget.index].productcode.toString()} - ${widget.availableStockDataModel.data![widget.index].productdesc.toString()}",
                   style: TextStyle(
                       color: blackTextColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w400)),
-              Text("\u{20B9}410.00/NOS",
+              Text(
+                  "\u{20B9}${widget.availableStockDataModel.data![widget.index].dpl.toString()}/NOS",
                   style: TextStyle(
                       color: blackTextColor,
                       fontSize: 14,
@@ -48,9 +61,12 @@ class _TakeOrderListState extends State<TakeOrderList> {
                       icon: Icon(Icons.remove_circle),
                       onPressed: () {
                         setState(() {
+                          stockDataController.isVisible.value = true;
                           // widget.isVisible = true;
                           if (counter != 0) {
                             counter--;
+                            stockDataController.totalQty.value =
+                                counter.toString();
                           }
                         });
                       },
@@ -61,8 +77,10 @@ class _TakeOrderListState extends State<TakeOrderList> {
                     color: primaryColor,
                     onPressed: () {
                       setState(() {
+                        stockDataController.isVisible.value = true;
                         // widget.isVisible = true;
                         counter++;
+                        stockDataController.totalQty.value = counter.toString();
                       });
                     },
                   ),
@@ -108,7 +126,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                                 color: blackTextColor,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400)),
-                                        Text("01/05/2024",
+                                        Text(
+                                            "${widget.availableStockDataModel.data![widget.index].lastUpdatedOn.toString()}",
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 14,
@@ -124,7 +143,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                                 color: blackTextColor,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400)),
-                                        Text("5",
+                                        Text(
+                                            "${widget.availableStockDataModel.data![widget.index].availbleQty.toString()}",
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 14,
@@ -140,7 +160,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                                 color: blackTextColor,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400)),
-                                        Text("100",
+                                        Text(
+                                            "${widget.availableStockDataModel.data![widget.index].openorderQty.toString()}",
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 14,
@@ -172,8 +193,10 @@ class _TakeOrderListState extends State<TakeOrderList> {
                         Icons.info,
                         color: primaryColor,
                       )),
-                  Text("Available Stock: 5"),
-                  Text("Last Order: 100")
+                  Text(
+                      "Available Stock: ${widget.availableStockDataModel.data![widget.index].availbleQty.toString()}"),
+                  Text(
+                      "Last Order: ${widget.availableStockDataModel.data![widget.index].openorderQty.toString()}")
                 ],
               )
             ],

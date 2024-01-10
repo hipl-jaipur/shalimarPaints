@@ -10,7 +10,6 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   var userName = "".obs;
 
-  // var devicesIdGet = "";
   var isLoading = false.obs;
 
   loginCall() async {
@@ -24,7 +23,11 @@ class LoginController extends GetxController {
         if (value != null) {
           prefs.setBool('userlogindone', true);
           prefs.setString('logintoken', value['Data'][0]["Token"]);
+          prefs.setInt('EmployeeId', value['Data'][0]["EmployeeId"]);
+          prefs.setString('Division', value['Data'][0]["Division"]);
+
           userName.value = value['Data'][0]["EmployeeName"];
+
           showSnackBar(
               value['Message'], "Sucessfully Login", Colors.greenAccent);
           Get.to(const MyHomePage());

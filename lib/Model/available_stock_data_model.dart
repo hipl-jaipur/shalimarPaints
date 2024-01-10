@@ -1,12 +1,13 @@
 class AvailableStockDataModel {
   AvailableStockDataModel({
-      bool? status, 
-      String? message, 
-      List<Data>? data,}){
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) {
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   AvailableStockDataModel.fromJson(dynamic json) {
     _status = json['Status'];
@@ -21,13 +22,16 @@ class AvailableStockDataModel {
   bool? _status;
   String? _message;
   List<Data>? _data;
-AvailableStockDataModel copyWith({  bool? status,
-  String? message,
-  List<Data>? data,
-}) => AvailableStockDataModel(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  AvailableStockDataModel copyWith({
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) =>
+      AvailableStockDataModel(
+        status: status ?? _status,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
   bool? get status => _status;
   String? get message => _message;
   List<Data>? get data => _data;
@@ -41,31 +45,31 @@ AvailableStockDataModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      String? productcode, 
-      String? plantcode, 
-      String? productdesc, 
-      String? division, 
-      num? marketsectorid, 
-      num? productgroupid, 
-      num? productsubgroupid, 
-      num? productcategoryid, 
-      num? availbleQty, 
-      num? packsize, 
-      num? uomid, 
-      num? mrp, 
-      num? dpl, 
-      String? uomname, 
-      String? marketsectorname, 
-      String? productgroupname, 
-      String? productsubgroupname, 
-      String? productcategoryname, 
-      num? openorderQty, 
-      String? lastUpdatedOn,}){
+    String? productcode,
+    String? plantcode,
+    String? productdesc,
+    String? division,
+    num? marketsectorid,
+    num? productgroupid,
+    num? productsubgroupid,
+    num? productcategoryid,
+    num? availbleQty,
+    num? packsize,
+    num? uomid,
+    num? mrp,
+    num? dpl,
+    String? uomname,
+    String? marketsectorname,
+    String? productgroupname,
+    String? productsubgroupname,
+    String? productcategoryname,
+    num? openorderQty,
+    String? lastUpdatedOn,
+  }) {
     _productcode = productcode;
     _plantcode = plantcode;
     _productdesc = productdesc;
@@ -86,7 +90,7 @@ class Data {
     _productcategoryname = productcategoryname;
     _openorderQty = openorderQty;
     _lastUpdatedOn = lastUpdatedOn;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _productcode = json['productcode'];
@@ -130,47 +134,50 @@ class Data {
   String? _productcategoryname;
   num? _openorderQty;
   String? _lastUpdatedOn;
-Data copyWith({  String? productcode,
-  String? plantcode,
-  String? productdesc,
-  String? division,
-  num? marketsectorid,
-  num? productgroupid,
-  num? productsubgroupid,
-  num? productcategoryid,
-  num? availbleQty,
-  num? packsize,
-  num? uomid,
-  num? mrp,
-  num? dpl,
-  String? uomname,
-  String? marketsectorname,
-  String? productgroupname,
-  String? productsubgroupname,
-  String? productcategoryname,
-  num? openorderQty,
-  String? lastUpdatedOn,
-}) => Data(  productcode: productcode ?? _productcode,
-  plantcode: plantcode ?? _plantcode,
-  productdesc: productdesc ?? _productdesc,
-  division: division ?? _division,
-  marketsectorid: marketsectorid ?? _marketsectorid,
-  productgroupid: productgroupid ?? _productgroupid,
-  productsubgroupid: productsubgroupid ?? _productsubgroupid,
-  productcategoryid: productcategoryid ?? _productcategoryid,
-  availbleQty: availbleQty ?? _availbleQty,
-  packsize: packsize ?? _packsize,
-  uomid: uomid ?? _uomid,
-  mrp: mrp ?? _mrp,
-  dpl: dpl ?? _dpl,
-  uomname: uomname ?? _uomname,
-  marketsectorname: marketsectorname ?? _marketsectorname,
-  productgroupname: productgroupname ?? _productgroupname,
-  productsubgroupname: productsubgroupname ?? _productsubgroupname,
-  productcategoryname: productcategoryname ?? _productcategoryname,
-  openorderQty: openorderQty ?? _openorderQty,
-  lastUpdatedOn: lastUpdatedOn ?? _lastUpdatedOn,
-);
+  Data copyWith({
+    String? productcode,
+    String? plantcode,
+    String? productdesc,
+    String? division,
+    num? marketsectorid,
+    num? productgroupid,
+    num? productsubgroupid,
+    num? productcategoryid,
+    num? availbleQty,
+    num? packsize,
+    num? uomid,
+    num? mrp,
+    num? dpl,
+    String? uomname,
+    String? marketsectorname,
+    String? productgroupname,
+    String? productsubgroupname,
+    String? productcategoryname,
+    num? openorderQty,
+    String? lastUpdatedOn,
+  }) =>
+      Data(
+        productcode: productcode ?? _productcode,
+        plantcode: plantcode ?? _plantcode,
+        productdesc: productdesc ?? _productdesc,
+        division: division ?? _division,
+        marketsectorid: marketsectorid ?? _marketsectorid,
+        productgroupid: productgroupid ?? _productgroupid,
+        productsubgroupid: productsubgroupid ?? _productsubgroupid,
+        productcategoryid: productcategoryid ?? _productcategoryid,
+        availbleQty: availbleQty ?? _availbleQty,
+        packsize: packsize ?? _packsize,
+        uomid: uomid ?? _uomid,
+        mrp: mrp ?? _mrp,
+        dpl: dpl ?? _dpl,
+        uomname: uomname ?? _uomname,
+        marketsectorname: marketsectorname ?? _marketsectorname,
+        productgroupname: productgroupname ?? _productgroupname,
+        productsubgroupname: productsubgroupname ?? _productsubgroupname,
+        productcategoryname: productcategoryname ?? _productcategoryname,
+        openorderQty: openorderQty ?? _openorderQty,
+        lastUpdatedOn: lastUpdatedOn ?? _lastUpdatedOn,
+      );
   String? get productcode => _productcode;
   String? get plantcode => _plantcode;
   String? get productdesc => _productdesc;
@@ -216,5 +223,4 @@ Data copyWith({  String? productcode,
     map['lastUpdatedOn'] = _lastUpdatedOn;
     return map;
   }
-
 }

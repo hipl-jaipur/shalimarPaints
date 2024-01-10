@@ -1,12 +1,13 @@
 class CustomerDataModel {
   CustomerDataModel({
-      bool? status, 
-      String? message, 
-      List<Data>? data,}){
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) {
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   CustomerDataModel.fromJson(dynamic json) {
     _status = json['Status'];
@@ -21,13 +22,16 @@ class CustomerDataModel {
   bool? _status;
   String? _message;
   List<Data>? _data;
-CustomerDataModel copyWith({  bool? status,
-  String? message,
-  List<Data>? data,
-}) => CustomerDataModel(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  CustomerDataModel copyWith({
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) =>
+      CustomerDataModel(
+        status: status ?? _status,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
   bool? get status => _status;
   String? get message => _message;
   List<Data>? get data => _data;
@@ -41,25 +45,25 @@ CustomerDataModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      String? entitytype, 
-      num? parentLevelID, 
-      num? levelID, 
-      String? levelName, 
-      String? levelCode, 
-      num? levelMgrId, 
-      String? levelMgrName, 
-      String? levelMgrDesignation, 
-      num? srno, 
-      dynamic address1, 
-      dynamic latitude, 
-      dynamic longitude, 
-      dynamic customerType, 
-      num? hirelevel,}){
+    String? entitytype,
+    num? parentLevelID,
+    num? levelID,
+    String? levelName,
+    String? levelCode,
+    num? levelMgrId,
+    String? levelMgrName,
+    String? levelMgrDesignation,
+    num? srno,
+    dynamic address1,
+    dynamic latitude,
+    dynamic longitude,
+    dynamic customerType,
+    num? hirelevel,
+  }) {
     _entitytype = entitytype;
     _parentLevelID = parentLevelID;
     _levelID = levelID;
@@ -74,7 +78,7 @@ class Data {
     _longitude = longitude;
     _customerType = customerType;
     _hirelevel = hirelevel;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _entitytype = json['entitytype'];
@@ -106,35 +110,38 @@ class Data {
   dynamic _longitude;
   dynamic _customerType;
   num? _hirelevel;
-Data copyWith({  String? entitytype,
-  num? parentLevelID,
-  num? levelID,
-  String? levelName,
-  String? levelCode,
-  num? levelMgrId,
-  String? levelMgrName,
-  String? levelMgrDesignation,
-  num? srno,
-  dynamic address1,
-  dynamic latitude,
-  dynamic longitude,
-  dynamic customerType,
-  num? hirelevel,
-}) => Data(  entitytype: entitytype ?? _entitytype,
-  parentLevelID: parentLevelID ?? _parentLevelID,
-  levelID: levelID ?? _levelID,
-  levelName: levelName ?? _levelName,
-  levelCode: levelCode ?? _levelCode,
-  levelMgrId: levelMgrId ?? _levelMgrId,
-  levelMgrName: levelMgrName ?? _levelMgrName,
-  levelMgrDesignation: levelMgrDesignation ?? _levelMgrDesignation,
-  srno: srno ?? _srno,
-  address1: address1 ?? _address1,
-  latitude: latitude ?? _latitude,
-  longitude: longitude ?? _longitude,
-  customerType: customerType ?? _customerType,
-  hirelevel: hirelevel ?? _hirelevel,
-);
+  Data copyWith({
+    String? entitytype,
+    num? parentLevelID,
+    num? levelID,
+    String? levelName,
+    String? levelCode,
+    num? levelMgrId,
+    String? levelMgrName,
+    String? levelMgrDesignation,
+    num? srno,
+    dynamic address1,
+    dynamic latitude,
+    dynamic longitude,
+    dynamic customerType,
+    num? hirelevel,
+  }) =>
+      Data(
+        entitytype: entitytype ?? _entitytype,
+        parentLevelID: parentLevelID ?? _parentLevelID,
+        levelID: levelID ?? _levelID,
+        levelName: levelName ?? _levelName,
+        levelCode: levelCode ?? _levelCode,
+        levelMgrId: levelMgrId ?? _levelMgrId,
+        levelMgrName: levelMgrName ?? _levelMgrName,
+        levelMgrDesignation: levelMgrDesignation ?? _levelMgrDesignation,
+        srno: srno ?? _srno,
+        address1: address1 ?? _address1,
+        latitude: latitude ?? _latitude,
+        longitude: longitude ?? _longitude,
+        customerType: customerType ?? _customerType,
+        hirelevel: hirelevel ?? _hirelevel,
+      );
   String? get entitytype => _entitytype;
   num? get parentLevelID => _parentLevelID;
   num? get levelID => _levelID;
@@ -168,5 +175,4 @@ Data copyWith({  String? entitytype,
     map['Hirelevel'] = _hirelevel;
     return map;
   }
-
 }

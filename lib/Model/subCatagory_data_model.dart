@@ -1,12 +1,13 @@
 class SubCatagoryDataModel {
   SubCatagoryDataModel({
-      bool? status, 
-      String? message, 
-      List<Data>? data,}){
+    bool? status,
+    String? message,
+    List<SubCategory>? data,
+  }) {
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   SubCatagoryDataModel.fromJson(dynamic json) {
     _status = json['Status'];
@@ -14,23 +15,26 @@ class SubCatagoryDataModel {
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(SubCategory.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<Data>? _data;
-SubCatagoryDataModel copyWith({  bool? status,
-  String? message,
-  List<Data>? data,
-}) => SubCatagoryDataModel(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  List<SubCategory>? _data;
+  SubCatagoryDataModel copyWith({
+    bool? status,
+    String? message,
+    List<SubCategory>? data,
+  }) =>
+      SubCatagoryDataModel(
+        status: status ?? _status,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
   bool? get status => _status;
   String? get message => _message;
-  List<Data>? get data => _data;
+  List<SubCategory>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -41,18 +45,18 @@ SubCatagoryDataModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
-class Data {
-  Data({
-      num? subCategoryID, 
-      num? categoryID, 
-      String? categoryName, 
-      String? subcategoryName, 
-      num? isValid, 
-      String? createOn, 
-      String? updatedOn,}){
+class SubCategory {
+  SubCategory({
+    num? subCategoryID,
+    num? categoryID,
+    String? categoryName,
+    String? subcategoryName,
+    num? isValid,
+    String? createOn,
+    String? updatedOn,
+  }) {
     _subCategoryID = subCategoryID;
     _categoryID = categoryID;
     _categoryName = categoryName;
@@ -60,9 +64,9 @@ class Data {
     _isValid = isValid;
     _createOn = createOn;
     _updatedOn = updatedOn;
-}
+  }
 
-  Data.fromJson(dynamic json) {
+  SubCategory.fromJson(dynamic json) {
     _subCategoryID = json['SubCategoryID'];
     _categoryID = json['CategoryID'];
     _categoryName = json['CategoryName'];
@@ -78,21 +82,24 @@ class Data {
   num? _isValid;
   String? _createOn;
   String? _updatedOn;
-Data copyWith({  num? subCategoryID,
-  num? categoryID,
-  String? categoryName,
-  String? subcategoryName,
-  num? isValid,
-  String? createOn,
-  String? updatedOn,
-}) => Data(  subCategoryID: subCategoryID ?? _subCategoryID,
-  categoryID: categoryID ?? _categoryID,
-  categoryName: categoryName ?? _categoryName,
-  subcategoryName: subcategoryName ?? _subcategoryName,
-  isValid: isValid ?? _isValid,
-  createOn: createOn ?? _createOn,
-  updatedOn: updatedOn ?? _updatedOn,
-);
+  SubCategory copyWith({
+    num? subCategoryID,
+    num? categoryID,
+    String? categoryName,
+    String? subcategoryName,
+    num? isValid,
+    String? createOn,
+    String? updatedOn,
+  }) =>
+      SubCategory(
+        subCategoryID: subCategoryID ?? _subCategoryID,
+        categoryID: categoryID ?? _categoryID,
+        categoryName: categoryName ?? _categoryName,
+        subcategoryName: subcategoryName ?? _subcategoryName,
+        isValid: isValid ?? _isValid,
+        createOn: createOn ?? _createOn,
+        updatedOn: updatedOn ?? _updatedOn,
+      );
   num? get subCategoryID => _subCategoryID;
   num? get categoryID => _categoryID;
   String? get categoryName => _categoryName;
@@ -112,5 +119,4 @@ Data copyWith({  num? subCategoryID,
     map['UpdatedOn'] = _updatedOn;
     return map;
   }
-
 }

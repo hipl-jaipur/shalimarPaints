@@ -10,6 +10,8 @@ class MyScedulePage extends StatefulWidget {
 }
 
 class _MyScedulePageState extends State<MyScedulePage> {
+    final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +33,7 @@ class _MyScedulePageState extends State<MyScedulePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    searchBar(),
+                    searchBar(_searchController),
                     SizedBox(
                       height: 20,
                     ),

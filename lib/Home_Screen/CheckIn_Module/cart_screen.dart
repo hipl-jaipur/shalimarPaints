@@ -15,6 +15,8 @@ class MyCartPage extends StatefulWidget {
 }
 
 class _MyCartPageState extends State<MyCartPage> {
+    final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,7 @@ class _MyCartPageState extends State<MyCartPage> {
                       SizedBox(
                         height: 20,
                       ),
-                      searchBar(),
+                      searchBar(_searchController),
                       SizedBox(
                         height: 20,
                       ),

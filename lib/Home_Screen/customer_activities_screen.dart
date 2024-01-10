@@ -10,6 +10,8 @@ class CustomerActivityScreen extends StatefulWidget {
 }
 
 class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
+    final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,7 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    searchBar(),
+                    searchBar(_searchController),
                     SizedBox(
                       height: 20,
                     ),

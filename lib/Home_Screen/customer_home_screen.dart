@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shalimar/Controller/login_controller.dart';
+import 'package:shalimar/Controller/zone_data_controller.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_zone_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -14,7 +14,8 @@ class CustomerHomeScreen extends StatefulWidget {
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
-  LoginController loginController = LoginController();
+  ZoneDataController zoneDataController = Get.put(ZoneDataController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,6 +140,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              zoneDataController.fetchZoneData(zoneId: 0);
                               Get.to(MyCustomerZonePage());
                             },
                             child: Card(

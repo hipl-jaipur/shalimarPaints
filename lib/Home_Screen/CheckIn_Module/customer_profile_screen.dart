@@ -11,6 +11,8 @@ class CustomerProfilePage extends StatefulWidget {
 }
 
 class _CustomerProfilePageState extends State<CustomerProfilePage> {
+    final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +33,7 @@ class _CustomerProfilePageState extends State<CustomerProfilePage> {
                       SizedBox(
                         height: 20,
                       ),
-                      searchBar(),
+                      searchBar(_searchController),
                       SizedBox(
                         height: 20,
                       ),

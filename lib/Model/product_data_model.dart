@@ -2,7 +2,7 @@ class ProductDataModel {
   ProductDataModel({
       bool? status, 
       String? message, 
-      List<Data>? data,}){
+      List<Product>? data,}){
     _status = status;
     _message = message;
     _data = data;
@@ -14,23 +14,23 @@ class ProductDataModel {
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
-        _data?.add(Data.fromJson(v));
+        _data?.add(Product.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<Data>? _data;
+  List<Product>? _data;
 ProductDataModel copyWith({  bool? status,
   String? message,
-  List<Data>? data,
+  List<Product>? data,
 }) => ProductDataModel(  status: status ?? _status,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get status => _status;
   String? get message => _message;
-  List<Data>? get data => _data;
+  List<Product>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -44,8 +44,8 @@ ProductDataModel copyWith({  bool? status,
 
 }
 
-class Data {
-  Data({
+class Product {
+  Product({
       num? productid, 
       num? marketsectorid, 
       String? marketsectorname, 
@@ -90,7 +90,7 @@ class Data {
     _updatedon = updatedon;
 }
 
-  Data.fromJson(dynamic json) {
+  Product.fromJson(dynamic json) {
     _productid = json['productid'];
     _marketsectorid = json['marketsectorid'];
     _marketsectorname = json['marketsectorname'];
@@ -134,7 +134,7 @@ class Data {
   num? _isValid;
   String? _createdon;
   String? _updatedon;
-Data copyWith({  num? productid,
+Product copyWith({  num? productid,
   num? marketsectorid,
   String? marketsectorname,
   num? productgroupid,
@@ -155,7 +155,7 @@ Data copyWith({  num? productid,
   num? isValid,
   String? createdon,
   String? updatedon,
-}) => Data(  productid: productid ?? _productid,
+}) => Product(  productid: productid ?? _productid,
   marketsectorid: marketsectorid ?? _marketsectorid,
   marketsectorname: marketsectorname ?? _marketsectorname,
   productgroupid: productgroupid ?? _productgroupid,

@@ -10,6 +10,8 @@ class ScheduleVisitPage extends StatefulWidget {
 }
 
 class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
+    final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +33,7 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                       height: 20,
                     ),
 
-                    searchBar(),
+                    searchBar(_searchController),
                     
                     SizedBox(
                       height: 20,
