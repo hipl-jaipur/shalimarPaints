@@ -214,27 +214,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           Colors.greenAccent);
 
                       Get.to(
-                        CheckInPage(
-                            // levelName: widget
-                            //     .customerList[widget.index].levelName
-                            //     .toString(),
-                            // levelCode: widget
-                            //     .customerList[widget.index].levelCode
-                            //     .toString(),
-                            // levelAddress: widget
-                            //     .customerList[widget.index].address1
-                            //     .toString(),
-                            // isCheckinOnSite: true
-                            ),
-
-                        // arguments: [
-                        //   widget.customerList[widget.index].levelName,
-                        //   widget.customerList[widget.index].levelCode
-                        //       .toString(),
-                        //   widget.customerList[widget.index].address1
-                        //       .toString(),
-                        //   true
-                        // ]
+                        CheckInPage(),
                       );
                       controller.levelCode.value = widget
                           .customerList[widget.index].levelCode
@@ -277,25 +257,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
 
                       Get.to(
                         CheckInPage(
-                            // levelName: widget
-                            //     .customerList[widget.index].levelName
-                            //     .toString(),
-                            // levelCode: widget
-                            //     .customerList[widget.index].levelCode
-                            //     .toString(),
-                            // levelAddress: widget
-                            //     .customerList[widget.index].address1
-                            //     .toString(),
-                            // isCheckinOnSite: false
+                            
                             ),
-                        // arguments: [
-                        //   widget.customerList[widget.index].levelName,
-                        //   widget.customerList[widget.index].levelCode
-                        //       .toString(),
-                        //   widget.customerList[widget.index].address1
-                        //       .toString(),
-                        //   false
-                        // ]
                       );
                       controller.levelCode.value = widget
                           .customerList[widget.index].levelCode

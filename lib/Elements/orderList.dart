@@ -148,7 +148,7 @@ class _OrderListState extends State<OrderList> {
                   child: SizedBox(
                     height: 100,
                     child: ListView.builder(
-                      itemCount: 1,
+                      itemCount: widget.orderDataList!.length,
                       itemBuilder: (context, i) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -178,12 +178,15 @@ class _OrderListState extends State<OrderList> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal:8,vertical: 2),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: Colors.green.shade100,
+                        color: Colors.green.shade100,
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.green,)),
-                    child: Text(
+                        border: Border.all(
+                          color: Colors.green,
+                        )),
+                    child: 
+                    Text(
                       "Pending",
                       //  "${widget.orderDataList![widget.index].orderStatus.toString()}",
                       maxLines: 2,

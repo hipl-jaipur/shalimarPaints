@@ -27,7 +27,8 @@ class AppConstants {
   static const String setOrderData = "${BASE_URL}SetOrderData";
   static const String getOrderData = "${BASE_URL}GetOrderData";
 
-
-    static const String marketSectorData = "${BASE_URL}GetMarketSectorData";
+  static const String marketSectorData = "${BASE_URL}GetMarketSectorData";
   static const String getCustomerOsData = "${BASE_URL}GetCustomerHireOSData";
+  static const String getUserActivityMasterData = "${BASE_URL}GetUserActivityMasterData";
+  static const String setCustomerScheduleData = "${BASE_URL}SetCustomerScheduleData";
 }

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
 
 import '../../utils/colors.dart';
@@ -189,7 +187,8 @@ class _DumyModalState extends State<DumyModal> {
                       ),
                       Visibility(
                         visible: stockDataController.isVisibleMarketSector,
-                        child: Container(
+                        child: 
+                        Container(
                           height: 300,
                           child: ListView.builder(
                             itemCount: stockDataController

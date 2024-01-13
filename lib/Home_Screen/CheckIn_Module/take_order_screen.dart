@@ -154,7 +154,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                             child: Container(
                               height: 50,
                               child: Center(
-                                  child: Text("(${stockController.totalQty}) CONTINUE ")),
+                                  child: Text("(${stockController.totalQty}) CONTINUE (${stockController.totalAmount.toStringAsFixed(2)}) ")),
                             ),
                           ),
                         )

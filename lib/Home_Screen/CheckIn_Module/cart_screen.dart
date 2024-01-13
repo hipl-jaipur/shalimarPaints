@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/set_order_data_controller.dart';
-import 'package:shalimar/Elements/common_cart_widget.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -121,7 +120,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400)),
                                     Text(
-                                        "\u{20B9}${myCartList[index]["dpl"].toString()}/NOS",
+                                        "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
                                         style: TextStyle(
                                             color: blackTextColor,
                                             fontSize: 12,
@@ -144,7 +143,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                     fontWeight:
                                                         FontWeight.w400)),
                                             Text(
-                                                "\u{20B9}${myCartList[index]["dpl"].toString()}/NOS",
+                                                "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
                                                 style: TextStyle(
                                                     color: blackTextColor,
                                                     fontSize: 14,
@@ -182,7 +181,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                     fontWeight:
                                                         FontWeight.w400)),
                                             Text(
-                                                "\u{20B9}${stockController.myList[index]["mrp"].toString()}/NOS",
+                                                "\u{20B9}${stockController.myList[index]["mrp"].toStringAsFixed(2)}/NOS",
                                                 style: TextStyle(
                                                     color: blackTextColor,
                                                     fontSize: 14,
@@ -260,7 +259,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Center(
                                   child: Text(
-                                    "Placed order \u{20B9}$total",
+                                    "Placed order \u{20B9}${total.toStringAsFixed(2)}",
                                     style:
                                         TextStyle(fontWeight: FontWeight.w500),
                                   ),

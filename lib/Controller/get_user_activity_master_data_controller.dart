@@ -5,24 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
-import 'package:shalimar/Model/get_order_data_model.dart';
+import 'package:shalimar/Model/activitityData.dart';
 import 'package:shalimar/utils/consts.dart';
 
-class GetOrderDataController extends GetxController {
+class GetUserActivityController extends GetxController {
   var isLoading = false.obs;
-  GetOrderDataModel? getOrderDataModel;
-  OrderData? orderData;
-  var noRecord = "".obs;
+  ActivitityData? activitityData;
 
-  fetchOrderData({required var customerCode}) async {
+  // @override
+  // Future<void> onInit() async {
+  //   super.onInit();
+  //   fetchData();
+  // }
+
+  fetchData() async {
     try {
       isLoading(true);
-      print('Get Order Data api called');
+      print('Activity Data api called');
 
-      final body = {
-        "CustomerCode": customerCode
-        // "CustomerCode": "N221000011"
-      };
+      final body = {"UserActivityId": 0};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -30,14 +31,16 @@ class GetOrderDataController extends GetxController {
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getOrderData),
-          body: jsonEncode(body), headers: requestHeaders);
+      final res = await http.post(
+          Uri.parse(AppConstants.getUserActivityMasterData),
+          body: jsonEncode(body),
+          headers: requestHeaders);
 
       print(res);
 
       if (kDebugMode) {
-        print("******Get Order Data Api Call****");
-        print(AppConstants.getOrderData);
+        print("******Activity Data Api Call****");
+        print(AppConstants.getUserActivityMasterData);
         print(requestHeaders);
         print(body);
         print(res.statusCode);
@@ -51,15 +54,12 @@ class GetOrderDataController extends GetxController {
 
       if (res.statusCode == 200) {
         if (data != null) {
-          if (data['OrderData'] != null || data['OrderData'] == 0) {
+          if (data['Data'] != null) {
             var result = jsonDecode(res.body);
-            getOrderDataModel = GetOrderDataModel.fromJson(result);
-            orderData = OrderData.fromJson(getOrderDataModel!.orderData);
-            return getOrderDataModel;
+            activitityData = ActivitityData.fromJson(result);
           } else {
-            // showSnackBar("Error!!", data['Message'], Colors.redAccent);
-            noRecord.value = "No Record Found";
-            // return getOrderDataModel;
+            showSnackBar("Error!!", data['Message'], Colors.redAccent);
+            return null;
           }
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
