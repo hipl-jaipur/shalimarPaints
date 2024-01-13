@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shalimar/Controller/terriotory_data_controller.dart';
+import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Elements/zone_list.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -16,9 +16,10 @@ class MyCustomerTerriotoryPage extends StatefulWidget {
 class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
   @override
   final TextEditingController _searchController = TextEditingController();
-  TerriotoryDataController terriotoryDataController =
-      Get.put(TerriotoryDataController());
-  String terriotoryName = Get.arguments;
+  // TerriotoryDataController terriotoryDataController =  Get.put(TerriotoryDataController());
+  // String terriotoryName = Get.arguments;
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +34,7 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
                 )),
             Positioned(
               child: Obx(
-                () => terriotoryDataController.isLoading.value
+                () => customerHireDataController.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -98,19 +99,13 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
                             SizedBox(
                               height: 20,
                             ),
-                            Text(
-                                "Terriotory - ${terriotoryName
-                                // terriotoryDataController.terriotoryDataModel!.data![0].depotName.toString()
-                                }",
+                            Text("Terriotory",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold)),
                             Text(
-                                terriotoryDataController.terriotoryDataModel ==
-                                        null
-                                    ? "Count: 0"
-                                    : "Count: ${terriotoryDataController.terriotoryDataModel!.data!.length}",
+                                "Count: ${customerHireDataController.terriotoryList.length}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -118,46 +113,39 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
                             SizedBox(
                               height: 20,
                             ),
-                            terriotoryDataController.terriotoryDataModel != null
+                            customerHireDataController.terriotoryList != null
                                 ? Expanded(
                                     child: ListView.builder(
-                                      itemCount: terriotoryDataController
-                                              .terriotoryDataModel!
-                                              .data!
-                                              .length ??
+                                      itemCount: customerHireDataController
+                                              .terriotoryList.length ??
                                           0,
                                       itemBuilder: (context, index) {
-                                        return terriotoryDataController.terriotoryDataModel!
-                                            .data![index].territoryName!
-                                            .toLowerCase()
-                                            .contains(_searchController.text
-                                                .toLowerCase())?
-                                        
-                                        
-                                        terriotoryList(
-                                          context,
-                                          index,
-                                          terriotoryDataController
-                                              .terriotoryDataModel!,
-                                        ) : SizedBox();
+                                        return customerHireDataController.terriotoryList![index]
+                                                .levelName!
+                                                .toLowerCase()
+                                                .contains(_searchController.text
+                                                    .toLowerCase())
+                                            ? terriotoryList(
+                                                context,
+                                                index
+                                              )
+                                            : SizedBox();
                                       },
                                     ),
                                   )
                                 : Card(
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         child: Padding(
                                             padding: const EdgeInsets.all(15.0),
-                                            child: Text(
-                                                terriotoryDataController
-                                                    .noRecord.value,
+                                            child: Text("No Record Found",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 20,
                                                     fontWeight:
                                                         FontWeight.bold)))),
                                   ),
-                            
                           ],
                         ),
                       ),

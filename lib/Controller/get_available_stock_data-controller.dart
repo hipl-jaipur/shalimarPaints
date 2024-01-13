@@ -9,11 +9,14 @@ import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/consts.dart';
 
 class GetAvailableStockDataController extends GetxController {
-  var isLoading = false.obs;
-  var isVisible = false.obs;
-  var totalQty = "".obs;
-  var totalAmount = "".obs;
+  var isLoading = false;
+  var isVisible = false;
+  int totalQty = 0;
+  var totalAmount = 0.0;
   AvailableStockDataModel? availableStockDataModel;
+  List<Map<dynamic, dynamic>> myList = [];
+  int counter = 0;
+
 
   // double totalPriceSum(int todoListId) {
   //   return ItemsPrice.where((item) => item.todoListId == todoListId)
@@ -34,7 +37,8 @@ class GetAvailableStockDataController extends GetxController {
 
   fetchData({required customerCode}) async {
     try {
-      isLoading(true);
+      isLoading=true;
+      update();
 
       print('Get Available Stock Data API called');
 
@@ -69,6 +73,24 @@ class GetAvailableStockDataController extends GetxController {
         if (data != null) {
           var result = jsonDecode(res.body);
           availableStockDataModel = AvailableStockDataModel.fromJson(result);
+          for(var map in availableStockDataModel!.data! ){
+            myList.add(
+
+                {
+                  /*"id":map.productcode,
+                  "name":map.productdesc,
+                  "price":map.dpl,
+                  "totalPrice":totalAmount,*/
+                  "Qty":counter
+
+                }
+
+
+            );
+          }
+
+          print(myList.length);
+          print(myList);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -82,7 +104,8 @@ class GetAvailableStockDataController extends GetxController {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading(false);
+      isLoading=false;
+      update();
     }
   }
 }

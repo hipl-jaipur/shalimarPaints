@@ -46,13 +46,13 @@ ZoneDataModel copyWith({  bool? status,
 
 class Data {
   Data({
-      num? zoneId, 
+      dynamic? zoneId, 
       String? zoneCode, 
       String? zoneName, 
-      num? zonemgrId, 
+      dynamic? zonemgrId, 
       String? zonemgrName, 
       String? zonemgrCode, 
-      num? isValid, 
+      dynamic? isValid, 
       String? createdOn, 
       String? updatedOn,}){
     _zoneId = zoneId;
@@ -77,22 +77,22 @@ class Data {
     _createdOn = json['CreatedOn'];
     _updatedOn = json['UpdatedOn'];
   }
-  num? _zoneId;
+  dynamic? _zoneId;
   String? _zoneCode;
   String? _zoneName;
-  num? _zonemgrId;
+  dynamic? _zonemgrId;
   String? _zonemgrName;
   String? _zonemgrCode;
-  num? _isValid;
+  dynamic? _isValid;
   String? _createdOn;
   String? _updatedOn;
-Data copyWith({  num? zoneId,
+Data copyWith({  dynamic? zoneId,
   String? zoneCode,
   String? zoneName,
-  num? zonemgrId,
+  dynamic? zonemgrId,
   String? zonemgrName,
   String? zonemgrCode,
-  num? isValid,
+  dynamic? isValid,
   String? createdOn,
   String? updatedOn,
 }) => Data(  zoneId: zoneId ?? _zoneId,
@@ -105,13 +105,13 @@ Data copyWith({  num? zoneId,
   createdOn: createdOn ?? _createdOn,
   updatedOn: updatedOn ?? _updatedOn,
 );
-  num? get zoneId => _zoneId;
+  dynamic? get zoneId => _zoneId;
   String? get zoneCode => _zoneCode;
   String? get zoneName => _zoneName;
-  num? get zonemgrId => _zonemgrId;
+  dynamic? get zonemgrId => _zonemgrId;
   String? get zonemgrName => _zonemgrName;
   String? get zonemgrCode => _zonemgrCode;
-  num? get isValid => _isValid;
+  dynamic? get isValid => _isValid;
   String? get createdOn => _createdOn;
   String? get updatedOn => _updatedOn;
 

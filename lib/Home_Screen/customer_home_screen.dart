@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shalimar/Controller/zone_data_controller.dart';
-import 'package:shalimar/Home_Screen/Customer_Module/customer_zone_screen.dart';
+import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstabding_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
-  const CustomerHomeScreen({super.key});
+  String EmployeeName;
+  String Email;
+  String DesignationName;
+  CustomerHomeScreen(
+      {super.key,
+      required this.EmployeeName,
+      required this.Email,
+      required this.DesignationName});
 
   @override
   State<CustomerHomeScreen> createState() => _CustomerHomeScreenState();
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
-  ZoneDataController zoneDataController = Get.put(ZoneDataController());
+  // ZoneDataController zoneDataController = Get.put(ZoneDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,75 +42,55 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       width: double.infinity,
-                      height: 180,
                       child: Card(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  // Container(
-                                  //     width: 120,
-                                  //     height: 120,
-                                  //     child:
-                                  //         Image.asset(Images.shalimarLogoHorizontal)),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Icon(
-                                      Icons.notifications_rounded,
-                                      color: primaryColor,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Container(
-                                        width: 120,
-                                        height: 120,
-                                        child: Image.asset(
-                                            Images.shalimarLogoHorizontal)),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Dileep Kumar",
-                                          style: TextStyle(
-                                              color: primaryColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "dilipe9@gmail.com",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        Text(
-                                          "Sales Executive",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      ],
-                                    ),
+                                          width: 150,
+                                          height: 60,
+                                          child: Image.asset(
+                                              Images.shalimarLogoHorizontal)),
+                                    Icon(
+                                      Icons.notifications_rounded,
+                                      color: primaryColor,
+                                    )
                                   ],
                                 ),
-                              )
-                            ]),
+                                SizedBox(height: 10,),
+                                Text(
+                                  widget.EmployeeName,
+                                  style: TextStyle(
+                                      color: primaryColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  widget.Email,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Text(
+                                  widget.DesignationName,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.left,
+                                )
+                              ]),
+                        ),
                       ),
                     ),
                     Expanded(
@@ -140,9 +129,22 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              zoneDataController.fetchZoneData(zoneId: 0);
-                              Get.to(MyCustomerZonePage());
+                            onTap: () async {
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              var division = prefs.getString('Division');
+                              // zoneDataController.fetchZoneData(zoneId: 0);
+                              customerHireDataController.getCustomerHireData();
+
+                              // Get.to(MyCustomerZonePage());
+
+                              // Get.to(division == 1
+                              //     ? MyCustomerZonePage()
+                              //     : division == 2
+                              //         ? MyCustomerRegionsPage()
+                              //         : division == 3
+                              //             ? MyCustomerDepotPage()
+                              //             : MyCustomerTerriotoryPage());
                             },
                             child: Card(
                               child: Center(
@@ -166,29 +168,29 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                               )),
                             ),
                           ),
-                          Container(
-                            child: Card(
-                              child: Center(
-                                  child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.menu_book_outlined,
-                                    color: primaryColor,
-                                    size: 40,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text('Learn',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                ],
-                              )),
-                            ),
-                          ),
+                          // Container(
+                          //   child: Card(
+                          //     child: Center(
+                          //         child: Column(
+                          //       mainAxisAlignment: MainAxisAlignment.center,
+                          //       children: [
+                          //         Icon(
+                          //           Icons.menu_book_outlined,
+                          //           color: primaryColor,
+                          //           size: 40,
+                          //         ),
+                          //         SizedBox(
+                          //           height: 10,
+                          //         ),
+                          //         Text('Learn',
+                          //             style: TextStyle(
+                          //                 color: Colors.black,
+                          //                 fontSize: 16,
+                          //                 fontWeight: FontWeight.bold)),
+                          //       ],
+                          //     )),
+                          //   ),
+                          // ),
                           Container(
                             child: Card(
                               child: Center(

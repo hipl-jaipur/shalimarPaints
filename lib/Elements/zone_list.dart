@@ -8,28 +8,21 @@ import 'package:shalimar/Home_Screen/Customer_Module/customer_depot_screen.dart'
 import 'package:shalimar/Home_Screen/Customer_Module/customer_detail_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_regions_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_terriotory_screen.dart';
-import 'package:shalimar/Model/depot_data_model.dart';
-import 'package:shalimar/Model/region_data_model.dart';
-import 'package:shalimar/Model/terriotory_data_model.dart';
-import 'package:shalimar/Model/zone_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 
 Widget zoneList(
   BuildContext context,
   int index,
-  ZoneDataModel zoneDataModel,
+  // ZoneDataModel zoneDataModel,
 ) {
   RegionDataController regionDataController = Get.put(RegionDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
   return GestureDetector(
     onTap: () {
       regionDataController.fetchData(
-          zoneId: zoneDataModel.data![index].zoneId!.toInt());
+          zoneId: customerHireDataController.zoneList[index].levelID!.toInt());
       Get.to(MyCustomerRegionsPage());
-      // if (tagZone == "Zone") {
-      //   regionDataController.fetchData(
-      //       zoneId: zoneDataModel.data![index].zoneId!.toInt());
-      //   Get.to(MyCustomerRegionsPage());
-      // }
     },
     child: Card(
       child: Container(
@@ -41,7 +34,9 @@ Widget zoneList(
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(zoneDataModel.data![index].zoneName.toString(),
+                Text(
+                    customerHireDataController.zoneList[index].levelName
+                        .toString(),
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
@@ -50,7 +45,7 @@ Widget zoneList(
                   width: 10,
                 ),
                 Text(
-                    "${zoneDataModel.data![index].zonemgrName.toString()} (General Manager)",
+                    "${customerHireDataController.zoneList[index].levelMgrName.toString()} (${customerHireDataController.zoneList[index].levelMgrDesignation.toString()})",
                     style: TextStyle(
                         color: primaryColor,
                         fontSize: 16,
@@ -72,13 +67,16 @@ Widget zoneList(
 Widget regionList(
   BuildContext context,
   int index,
-  RegionDataModel regionDataModel,
 ) {
   DepotDataController depotDataController = Get.put(DepotDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
+
   return GestureDetector(
     onTap: () {
       depotDataController.fetchData(
-          regionId: regionDataModel.data![index].regionId!.toInt());
+          regionId:
+              customerHireDataController.regionsList![index].levelID!.toInt());
       Get.to(MyCustomerDepotPage());
     },
     child: Card(
@@ -88,7 +86,9 @@ Widget regionList(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(regionDataModel.data![index].regionName.toString(),
+            Text(
+                customerHireDataController.regionsList[index].levelName
+                    .toString(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -111,17 +111,20 @@ Widget regionList(
 Widget depotList(
   BuildContext context,
   int index,
-  DepotDataModel depotDataModel,
 ) {
   TerriotoryDataController terriotoryDataController =
       Get.put(TerriotoryDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
 
   return GestureDetector(
     onTap: () {
       terriotoryDataController.fetchData(
-          depotId: depotDataModel.data![index].depotId!.toInt());
+          depotId:
+              customerHireDataController.depotList[index].levelID!.toInt());
       Get.to(MyCustomerTerriotoryPage(),
-          arguments: depotDataModel.data![index].depotName.toString());
+          arguments:
+              customerHireDataController.depotList[index].levelName.toString());
     },
     child: Card(
       child: Container(
@@ -130,7 +133,9 @@ Widget depotList(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(depotDataModel.data![index].depotName.toString(),
+            Text(
+                customerHireDataController.depotList[index].levelName
+                    .toString(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -153,21 +158,18 @@ Widget depotList(
 Widget terriotoryList(
   BuildContext context,
   int index,
-  TerriotoryDataModel terriotoryDataModel,
 ) {
   TerriotoryDataController terriotoryDataController =
       Get.put(TerriotoryDataController());
-  var terriotoryData = Get.put(CustomerHireDataController());
+  // var terriotoryData = Get.put(CustomerHireDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
   return GestureDetector(
     onTap: () {
-      // terriotoryData
-      //     .getCustomerHireData(terriotoryDataModel.data![index].territoryid)
-      //     .then((value) {
-      //   if (value != null) {
-      //     Get.to(MyCustomerDetailsPage(), arguments:[ terriotoryDataModel.data![index].territoryName.toString(), terriotoryDataModel.data![index].territoryid]);
-      //   }
-      // });
-       Get.to(MyCustomerDetailsPage(), arguments:[ terriotoryDataModel.data![index].territoryName.toString(), terriotoryDataModel.data![index].territoryid]);
+      Get.to(MyCustomerDetailsPage(), arguments: [
+        customerHireDataController.terriotoryList[index].levelName.toString(),
+        customerHireDataController.terriotoryList[index].levelID, 
+      ]);
 
       // Get.to(MyCustomerDetailsPage(), arguments: terriotoryDataModel.data![index].territoryName.toString());
       // terriotoryDataController.fetchData(
@@ -181,7 +183,7 @@ Widget terriotoryList(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(terriotoryDataModel.data![index].territoryName.toString(),
+            Text(customerHireDataController!.terriotoryList[index].levelName.toString(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,

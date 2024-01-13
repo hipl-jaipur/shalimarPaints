@@ -14,32 +14,32 @@ class SetActivityDetailDataController extends GetxController {
   var levelName = "".obs;
   var levelCode = "".obs;
   var levelAddress = "".obs;
-
-
-  
+  var isCheckinOnSite = false.obs;
 
   fetchData(
       {required String levelCode,
-      required bool isOnSite}) async {
+      required int activityID,}) async {
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       var EmployeeId = prefs.getInt('EmployeeId');
-      var checkinOnsite = 8;
-      var checkinOffsite = 9;
+      // var checkinOnsite = 8;
+      // var checkinOffsite = 9;
+      // var checkOutActivity = 10;
       var LAT = prefs.getDouble('LAT');
       var LNG = prefs.getDouble('LNG');
 
       print('Set Activity Detail Data API called');
-      print(isOnSite);
+      // print(isOnSite);
       print("LNG : $LNG");
       print("LAT : $LAT");
 
-      isTimerVisible.value = isOnSite;
+      // isTimerVisible.value = isOnSite;
 
       final body = {
         "ActivityDetailID": 0,
-        "ActivityID": isOnSite ? checkinOnsite : checkinOffsite,
+        // "ActivityID": isOnSite ? checkinOnsite : checkinOffsite,
+        "ActivityID": activityID,
         "CustomerCode": levelCode,
         "UserID": EmployeeId,
         // "UserID": 358,

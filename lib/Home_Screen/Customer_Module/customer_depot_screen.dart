@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shalimar/Controller/depot_data_controller.dart';
+import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Elements/zone_list.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -14,7 +14,10 @@ class MyCustomerDepotPage extends StatefulWidget {
 
 class _MyCustomerDepotPageState extends State<MyCustomerDepotPage> {
   final TextEditingController _searchController = TextEditingController();
-  DepotDataController depotDataController = Get.put(DepotDataController());
+  // DepotDataController depotDataController = Get.put(DepotDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class _MyCustomerDepotPageState extends State<MyCustomerDepotPage> {
                 )),
             Positioned(
               child: Obx(
-                () => depotDataController.isLoading.value
+                () => customerHireDataController.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -99,13 +102,13 @@ class _MyCustomerDepotPageState extends State<MyCustomerDepotPage> {
                             ),
                         
                             Text(
-                                "Depot - ${depotDataController.depotDataModel!.data![0].regionName.toString()}",
+                                "Depot",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold)),
                             Text(
-                                "Count: ${depotDataController.depotDataModel!.data!.length}",
+                                "Count: ${customerHireDataController.depotList!.length}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -115,20 +118,16 @@ class _MyCustomerDepotPageState extends State<MyCustomerDepotPage> {
                             ),
                             Expanded(
                                 child: ListView.builder(
-                                  itemCount: depotDataController
-                                          .depotDataModel!.data!.length ??
+                                  itemCount: customerHireDataController.depotList.length ??
                                       0,
                                   itemBuilder: (context, index) {
-                                    return depotDataController.depotDataModel!
-                                            .data![index].depotName!
+                                    return customerHireDataController.depotList[index]!.levelName!
                                             .toLowerCase()
                                             .contains(_searchController.text
                                                 .toLowerCase())
                                         ? depotList(
                                             context,
-                                            index,
-                                            depotDataController
-                                                .depotDataModel!,
+                                            index
                                           )
                                         : SizedBox();
                                   },

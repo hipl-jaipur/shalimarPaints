@@ -2,30 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
-import 'package:shalimar/Services/plant_service.dart';
+import 'package:shalimar/Model/plant_data_model.dart';
 import 'package:shalimar/utils/consts.dart';
 
-import '../Model/plant_data_model.dart';
 
-class PlantDataController extends GetxController {
-  var isLoading = false.obs;
-  PlantDataModel? plantDataModel;
-  var plantID = 0;
-  var plantList = <Data>[].obs;
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    fetchPlantData();
-    getPlantData();
-  }
-
-  fetchPlantData() async {
+class PlantService {
+  static Future<PlantDataModel?> getPlant() async {
     try {
-      isLoading(true);
+      // isLoading(true);
       print('Plant Data api called');
 
       final body = {
@@ -61,7 +47,9 @@ class PlantDataController extends GetxController {
         if (data != null) {
           if (data['Data'] != null) {
             var result = jsonDecode(res.body);
-            plantDataModel = PlantDataModel.fromJson(result);
+            PlantDataModel plant = PlantDataModel.fromJson(result);
+            return plant;
+            // plantDataModel = PlantDataModel.fromJson(result);
             // plantList.add(data['Data']);
             // print("plantData : $plantList");
           } else {
@@ -81,21 +69,36 @@ class PlantDataController extends GetxController {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading(false);
+      // isLoading(false);
     }
+
+  //   final SharedPreferences pref = await SharedPreferences.getInstance();
+  //   var authToken = pref.getString("logintoken");
+  //   Map<String, String> requestHeaders = {
+  //     'Authorization': "Bearer $authToken",
+  //   };
+  //   final res = await http.get(Uri.parse(AppConstants.productList),
+  //       headers: requestHeaders);
+
+  //   if (kDebugMode) {
+  //     print(res.statusCode);
+  //     print(res.body);
+  //   }
+
+  //   if (res.statusCode == 200) {
+  //     var data = jsonDecode(res.body);
+  //     if (data != null) {
+  //       if (kDebugMode) {
+  //         print(res.body);
+  //       }
+  //       ProductListModel product = ProductListModel.fromJson(data);
+  //       return product;
+  //     } else {
+  //       return null;
+  //     }
+  //   } else {
+  //     return null;
+  //   }
+  // }
   }
-
-  getPlantData() async {
-    print("Get   plant****");
-    isLoading(true);
-    var fetchedPlant = await PlantService.getPlant();
-    isLoading(false);
-
-    if (fetchedPlant != null) {
-      plantList.value = fetchedPlant.data ?? [];
-      print('Plant Length : ${plantList.length}');
-    }
-  }
-
-  
 }

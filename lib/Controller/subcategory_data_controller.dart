@@ -14,12 +14,10 @@ class SubCategoryDataController extends GetxController {
   SubCatagoryDataModel? subCatagoryDataModel;
   var subCategoryID = 0;
 
-    // List<SubCategory> subCategoryList = [].obs; 
+  // var subCategoryList = <SubCategory>[].obs;
+
+  // List<SubCategory> subCategoryList = [].obs;
   var subCategoryList = <dynamic>[].obs;
-
-
-
-
 
   @override
   Future<void> onInit() async {
@@ -75,7 +73,7 @@ class SubCategoryDataController extends GetxController {
             print("subCatData : $subCategoryList");
           } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);
-            return null;
+            return subCategoryList;
           }
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);

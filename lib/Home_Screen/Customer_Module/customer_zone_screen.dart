@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shalimar/Controller/zone_data_controller.dart';
+import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Elements/zone_list.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -15,7 +15,9 @@ class MyCustomerZonePage extends StatefulWidget {
 class _MyCustomerZonePageState extends State<MyCustomerZonePage> {
   final TextEditingController _searchController = TextEditingController();
 
-  ZoneDataController zoneDataController = Get.put(ZoneDataController());
+  // ZoneDataController zoneDataController = Get.put(ZoneDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
 
   @override
   void initState() {
@@ -37,7 +39,7 @@ class _MyCustomerZonePageState extends State<MyCustomerZonePage> {
                 )),
             Positioned(
               child: Obx(
-                () => zoneDataController.isLoading.value
+                () => customerHireDataController.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -99,7 +101,6 @@ class _MyCustomerZonePageState extends State<MyCustomerZonePage> {
                                 setState(() {});
                               },
                             ),
-
                             SizedBox(
                               height: 20,
                             ),
@@ -109,8 +110,8 @@ class _MyCustomerZonePageState extends State<MyCustomerZonePage> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold)),
                             Text(
-                                zoneDataController.zoneDataModel != null
-                                    ? "Count: ${zoneDataController.zoneDataModel!.data!.length}"
+                                customerHireDataController.zoneList != null
+                                    ? "Count: ${customerHireDataController.zoneList!.length}"
                                     : "",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -121,19 +122,18 @@ class _MyCustomerZonePageState extends State<MyCustomerZonePage> {
                             ),
                             Expanded(
                               child: ListView.builder(
-                                itemCount: zoneDataController
-                                        .zoneDataModel!.data!.length ??
+                                itemCount: customerHireDataController
+                                        .zoneList!.length ??
                                     0,
                                 itemBuilder: (context, index) {
-                                  return zoneDataController
-                                          .zoneDataModel!.data![index].zoneName!
+                                  return customerHireDataController
+                                        .zoneList[index].levelName!
                                           .toLowerCase()
                                           .contains(_searchController.text
                                               .toLowerCase())
                                       ? zoneList(
                                           context,
                                           index,
-                                          zoneDataController.zoneDataModel!,
                                         )
                                       : SizedBox();
                                 },

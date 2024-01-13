@@ -9,6 +9,7 @@ class LoginController extends GetxController {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   var userName = "".obs;
+  var division = "".obs;
 
   var isLoading = false.obs;
 
@@ -25,12 +26,20 @@ class LoginController extends GetxController {
           prefs.setString('logintoken', value['Data'][0]["Token"]);
           prefs.setInt('EmployeeId', value['Data'][0]["EmployeeId"]);
           prefs.setString('Division', value['Data'][0]["Division"]);
+          prefs.setBool('Status', value['Data'][0]["Status"]);
+          prefs.setString('EmployeeName', value['Data'][0]["EmployeeName"]);
+          prefs.setString('Email', value['Data'][0]["Email"]);
+          prefs.setString(
+              'DesignationName', value['Data'][0]["DesignationName"]);
 
           userName.value = value['Data'][0]["EmployeeName"];
 
           showSnackBar(
               value['Message'], "Sucessfully Login", Colors.greenAccent);
-          Get.to(const MyHomePage());
+          Get.off(MyHomePage(
+              EmployeeName: value['Data'][0]["EmployeeName"],
+              Email: value['Data'][0]["Email"],
+              DesignationName: value['Data'][0]["DesignationName"]));
         }
       });
     } catch (e) {

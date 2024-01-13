@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Elements/common_customer_profile_list.dart';
+import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
 class MyCustomerDetailsPage extends StatefulWidget {
-  const  MyCustomerDetailsPage({super.key});
+  const MyCustomerDetailsPage({super.key});
 
   @override
   State<MyCustomerDetailsPage> createState() => _MyCustomerDetailsPageState();
@@ -15,20 +16,32 @@ class MyCustomerDetailsPage extends StatefulWidget {
 class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
   final TextEditingController _searchController = TextEditingController();
   var customerName = Get.arguments[0];
+  var levelID = Get.arguments[1];
   var terriotoryData = Get.put(CustomerHireDataController());
-  
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
+
+  List<Data> customerList = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    terriotoryData
-          .getCustomerHireData(Get.arguments[1])
-          .then((value) {
-        if (value != null) {
-          // Get.to(MyCustomerDetailsPage(), arguments: terriotoryDataModel.data![index].territoryName.toString());
-        }
-      });
+
+    customerList = customerHireDataController!.customerList!
+        .where((element) => element.parentLevelID == levelID)
+        .toList();
+
+    print('customerList: $customerList');
+
+    // terriotoryData.getCustomerHireData().then((value) {
+    //   if (value != null) {
+    //     Get.to(MyCustomerDetailsPage(),
+    //         arguments: customerHireDataController
+    //             .terriotoryList![index].levelName
+    //             .toString());
+    //   }
+    // });
   }
 
   @override
@@ -45,7 +58,7 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                 )),
             Positioned(
               child: Obx(
-                () => terriotoryData.isLoading.value
+                () => customerHireDataController.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -122,7 +135,7 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold)),
                                     Text(
-                                        "Count: ${terriotoryData.filteredList.length}",
+                                        "Count: ${customerList.length}",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 14,
@@ -157,7 +170,7 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                             SizedBox(
                               height: 20,
                             ),
-                            terriotoryData.filteredList.length == 0
+                            customerList.length == 0
                                 ? Card(
                                     child: Container(
                                         width:
@@ -171,21 +184,18 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                     fontWeight:
                                                         FontWeight.bold)))),
                                   )
-                                :
-                                 Expanded(
+                                : Expanded(
                                     child: ListView.builder(
-                                      itemCount:
-                                          terriotoryData.filteredList.length,
+                                      itemCount: customerList.length,
                                       itemBuilder: (context, index) {
-                                        return terriotoryData
-                                                .filteredList[index].levelName!.toLowerCase()
+                                        return customerList[index].levelName!
+                                                .toLowerCase()
                                                 .contains(_searchController.text
                                                     .toLowerCase())
                                             ? CustomerProfileList(
                                                 context: context,
                                                 index: index,
-                                                customerList:
-                                                    terriotoryData.filteredList)
+                                                customerList:customerList)
                                             : SizedBox();
                                       },
                                     ),

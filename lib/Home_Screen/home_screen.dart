@@ -7,7 +7,11 @@ import 'package:shalimar/Home_Screen/customer_support_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  String EmployeeName;
+  String Email;
+  String DesignationName;
+
+   MyHomePage({super.key, required this.EmployeeName, required this.Email, required this.DesignationName});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -49,7 +53,9 @@ class _MyHomePageState extends State<MyHomePage> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          CustomerHomeScreen(),
+          CustomerHomeScreen(EmployeeName: widget.EmployeeName,
+              Email: widget.Email,
+              DesignationName: widget.DesignationName),
           CustomerAttendanceScreen(),
           CustomerActivityScreen(),
           CustomerSupportScreen(),

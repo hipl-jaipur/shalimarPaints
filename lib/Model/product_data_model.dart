@@ -46,25 +46,25 @@ ProductDataModel copyWith({  bool? status,
 
 class Product {
   Product({
-      num? productid, 
-      num? marketsectorid, 
+      dynamic? productid, 
+      dynamic? marketsectorid, 
       String? marketsectorname, 
-      num? productgroupid, 
+      dynamic? productgroupid, 
       String? productgroupname, 
-      num? productsubgroupid, 
+      dynamic? productsubgroupid, 
       String? productsubgroupname, 
-      num? productcategoryid, 
+      dynamic? productcategoryid, 
       String? productcategoryname, 
       String? productcode, 
       String? productdesc, 
       String? type, 
-      num? packsize, 
-      num? uomid, 
-      num? dpl, 
-      num? mrp, 
-      num? contractrate, 
+      dynamic? packsize, 
+      dynamic? uomid, 
+      dynamic? dpl, 
+      dynamic? mrp, 
+      dynamic? contractrate, 
       String? division, 
-      num? isValid, 
+      dynamic? isValid, 
       String? createdon, 
       String? updatedon,}){
     _productid = productid;
@@ -113,46 +113,46 @@ class Product {
     _createdon = json['createdon'];
     _updatedon = json['updatedon'];
   }
-  num? _productid;
-  num? _marketsectorid;
+  dynamic? _productid;
+  dynamic? _marketsectorid;
   String? _marketsectorname;
-  num? _productgroupid;
+  dynamic? _productgroupid;
   String? _productgroupname;
-  num? _productsubgroupid;
+  dynamic? _productsubgroupid;
   String? _productsubgroupname;
-  num? _productcategoryid;
+  dynamic? _productcategoryid;
   String? _productcategoryname;
   String? _productcode;
   String? _productdesc;
   String? _type;
-  num? _packsize;
-  num? _uomid;
-  num? _dpl;
-  num? _mrp;
-  num? _contractrate;
+  dynamic? _packsize;
+  dynamic? _uomid;
+  dynamic? _dpl;
+  dynamic? _mrp;
+  dynamic? _contractrate;
   String? _division;
-  num? _isValid;
+  dynamic? _isValid;
   String? _createdon;
   String? _updatedon;
-Product copyWith({  num? productid,
-  num? marketsectorid,
+Product copyWith({  dynamic? productid,
+  dynamic? marketsectorid,
   String? marketsectorname,
-  num? productgroupid,
+  dynamic? productgroupid,
   String? productgroupname,
-  num? productsubgroupid,
+  dynamic? productsubgroupid,
   String? productsubgroupname,
-  num? productcategoryid,
+  dynamic? productcategoryid,
   String? productcategoryname,
   String? productcode,
   String? productdesc,
   String? type,
-  num? packsize,
-  num? uomid,
-  num? dpl,
-  num? mrp,
-  num? contractrate,
+  dynamic? packsize,
+  dynamic? uomid,
+  dynamic? dpl,
+  dynamic? mrp,
+  dynamic? contractrate,
   String? division,
-  num? isValid,
+  dynamic? isValid,
   String? createdon,
   String? updatedon,
 }) => Product(  productid: productid ?? _productid,
@@ -177,25 +177,25 @@ Product copyWith({  num? productid,
   createdon: createdon ?? _createdon,
   updatedon: updatedon ?? _updatedon,
 );
-  num? get productid => _productid;
-  num? get marketsectorid => _marketsectorid;
+  dynamic? get productid => _productid;
+  dynamic? get marketsectorid => _marketsectorid;
   String? get marketsectorname => _marketsectorname;
-  num? get productgroupid => _productgroupid;
+  dynamic? get productgroupid => _productgroupid;
   String? get productgroupname => _productgroupname;
-  num? get productsubgroupid => _productsubgroupid;
+  dynamic? get productsubgroupid => _productsubgroupid;
   String? get productsubgroupname => _productsubgroupname;
-  num? get productcategoryid => _productcategoryid;
+  dynamic? get productcategoryid => _productcategoryid;
   String? get productcategoryname => _productcategoryname;
   String? get productcode => _productcode;
   String? get productdesc => _productdesc;
   String? get type => _type;
-  num? get packsize => _packsize;
-  num? get uomid => _uomid;
-  num? get dpl => _dpl;
-  num? get mrp => _mrp;
-  num? get contractrate => _contractrate;
+  dynamic? get packsize => _packsize;
+  dynamic? get uomid => _uomid;
+  dynamic? get dpl => _dpl;
+  dynamic? get mrp => _mrp;
+  dynamic? get contractrate => _contractrate;
   String? get division => _division;
-  num? get isValid => _isValid;
+  dynamic? get isValid => _isValid;
   String? get createdon => _createdon;
   String? get updatedon => _updatedon;
 

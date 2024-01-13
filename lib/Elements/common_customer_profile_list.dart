@@ -32,7 +32,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
 
   String? _currentAddress;
   Position? _currentPosition;
-  var distance;
+  double? distance;
 
   Future<void> _getCurrentPosition() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,21 +40,24 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-      setState(() {
-        _currentPosition = position;
-        prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
-        prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
-      });
+      if (this.mounted) {
+        setState(() {
+          _currentPosition = position;
+          prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
+          prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
+        });
+      }
 
-      distance = widget.customerList[widget.index].latitude &&
-              widget.customerList[widget.index].longitude != null
-          ? calculateDistance(
-              prefs.getDouble("LAT"),
-              prefs.getDouble("LNG"),
-              widget.customerList[widget.index].latitude,
-              widget.customerList[widget.index].latitude,
-            )
-          : "";
+      distance = calculateDistance(
+        prefs.getDouble("LAT"),
+        prefs.getDouble("LNG"),
+        widget.customerList[widget.index].latitude == null
+            ? 0.0
+            : widget.customerList[widget.index].latitude,
+        widget.customerList[widget.index].longitude == null
+            ? 0.0
+            : widget.customerList[widget.index].longitude,
+      );
 
       print("Distance: $distance");
     }).catchError((e) {
@@ -66,11 +69,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     var p = 0.017453292519943295;
     var c = cos;
     var a = 0.5 -
-        c((lat2 != null ? lat2 : 0.0 - lat1) * p) / 2 +
-        c(lat1 * p) *
-            c(lat2 != null ? lat2 : 0.0 * p) *
-            (1 - c((lon2 != null ? lon2 : 0.0 - lon1) * p)) /
-            2;
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
   }
 
@@ -116,56 +116,85 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Column(children: [
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: CircleAvatar(
-              child: Icon(
-                Icons.person_sharp,
-                size: 50,
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(widget.customerList[widget.index].levelName.toString(),
-              style: TextStyle(
-                  color: blackTextColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400)),
-          SizedBox(
-            height: 5,
-          ),
-          Text("ID:${widget.customerList[widget.index].levelCode.toString()}",
-              style: TextStyle(
-                  color: blackTextColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400)),
-          SizedBox(
-            height: 5,
-          ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              widget.customerList[widget.index].address1.toString(),
-              style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400),
-              textAlign: TextAlign.center,
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.person_sharp,
+                      size: 50,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 250,
+                          child: Text(
+                              widget.customerList[widget.index].levelName
+                                  .toString(),
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: blackTextColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400)),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                            "ID:${widget.customerList[widget.index].levelCode.toString()}",
+                            style: TextStyle(
+                                color: blackTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          width: 250,
+                          child: Text(
+                            widget.customerList[widget.index].address1
+                                .toString(),
+                            maxLines: 2,
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        Text(
+                            distance != null
+                                ? "Distance: ${distance!.toInt()} KM Away"
+                                : "",
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          Text(distance != null ? "Distance:$distance" : "",
-              style: TextStyle(
-                  color: primaryColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400)),
           SizedBox(
-            height: 5,
-          ),
-          SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -175,22 +204,47 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                   child: GestureDetector(
                     onTap: () {
                       controller.fetchData(
-                        levelCode: widget.customerList[widget.index].levelCode
-                            .toString(),
-                        isOnSite: true,
-                      );
+                          levelCode: widget.customerList[widget.index].levelCode
+                              .toString(),
+                          activityID: 8);
                       showSnackBar(
                           "You are CheckedIn at",
                           widget.customerList[widget.index].levelName
                               .toString(),
                           Colors.greenAccent);
 
-                      Get.to(CheckInPage(), arguments: [
-                        widget.customerList[widget.index].levelName,
-                        widget.customerList[widget.index].levelCode.toString(),
-                        widget.customerList[widget.index].address1.toString(),
-                        true
-                      ]);
+                      Get.to(
+                        CheckInPage(
+                            // levelName: widget
+                            //     .customerList[widget.index].levelName
+                            //     .toString(),
+                            // levelCode: widget
+                            //     .customerList[widget.index].levelCode
+                            //     .toString(),
+                            // levelAddress: widget
+                            //     .customerList[widget.index].address1
+                            //     .toString(),
+                            // isCheckinOnSite: true
+                            ),
+
+                        // arguments: [
+                        //   widget.customerList[widget.index].levelName,
+                        //   widget.customerList[widget.index].levelCode
+                        //       .toString(),
+                        //   widget.customerList[widget.index].address1
+                        //       .toString(),
+                        //   true
+                        // ]
+                      );
+                      controller.levelCode.value = widget
+                          .customerList[widget.index].levelCode
+                          .toString();
+                      controller.levelName.value = widget
+                          .customerList[widget.index].levelName
+                          .toString();
+                      controller.levelAddress.value =
+                          widget.customerList[widget.index].address1.toString();
+                      controller.isCheckinOnSite.value = true;
                     },
                     child: Container(
                       padding: EdgeInsets.all(8),
@@ -212,22 +266,46 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                   child: GestureDetector(
                     onTap: () {
                       controller.fetchData(
-                        levelCode: widget.customerList[widget.index].levelCode
-                            .toString(),
-                        isOnSite: false,
-                      );
+                          levelCode: widget.customerList[widget.index].levelCode
+                              .toString(),
+                          activityID: 9);
                       showSnackBar(
                           "You are CheckedIn at",
                           widget.customerList[widget.index].levelName
                               .toString(),
                           Colors.greenAccent);
 
-                      Get.to(CheckInPage(), arguments: [
-                        widget.customerList[widget.index].levelName,
-                        widget.customerList[widget.index].levelCode.toString(),
-                        widget.customerList[widget.index].address1.toString(),
-                        false
-                      ]);
+                      Get.to(
+                        CheckInPage(
+                            // levelName: widget
+                            //     .customerList[widget.index].levelName
+                            //     .toString(),
+                            // levelCode: widget
+                            //     .customerList[widget.index].levelCode
+                            //     .toString(),
+                            // levelAddress: widget
+                            //     .customerList[widget.index].address1
+                            //     .toString(),
+                            // isCheckinOnSite: false
+                            ),
+                        // arguments: [
+                        //   widget.customerList[widget.index].levelName,
+                        //   widget.customerList[widget.index].levelCode
+                        //       .toString(),
+                        //   widget.customerList[widget.index].address1
+                        //       .toString(),
+                        //   false
+                        // ]
+                      );
+                      controller.levelCode.value = widget
+                          .customerList[widget.index].levelCode
+                          .toString();
+                      controller.levelName.value = widget
+                          .customerList[widget.index].levelName
+                          .toString();
+                      controller.levelAddress.value =
+                          widget.customerList[widget.index].address1.toString();
+                      controller.isCheckinOnSite.value = false;
                     },
                     child: Container(
                       padding: EdgeInsets.all(8),

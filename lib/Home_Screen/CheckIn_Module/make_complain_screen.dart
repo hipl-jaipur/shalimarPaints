@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shalimar/Controller/plant_data_controller.dart';
@@ -66,9 +67,34 @@ class ComplainPageState extends State<ComplainPage> {
     }
   }
 
+  File? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+  void _pickImageBase64() async {
+    try {
+      // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
+      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      if (image == null) return;
+      // read picked image byte data.
+      Uint8List imagebytes = await image!.readAsBytes();
+      // using base64 encoder convert image into base64 string.
+      String _base64String = base64.encode(imagebytes);
+      print("ImageList2: $_base64String");
+
+      final imageTemp = File(image.path);
+       print("ImageList1: $imageTemp");
+      setState(() {
+        this._imageFile = imageTemp; // setState to image the UI and show picked image on screen.
+      });
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print('error');
+      }
+    }
+  }
+
   final List<File> _images = [];
 
-  File? _imageFile;
+  // File? _imageFile;
   String? _base64Image;
 
   Future<void> _pickImage() async {
@@ -82,9 +108,25 @@ class ComplainPageState extends State<ComplainPage> {
         _images.add(_imageFile!);
       });
 
-      Uint8List bytes = _imageFile!.readAsBytesSync();
-      String base64Image = base64Encode(bytes);
-      print("ImageList2: $base64Image");
+      String imgpath = pickedFile.path;
+      File imgfile = File(imgpath);
+      Uint8List imgbytes = await imgfile.readAsBytes();
+      String bs4str = base64.encode(imgbytes);
+      print("ImageList2: $bs4str");
+
+      // String bs4strr = "/9j/4VG+RXhpZgAATU0AKgAAAAgADQEAAAMAAAABC7gAAAEBAAMAAAABD6AAAAEPAAIAAAAHAAAAqgEQAAIAAAALAAAAsgESAAMAAAABAAEAAAEaAAUAAAABAAAAvgEbAAUAAAABAAAAxgEoAAMAAAABAAIAAAEyAAIAAAAUAAAAzgITAAMAAAABAAEAAIdpAAQAAAABAAAA6poAAAIAAAAHAAAA4oglAAQAAAABAAADAgAAA+BYaWFvbWkAAE0yMDEySzExQUkAAAAAAEgAAAABAAAASAAAAAEyMDI0OjAxOjEyIDE2OjE0OjU5AE1pIDExWAAAAB+CmgAFAAAAAQAAAmSCnQAFAAAAAQAAAmyIIgADAAAAAQACAACIJwADAAAAAQE+AACQAAAHAAAABDAyMjCQAwACAAAAFAAAAnSQBAACAAAAFAAAAoiRAQAHAAAABAECAwCSAQAKAAAAAQAAApySAgAFAAAAAQAAAqSSAwAKAAAAAQAAAqySBAAKAAAAAQAAArSSBQAFAAAAAQAAArySBwADAAAAAQACAACSCAADAAAAAQAVAACSCQADAAAAAQAQAACSCgAFAAAAAQAAAsSSkAACAAAABwAAAsySkQACAAAABwAAAtSSkgACAAAABwAAAtygAAAHAAAABDAxMDCgAQADAAAAAQABAACgAgAEAAAAAQAAC7igAwAEAAAAAQAAD6CgBQAEAAAAAQAAAuOiFwADAAAAAQABAACjAQABAAAAAQEAAACkAgADAAAAAQAAAACkAwADAAAAAQAAAACkBQADAAAAAQAZAACkBgADAAAAAQAAAAAAAAAAAAAAAQAAADIAAACzAAAAZDIwMjQ6MDE6MTIgMTY6MTQ6NTkAMjAyNDowMToxMiAxNjoxNDo1OQAAABYLAAAD6AAAAKcAAABk////wwAAAGQAAAAAAAAABgAAAKcAAABkAAASZgAAA+gwNjMwMjEAADA2MzAyMQAAMDYzMDIxAAACAAEAAgA";
+      Uint8List decodedbytes = base64.decode(bs4str);
+      File decodedimgfile = await File("image.jpg").writeAsBytes(decodedbytes);
+      String decodedpath = decodedimgfile.path;
+      print("ImageList2: $decodedpath");
+
+      // var image = imageToBase64(_imageFile!.path);
+
+      // print("ImageList2: $image");
+
+      // Uint8List bytes = _imageFile!.readAsBytesSync();
+      // String base64Image = base64Encode(bytes);
+      // print("ImageList2: $base64Image");
 
       // getUint8ListFromFile(_imageFile!);
 
@@ -117,6 +159,16 @@ class ComplainPageState extends State<ComplainPage> {
 
       // _convertImageToBase64();
     }
+  }
+
+  String imageToBase64(String imageUrl) {
+    // Fetch the image as bytes
+    Uint8List bytes =
+        Uint8List.fromList(List<int>.generate(200, (index) => index));
+
+    // Encode bytes to base64
+    String base64Encoded = base64Encode(bytes);
+    return base64Encoded;
   }
 
   Future<Uint8List> getUint8ListFromFile(File picture) async {
@@ -190,19 +242,29 @@ class ComplainPageState extends State<ComplainPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  // List<SubCategory>? subCategoryList;
+  final GlobalKey _autocompleteKey = GlobalKey();
+  final GlobalKey _plantAutocompleteKey = GlobalKey();
+  final FocusNode _textFieldFocusNode1 = FocusNode();
+  final FocusNode _textFieldFocusNode2 = FocusNode();
+  final FocusNode _textFieldFocusNodePlant = FocusNode();
+  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _plantEditingController = TextEditingController();
+  static String _displayStringForOption(dynamic option) =>
+      option.subcategoryName.toString();
+  static String _plantDisplayStringForOption(dynamic option) =>
+      option.subcategoryName.toString();
+
+  List<dynamic>? subCategoryList;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    subCategoryDataController.subCategoryList;
-    print(subCategoryDataController.subCategoryList);
+    subCategoryList = subCategoryDataController.subCategoryList.value[0];
+    print("subList: $subCategoryList");
+    // subCategoryDataController.subCategoryList;
+    // print(subCategoryDataController.subCategoryList);
   }
-
-  String selectedValue = '';
-  TextEditingController searchController = TextEditingController();
-  List<String> options = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 
   @override
   Widget build(BuildContext context) {
@@ -297,6 +359,204 @@ class ComplainPageState extends State<ComplainPage> {
                                             SizedBox(
                                               height: 10,
                                             ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            // SizedBox(
+                                            //   height: 20,
+                                            // ),
+                                            // LayoutBuilder(
+                                            //   builder: (context, constraints) =>
+                                            //       RawAutocomplete<SubCategory>(
+                                            //     focusNode: _textFieldFocusNode1,
+                                            //     key: _autocompleteKey,
+                                            //     textEditingController:
+                                            //         _textEditingController,
+                                            //     optionsViewBuilder: (context,
+                                            //             onSelected, options) =>
+                                            //         Align(
+                                            //       alignment: Alignment.topLeft,
+                                            //       child: Material(
+                                            //         shape:
+                                            //             const RoundedRectangleBorder(
+                                            //           borderRadius:
+                                            //               BorderRadius.vertical(
+                                            //                   bottom: Radius
+                                            //                       .circular(
+                                            //                           4.0)),
+                                            //         ),
+                                            //         child: Container(
+                                            //           height:
+                                            //               52.0 * options.length,
+                                            //           width: constraints.biggest
+                                            //               .width, // <-- Right here !
+                                            //           child: ListView.builder(
+                                            //             padding:
+                                            //                 EdgeInsets.zero,
+                                            //             itemCount:
+                                            //                 options.length,
+                                            //             shrinkWrap: false,
+                                            //             itemBuilder:
+                                            //                 (BuildContext
+                                            //                         context,
+                                            //                     int index) {
+                                            //               final SubCategory
+                                            //                   option =
+                                            //                   options.elementAt(
+                                            //                       index);
+                                            //               return InkWell(
+                                            //                 onTap: () => {
+                                            //                   onSelected(
+                                            //                       option),
+                                            //                   _textFieldFocusNode2
+                                            //                       .requestFocus(),
+                                            //                 },
+                                            //                 child: Padding(
+                                            //                   padding:
+                                            //                       const EdgeInsets
+                                            //                           .all(
+                                            //                           16.0),
+                                            //                   child: Text(option
+                                            //                       .subcategoryName
+                                            //                       .toString()),
+                                            //                 ),
+                                            //               );
+                                            //             },
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //     ),
+                                            //     displayStringForOption:
+                                            //         _displayStringForOption,
+                                            //     fieldViewBuilder:
+                                            //         (BuildContext context,
+                                            //             TextEditingController
+                                            //                 controller,
+                                            //             FocusNode focusNode,
+                                            //             VoidCallback
+                                            //                 onFieldSubmitted) {
+                                            //       return TextFormField(
+                                            //         autovalidateMode:
+                                            //             AutovalidateMode
+                                            //                 .onUserInteraction,
+                                            //         textInputAction:
+                                            //             TextInputAction.next,
+                                            //         validator: (value) {
+                                            //           if (value == null ||
+                                            //               value.isEmpty) {
+                                            //             return "The Sub Category Name is required.";
+                                            //           }
+                                            //           return null;
+                                            //         },
+                                            //         onChanged: (value) {
+                                            //           // setState(() {
+                                            //           //   hideError = false;
+                                            //           // }
+                                            //           // );
+                                            //         },
+                                            //         decoration: InputDecoration(
+                                            //           contentPadding:
+                                            //               const EdgeInsets
+                                            //                   .fromLTRB(20.0,
+                                            //                   0.0, 20.0, 0.0),
+                                            //           border:
+                                            //               const OutlineInputBorder(),
+                                            //           focusedBorder:
+                                            //               const OutlineInputBorder(
+                                            //                   borderRadius:
+                                            //                       BorderRadius
+                                            //                           .all(Radius
+                                            //                               .circular(
+                                            //                                   3)),
+                                            //                   borderSide:
+                                            //                       BorderSide(
+                                            //                     color: Colors
+                                            //                         .black,
+                                            //                   )),
+                                            //           disabledBorder:
+                                            //               const OutlineInputBorder(
+                                            //                   borderRadius:
+                                            //                       BorderRadius
+                                            //                           .all(Radius
+                                            //                               .circular(
+                                            //                                   3)),
+                                            //                   borderSide:
+                                            //                       BorderSide(
+                                            //                     color: Color(
+                                            //                         0xffECE6E6),
+                                            //                   )),
+                                            //           enabledBorder:
+                                            //               const OutlineInputBorder(
+                                            //                   borderRadius:
+                                            //                       BorderRadius
+                                            //                           .all(Radius
+                                            //                               .circular(
+                                            //                                   5)),
+                                            //                   borderSide:
+                                            //                       BorderSide(
+                                            //                     color: Colors
+                                            //                         .black,
+                                            //                   )),
+                                            //           labelText: 'Sub Category',
+                                            //           labelStyle:
+                                            //               const TextStyle(
+                                            //                   color: Color(
+                                            //                       0xff0A2540)),
+                                            //           hintText: "Sub Category",
+                                            //         ),
+                                            //         controller:
+                                            //             _textEditingController,
+                                            //         focusNode: focusNode,
+                                            //         onFieldSubmitted:
+                                            //             (String value) {
+                                            //           onFieldSubmitted();
+                                            //         },
+                                            //       );
+                                            //     },
+                                            //     optionsBuilder:
+                                            //         (TextEditingValue
+                                            //             textEditingValue) {
+                                            //       if (textEditingValue.text ==
+                                            //           '') {
+                                            //         return const Iterable<
+                                            //             SubCategory>.empty();
+                                            //       }
+
+                                            //       debugPrint(
+                                            //           'subCategoryList: ${subCategoryList}');
+                                            //       List<SubCategory>
+                                            //           _userOptions = [];
+                                            //       for (var str
+                                            //           in subCategoryList!) {
+                                            //         if (str.subcategoryName!
+                                            //             .toLowerCase()
+                                            //             .contains(textEditingValue
+                                            //                 .text
+                                            //                 .toLowerCase())) {
+                                            //           _userOptions.add(SubCategory(
+                                            //               subCategoryID:
+                                            //                   str.subCategoryID,
+                                            //               subcategoryName: str
+                                            //                   .subcategoryName));
+                                            //         }
+                                            //       }
+                                            //       debugPrint(
+                                            //           'productList: $_userOptions');
+                                            //       return _userOptions;
+                                            //     },
+                                            //     onSelected:
+                                            //         (SubCategory selection) {
+                                            //       debugPrint(
+                                            //           'You just selected $selection');
+                                            //       // cont.productIdController
+                                            //       //         .text =
+                                            //       //     selection.subCategoryID
+                                            //       //         .toString();
+                                            //       // debugPrint(
+                                            //       //     'You just selected productName id: ${cont.productIdController.text}');
+                                            //     },
+                                            //   ),
+                                            // ),
                                             DropdownButtonFormField<
                                                 SubCategory>(
                                               decoration: InputDecoration(
@@ -563,6 +823,199 @@ class ComplainPageState extends State<ComplainPage> {
                                             SizedBox(
                                               height: 20,
                                             ),
+
+                                            LayoutBuilder(
+                                              builder: (context, constraints) =>
+                                                  RawAutocomplete<Data>(
+                                                focusNode:
+                                                    _textFieldFocusNodePlant,
+                                                key: _plantAutocompleteKey,
+                                                textEditingController:
+                                                    _plantEditingController,
+                                                optionsViewBuilder: (context,
+                                                        onSelected, options) =>
+                                                    Align(
+                                                  alignment: Alignment.topLeft,
+                                                  child: Material(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.vertical(
+                                                              bottom: Radius
+                                                                  .circular(
+                                                                      4.0)),
+                                                    ),
+                                                    child: Container(
+                                                      height:
+                                                          52.0 * options.length,
+                                                      width: constraints.biggest
+                                                          .width, // <-- Right here !
+                                                      child: ListView.builder(
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        itemCount:
+                                                            options.length,
+                                                        shrinkWrap: false,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          final Data option =
+                                                              options.elementAt(
+                                                                  index);
+                                                          return InkWell(
+                                                            onTap: () => {
+                                                              onSelected(
+                                                                  option),
+                                                              _textFieldFocusNode2
+                                                                  .requestFocus(),
+                                                            },
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      16.0),
+                                                              child: Text(option
+                                                                  .plantname
+                                                                  .toString()),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                displayStringForOption:
+                                                    _plantDisplayStringForOption,
+                                                fieldViewBuilder:
+                                                    (BuildContext context,
+                                                        TextEditingController
+                                                            controller,
+                                                        FocusNode focusNode,
+                                                        VoidCallback
+                                                            onFieldSubmitted) {
+                                                  return TextFormField(
+                                                    autovalidateMode:
+                                                        AutovalidateMode
+                                                            .onUserInteraction,
+                                                    textInputAction:
+                                                        TextInputAction.next,
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty) {
+                                                        return "The Plant Name is required.";
+                                                      }
+                                                      return null;
+                                                    },
+                                                    onChanged: (value) {
+                                                      // setState(() {
+                                                      //   hideError = false;
+                                                      // }
+                                                      // );
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                              .fromLTRB(20.0,
+                                                              0.0, 20.0, 0.0),
+                                                      border:
+                                                          const OutlineInputBorder(),
+                                                      focusedBorder:
+                                                          const OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(Radius
+                                                                          .circular(
+                                                                              3)),
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                color: Colors
+                                                                    .black,
+                                                              )),
+                                                      disabledBorder:
+                                                          const OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(Radius
+                                                                          .circular(
+                                                                              3)),
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                color: Color(
+                                                                    0xffECE6E6),
+                                                              )),
+                                                      enabledBorder:
+                                                          const OutlineInputBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(Radius
+                                                                          .circular(
+                                                                              5)),
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                color: Colors
+                                                                    .black,
+                                                              )),
+                                                      labelText: 'Plant',
+                                                      labelStyle:
+                                                          const TextStyle(
+                                                              color: Color(
+                                                                  0xff0A2540)),
+                                                      hintText: "Plant",
+                                                    ),
+                                                    controller:
+                                                        _plantEditingController,
+                                                    focusNode: focusNode,
+                                                    onFieldSubmitted:
+                                                        (String value) {
+                                                      onFieldSubmitted();
+                                                    },
+                                                  );
+                                                },
+                                                optionsBuilder:
+                                                    (TextEditingValue
+                                                        textEditingValue) {
+                                                  if (textEditingValue.text ==
+                                                      '') {
+                                                    return const Iterable<
+                                                        Data>.empty();
+                                                  }
+
+                                                  debugPrint(
+                                                      'PlantList: ${plantDataController.plantList}');
+                                                  List<Data> _userOptions = [];
+                                                  for (var str
+                                                      in plantDataController
+                                                          .plantList) {
+                                                    if (str.plantname!
+                                                        .toLowerCase()
+                                                        .contains(textEditingValue
+                                                            .text
+                                                            .toLowerCase())) {
+                                                      _userOptions.add(Data(
+                                                          plantid: str.plantid,
+                                                          plantname:
+                                                              str.plantname));
+                                                    }
+                                                  }
+                                                  debugPrint(
+                                                      'plantList: $_userOptions');
+                                                  return _userOptions;
+                                                },
+                                                onSelected: (Data selection) {
+                                                  debugPrint(
+                                                      'You just selected $selection');
+                                                  // cont.productIdController
+                                                  //         .text =
+                                                  //     selection.subCategoryID
+                                                  //         .toString();
+                                                  // debugPrint(
+                                                  //     'You just selected productName id: ${cont.productIdController.text}');
+                                                },
+                                              ),
+                                            ),
+
+                                            SizedBox(height: 20),
                                             DropdownButtonFormField<Data>(
                                               validator: (value) {
                                                 if (value == null ||
@@ -657,52 +1110,6 @@ class ComplainPageState extends State<ComplainPage> {
                                                   plantDataController
                                                       .plantDataModel!.data!
                                                       .map((Data option) {
-                                                var items = [
-                                                  DropdownMenuItem<Data>(
-                                                    value: option,
-                                                    child: TextFormField(
-                                                      controller:
-                                                          searchPlantController,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        contentPadding:
-                                                            const EdgeInsets
-                                                                .fromLTRB(20.0,
-                                                                0.0, 20.0, 0.0),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            3)),
-                                                                borderSide:
-                                                                    BorderSide(
-                                                                  color: Colors
-                                                                      .black,
-                                                                )),
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .black),
-                                                        ),
-                                                        labelText:
-                                                            'Search Plant',
-                                                        labelStyle: TextStyle(
-                                                            color:
-                                                                Colors.black),
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  DropdownMenuItem<Data>(
-                                                    value: option,
-                                                    child: Text(option.plantname
-                                                        .toString()),
-                                                  )
-                                                ];
                                                 return DropdownMenuItem<Data>(
                                                   value: option,
                                                   child: Text(option.plantname
@@ -769,9 +1176,8 @@ class ComplainPageState extends State<ComplainPage> {
                                                     ),
                                                     onPressed: () {
                                                       // _pickImage;
-                                                      // pickImage();
-                                                      // _getImage;
-                                                      _pickImage();
+                                                      // _pickImage();
+                                                      _pickImageBase64();
                                                     },
                                                   ),
                                                 ],

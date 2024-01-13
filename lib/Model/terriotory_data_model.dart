@@ -46,16 +46,16 @@ TerriotoryDataModel copyWith({  bool? status,
 
 class TerriotoryList {
   TerriotoryList({
-      num? territoryid, 
+      dynamic? territoryid, 
       String? territoryCode, 
       String? territoryName, 
-      num? territorymgrId, 
+      dynamic? territorymgrId, 
       dynamic territorymgrName, 
       dynamic territorymgrCode, 
-      num? depotId, 
+      dynamic? depotId, 
       String? depotCode, 
       String? depotName, 
-      num? isValid, 
+      dynamic? isValid, 
       String? createdOn, 
       String? updatedOn,}){
     _territoryid = territoryid;
@@ -86,28 +86,28 @@ class TerriotoryList {
     _createdOn = json['CreatedOn'];
     _updatedOn = json['UpdatedOn'];
   }
-  num? _territoryid;
+  dynamic? _territoryid;
   String? _territoryCode;
   String? _territoryName;
-  num? _territorymgrId;
+  dynamic? _territorymgrId;
   dynamic _territorymgrName;
   dynamic _territorymgrCode;
-  num? _depotId;
+  dynamic? _depotId;
   String? _depotCode;
   String? _depotName;
-  num? _isValid;
+  dynamic? _isValid;
   String? _createdOn;
   String? _updatedOn;
-  TerriotoryList copyWith({  num? territoryid,
+  TerriotoryList copyWith({  dynamic? territoryid,
   String? territoryCode,
   String? territoryName,
-  num? territorymgrId,
+  dynamic? territorymgrId,
   dynamic territorymgrName,
   dynamic territorymgrCode,
-  num? depotId,
+  dynamic? depotId,
   String? depotCode,
   String? depotName,
-  num? isValid,
+  dynamic? isValid,
   String? createdOn,
   String? updatedOn,
 }) => TerriotoryList(  territoryid: territoryid ?? _territoryid,
@@ -123,16 +123,16 @@ class TerriotoryList {
   createdOn: createdOn ?? _createdOn,
   updatedOn: updatedOn ?? _updatedOn,
 );
-  num? get territoryid => _territoryid;
+  dynamic? get territoryid => _territoryid;
   String? get territoryCode => _territoryCode;
   String? get territoryName => _territoryName;
-  num? get territorymgrId => _territorymgrId;
+  dynamic? get territorymgrId => _territorymgrId;
   dynamic get territorymgrName => _territorymgrName;
   dynamic get territorymgrCode => _territorymgrCode;
-  num? get depotId => _depotId;
+  dynamic? get depotId => _depotId;
   String? get depotCode => _depotCode;
   String? get depotName => _depotName;
-  num? get isValid => _isValid;
+  dynamic? get isValid => _isValid;
   String? get createdOn => _createdOn;
   String? get updatedOn => _updatedOn;
 

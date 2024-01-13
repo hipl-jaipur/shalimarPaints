@@ -1,12 +1,13 @@
 class PlantDataModel {
   PlantDataModel({
-      bool? status, 
-      String? message, 
-      List<Data>? data,}){
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) {
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   PlantDataModel.fromJson(dynamic json) {
     _status = json['Status'];
@@ -21,13 +22,16 @@ class PlantDataModel {
   bool? _status;
   String? _message;
   List<Data>? _data;
-PlantDataModel copyWith({  bool? status,
-  String? message,
-  List<Data>? data,
-}) => PlantDataModel(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  PlantDataModel copyWith({
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) =>
+      PlantDataModel(
+        status: status ?? _status,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
   bool? get status => _status;
   String? get message => _message;
   List<Data>? get data => _data;
@@ -41,35 +45,38 @@ PlantDataModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      num? plantid, 
-      String? plantname, 
-      bool? isactive,}){
+    dynamic? plantid,
+    String? plantname,
+    bool? isactive,
+  }) {
     _plantid = plantid;
     _plantname = plantname;
     _isactive = isactive;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _plantid = json['plantid'];
     _plantname = json['plantname'];
     _isactive = json['isactive'];
   }
-  num? _plantid;
+  dynamic? _plantid;
   String? _plantname;
   bool? _isactive;
-Data copyWith({  num? plantid,
-  String? plantname,
-  bool? isactive,
-}) => Data(  plantid: plantid ?? _plantid,
-  plantname: plantname ?? _plantname,
-  isactive: isactive ?? _isactive,
-);
-  num? get plantid => _plantid;
+  Data copyWith({
+    dynamic? plantid,
+    String? plantname,
+    bool? isactive,
+  }) =>
+      Data(
+        plantid: plantid ?? _plantid,
+        plantname: plantname ?? _plantname,
+        isactive: isactive ?? _isactive,
+      );
+  dynamic? get plantid => _plantid;
   String? get plantname => _plantname;
   bool? get isactive => _isactive;
 
@@ -80,5 +87,4 @@ Data copyWith({  num? plantid,
     map['isactive'] = _isactive;
     return map;
   }
-
 }

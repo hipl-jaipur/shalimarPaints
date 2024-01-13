@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
+import 'package:shalimar/Home_Screen/CheckIn_Module/checkin_screen.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,9 +13,9 @@ class SetOrderDataController extends GetxController {
   var isLoading = false.obs;
   TextEditingController remarkController = TextEditingController();
   var customerCode = "".obs;
- 
+  
 
-  fetchData(BuildContext context) async {
+  fetchData(BuildContext context,List<Map<dynamic, dynamic>> myCart) async {
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -43,9 +44,10 @@ class SetOrderDataController extends GetxController {
         // "UserID": EmployeeId,
         "Latitude": LAT,
         "Longitude": LNG,
-        "OrderParam": [
-          {"productcode": "53342628020000", "Qty": 2, "dpl": 600, "mrp": 1200}
-        ]
+        "OrderParam": myCart
+        // [
+        //   {"productcode": "53342628020000", "Qty": 2, "dpl": 600, "mrp": 1200}
+        // ]
       };
 
       Map<String, String> requestHeaders = {
@@ -87,14 +89,16 @@ class SetOrderDataController extends GetxController {
                       child: Text('Ok'),
                       onPressed: () {
                         Navigator.pop(context);
-                        // Get.off(CheckInPage(),);
+                        Get.off(
+                          CheckInPage(),
+                        );
                       },
                     ),
                   ],
                 );
               });
           // showSnackBar("Success", result['Message'], Colors.greenAccent);
-          // Get.off(CheckInPage()); 
+          // Get.off(CheckInPage());
           // prefs.setInt('ActivityDetailID', result['ActivityDetailID']);
           // print("ActivityDetailID: ${result['ActivityDetailID']}");
         } else {

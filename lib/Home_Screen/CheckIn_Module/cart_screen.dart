@@ -6,6 +6,8 @@ import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
+import '../../Controller/get_available_stock_data-controller.dart';
+
 class MyCartPage extends StatefulWidget {
   const MyCartPage({super.key});
 
@@ -17,9 +19,29 @@ class _MyCartPageState extends State<MyCartPage> {
   final TextEditingController _searchController = TextEditingController();
   SetOrderDataController setOrderDataController =
       Get.put(SetOrderDataController());
+  GetAvailableStockDataController stockController =
+      Get.put(GetAvailableStockDataController());
+  var total = 0.0;
+  List<Map<dynamic, dynamic>> myCartList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    for (var i in stockController.myList) {
+      myCartList.add(i);
+    }
+
+    print(stockController.myList);
+    print(stockController.myList.length);
+    print(myCartList.length);
+    print(myCartList);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    myCartList.removeWhere((item) => item["Qty"] == 0);
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -76,9 +98,105 @@ class _MyCartPageState extends State<MyCartPage> {
                       ),
                       Expanded(
                           child: ListView.builder(
-                        itemCount: 2,
+                        itemCount: myCartList.length,
                         itemBuilder: (context, index) {
-                          return CartList();
+                          for (var i in myCartList) {
+                            total = total + i['mrp'];
+                          }
+                          return Card(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                        "${myCartList[index]["productcode"].toString()} - ${myCartList[index]["name"].toString()}",
+                                        style: TextStyle(
+                                            color: blackTextColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400)),
+                                    Text(
+                                        "\u{20B9}${myCartList[index]["dpl"].toString()}/NOS",
+                                        style: TextStyle(
+                                            color: blackTextColor,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400)),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Price",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            Text(
+                                                "\u{20B9}${myCartList[index]["dpl"].toString()}/NOS",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Qty.",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            Text(
+                                                "${stockController.myList[index]["Qty"].toString()}",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Total Price",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            Text(
+                                                "\u{20B9}${stockController.myList[index]["mrp"].toString()}/NOS",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
                         },
                       )),
                       Row(
@@ -122,7 +240,8 @@ class _MyCartPageState extends State<MyCartPage> {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                setOrderDataController.fetchData(context);
+                                setOrderDataController.fetchData(
+                                    context, myCartList);
                                 // showSnackBar("Success", "Create Successfully",
                                 //     Colors.greenAccent);
                                 // Get.off(CheckInPage());
@@ -141,7 +260,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Center(
                                   child: Text(
-                                    "Placed order \u{20B9}4522",
+                                    "Placed order \u{20B9}$total",
                                     style:
                                         TextStyle(fontWeight: FontWeight.w500),
                                   ),

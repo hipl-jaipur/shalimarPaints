@@ -5,31 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
-import 'package:shalimar/Services/plant_service.dart';
+import 'package:shalimar/Model/get_order_data_model.dart';
 import 'package:shalimar/utils/consts.dart';
 
-import '../Model/plant_data_model.dart';
-
-class PlantDataController extends GetxController {
+class GetOrderDataController extends GetxController {
   var isLoading = false.obs;
-  PlantDataModel? plantDataModel;
-  var plantID = 0;
-  var plantList = <Data>[].obs;
+  GetOrderDataModel? getOrderDataModel;
+  OrderData? orderData;
+  var noRecord = "".obs;
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    fetchPlantData();
-    getPlantData();
-  }
-
-  fetchPlantData() async {
+  fetchOrderData({required var customerCode}) async {
     try {
       isLoading(true);
-      print('Plant Data api called');
+      print('Get Order Data api called');
 
       final body = {
-        "PlantId": 0,
+        // "CustomerCode": customerCode
+        "CustomerCode": "N221000011"
       };
 
       Map<String, String> requestHeaders = {
@@ -38,14 +30,14 @@ class PlantDataController extends GetxController {
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getPlantData),
+      final res = await http.post(Uri.parse(AppConstants.getOrderData),
           body: jsonEncode(body), headers: requestHeaders);
 
       print(res);
 
       if (kDebugMode) {
-        print("******Plant Data Api Call****");
-        print(AppConstants.getPlantData);
+        print("******Get Order Data Api Call****");
+        print(AppConstants.getOrderData);
         print(requestHeaders);
         print(body);
         print(res.statusCode);
@@ -59,14 +51,15 @@ class PlantDataController extends GetxController {
 
       if (res.statusCode == 200) {
         if (data != null) {
-          if (data['Data'] != null) {
+          if (data['OrderData'] != null || data['OrderData'] == 0) {
             var result = jsonDecode(res.body);
-            plantDataModel = PlantDataModel.fromJson(result);
-            // plantList.add(data['Data']);
-            // print("plantData : $plantList");
+            getOrderDataModel = GetOrderDataModel.fromJson(result);
+            orderData = OrderData.fromJson(getOrderDataModel!.orderData);
+            return getOrderDataModel;
           } else {
-            showSnackBar("Error!!", data['Message'], Colors.redAccent);
-            return null;
+            // showSnackBar("Error!!", data['Message'], Colors.redAccent);
+            noRecord.value = "No Record Found";
+            // return getOrderDataModel;
           }
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
@@ -84,18 +77,4 @@ class PlantDataController extends GetxController {
       isLoading(false);
     }
   }
-
-  getPlantData() async {
-    print("Get   plant****");
-    isLoading(true);
-    var fetchedPlant = await PlantService.getPlant();
-    isLoading(false);
-
-    if (fetchedPlant != null) {
-      plantList.value = fetchedPlant.data ?? [];
-      print('Plant Length : ${plantList.length}');
-    }
-  }
-
-  
 }

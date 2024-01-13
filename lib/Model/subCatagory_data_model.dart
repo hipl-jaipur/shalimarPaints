@@ -49,11 +49,11 @@ class SubCatagoryDataModel {
 
 class SubCategory {
   SubCategory({
-    num? subCategoryID,
-    num? categoryID,
+    dynamic? subCategoryID,
+    dynamic? categoryID,
     String? categoryName,
     String? subcategoryName,
-    num? isValid,
+    dynamic? isValid,
     String? createOn,
     String? updatedOn,
   }) {
@@ -75,19 +75,19 @@ class SubCategory {
     _createOn = json['CreateOn'];
     _updatedOn = json['UpdatedOn'];
   }
-  num? _subCategoryID;
-  num? _categoryID;
+  dynamic? _subCategoryID;
+  dynamic? _categoryID;
   String? _categoryName;
   String? _subcategoryName;
-  num? _isValid;
+  dynamic? _isValid;
   String? _createOn;
   String? _updatedOn;
   SubCategory copyWith({
-    num? subCategoryID,
-    num? categoryID,
+    dynamic? subCategoryID,
+    dynamic? categoryID,
     String? categoryName,
     String? subcategoryName,
-    num? isValid,
+    dynamic? isValid,
     String? createOn,
     String? updatedOn,
   }) =>
@@ -100,11 +100,11 @@ class SubCategory {
         createOn: createOn ?? _createOn,
         updatedOn: updatedOn ?? _updatedOn,
       );
-  num? get subCategoryID => _subCategoryID;
-  num? get categoryID => _categoryID;
+  dynamic? get subCategoryID => _subCategoryID;
+  dynamic? get categoryID => _categoryID;
   String? get categoryName => _categoryName;
   String? get subcategoryName => _subcategoryName;
-  num? get isValid => _isValid;
+  dynamic? get isValid => _isValid;
   String? get createOn => _createOn;
   String? get updatedOn => _updatedOn;
 

@@ -1,3 +1,5 @@
+
+
 class RegionDataModel {
   RegionDataModel({
       bool? status, 
@@ -46,16 +48,16 @@ RegionDataModel copyWith({  bool? status,
 
 class RegionList {
   RegionList({
-      num? regionId, 
+      dynamic? regionId, 
       String? regionCode, 
       String? regionName, 
-      num? regionmgrId, 
+      dynamic? regionmgrId, 
       dynamic regionmgrName, 
       String? regionmgrCode, 
-      num? zoneId, 
+      dynamic? zoneId, 
       String? zoneCode, 
       String? zoneName, 
-      num? isValid, 
+      bool? isValid, 
       String? createdOn, 
       String? updatedOn,}){
     _regionId = regionId;
@@ -86,28 +88,28 @@ class RegionList {
     _createdOn = json['CreatedOn'];
     _updatedOn = json['UpdatedOn'];
   }
-  num? _regionId;
+  dynamic? _regionId;
   String? _regionCode;
   String? _regionName;
-  num? _regionmgrId;
+  dynamic? _regionmgrId;
   dynamic _regionmgrName;
   String? _regionmgrCode;
-  num? _zoneId;
+  dynamic? _zoneId;
   String? _zoneCode;
   String? _zoneName;
-  num? _isValid;
+  bool? _isValid;
   String? _createdOn;
   String? _updatedOn;
-  RegionList copyWith({  num? regionId,
+  RegionList copyWith({  dynamic? regionId,
   String? regionCode,
   String? regionName,
-  num? regionmgrId,
+  dynamic? regionmgrId,
   dynamic regionmgrName,
   String? regionmgrCode,
-  num? zoneId,
+  dynamic? zoneId,
   String? zoneCode,
   String? zoneName,
-  num? isValid,
+  bool? isValid,
   String? createdOn,
   String? updatedOn,
 }) => RegionList(  regionId: regionId ?? _regionId,
@@ -123,16 +125,16 @@ class RegionList {
   createdOn: createdOn ?? _createdOn,
   updatedOn: updatedOn ?? _updatedOn,
 );
-  num? get regionId => _regionId;
+  dynamic? get regionId => _regionId;
   String? get regionCode => _regionCode;
   String? get regionName => _regionName;
-  num? get regionmgrId => _regionmgrId;
+  dynamic? get regionmgrId => _regionmgrId;
   dynamic get regionmgrName => _regionmgrName;
   String? get regionmgrCode => _regionmgrCode;
-  num? get zoneId => _zoneId;
+  dynamic? get zoneId => _zoneId;
   String? get zoneCode => _zoneCode;
   String? get zoneName => _zoneName;
-  num? get isValid => _isValid;
+  bool? get isValid => _isValid;
   String? get createdOn => _createdOn;
   String? get updatedOn => _updatedOn;
 

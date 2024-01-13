@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shalimar/Controller/region_data_controller.dart';
+import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Elements/zone_list.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -14,7 +14,9 @@ class MyCustomerRegionsPage extends StatefulWidget {
 
 class _MyCustomerRegionsPageState extends State<MyCustomerRegionsPage> {
   final TextEditingController _searchController = TextEditingController();
-  RegionDataController regionDataController = Get.put(RegionDataController());
+  // RegionDataController regionDataController = Get.put(RegionDataController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class _MyCustomerRegionsPageState extends State<MyCustomerRegionsPage> {
                 )),
             Positioned(
               child: Obx(
-                () => regionDataController.isLoading.value
+                () => customerHireDataController.isLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
@@ -95,14 +97,13 @@ class _MyCustomerRegionsPageState extends State<MyCustomerRegionsPage> {
                             SizedBox(
                               height: 20,
                             ),
-                            Text(
-                                "Regions - ${regionDataController.regionDataModel!.data![0].zoneName.toString()}",
+                            Text("Regions",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold)),
                             Text(
-                                "Count: ${regionDataController.regionDataModel!.data!.length}",
+                                "Count: ${customerHireDataController.regionsList.length}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -112,31 +113,23 @@ class _MyCustomerRegionsPageState extends State<MyCustomerRegionsPage> {
                             ),
                             Expanded(
                                 child: ListView.builder(
-                                  itemCount: regionDataController
-                                          .regionDataModel!.data!.length ??
-                                      0,
-                                  itemBuilder: (context, index) {
-                                    return regionDataController.regionDataModel!
-                                            .data![index].regionName!
-                                            .toLowerCase()
-                                            .contains(_searchController.text
-                                                .toLowerCase())
-                                        ? regionList(
-                                            context,
-                                            index,
-                                            regionDataController.regionDataModel!,
-                                            )
-                                        : SizedBox();
-                                  },
-                                )),
-                            // cardList("Region", "Kerla",
-                            //     "Anindya Banerjee (General Manager)", false),
-                            // cardList("Region", "Karnataka",
-                            //     "Anindya Banerjee (General Manager)", false),
-                            // cardList("Region", "Tamilnadu",
-                            //     "Anindya Banerjee (General Manager)", false),
-                            // cardList("Region", "Telangana",
-                            //     "Anindya Banerjee (General Manager)", false),
+                              itemCount: customerHireDataController
+                                      .regionsList.length ??
+                                  0,
+                              itemBuilder: (context, index) {
+                                return customerHireDataController.regionsList[index]!.levelName!
+                                        .toLowerCase()
+                                        .contains(_searchController.text
+                                            .toLowerCase())
+                                    ? regionList(
+                                        context,
+                                        index
+                                        
+                                      )
+                                    : SizedBox();
+                              },
+                            )),
+                            
                           ],
                         ),
                       ),

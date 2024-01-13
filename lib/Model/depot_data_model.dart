@@ -46,16 +46,16 @@ DepotDataModel copyWith({  bool? status,
 
 class DepotList {
   DepotList({
-      num? depotId, 
+      dynamic? depotId, 
       String? depotCode, 
       String? depotName, 
-      num? depotmgrId, 
+      dynamic? depotmgrId, 
       String? depotmgrName, 
       String? depotmgrCode, 
-      num? regionId, 
+      dynamic? regionId, 
       String? regionCode, 
       String? regionName, 
-      num? isValid, 
+      dynamic? isValid, 
       String? createdOn, 
       String? updatedOn,}){
     _depotId = depotId;
@@ -86,28 +86,28 @@ class DepotList {
     _createdOn = json['CreatedOn'];
     _updatedOn = json['UpdatedOn'];
   }
-  num? _depotId;
+  dynamic? _depotId;
   String? _depotCode;
   String? _depotName;
-  num? _depotmgrId;
+  dynamic? _depotmgrId;
   String? _depotmgrName;
   String? _depotmgrCode;
-  num? _regionId;
+  dynamic? _regionId;
   String? _regionCode;
   String? _regionName;
-  num? _isValid;
+  dynamic? _isValid;
   String? _createdOn;
   String? _updatedOn;
-  DepotList copyWith({  num? depotId,
+  DepotList copyWith({  dynamic? depotId,
   String? depotCode,
   String? depotName,
-  num? depotmgrId,
+  dynamic? depotmgrId,
   String? depotmgrName,
   String? depotmgrCode,
-  num? regionId,
+  dynamic? regionId,
   String? regionCode,
   String? regionName,
-  num? isValid,
+  dynamic? isValid,
   String? createdOn,
   String? updatedOn,
 }) => DepotList(  depotId: depotId ?? _depotId,
@@ -123,16 +123,16 @@ class DepotList {
   createdOn: createdOn ?? _createdOn,
   updatedOn: updatedOn ?? _updatedOn,
 );
-  num? get depotId => _depotId;
+  dynamic? get depotId => _depotId;
   String? get depotCode => _depotCode;
   String? get depotName => _depotName;
-  num? get depotmgrId => _depotmgrId;
+  dynamic? get depotmgrId => _depotmgrId;
   String? get depotmgrName => _depotmgrName;
   String? get depotmgrCode => _depotmgrCode;
-  num? get regionId => _regionId;
+  dynamic? get regionId => _regionId;
   String? get regionCode => _regionCode;
   String? get regionName => _regionName;
-  num? get isValid => _isValid;
+  dynamic? get isValid => _isValid;
   String? get createdOn => _createdOn;
   String? get updatedOn => _updatedOn;
 
