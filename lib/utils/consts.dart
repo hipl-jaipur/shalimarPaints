@@ -31,4 +31,6 @@ class AppConstants {
   static const String getCustomerOsData = "${BASE_URL}GetCustomerHireOSData";
   static const String getUserActivityMasterData = "${BASE_URL}GetUserActivityMasterData";
   static const String setCustomerScheduleData = "${BASE_URL}SetCustomerScheduleData";
+  static const String getStockData = "${BASE_URL}GetStockByDepotData";
+
 }

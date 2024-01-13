@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_region_screen.dart';
@@ -25,8 +26,6 @@ class _OutStandingZoneState extends State<OutStandingZone> {
     builder: (outStandingController) {
     return Scaffold(
 
-        // ashutosh
-        //karishma
         body: SafeArea(
           child: Stack(
             children: [
@@ -38,7 +37,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                   )),
               Positioned(
                   child: Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.all(14.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -49,19 +48,15 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                         SizedBox(
                           height: 20,
                         ),
-                        Text("Zone",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)),
-                        Text("",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)),
-                        // SizedBox(
-                        //   height: 15,
-                        // ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Text("Zone - ${outStandingController.filteredZoneList!.length}",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+
                         Expanded(
                           child: ListView.builder(
                             itemCount: outStandingController.filteredZoneList!.length,
@@ -94,7 +89,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                             Text(
                                               outStandingController.filteredZoneList![index].bucketTotal==null?"0":outStandingController.filteredZoneList![index].bucketTotal.truncate().toString(),
                                               style: TextStyle(
-                                                  color: blackTextColor,
+                                                  color: primaryColor,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                   fontFamily: 'Nunito Sans'),
