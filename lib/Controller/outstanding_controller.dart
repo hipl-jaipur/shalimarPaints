@@ -1,52 +1,56 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
-import 'package:shalimar/Services/outstanding_customer_service.dart';
+import 'dart:convert';
 
-import '../Model/OutStandingModel.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Elements/commom_snackbar_widget.dart';
+import '../Model/OnStandingModel.dart';
+import '../utils/consts.dart';
 
 class OutStandingController extends GetxController {
   TextEditingController zoneIdController = TextEditingController();
   var isLoading = false.obs;
   var isLoading2 = false.obs;
-  var customerOsDataList = <OutStandingList>[].obs;
-var day30 =0.0.obs;
-var day60 =0.0.obs;
-var day90 =0.0.obs;
-var day120 =0.0.obs;
-var day180 =0.0.obs;
-var over180days =0.0.obs;
-var totalPrice =0.0.obs;
-  getOutStandingData(var zoneId,resgionId,territoryId,depotId) async {
-    isLoading(true);
-    var fetchedState = await CustomerHireDataServices.getOutStaning( zoneId,resgionId,depotId,territoryId);
-    isLoading(false);
+  OnStandingModel? outStandingModelData;
+  List<outStanding> filteredZoneList = [];
+  List<outStanding> filteredAllRegionList = [];
+  List<outStanding> filteredRegionList = [];
+  List<outStanding> filteredAllDepotList = [];
+  List<outStanding> filteredDepotList = [];
+  List<outStanding> filteredAllTerritorList = [];
+  List<outStanding> filteredTerritorList = [];
+  List<outStanding> filteredAllCustomerList = [];
+  List<outStanding> filteredCustomerList = [];
 
-    if (fetchedState != null) {
-      customerOsDataList.value = fetchedState.data??[];
-      print('Data OutStanding Length : ${customerOsDataList.length}');
-      for(var array in customerOsDataList){
-        day30.value  = day30.value  + array.age030!.toDouble();
-        day60.value   =day60.value +array.age3160!.toDouble();
-        day90.value   = day90.value+ array.age6190!.toDouble();
-        day120.value   =  day120.value + array.age91120!.toDouble();
-        day180.value     =  day180.value+ array.age181Above!.toDouble();
-        over180days.value = over180days.value +array.age91120!.toDouble();
-      }
-      totalPrice.value= day30.value+ day90.value+day60.value+day120.value+day180.value + over180days.value;
-
-      print(totalPrice);
-    }
-    }
+  var day30 = 0.0.obs;
+  var day60 = 0.0.obs;
+  var day90 = 0.0.obs;
+  var day120 = 0.0.obs;
+  var day180 = 0.0.obs;
+  var over180days = 0.0.obs;
+  var totalPrice = 0.0.obs;
+  // List<Map<String, dynamic>> filteredZoneList=[];
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    getOutStandingData();
   }
-/*
-  fetchZoneData({required int zoneId}) async {
+
+  getOutStandingData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var empId = prefs.getInt("EmployeeId");
+    print('OutStanding Data api called');
+
     try {
       isLoading(true);
-      print('Zone Data api called');
+      update();
 
-      final body = {
-        "ZoneId": zoneId,
-      };
+      print('Get OutStanding Data API called');
+
+      final body = {"EmployeeId": empId};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -54,14 +58,12 @@ var totalPrice =0.0.obs;
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getustomerOsData),
+      final res = await http.post(Uri.parse(AppConstants.getCustomerOsData),
           body: jsonEncode(body), headers: requestHeaders);
-
       print(res);
-
       if (kDebugMode) {
-        print("******Zone Data Api Call****");
-        print(AppConstants.getZoneData);
+        print("******Get OutStanding  API called****");
+        print(AppConstants.getCustomerOsData);
         print(requestHeaders);
         print(body);
         print(res.statusCode);
@@ -75,13 +77,32 @@ var totalPrice =0.0.obs;
 
       if (res.statusCode == 200) {
         if (data != null) {
-          if (data['Data'] != null) {
-            var result = jsonDecode(res.body);
-            zoneDataModel = ZoneDataModel.fromJson(result);
-          } else {
-            showSnackBar("Error!!", data['Message'], Colors.redAccent);
-            return null;
-          }
+          var result = jsonDecode(res.body);
+          outStandingModelData = OnStandingModel.fromJson(result);
+          filteredZoneList = outStandingModelData!.data!
+              .where((item) => item.entitytype == "ZONE")
+              .toList();
+          print(filteredZoneList!.length);
+
+          filteredAllRegionList = outStandingModelData!.data!
+              .where((item) => item.entitytype == "Region")
+              .toList();
+          print(filteredAllRegionList!.length);
+
+          filteredAllDepotList = outStandingModelData!.data!
+              .where((item) => item.entitytype == "Depot")
+              .toList();
+          print(filteredAllDepotList!.length);
+
+          filteredAllTerritorList = outStandingModelData!.data!
+              .where((item) => item.entitytype == "Territory")
+              .toList();
+          print(filteredAllTerritorList!.length);
+
+          filteredAllCustomerList = outStandingModelData!.data!
+              .where((item) => item.entitytype == "Customer")
+              .toList();
+          print(filteredAllCustomerList!.length);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -96,9 +117,8 @@ var totalPrice =0.0.obs;
       }
     } finally {
       isLoading(false);
+
+      update();
     }
   }
-*/
-
-
-
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/get_order_data_controller.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
 import 'package:shalimar/Model/get_order_data_model.dart';
@@ -27,6 +28,13 @@ class _OrderListState extends State<OrderList> {
 
   @override
   Widget build(BuildContext context) {
+    // var inputFormat = DateFormat('MM/dd/yyyy HH:mm:ss a');
+    var inputDate = DateFormat('MM/dd/yyyy HH:mm:ss a')
+        .parse(widget.orderDataList![widget.index].orderdate as String);
+    var outputFormat = DateFormat('yMMMd');
+    var outputDate = outputFormat.format(inputDate);
+    print(outputDate);
+
     return Card(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -34,38 +42,30 @@ class _OrderListState extends State<OrderList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "Status: ${widget.orderDataList![widget.index].orderStatus.toString()}",
-                maxLines: 2,
-                style: TextStyle(
-                    color: widget.orderDataList![widget.index].orderStatus ==
-                            "pending"
-                        ? Colors.green
-                        : widget.orderDataList![widget.index].orderStatus ==
-                                "close"
-                            ? primaryColor
-                            : Colors.green,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.start,
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                        "${widget.orderDataList![widget.index].ordernumber.toString()}",
-                        maxLines: 2,
-                        style: TextStyle(
-                            color: blackTextColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold)),
-                    Text(
-                        "${widget.orderDataList![widget.index].orderdate}",
+                    Row(
+                      children: [
+                        Text("Order#: ",
+                            maxLines: 2,
+                            style: TextStyle(
+                                color: blackTextColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold)),
+                        Text(
+                            "${widget.orderDataList![widget.index].ordernumber.toString()}",
+                            maxLines: 2,
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    Text(outputDate,
+                        // "${widget.orderDataList![widget.index].orderdate}",
                         // DateFormat('M/dd/yyyy').format(
                         //     DateTime.parse(widget.orderDataList![widget.index]
                         //         .orderdate as String)),
@@ -134,7 +134,7 @@ class _OrderListState extends State<OrderList> {
                   IconButton(
                       onPressed: () {
                         setState(() {
-                          isVisible = true;
+                          isVisible = !isVisible;
                         });
                       },
                       icon: Icon(Icons.arrow_drop_down)),
@@ -172,7 +172,38 @@ class _OrderListState extends State<OrderList> {
                         );
                       },
                     ),
-                  ))
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal:8,vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade100,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.green,)),
+                    child: Text(
+                      "Pending",
+                      //  "${widget.orderDataList![widget.index].orderStatus.toString()}",
+                      maxLines: 2,
+                      style: TextStyle(
+                          color:
+                              widget.orderDataList![widget.index].orderStatus ==
+                                      "pending"
+                                  ? Colors.green
+                                  : widget.orderDataList![widget.index]
+                                              .orderStatus ==
+                                          "close"
+                                      ? primaryColor
+                                      : Colors.green,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
             ]),
       ),
     );

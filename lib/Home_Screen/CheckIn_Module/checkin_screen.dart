@@ -291,6 +291,10 @@ class _CheckInPageState extends State<CheckInPage> {
                                   stockController.totalAmount = 0.0;
                                   stockController.isVisible = false;
                                   stockController.myList.clear();
+                                  stockController.d = false;
+                                  stockController.i = false;
+                                  stockController.sectionlist.clear();
+
                                   stockController.fetchData(
                                       customerCode: controller.levelCode.value);
                                   setOrderDataController.customerCode.value =

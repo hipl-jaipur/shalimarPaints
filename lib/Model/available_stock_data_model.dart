@@ -53,21 +53,21 @@ class Data {
     String? plantcode,
     String? productdesc,
     String? division,
-    num? marketsectorid,
-    num? productgroupid,
-    num? productsubgroupid,
-    num? productcategoryid,
-    num? availbleQty,
-    num? packsize,
-    num? uomid,
-    num? mrp,
-    num? dpl,
+    dynamic? marketsectorid,
+    dynamic? productgroupid,
+    dynamic? productsubgroupid,
+    dynamic? productcategoryid,
+    dynamic? availbleQty,
+    dynamic? packsize,
+    dynamic? uomid,
+    dynamic? mrp,
+    dynamic? dpl,
     String? uomname,
     String? marketsectorname,
     String? productgroupname,
     String? productsubgroupname,
     String? productcategoryname,
-    num? openorderQty,
+    dynamic? openorderQty,
     String? lastUpdatedOn,
   }) {
     _productcode = productcode;
@@ -118,42 +118,42 @@ class Data {
   String? _plantcode;
   String? _productdesc;
   String? _division;
-  num? _marketsectorid;
-  num? _productgroupid;
-  num? _productsubgroupid;
-  num? _productcategoryid;
-  num? _availbleQty;
-  num? _packsize;
-  num? _uomid;
-  num? _mrp;
-  num? _dpl;
+  dynamic? _marketsectorid;
+  dynamic? _productgroupid;
+  dynamic? _productsubgroupid;
+  dynamic? _productcategoryid;
+  dynamic? _availbleQty;
+  dynamic? _packsize;
+  dynamic? _uomid;
+  dynamic? _mrp;
+  dynamic? _dpl;
   String? _uomname;
   String? _marketsectorname;
   String? _productgroupname;
   String? _productsubgroupname;
   String? _productcategoryname;
-  num? _openorderQty;
+  dynamic? _openorderQty;
   String? _lastUpdatedOn;
   Data copyWith({
     String? productcode,
     String? plantcode,
     String? productdesc,
     String? division,
-    num? marketsectorid,
-    num? productgroupid,
-    num? productsubgroupid,
-    num? productcategoryid,
-    num? availbleQty,
-    num? packsize,
-    num? uomid,
-    num? mrp,
-    num? dpl,
+    dynamic? marketsectorid,
+    dynamic? productgroupid,
+    dynamic? productsubgroupid,
+    dynamic? productcategoryid,
+    dynamic? availbleQty,
+    dynamic? packsize,
+    dynamic? uomid,
+    dynamic? mrp,
+    dynamic? dpl,
     String? uomname,
     String? marketsectorname,
     String? productgroupname,
     String? productsubgroupname,
     String? productcategoryname,
-    num? openorderQty,
+    dynamic? openorderQty,
     String? lastUpdatedOn,
   }) =>
       Data(
@@ -182,21 +182,21 @@ class Data {
   String? get plantcode => _plantcode;
   String? get productdesc => _productdesc;
   String? get division => _division;
-  num? get marketsectorid => _marketsectorid;
-  num? get productgroupid => _productgroupid;
-  num? get productsubgroupid => _productsubgroupid;
-  num? get productcategoryid => _productcategoryid;
-  num? get availbleQty => _availbleQty;
-  num? get packsize => _packsize;
-  num? get uomid => _uomid;
-  num? get mrp => _mrp;
-  num? get dpl => _dpl;
+  dynamic? get marketsectorid => _marketsectorid;
+  dynamic? get productgroupid => _productgroupid;
+  dynamic? get productsubgroupid => _productsubgroupid;
+  dynamic? get productcategoryid => _productcategoryid;
+  dynamic? get availbleQty => _availbleQty;
+  dynamic? get packsize => _packsize;
+  dynamic? get uomid => _uomid;
+  dynamic? get mrp => _mrp;
+  dynamic? get dpl => _dpl;
   String? get uomname => _uomname;
   String? get marketsectorname => _marketsectorname;
   String? get productgroupname => _productgroupname;
   String? get productsubgroupname => _productsubgroupname;
   String? get productcategoryname => _productcategoryname;
-  num? get openorderQty => _openorderQty;
+  dynamic? get openorderQty => _openorderQty;
   String? get lastUpdatedOn => _lastUpdatedOn;
 
   Map<String, dynamic> toJson() {

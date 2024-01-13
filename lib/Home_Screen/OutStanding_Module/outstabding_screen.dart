@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/depot_data_controller.dart';
@@ -42,10 +43,10 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
   String subCatDropdownvalue = "Select Zone";
   var regionDropdownvalue = "Select Region";
   var territoryDropdownvalue = "Select Territory";
-  var territoryId = "";
-  var zoneId = "";
-  var depotId = "";
-  var regionId = "";
+  var territoryId = "0";
+  var zoneId = "0";
+  var depotId = "0";
+  var regionId = "0";
   var depotDropdownvalue = "Select Depot";
 
   // String subCatDropdownvalue = 'Sub Category';
@@ -365,7 +366,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                             territoryDropdownvalue =
                                                 "Select Territory";
                                             setState(() {});
-                                            /* controller.stateErrorShow.value=false;
+ controller.stateErrorShow.value=false;
                                                   controller.itemValueState.value =
                               val!.name.toString();
                                                   controller.stateController.text =
@@ -374,7 +375,8 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                                   cuntry.getCityData(val.id);
                                                   controller.itemValueCity.value = "";
                                                   controller.selectCity.value = true;
-                                                  controller.update();*/
+                                                  controller.update();
+
                                           },
                                           underline: SizedBox(),
                                           isExpanded: true,
@@ -560,7 +562,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                       child: CustomButton(
                                           btnName: "Get All Report",
                                           onPressed: () {
-                                            /*  outStandingController.day30.value=0.0;
+  outStandingController.day30.value=0.0;
                                    outStandingController.day60.value=0.0;
                                    outStandingController. day90.value=0.0;
                                    outStandingController. day120.value=0.0;
@@ -572,7 +574,8 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                      regionId,
                                      territoryId,
                                      depotId,
-                                   );*/
+                                   );
+
                                           }),
                                     ),
                             ],
@@ -623,7 +626,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                               days: '0-30 Days',
                                               price: outStandingController
                                                   .day30.value
-                                                  .toStringAsFixed(2),
+                                                  .toStringAsFixed(0),
                                             ));
                                           },
                                           child: Container(
@@ -647,7 +650,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                                 Text(
                                                   outStandingController
                                                       .day30.value
-                                                      .toStringAsFixed(2),
+                                                      .toStringAsFixed(0),
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 16,
@@ -671,7 +674,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                               days: '30-60 Days',
                                               price: outStandingController
                                                   .day60.value
-                                                  .toStringAsFixed(2),
+                                                  .toStringAsFixed(0),
                                             ));
                                           },
                                           child: Container(
@@ -695,7 +698,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                                 Text(
                                                   outStandingController
                                                       .day60.value
-                                                      .toStringAsFixed(2),
+                                                      .toStringAsFixed(0),
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 16,
@@ -719,7 +722,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                               days: '60-90 Days',
                                               price: outStandingController
                                                   .day180.value
-                                                  .toStringAsFixed(2),
+                                                  .toStringAsFixed(0),
                                             ));
                                           },
                                           child: Container(
@@ -743,7 +746,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                                 Text(
                                                   outStandingController
                                                       .day180.value
-                                                      .toStringAsFixed(2),
+                                                      .toStringAsFixed(0),
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 16,
@@ -767,7 +770,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                               days: '90-120 Days',
                                               price: outStandingController
                                                   .day180.value
-                                                  .toStringAsFixed(2),
+                                                  .toStringAsFixed(0),
                                             ));
                                           },
                                           child: Container(
@@ -791,7 +794,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                                 Text(
                                                   outStandingController
                                                       .day180.value
-                                                      .toStringAsFixed(2),
+                                                      .toStringAsFixed(0),
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 16,
@@ -815,7 +818,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                               days: '120-180 Days',
                                               price: outStandingController
                                                   .day180.value
-                                                  .toStringAsFixed(2),
+                                                  .toStringAsFixed(0),
                                             ));
                                           },
                                           child: Container(
@@ -839,7 +842,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                                 Text(
                                                   outStandingController
                                                       .day180.value
-                                                      .toStringAsFixed(2),
+                                                      .toStringAsFixed(0),
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 16,
@@ -863,7 +866,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                               days: 'Over 180 Days',
                                               price: outStandingController
                                                   .over180days.value
-                                                  .toStringAsFixed(2),
+                                                  .toStringAsFixed(0),
                                             ));
                                           },
                                           child: Container(
@@ -887,7 +890,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                                 Text(
                                                   outStandingController
                                                       .over180days.value
-                                                      .toStringAsFixed(2),
+                                                      .toStringAsFixed(0),
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 16,
@@ -918,7 +921,7 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
                                               Text(
                                                 outStandingController
                                                     .totalPrice.value
-                                                    .toStringAsFixed(2),
+                                                    .toStringAsFixed(0),
                                                 style: TextStyle(
                                                     color: primaryLight,
                                                     fontSize: 18,
@@ -949,3 +952,4 @@ class _OutStandingScreenState extends State<OutStandingScreen> {
     ));
   }
 }
+*/

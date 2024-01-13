@@ -7,15 +7,7 @@ import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
 class OutStandingCustomer extends StatefulWidget {
-  final String territoryName;
-  final String days;
-  final String price;
 
-  const OutStandingCustomer(
-      {super.key,
-      required this.territoryName,
-      required this.days,
-      required this.price});
 
   @override
   State<OutStandingCustomer> createState() => _OutStandingCustomerState();
@@ -27,29 +19,19 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
       Get.put(OutStandingController());
   List<OutStandingList> uniquenum = [];
 
-  // Remove duplicates based on the "id" key
-
   @override
   void initState() {
-    super.initState();
-
-    uniquenum = removeDuplicatesByKey();
-
-    print(uniquenum.length);
-  }
-
-  removeDuplicatesByKey() {
-    Set<dynamic> seen = Set<dynamic>();
-    List<OutStandingList> uniqueList = [];
-
-    for (var map in outStandingController.customerOsDataList) {
-      if (seen.add(map.areaName)) {
-        uniqueList.add(map);
-      }
+    // TODO: implement initState
+    if( outStandingController.filteredCustomerList.isEmpty &&  outStandingController.filteredAllCustomerList.isNotEmpty){
+      outStandingController.filteredCustomerList.addAll(outStandingController.filteredAllCustomerList);
     }
 
-    return uniqueList;
+    print('List: ${ outStandingController.filteredCustomerList}');
+
+    super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,82 +59,288 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                   height: 20,
                 ),
                 Text(
-                    "Customer - ${outStandingController.customerOsDataList.length}",
+                    "Customer - ${outStandingController.filteredCustomerList.length}",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold)),
-                Text(widget.days,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
+
                 SizedBox(
                   height: 15,
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: outStandingController.customerOsDataList.length,
+                    itemCount: outStandingController.filteredCustomerList!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: Row(
-                            children: [
-                              CircleAvatar(child: Icon(Icons.person_rounded),),
-                              SizedBox(width: 10,),
-
-                              Expanded(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // outStandingController.filteredCustomerList = outStandingController
+                                //     .filteredAllCustomerList!.where((item) => item.parentLevelID == outStandingController.filteredTerritorList![index].levelID ).toList();
+                                // print(outStandingController.filteredDepotList!.length);
+                                // Get.to(OutStandingRegion());
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(12),
+                                color: primaryLight,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+
                                       children: [
+                                        CircleAvatar(child: Icon(Icons.person),),
+                                        SizedBox(width: 5,),
                                         Flexible(
-                                          child: Text(
-                                              outStandingController
-                                                  .customerOsDataList[index]
-                                                  .customername
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.bold)),
+                                          child: Container(
+                                            child: FittedBox(
+                                              fit: BoxFit.fill,
+                                              child: Text(
+                                                "${outStandingController.filteredCustomerList![index].levelName.toString()}(${ outStandingController.filteredCustomerList![index].levelID.toString()})",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: 'NUnit Sans'),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                        Text(
-                                            widget.days == "0-30 Days"
-                                                ? "\u{20B9}${outStandingController.customerOsDataList[index].age030.toString()}"
-                                                : widget.days == "30-60 Days"
-                                                    ? "\u{20B9}${outStandingController.customerOsDataList[index].age3160.toString()}"
-                                                    : widget.days == "60-90 Days"
-                                                        ? "\u{20B9}${outStandingController.customerOsDataList[index].age6190.toString()}"
-                                                        : widget.days == "90-120 Days"
-                                                            ? "\u{20B9}${outStandingController.customerOsDataList[index].age91120.toString()}:"
-                                                            : widget.days ==
-                                                                    "120-180 Days"
-                                                                ? "\u{20B9}${outStandingController.customerOsDataList[index].age151180.toString()}"
-                                                                : "\u{20B9}${outStandingController.customerOsDataList[index].age181Above.toString()}",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold)),
+
+
                                       ],
                                     ),
-                                    Text(
-                                        outStandingController
-                                            .customerOsDataList[index].customercode
-                                            .toString(),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 43),
+                                      child: Text(
+                                        "BucketTotal- \u{20B9}${outStandingController.filteredCustomerList![index].bucketTotal.toString() ?? 0.0.toString()}",
                                         style: TextStyle(
-                                            color: primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold)),
+                                            color: blackTextColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: 'Nunito Sans'),
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              color: Color(0xffFFD7D7),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "0-30 Days",
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  ),
+                                  Text(outStandingController.filteredCustomerList![index].age030.toString() ?? 0.0.toString(),
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              color: Color(0xffFFD7D7),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "31-60 Days",
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  ),
+                                  Text(outStandingController.filteredCustomerList![index].age3160.toString() ?? 0.0.toString(),
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              color: Color(0xffFFD7D7),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "61-90 Days",
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  ),
+                                  Text(outStandingController.filteredCustomerList![index].age6190.toString() ?? 0.0.toString(),
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              color: Color(0xffFFD7D7),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "91-120 Days",
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  ),
+                                  Text(outStandingController.filteredCustomerList![index].age91120.toString() ?? 0.0.toString(),
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              color: Color(0xffFFD7D7),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "121-150 Days",
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  ),
+                                  Text(outStandingController.filteredCustomerList![index].age121150.toString() ?? 0.0.toString(),
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              color: Color(0xffFFD7D7),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "151-180 Days",
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  ),
+                                  Text(outStandingController.filteredCustomerList![index].age151180.toString() ?? 0.0.toString(),
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              color: Color(0xffFFD7D7),
+                              child: Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Text(
+                                    "Over 181 Days",
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  ),
+                                  Text(outStandingController.filteredCustomerList![index].age181Above.toString(),
+                                    style: TextStyle(
+                                        color: blackTextColor,
+                                        fontSize: 16,
+                                        fontWeight:
+                                        FontWeight.w500,
+                                        fontFamily:
+                                        'Nunito Sans'),
+                                  )
+                                ],
+                              ),
+                            ),
+
+                            // Divider(),
+
+                          ],
                         ),
                       );
                     },

@@ -5,6 +5,9 @@ import 'package:shalimar/Elements/common_order-widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
+import 'package:top_modal_sheet/top_modal_sheet.dart';
+
+import '../../Elements/filter_sheet_widget.dart';
 
 class TakeOrderPage extends StatefulWidget {
   const TakeOrderPage({super.key});
@@ -91,7 +94,10 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                   size: 40,
                                 )),
                             suffixIcon: IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+
+                                  showTopModalSheet<String?>(context, DumyModal());
+                                },
                                 icon: Icon(
                                   Icons.sort_rounded,
                                   color: primaryColor,
@@ -105,11 +111,11 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                         SizedBox(
                           height: 20,
                         ),
-                        stockController.availableStockDataModel != null
+                        stockController
+                            .filterAvailableStockDataModel!.data !.isNotEmpty
                             ? Expanded(
                             child: ListView.builder(
-                              itemCount: stockController
-                                  .availableStockDataModel!.data!.length,
+                              itemCount: stockController.filterAvailableStockDataModel!.data!.length,
                               itemBuilder: (context, index) {
                                 return stockController
                                     .availableStockDataModel!
@@ -122,8 +128,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                     index: index,
                                     context: context,
                                     availableStockDataModel:
-                                    stockController
-                                        .availableStockDataModel!)
+                                    stockController.filterAvailableStockDataModel!)
                                     : SizedBox();
                               },
                             ))
@@ -149,7 +154,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                             child: Container(
                               height: 50,
                               child: Center(
-                                  child: Text("(${stockController.totalQty}) CONTINUE \u{20B9}1000")),
+                                  child: Text("(${stockController.totalQty}) CONTINUE ")),
                             ),
                           ),
                         )

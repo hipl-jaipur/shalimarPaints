@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/customer_hire_data_controller.dart';
-import 'package:shalimar/Controller/depot_data_controller.dart';
-import 'package:shalimar/Controller/region_data_controller.dart';
 import 'package:shalimar/Controller/terriotory_data_controller.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_depot_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_detail_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_regions_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_terriotory_screen.dart';
+import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 
 Widget zoneList(
@@ -15,14 +14,19 @@ Widget zoneList(
   int index,
   // ZoneDataModel zoneDataModel,
 ) {
-  RegionDataController regionDataController = Get.put(RegionDataController());
+  // RegionDataController regionDataController = Get.put(RegionDataController());
   CustomerHireDataController customerHireDataController =
       Get.put(CustomerHireDataController());
   return GestureDetector(
     onTap: () {
-      regionDataController.fetchData(
-          zoneId: customerHireDataController.zoneList[index].levelID!.toInt());
-      Get.to(MyCustomerRegionsPage());
+      // regionDataController.fetchData(
+      //     zoneId: customerHireDataController.zoneList[index].levelID!.toInt());
+      // Get.to(MyCustomerRegionsPage());
+
+      Get.to(MyCustomerRegionsPage(), arguments: [
+        customerHireDataController.zoneList[index].levelName.toString(),
+        customerHireDataController.zoneList[index].levelID,
+      ]);
     },
     child: Card(
       child: Container(
@@ -67,17 +71,20 @@ Widget zoneList(
 Widget regionList(
   BuildContext context,
   int index,
+  List<Data> regionListNew,
 ) {
-  DepotDataController depotDataController = Get.put(DepotDataController());
-  CustomerHireDataController customerHireDataController =
-      Get.put(CustomerHireDataController());
+  // DepotDataController depotDataController = Get.put(DepotDataController());
+  // CustomerHireDataController customerHireDataController =
+  //     Get.put(CustomerHireDataController());
 
   return GestureDetector(
     onTap: () {
-      depotDataController.fetchData(
-          regionId:
-              customerHireDataController.regionsList![index].levelID!.toInt());
-      Get.to(MyCustomerDepotPage());
+      // depotDataController.fetchData(
+      //     regionId: regionListNew[index].levelID!.toInt());
+      Get.to(MyCustomerDepotPage(), arguments: [
+        regionListNew[index].levelName.toString(),
+        regionListNew[index].levelID,
+      ]);
     },
     child: Card(
       child: Container(
@@ -86,9 +93,7 @@ Widget regionList(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-                customerHireDataController.regionsList[index].levelName
-                    .toString(),
+            Text(regionListNew[index].levelName.toString(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -108,23 +113,25 @@ Widget regionList(
   );
 }
 
-Widget depotList(
+Widget depotListData(
   BuildContext context,
   int index,
+  List<Data> depotList,
 ) {
-  TerriotoryDataController terriotoryDataController =
-      Get.put(TerriotoryDataController());
-  CustomerHireDataController customerHireDataController =
-      Get.put(CustomerHireDataController());
+  // TerriotoryDataController terriotoryDataController =
+  //     Get.put(TerriotoryDataController());
+  // CustomerHireDataController customerHireDataController =
+  //     Get.put(CustomerHireDataController());
 
   return GestureDetector(
     onTap: () {
-      terriotoryDataController.fetchData(
-          depotId:
-              customerHireDataController.depotList[index].levelID!.toInt());
-      Get.to(MyCustomerTerriotoryPage(),
-          arguments:
-              customerHireDataController.depotList[index].levelName.toString());
+      // terriotoryDataController.fetchData(
+      //     depotId:
+      //         customerHireDataController.depotList[index].levelID!.toInt());
+      Get.to(MyCustomerTerriotoryPage(), arguments: [
+        depotList[index].levelName.toString(),
+        depotList[index].levelID,
+      ]);
     },
     child: Card(
       child: Container(
@@ -133,9 +140,7 @@ Widget depotList(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-                customerHireDataController.depotList[index].levelName
-                    .toString(),
+            Text(depotList[index].levelName.toString(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -155,7 +160,7 @@ Widget depotList(
   );
 }
 
-Widget terriotoryList(
+Widget terriotoryListData(
   BuildContext context,
   int index,
 ) {
@@ -168,7 +173,7 @@ Widget terriotoryList(
     onTap: () {
       Get.to(MyCustomerDetailsPage(), arguments: [
         customerHireDataController.terriotoryList[index].levelName.toString(),
-        customerHireDataController.terriotoryList[index].levelID, 
+        customerHireDataController.terriotoryList[index].levelID,
       ]);
 
       // Get.to(MyCustomerDetailsPage(), arguments: terriotoryDataModel.data![index].territoryName.toString());
@@ -183,7 +188,9 @@ Widget terriotoryList(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(customerHireDataController!.terriotoryList[index].levelName.toString(),
+            Text(
+                customerHireDataController!.terriotoryList[index].levelName
+                    .toString(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,

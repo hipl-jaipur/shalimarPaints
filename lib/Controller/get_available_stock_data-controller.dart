@@ -8,32 +8,28 @@ import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/consts.dart';
 
+import '../Model/MarketSectorModel.dart';
+
 class GetAvailableStockDataController extends GetxController {
   var isLoading = false;
   var isVisible = false;
+  var isVisibleMarketSector = false;
+  var d = false;
+  var i = false;
   int totalQty = 0;
   var totalAmount = 0.0;
   AvailableStockDataModel? availableStockDataModel;
+  AvailableStockDataModel? filterAvailableStockDataModel;
+  MarketSectorModel? marketSectorModelData;
+  List<dynamic> sectionlist = [];
   List<Map<dynamic, dynamic>> myList = [];
   int counter = 0;
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    matketSectorData();
+  }
 
-
-  // double totalPriceSum(int todoListId) {
-  //   return ItemsPrice.where((item) => item.todoListId == todoListId)
-  //       .fold(0.0, (sum, item) => sum + item['price']);
-  // }
-
-  // List<Map<String, Object>> get totalItemsQty {
-  //   return List.generate(1, (index) {
-  //     var totalQtySum = 0.0;
-  //     for (var i = 0; i < toDo.length; i++) {
-  //       totalQtySum = toDo[index].amount + totalQtySum;
-  //     }
-  //     return {
-  //       'qty': totalSum,
-  //     };
-  //   }).toList();
-  // }
 
   fetchData({required customerCode}) async {
     try {
@@ -73,6 +69,7 @@ class GetAvailableStockDataController extends GetxController {
         if (data != null) {
           var result = jsonDecode(res.body);
           availableStockDataModel = AvailableStockDataModel.fromJson(result);
+          filterAvailableStockDataModel = AvailableStockDataModel.fromJson(result);
           for(var map in availableStockDataModel!.data! ){
             myList.add(
 
@@ -91,6 +88,62 @@ class GetAvailableStockDataController extends GetxController {
 
           print(myList.length);
           print(myList);
+        } else {
+          showSnackBar("Error!!", data['Message'], Colors.redAccent);
+          return null;
+        }
+      } else {
+        showSnackBar("Error!!", data['Message'], Colors.redAccent);
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error while getting data is $e');
+      }
+    } finally {
+      isLoading=false;
+      update();
+    }
+  }
+  matketSectorData() async {
+    try {
+      isLoading=true;
+      update();
+
+      print('Get Market Sector Data API called');
+
+      final body = {"MarketSectorId": "0"};
+
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+      };
+
+      print("**********");
+
+      final res = await http.post(Uri.parse(AppConstants.marketSectorData),
+          body: jsonEncode(body), headers: requestHeaders);
+      print(res);
+      if (kDebugMode) {
+        print("******Get Market Sector API called****");
+        print(AppConstants.marketSectorData);
+        print(requestHeaders);
+        print(body);
+        print(res.statusCode);
+      }
+
+      var data = json.decode(res.body);
+
+      if (kDebugMode) {
+        print(data);
+      }
+
+      if (res.statusCode == 200) {
+        if (data != null) {
+          var result = jsonDecode(res.body);
+          marketSectorModelData = MarketSectorModel.fromJson(result);
+
+
+
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;

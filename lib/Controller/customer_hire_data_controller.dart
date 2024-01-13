@@ -50,7 +50,6 @@ class CustomerHireDataController extends GetxController {
 
       final body = {
         "EmployeeId": employeeId,
-        // "EmployeeId": 358,
       };
 
       Map<String, String> requestHeaders = {
@@ -85,11 +84,6 @@ class CustomerHireDataController extends GetxController {
 
             customerDataModel = CustomerDataModel.fromJson(result);
 
-            // for (var i in customerDataModel!.data!) {
-            //   dataLevel.add(i.toJson());
-            // }
-            // print("dataLevel: $dataLevel");
-
             zoneList = customerDataModel!.data!
                 .where((element) => element.parentLevelID == 0)
                 .toList();
@@ -99,21 +93,25 @@ class CustomerHireDataController extends GetxController {
             regionsList = customerDataModel!.data!
                 .where((element) => element.entitytype == 'Region')
                 .toList();
+
             print("List1: ${regionsList.length}");
 
             depotList = customerDataModel!.data!
                 .where((element) => element.entitytype == 'Depot')
                 .toList();
+
             print("List2: ${depotList.length}");
 
             terriotoryList = customerDataModel!.data!
                 .where((element) => element.entitytype == 'Territory')
                 .toList();
+
             print("List3: ${terriotoryList.length}");
 
             customerList = customerDataModel!.data!
                 .where((element) => element.entitytype == 'Customer')
                 .toList();
+
             print("List4: ${customerList.length}");
 
             if (zoneList.length > 0) {
@@ -127,48 +125,7 @@ class CustomerHireDataController extends GetxController {
             } else if (customerList.length > 0) {
               Get.to(MyCustomerDetailsPage());
             }
-
-            //  List<SubCategory>
-            //           _userOptions = [];
-            //       for (var str
-            //           in subCategoryList!) {
-            //         if (str.subcategoryName!
-            //             .toLowerCase()
-            //             .contains(textEditingValue
-            //                 .text
-            //                 .toLowerCase())) {
-            //           _userOptions.add(SubCategory(
-            //               subCategoryID:
-            //                   str.subCategoryID,
-            //               subcategoryName: str
-            //                   .subcategoryName));
-            //         }
-            //       }
-
-            // dataLevel.forEach((record) => {
-            //       if (record['entitative']  == 'ZONE')
-            //         {
-            //           print("ZoneList0: $zoneList"),
-            //           zoneList.add(dataLevel[i].containsValue('ZONE')),
-            //           // dataLevel[record['entitytype']] = [],
-            //           // dataLevel[record['entitytype']].push(record)
-            //         }
-            //       else
-            //         {dataLevel[record['entitytype']].push(record)}
-            //     });
-
-            // print(id);
-            // print(customerDataModel!.data![0].entitytype);
-            // filteredList = customerDataModel!.data!
-            //     .where((element) => element.parentLevelID == id)
-            //     .toList();
-
-            // print(filteredList.length);
-
-            // print(">>>>>>>>>>>>>>>>>");
-            // print(similarDataList.length);
-
-            // return data;
+            
           } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);
             return null;
