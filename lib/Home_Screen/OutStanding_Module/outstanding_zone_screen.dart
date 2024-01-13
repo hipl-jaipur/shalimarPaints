@@ -8,10 +8,7 @@ import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
 class OutStandingZone extends StatefulWidget {
-/*  final String zoneName;
-  final String days;
-  final String price;
-  const OutStandingZone({super.key, required this.zoneName, required this.days, required this.price});*/
+
 
   @override
   State<OutStandingZone> createState() => _OutStandingZoneState();
@@ -28,6 +25,8 @@ class _OutStandingZoneState extends State<OutStandingZone> {
         init: OutStandingController(),
     builder: (outStandingController) {
     return Scaffold(
+
+        // ashutosh
         body: SafeArea(
           child: Stack(
             children: [
