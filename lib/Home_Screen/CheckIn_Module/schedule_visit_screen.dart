@@ -479,8 +479,10 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                     CustomButton(
                                       btnName: "Submit",
                                       onPressed: () {
-                                        if (_formKey.currentState!
-                                            .validate()) {}
+                                        if (_formKey.currentState!.validate()) {
+                                          scheduleController.fetchData(
+                                              context: context);
+                                        }
                                       },
                                     )
                                   ],

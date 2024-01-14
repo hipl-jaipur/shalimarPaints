@@ -14,18 +14,18 @@ class _DumyModalState extends State<DumyModal> {
   GetAvailableStockDataController stockDataController =
       Get.put(GetAvailableStockDataController());
 
-  Future<int> getValue() async{
-    if(stockDataController.i || stockDataController.d) {
+  Future<int> getValue() async {
+    if (stockDataController.i || stockDataController.d) {
       stockDataController.d
-          ? stockDataController
-          .filterAvailableStockDataModel!.data!.removeWhere((item) =>
-      item.division.toString().trim() == "I") : stockDataController
-          .filterAvailableStockDataModel!.data!.removeWhere((item) =>
-      item.division.toString().trim() == "D");
+          ? stockDataController.filterAvailableStockDataModel!.data!
+              .removeWhere((item) => item.division.toString().trim() == "I")
+          : stockDataController.filterAvailableStockDataModel!.data!
+              .removeWhere((item) => item.division.toString().trim() == "D");
     }
 
-  return  Future.value(5);
-}
+    return Future.value(5);
+  }
+
   @override
   Widget build(BuildContext context) {
     Brightness brightness = MediaQuery.of(context).platformBrightness;
@@ -56,11 +56,15 @@ class _DumyModalState extends State<DumyModal> {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            IconButton(onPressed:(){
-
-                              Get.back();
-                            }, icon:Icon(Icons.clear,size: 30,color: Colors.black,))
-
+                            IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(
+                                  Icons.clear,
+                                  size: 30,
+                                  color: Colors.black,
+                                ))
                           ],
                         ),
                       ),
@@ -187,8 +191,7 @@ class _DumyModalState extends State<DumyModal> {
                       ),
                       Visibility(
                         visible: stockDataController.isVisibleMarketSector,
-                        child: 
-                        Container(
+                        child: Container(
                           height: 300,
                           child: ListView.builder(
                             itemCount: stockDataController
@@ -200,18 +203,25 @@ class _DumyModalState extends State<DumyModal> {
                                       value: stockDataController.sectionlist
                                           .contains(stockDataController
                                               .marketSectorModelData!
-                                              .data![index].marketsectorid),
+                                              .data![index]
+                                              .marketsectorid),
                                       onChanged: (v) {
-                                        if (stockDataController.sectionlist.contains(stockDataController
-                                                .marketSectorModelData!.data![index].marketsectorid)) {
+                                        if (stockDataController.sectionlist
+                                            .contains(stockDataController
+                                                .marketSectorModelData!
+                                                .data![index]
+                                                .marketsectorid)) {
                                           stockDataController.sectionlist
                                               .remove(stockDataController
-                                                  .marketSectorModelData!.data![index].marketsectorid);
+                                                  .marketSectorModelData!
+                                                  .data![index]
+                                                  .marketsectorid);
                                         } else {
                                           stockDataController.sectionlist.add(
                                               stockDataController
                                                   .marketSectorModelData!
-                                                  .data![index].marketsectorid);
+                                                  .data![index]
+                                                  .marketsectorid);
                                         }
 
                                         stockDataController.update();
@@ -273,7 +283,7 @@ class _DumyModalState extends State<DumyModal> {
                             child: CustomButton(
                                 btnName: "Apply",
                                 onPressed: () {
-                              /*    stockDataController
+                                  /*    stockDataController
                                       .filterAvailableStockDataModel!.data!
                                       .clear();
                                   for (var add in stockDataController
@@ -294,7 +304,10 @@ class _DumyModalState extends State<DumyModal> {
                                         .filterAvailableStockDataModel!.data!
                                         .add(add);
                                   }*/
-                                  if(stockDataController.i || stockDataController.d || stockDataController.sectionlist.isNotEmpty){
+                                  if (stockDataController.i ||
+                                      stockDataController.d ||
+                                      stockDataController
+                                          .sectionlist.isNotEmpty) {
                                     stockDataController
                                         .filterAvailableStockDataModel!.data!
                                         .clear();
@@ -305,7 +318,16 @@ class _DumyModalState extends State<DumyModal> {
                                           .add(add);
                                     }
                                     getValue().then((v) {
-                                      stockDataController.sectionlist.isNotEmpty?  stockDataController.filterAvailableStockDataModel!.data!.removeWhere((item) => !stockDataController.sectionlist.contains(item.marketsectorid)):null;
+                                      stockDataController.sectionlist.isNotEmpty
+                                          ? stockDataController
+                                              .filterAvailableStockDataModel!
+                                              .data!
+                                              .removeWhere((item) =>
+                                                  !stockDataController
+                                                      .sectionlist
+                                                      .contains(
+                                                          item.marketsectorid))
+                                          : null;
                                       stockDataController.update();
                                       print(stockDataController
                                           .filterAvailableStockDataModel!
@@ -313,7 +335,7 @@ class _DumyModalState extends State<DumyModal> {
                                           .length);
                                       Get.back();
                                     });
-                                /*  if (stockDataController.i || stockDataController.d ) {
+                                    /*  if (stockDataController.i || stockDataController.d ) {
                                     stockDataController.d
                                         ? stockDataController
                                             .filterAvailableStockDataModel!.data!.removeWhere((item) => item.division.toString().trim() == "I") : stockDataController.filterAvailableStockDataModel!.data!.removeWhere((item) => item.division.toString().trim() == "D");
@@ -356,9 +378,7 @@ class _DumyModalState extends State<DumyModal> {
                                         .length);
                                     Get.back();
                                   }*/
-
-
-                                  }else{
+                                  } else {
                                     print("Select value");
                                   }
                                 }),

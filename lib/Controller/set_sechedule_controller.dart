@@ -35,7 +35,7 @@ class SetCustomerScheduleController extends GetxController {
         "remark": remarkController.value,
         "isvalid": 0,
         "UserID": EmployeeId,
-        "ScheduleDetailsMaster": scheduleDetailsMaster
+        "ScheduleDetailsMaster": scheduleDetailsMaster.value
         // [
         //   {"useractivityid": 2, "remark": "order"}
         // ]
