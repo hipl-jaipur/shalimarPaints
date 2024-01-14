@@ -338,6 +338,8 @@ class _StockScreenState extends State<StockScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Row(
+
+
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text( stockController.filterStockDataModel!.stockMaster![index].productcode.toString(),
