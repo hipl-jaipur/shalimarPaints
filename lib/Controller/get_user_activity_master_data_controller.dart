@@ -11,6 +11,7 @@ import 'package:shalimar/utils/consts.dart';
 class GetUserActivityController extends GetxController {
   var isLoading = false.obs;
   ActivitityData? activitityData;
+  List<dynamic> sectionlist = [];
 
   // @override
   // Future<void> onInit() async {
