@@ -24,16 +24,16 @@ class GetAvailableStockDataController extends GetxController {
   List<dynamic> sectionlist = [];
   List<Map<dynamic, dynamic>> myList = [];
   int counter = 0;
+  double amount = 0.0;
   @override
   Future<void> onInit() async {
     super.onInit();
     matketSectorData();
   }
 
-
   fetchData({required customerCode}) async {
     try {
-      isLoading=true;
+      isLoading = true;
       update();
 
       print('Get Available Stock Data API called');
@@ -69,21 +69,17 @@ class GetAvailableStockDataController extends GetxController {
         if (data != null) {
           var result = jsonDecode(res.body);
           availableStockDataModel = AvailableStockDataModel.fromJson(result);
-          filterAvailableStockDataModel = AvailableStockDataModel.fromJson(result);
-          for(var map in availableStockDataModel!.data! ){
-            myList.add(
-
-                {
-                  /*"id":map.productcode,
+          filterAvailableStockDataModel =
+              AvailableStockDataModel.fromJson(result);
+          for (var map in availableStockDataModel!.data!) {
+            myList.add({
+              /*"id":map.productcode,
                   "name":map.productdesc,
                   "price":map.dpl,
                   "totalPrice":totalAmount,*/
-                  "Qty":counter
-
-                }
-
-
-            );
+              "Qty": counter,
+              "mrp": amount
+            });
           }
 
           print(myList.length);
@@ -101,13 +97,14 @@ class GetAvailableStockDataController extends GetxController {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading=false;
+      isLoading = false;
       update();
     }
   }
+
   matketSectorData() async {
     try {
-      isLoading=true;
+      isLoading = true;
       update();
 
       print('Get Market Sector Data API called');
@@ -141,9 +138,6 @@ class GetAvailableStockDataController extends GetxController {
         if (data != null) {
           var result = jsonDecode(res.body);
           marketSectorModelData = MarketSectorModel.fromJson(result);
-
-
-
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -157,7 +151,7 @@ class GetAvailableStockDataController extends GetxController {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading=false;
+      isLoading = false;
       update();
     }
   }

@@ -256,9 +256,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           Colors.greenAccent);
 
                       Get.to(
-                        CheckInPage(
-                            
-                            ),
+                        CheckInPage(),
                       );
                       controller.levelCode.value = widget
                           .customerList[widget.index].levelCode

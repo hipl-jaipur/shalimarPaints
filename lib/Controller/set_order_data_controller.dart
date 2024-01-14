@@ -13,9 +13,13 @@ class SetOrderDataController extends GetxController {
   var isLoading = false.obs;
   TextEditingController remarkController = TextEditingController();
   var customerCode = "".obs;
-  
+  // var orderNumber = "".obs;
 
-  fetchData(BuildContext context,List<Map<dynamic, dynamic>> myCart) async {
+  fetchData(
+    BuildContext context,
+    List<Map<dynamic, dynamic>> myCart,
+    String? orderNumber,
+  ) async {
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -31,6 +35,7 @@ class SetOrderDataController extends GetxController {
       print("LAT : $LAT");
 
       final body = {
+        "OrderNumber": orderNumber,
         "OrderSource": "Mobile",
         "customercode": customerCode.value,
         "customercodeshipto": customerCode.value,
@@ -97,6 +102,7 @@ class SetOrderDataController extends GetxController {
                   ],
                 );
               });
+          remarkController.clear();
           // showSnackBar("Success", result['Message'], Colors.greenAccent);
           // Get.off(CheckInPage());
           // prefs.setInt('ActivityDetailID', result['ActivityDetailID']);

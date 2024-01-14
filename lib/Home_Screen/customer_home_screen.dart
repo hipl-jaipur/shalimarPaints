@@ -5,6 +5,7 @@ import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_depot_Screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_region_screen.dart';
@@ -37,8 +38,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       Get.put(CustomerHireDataController());
   OutStandingController outStandingController =
       Get.put(OutStandingController());
-  GetUserActivityController getUserActivityController = Get.put(GetUserActivityController());
-
+  GetUserActivityController getUserActivityController =
+      Get.put(GetUserActivityController());
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +127,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () {
-                                    getUserActivityController.fetchData();
-                                    Get.to(ScheduleVisitPage());
-                                    // Get.to(MyScedulePage());
+                                    // getUserActivityController.fetchData();
+                                    // Get.to(ScheduleVisitPage());
+                                    Get.to(MyScedulePage());
                                   },
                                   child: Card(
                                     child: Center(

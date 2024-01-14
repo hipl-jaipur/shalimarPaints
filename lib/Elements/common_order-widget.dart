@@ -70,8 +70,17 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                     0) {
                                   stockDataController.myList[widget.index]
                                       ["Qty"]--;
+
+                                  // stockDataController.myList[widget.index]
+                                  //     ["mrp"]--;
                                   stockDataController.totalQty =
                                       stockDataController.totalQty.toInt() - 1;
+
+                                  // stockDataController.totalAmount =
+                                  //     (stockDataController.myList[widget.index]
+                                  //             ["mrp"] *
+                                  //         stockDataController.totalQty);
+
                                   stockDataController.isVisible = true;
                                   stockDataController.myList.add({
                                     "productcode": widget
@@ -82,7 +91,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                         .data![widget.index].productdesc,
                                     "dpl": widget.availableStockDataModel
                                         .data![widget.index].dpl,
-                                    "mrp": stockDataController.totalAmount,
+                                    "mrp": stockDataController.amount,
                                     "Qty": stockDataController.counter
                                   });
                                   stockDataController.myList[widget.index]
@@ -120,9 +129,18 @@ class _TakeOrderListState extends State<TakeOrderList> {
                               // widget.isVisible = true;
                               // counter++;
                               stockDataController.myList[widget.index]["Qty"]++;
+                              // stockDataController.myList[widget.index]["mrp"];
 
                               stockDataController.totalQty =
                                   stockDataController.totalQty.toInt() + 1;
+
+                              // stockDataController.totalAmount =
+                              //     (stockDataController.totalAmount) +
+                              //         (stockDataController.myList[widget.index]
+                              //                 ["mrp"] *
+                              //             stockDataController
+                              //                 .myList[widget.index]["Qty"]);
+
                               stockDataController.myList.add({
                                 "productcode": widget.availableStockDataModel
                                     .data![widget.index].productcode,
@@ -130,7 +148,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                     .data![widget.index].productdesc,
                                 "dpl": widget.availableStockDataModel
                                     .data![widget.index].dpl,
-                                "mrp": stockDataController.totalAmount,
+                                "mrp": stockDataController.amount,
                                 "Qty": stockDataController.counter
                               });
                               stockDataController.myList[widget.index]["mrp"] =

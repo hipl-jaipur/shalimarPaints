@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
+import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/set_sechedule_controller.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -85,6 +86,8 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  SetActivityDetailDataController setActivityController =
+      Get.put(SetActivityDetailDataController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -552,7 +555,9 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
                                           scheduleController.fetchData(
-                                              context: context);
+                                              context: context,
+                                              levelCode: setActivityController
+                                                  .levelCode.value);
                                         }
                                       },
                                     )

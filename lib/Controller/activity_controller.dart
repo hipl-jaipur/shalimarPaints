@@ -12,18 +12,18 @@ import '../Model/StockShowModel.dart';
 import '../utils/consts.dart';
 
 class ActivityController extends GetxController {
-  var isLoading =false;
+  var isLoading = false;
 
   ActivityDataModel? activityDataModel;
   StockShowModel? filterStockDataModel;
 
   List<dynamic> sectionlist = [];
 
-@override
-Future<void> onInit() async {
-  super.onInit();
-  getActivityData();
-}
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    getActivityData();
+  }
 
   getActivityData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -31,14 +31,12 @@ Future<void> onInit() async {
     print('Activity Data api called');
 
     try {
-      isLoading =true;
+      isLoading = true;
       update();
 
       print('Get Activity Data API called');
 
-      final body = {
-
-      };
+      final body = {};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -68,7 +66,6 @@ Future<void> onInit() async {
           var result = jsonDecode(res.body);
           activityDataModel = ActivityDataModel.fromJson(result);
           // filterStockDataModel = StockShowModel.fromJson(result);
-
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -82,14 +79,9 @@ Future<void> onInit() async {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading= false;
+      isLoading = false;
 
       update();
     }
   }
-
-
-
-
-
 }

@@ -23,8 +23,20 @@ class OrderList extends StatefulWidget {
 
 class _OrderListState extends State<OrderList> {
   var isVisible = false;
+  var totalQty = 0;
+  var totalAmount = 0.0;
 
   GetOrderDataController orderData = Get.put(GetOrderDataController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    for (var i in widget.orderDataList![widget.index].orderDetailMaster!) {
+      totalQty = totalQty + i.qty!.toInt();
+      totalAmount = totalAmount + i.dpl!.toDouble();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +106,12 @@ class _OrderListState extends State<OrderList> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Total Qty: 0",
+                  Text("Total Qty: ${totalQty.toInt()}",
                       style: TextStyle(
                           color: blackTextColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w400)),
-                  Text("Total Amount: 0.00",
+                  Text("Total Amount: ${totalAmount.toStringAsFixed(2)}",
                       style: TextStyle(
                           color: blackTextColor,
                           fontSize: 14,
@@ -118,7 +130,11 @@ class _OrderListState extends State<OrderList> {
                           height: 30,
                           child: OutlinedButton(
                             onPressed: () {
-                              Get.off(MyCartPage());
+                              Get.to(MyCartPage(
+                                  tag: "Edit",
+                                  orderNumber: widget
+                                      .orderDataList![widget.index]
+                                      .ordernumber!));
                             },
                             child: Text(
                               "Edit",
@@ -163,9 +179,9 @@ class _OrderListState extends State<OrderList> {
                                 Text(
                                     "Product Name: ${widget.orderDataList![widget.index].orderDetailMaster![i].productdesc}"),
                                 Text(
-                                    "Qty: ${widget.orderDataList![widget.index].orderDetailMaster![i].qty}"),
+                                    "Qty: ${widget.orderDataList![widget.index].orderDetailMaster![i].qty!.toInt()}"),
                                 Text(
-                                    "Amount: ${widget.orderDataList![widget.index].orderDetailMaster![i].dpl}"),
+                                    "Amount: ${widget.orderDataList![widget.index].orderDetailMaster![i].dpl!.toStringAsFixed(2)}"),
                               ],
                             ),
                           ),
@@ -185,8 +201,7 @@ class _OrderListState extends State<OrderList> {
                         border: Border.all(
                           color: Colors.green,
                         )),
-                    child: 
-                    Text(
+                    child: Text(
                       "Pending",
                       //  "${widget.orderDataList![widget.index].orderStatus.toString()}",
                       maxLines: 2,

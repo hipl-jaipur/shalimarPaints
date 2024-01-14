@@ -17,7 +17,7 @@ class SetCustomerScheduleController extends GetxController {
   var schdulefor = "".obs;
   var scheduleDetailsMaster = [].obs;
 
-  fetchData({required BuildContext context}) async {
+  fetchData({required BuildContext context, required String levelCode}) async {
     try {
       isLoading(true);
 
@@ -27,7 +27,8 @@ class SetCustomerScheduleController extends GetxController {
       print('Set Schedule Data  API called');
 
       final body = {
-        "customercode": "N221000011",
+        "customercode": levelCode,
+        // "customercode": "N221000011",
         "schdulefor": schdulefor.value,
         "date": dateController.text,
         "starttime": startTimeController.text,
