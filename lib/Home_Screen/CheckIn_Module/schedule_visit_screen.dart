@@ -392,42 +392,113 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                           color: Colors.black),
                                       textAlign: TextAlign.start,
                                     ),
+                                    // controller.activitityData != null
+                                    //     ? Container(
+                                    //         height: 300,
+                                    //         child:
+
+                                    //         ListView.builder(
+                                    //           itemCount: controller
+                                    //               .activitityData!.data!.length,
+                                    //           itemBuilder: (context, index) {
+                                    //             return CheckboxListTile(
+                                    //               title: Text(controller
+                                    //                   .activitityData!
+                                    //                   .data![index]
+                                    //                   .activityName
+                                    //                   .toString()),
+                                    //               value: scheduleController
+                                    //                   .scheduleDetailsMaster
+                                    //                   .contains(controller
+                                    //                       .activitityData!
+                                    //                       .data![index]
+                                    //                       .activityName
+                                    //                       .toString()),
+                                    //               onChanged: (bool? value) {
+                                    //                 _onCheckboxChanged(
+                                    //                     controller
+                                    //                         .activitityData!
+                                    //                         .data![index]
+                                    //                         .activityName
+                                    //                         .toString(),
+                                    //                     value!,
+                                    //                     controller
+                                    //                         .activitityData!
+                                    //                         .data![index]
+                                    //                         .userActivityID);
+                                    //               },
+                                    //             );
+                                    //           },
+                                    //         ))
+                                    //     : SizedBox(),
+
                                     controller.activitityData != null
                                         ? Container(
                                             height: 300,
                                             child: ListView.builder(
                                               itemCount: controller
                                                   .activitityData!.data!.length,
-                                              itemBuilder: (context, index) {
-                                                return CheckboxListTile(
-                                                  title: Text(controller
-                                                      .activitityData!
-                                                      .data![index]
-                                                      .activityName
-                                                      .toString()),
-                                                  value: scheduleController
-                                                      .scheduleDetailsMaster
-                                                      .contains(controller
-                                                          .activitityData!
-                                                          .data![index]
-                                                          .activityName
-                                                          .toString()),
-                                                  onChanged: (bool? value) {
-                                                    _onCheckboxChanged(
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Row(
+                                                  children: [
+                                                    Checkbox(
+                                                        value: controller
+                                                            .sectionlist
+                                                            .contains(controller
+                                                                .activitityData!
+                                                                .data![index]
+                                                                .userActivityID),
+                                                        onChanged: (v) {
+                                                          if (controller
+                                                              .sectionlist
+                                                              .contains(controller
+                                                                  .activitityData!
+                                                                  .data![index]
+                                                                  .userActivityID)) {
+                                                            controller
+                                                                .sectionlist
+                                                                .remove(controller
+                                                                    .activitityData!
+                                                                    .data![
+                                                                        index]
+                                                                    .userActivityID);
+                                                          } else {
+                                                            controller
+                                                                .sectionlist
+                                                                .add(controller
+                                                                    .activitityData!
+                                                                    .data![
+                                                                        index]
+                                                                    .userActivityID);
+                                                          }
+
+                                                          controller.update();
+                                                          print(controller
+                                                              .sectionlist);
+                                                        }),
+                                                    Container(
+                                                      child: Text(
                                                         controller
                                                             .activitityData!
                                                             .data![index]
                                                             .activityName
                                                             .toString(),
-                                                        value!,
-                                                        controller
-                                                            .activitityData!
-                                                            .data![index]
-                                                            .userActivityID);
-                                                  },
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16,
+                                                          fontFamily: 'Raleway',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 );
                                               },
-                                            ))
+                                            ),
+                                          )
                                         : SizedBox(),
                                     SizedBox(
                                       height: 20,

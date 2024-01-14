@@ -233,7 +233,8 @@ class _DumyModalState extends State<DumyModal> {
                                           .data![index].marketsectorname
                                           .toString(),
                                       style: TextStyle(
-                                        color: Colors.black,
+                                        color: const Color.fromARGB(
+                                            255, 207, 174, 174),
                                         fontSize: 16,
                                         fontFamily: 'Raleway',
                                         fontWeight: FontWeight.w700,

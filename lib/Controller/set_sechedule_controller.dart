@@ -30,15 +30,12 @@ class SetCustomerScheduleController extends GetxController {
         "customercode": "N221000011",
         "schdulefor": schdulefor.value,
         "date": dateController.text,
-        "starttime": startTimeController.value,
-        "endtime": endTimeController.value,
-        "remark": remarkController.value,
+        "starttime": startTimeController.text,
+        "endtime": endTimeController.text,
+        "remark": remarkController.text,
         "isvalid": 0,
         "UserID": EmployeeId,
         "ScheduleDetailsMaster": scheduleDetailsMaster.value
-        // [
-        //   {"useractivityid": 2, "remark": "order"}
-        // ]
       };
 
       Map<String, String> requestHeaders = {
