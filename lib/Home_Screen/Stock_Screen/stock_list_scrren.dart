@@ -31,7 +31,7 @@ class _StockScreenState extends State<StockScreen> {
   @override
   void initState() {
     // TODO: implement initStates
-    stockController. getStockData();
+
     super.initState();
   }
   @override
@@ -41,7 +41,7 @@ class _StockScreenState extends State<StockScreen> {
         builder: (stockController) {
           return Scaffold(
 
-              body: stockController.isLoading?Center(child: CircularProgressIndicator()):SafeArea(
+              body: SafeArea(
                 child: Stack(
                   children: [
                     SizedBox(
@@ -83,6 +83,7 @@ class _StockScreenState extends State<StockScreen> {
                                         stockController.isSelectDepot= true;
                                         stockController.isSelectSku= false;
                                         stockController.isVisibleMarketSector= false;
+                                        stockController. getStockData();
                                         stockController.update();
 
                                       },
@@ -120,6 +121,7 @@ class _StockScreenState extends State<StockScreen> {
                                       onTap: () {
                                         stockController.isSelectDepot= false;
                                         stockController.isSelectSku= true;
+                                        stockController. getStockData();
                                         stockController.update();
                                       },
                                       child: Container(
@@ -193,6 +195,17 @@ class _StockScreenState extends State<StockScreen> {
                                         itemBuilder: (BuildContext context, dynamic index) {
                                           return Row(
                                             children: [
+                                          Expanded(
+                                            child: CheckboxListTile(
+                                            title: Text(""),
+                                            value: index == stockController.selectedValue,
+                                            onChanged: (bool? value) {
+                                            setState(() {
+                                            stockController.selectedValue = value! ? index : -1;
+                                            });
+                                            },
+                                            ),
+                                          ),
                                               Checkbox(
                                                   value: stockController.sectionlist
                                                       .contains(marketSectorController
@@ -275,7 +288,8 @@ class _StockScreenState extends State<StockScreen> {
                                   ],
                                 ),
                               ):SizedBox(),
-                              Expanded(
+                              SizedBox(height: 10,),
+                              stockController.isLoading?Center(child: CircularProgressIndicator()):  stockController.filterStockDataModel!=null?  Expanded(
                                 child:stockController.filterStockDataModel!.stockMaster!.isNotEmpty? ListView.builder(
                                   itemCount: stockController.filterStockDataModel!.stockMaster!.length,
                                   itemBuilder: (BuildContext context, dynamic index) {
@@ -375,7 +389,7 @@ class _StockScreenState extends State<StockScreen> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold)),
                                 ),
-                              )
+                              ):SizedBox()
                             ],
                           ),
                         ))

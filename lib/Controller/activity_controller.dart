@@ -8,22 +8,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Elements/commom_snackbar_widget.dart';
 import '../Model/ActivityDataModel.dart';
+import '../Model/AvtivityMasterDataModel.dart';
 import '../Model/StockShowModel.dart';
 import '../utils/consts.dart';
 
 class ActivityController extends GetxController {
-  var isLoading = false;
+  var isLoading =false;
+  var isActivity =false;
 
   ActivityDataModel? activityDataModel;
-  StockShowModel? filterStockDataModel;
+  AvtivityMasterDataModel? activityMasterDataModel;
+  ActivityDataModel? filterActivityDataModel;
 
   List<dynamic> sectionlist = [];
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-    getActivityData();
-  }
+@override
+Future<void> onInit() async {
+  super.onInit();
+  getActivityData();
+  getActivityMasterData();
+}
 
   getActivityData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -31,12 +35,15 @@ class ActivityController extends GetxController {
     print('Activity Data api called');
 
     try {
-      isLoading = true;
+      isLoading =true;
       update();
 
       print('Get Activity Data API called');
 
-      final body = {};
+      final body ={
+        "UserId": empId,
+        "CustomerCode": ""
+      };
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -65,7 +72,8 @@ class ActivityController extends GetxController {
         if (data != null) {
           var result = jsonDecode(res.body);
           activityDataModel = ActivityDataModel.fromJson(result);
-          // filterStockDataModel = StockShowModel.fromJson(result);
+          filterActivityDataModel = ActivityDataModel.fromJson(result);
+
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -79,9 +87,75 @@ class ActivityController extends GetxController {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading = false;
+      isLoading= false;
 
       update();
     }
   }
+  getActivityMasterData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var empId = prefs.getInt("EmployeeId");
+    print('Activity Master Data api called');
+
+    try {
+      isLoading =true;
+      update();
+
+      print('Get Activity Data API called');
+
+      final body = {
+
+      };
+
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+      };
+
+      print("**********");
+
+      final res = await http.post(Uri.parse(AppConstants.getActivityMasterData),
+          body: jsonEncode(body), headers: requestHeaders);
+      print(res);
+      if (kDebugMode) {
+        print("******Get Stock  API called****");
+        print(AppConstants.getActivityMasterData);
+        print(requestHeaders);
+        print(body);
+        print(res.statusCode);
+      }
+
+      var data = json.decode(res.body);
+
+      if (kDebugMode) {
+        print(data);
+      }
+
+      if (res.statusCode == 200) {
+        if (data != null) {
+          var result = jsonDecode(res.body);
+          activityMasterDataModel = AvtivityMasterDataModel.fromJson(result);
+
+        } else {
+          showSnackBar("Error!!", data['Message'], Colors.redAccent);
+          return null;
+        }
+      } else {
+        showSnackBar("Error!!", data['Message'], Colors.redAccent);
+        return null;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error while getting data is $e');
+      }
+    } finally {
+      isLoading= false;
+
+      update();
+    }
+  }
+
+
+
+
+
 }

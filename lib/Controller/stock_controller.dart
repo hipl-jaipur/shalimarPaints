@@ -12,8 +12,11 @@ import '../utils/consts.dart';
 
 class StockController extends GetxController {
 var isSelectDepot =false;
-var isSelectSku =true;
+var isSelectSku =false;
 var isLoading =false;
+int selectedValue = -1;
+var idMarke="";
+
 var isVisibleMarketSector =false;
 StockShowModel? stockDataModel;
 StockShowModel? filterStockDataModel;

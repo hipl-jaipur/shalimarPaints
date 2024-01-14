@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Controller/customer_hire_data_controller.dart';
+import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
@@ -40,6 +41,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       Get.put(OutStandingController());
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
+  GetAvailableStockDataController marketSectorController =
+      Get.put(GetAvailableStockDataController());
 
   @override
   Widget build(BuildContext context) {
@@ -296,63 +299,63 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     Get.to(StockScreen());
                                   },
                                   child: Container(
                                     child: Card(
                                       child: Center(
                                           child: Column(
-                                            mainAxisAlignment:
+                                        mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.people_alt_rounded,
-                                                color: primaryColor,
-                                                size: 40,
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text('Stock',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold)),
-                                            ],
-                                          )),
+                                        children: [
+                                          Icon(
+                                            Icons.people_alt_rounded,
+                                            color: primaryColor,
+                                            size: 40,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('Stock',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
+                                      )),
                                     ),
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: (){
-                                    Get.to(ActivityScreen());
-                                  },
-                                  child: Container(
-                                    child: Card(
-                                      child: Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.local_activity_outlined,
-                                                color: primaryColor,
-                                                size: 40,
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text('Activity',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold)),
-                                            ],
-                                          )),
-                                    ),
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: (){
+                                //     Get.to(ActivityScreen());
+                                //   },
+                                //   child: Container(
+                                //     child: Card(
+                                //       child: Center(
+                                //           child: Column(
+                                //             mainAxisAlignment:
+                                //             MainAxisAlignment.center,
+                                //             children: [
+                                //               Icon(
+                                //                 Icons.local_activity_outlined,
+                                //                 color: primaryColor,
+                                //                 size: 40,
+                                //               ),
+                                //               SizedBox(
+                                //                 height: 10,
+                                //               ),
+                                //               Text('Activity',
+                                //                   style: TextStyle(
+                                //                       color: Colors.black,
+                                //                       fontSize: 16,
+                                //                       fontWeight: FontWeight.bold)),
+                                //             ],
+                                //           )),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           )

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shalimar/Home_Screen/customer_activities_screen.dart';
 import 'package:shalimar/Home_Screen/customer_attendance_screen.dart';
 import 'package:shalimar/Home_Screen/customer_home_screen.dart';
 import 'package:shalimar/Home_Screen/customer_setting_screen.dart';
 import 'package:shalimar/Home_Screen/customer_support_screen.dart';
 import 'package:shalimar/utils/colors.dart';
+
+import 'Activity_Screen/activity_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   String EmployeeName;

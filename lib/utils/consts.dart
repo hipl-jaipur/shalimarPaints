@@ -40,4 +40,7 @@ class AppConstants {
   static const String getCustomerNoteData = "${BASE_URL}GetCustomerNoteData";
   static const String getCustomerScheduleData =
       "${BASE_URL}GetCustomerScheduleData";
+
+  static const String getActivityMasterData =
+      "${BASE_URL}GetActivityMasterData";
 }

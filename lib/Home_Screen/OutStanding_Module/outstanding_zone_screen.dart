@@ -15,7 +15,7 @@ class OutStandingZone extends StatefulWidget {
 }
 
 class _OutStandingZoneState extends State<OutStandingZone> {
-  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   OutStandingController outStandingController =
       Get.put(OutStandingController());
 
@@ -44,8 +44,58 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                         SizedBox(
                           height: 20,
                         ),
-                        searchBar(_searchController),
-                        SizedBox(
+                        TextField(
+                          controller: searchController,
+                          textInputAction: TextInputAction.search,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.fromLTRB(
+                                20.0, 0.0, 20.0, 0.0),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(30)),
+                                borderSide: BorderSide(
+                                  color: Color(0xffECE6E6),
+                                )),
+                            disabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(30)),
+                                borderSide: BorderSide(
+                                  color: Color(0xffECE6E6),
+                                )),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(30)),
+                                borderSide: BorderSide(
+                                  color: Color(0xffECE6E6),
+                                )),
+                            hintText: 'Search',
+                            prefixIcon: IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(
+                                  Icons.arrow_circle_left,
+                                  color: primaryColor,
+                                  size: 40,
+                                )),
+                            suffixIcon: IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.sort_rounded,
+                                  color: primaryColor,
+                                  size: 40,
+                                )),
+                          ),
+                          onChanged: (c){
+                            setState(() {
+
+                            });
+                          },
+                        ),                        SizedBox(
                           height: 20,
                         ),
                         Padding(
@@ -61,7 +111,12 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                           child: ListView.builder(
                             itemCount: outStandingController.filteredZoneList!.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return Card(
+                              return outStandingController.filteredZoneList![index]!
+                                  .levelName!
+                                  .toLowerCase()
+                                  .contains(searchController
+                                  .text
+                                  .toLowerCase())?Card(
                                 child: Column(
                                   children: [
                                     GestureDetector(
@@ -116,7 +171,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age030.toString() ?? 0.0.toString(),
+                                          Text( outStandingController.filteredZoneList![index].age030==null?"0":outStandingController.filteredZoneList![index].age030.truncate().toString(),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -146,7 +201,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age3160.toString() ?? 0.0.toString(),
+                                          Text( outStandingController.filteredZoneList![index].age3160==null?"0":outStandingController.filteredZoneList![index].age3160.truncate().toString(),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -176,7 +231,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age6190.toString() ?? 0.0.toString(),
+                                          Text(outStandingController.filteredZoneList![index].age6190==null?"0":outStandingController.filteredZoneList![index].age6190.truncate().toString(),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -206,7 +261,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age91120.toString() ?? 0.0.toString(),
+                                          Text(outStandingController.filteredZoneList![index].age91120==null?"0":outStandingController.filteredZoneList![index].age91120.truncate().toString(),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -236,7 +291,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age121150.toString() ?? 0.0.toString(),
+                                          Text(outStandingController.filteredZoneList![index].age121150==null?"0":outStandingController.filteredZoneList![index].age121150.truncate().toString(),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -266,7 +321,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age151180.toString() ?? 0.0.toString(),
+                                          Text(outStandingController.filteredZoneList![index].age151180==null?"0":outStandingController.filteredZoneList![index].age151180.truncate().toString(),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -296,7 +351,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age181Above.toString(),
+                                          Text(outStandingController.filteredZoneList![index].age181Above==null?"0":outStandingController.filteredZoneList![index].age181Above.truncate().toString(),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -313,7 +368,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
 
                                   ],
                                 ),
-                              );
+                              ):SizedBox();
                             },
                           ),
                         )
