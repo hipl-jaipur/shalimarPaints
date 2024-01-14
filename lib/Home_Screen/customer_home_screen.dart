@@ -10,9 +10,12 @@ import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_depot_Screen
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_region_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_territory_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_zone_screen.dart';
+import 'package:shalimar/Home_Screen/Stock_Screen/stock_list_scrren.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'Activity_Screen/activity_screen.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
   String EmployeeName;
@@ -288,6 +291,64 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   fontWeight: FontWeight.bold)),
                                         ],
                                       )),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    Get.to(StockScreen());
+                                  },
+                                  child: Container(
+                                    child: Card(
+                                      child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.people_alt_rounded,
+                                                color: primaryColor,
+                                                size: 40,
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text('Stock',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold)),
+                                            ],
+                                          )),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    Get.to(ActivityScreen());
+                                  },
+                                  child: Container(
+                                    child: Card(
+                                      child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.local_activity_outlined,
+                                                color: primaryColor,
+                                                size: 40,
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text('Activity',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold)),
+                                            ],
+                                          )),
                                     ),
                                   ),
                                 ),

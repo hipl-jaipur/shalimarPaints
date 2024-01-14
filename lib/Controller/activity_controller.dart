@@ -7,40 +7,37 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Elements/commom_snackbar_widget.dart';
+import '../Model/ActivityDataModel.dart';
 import '../Model/StockShowModel.dart';
 import '../utils/consts.dart';
 
-class StockController extends GetxController {
-var isSelectDepot =false;
-var isSelectSku =true;
-var isLoading =false;
-var isVisibleMarketSector =false;
-StockShowModel? stockDataModel;
-StockShowModel? filterStockDataModel;
+class ActivityController extends GetxController {
+  var isLoading =false;
 
-List<dynamic> sectionlist = [];
+  ActivityDataModel? activityDataModel;
+  StockShowModel? filterStockDataModel;
 
-/*@override
+  List<dynamic> sectionlist = [];
+
+@override
 Future<void> onInit() async {
   super.onInit();
-  getStockData();
-}*/
+  getActivityData();
+}
 
-  getStockData() async {
+  getActivityData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
-    print('Stock Data api called');
+    print('Activity Data api called');
 
     try {
       isLoading =true;
       update();
 
-      print('Get OutStanding Data API called');
+      print('Get Activity Data API called');
 
       final body = {
-        "EmployeeId": empId,
-        "MarketSectorId": 1,
-        "DepotId": 0
+
       };
 
       Map<String, String> requestHeaders = {
@@ -49,12 +46,12 @@ Future<void> onInit() async {
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getStockData),
+      final res = await http.post(Uri.parse(AppConstants.getActivityData),
           body: jsonEncode(body), headers: requestHeaders);
       print(res);
       if (kDebugMode) {
         print("******Get Stock  API called****");
-        print(AppConstants.getStockData);
+        print(AppConstants.getActivityData);
         print(requestHeaders);
         print(body);
         print(res.statusCode);
@@ -69,8 +66,8 @@ Future<void> onInit() async {
       if (res.statusCode == 200) {
         if (data != null) {
           var result = jsonDecode(res.body);
-          stockDataModel = StockShowModel.fromJson(result);
-          filterStockDataModel = StockShowModel.fromJson(result);
+          activityDataModel = ActivityDataModel.fromJson(result);
+          // filterStockDataModel = StockShowModel.fromJson(result);
 
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);

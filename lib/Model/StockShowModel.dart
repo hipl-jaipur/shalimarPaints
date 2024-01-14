@@ -47,13 +47,13 @@ StockShowModel copyWith({  bool? status,
 class StockMaster {
   StockMaster({
       String? productcode, 
-      num? marketsectorid, 
+      dynamic? marketsectorid, 
       String? marketsectorname, 
       String? productdesc, 
       String? uomname, 
-      num? dpl, 
-      num? mrp, 
-      num? packsize, 
+      dynamic? dpl, 
+      dynamic? mrp, 
+      dynamic? packsize, 
       List<StockDetailMaster>? stockDetailMaster,}){
     _productcode = productcode;
     _marketsectorid = marketsectorid;
@@ -83,22 +83,22 @@ class StockMaster {
     }
   }
   String? _productcode;
-  num? _marketsectorid;
+  dynamic? _marketsectorid;
   String? _marketsectorname;
   String? _productdesc;
   String? _uomname;
-  num? _dpl;
-  num? _mrp;
-  num? _packsize;
+  dynamic? _dpl;
+  dynamic? _mrp;
+  dynamic? _packsize;
   List<StockDetailMaster>? _stockDetailMaster;
 StockMaster copyWith({  String? productcode,
-  num? marketsectorid,
+  dynamic? marketsectorid,
   String? marketsectorname,
   String? productdesc,
   String? uomname,
-  num? dpl,
-  num? mrp,
-  num? packsize,
+  dynamic? dpl,
+  dynamic? mrp,
+  dynamic? packsize,
   List<StockDetailMaster>? stockDetailMaster,
 }) => StockMaster(  productcode: productcode ?? _productcode,
   marketsectorid: marketsectorid ?? _marketsectorid,
@@ -111,13 +111,13 @@ StockMaster copyWith({  String? productcode,
   stockDetailMaster: stockDetailMaster ?? _stockDetailMaster,
 );
   String? get productcode => _productcode;
-  num? get marketsectorid => _marketsectorid;
+  dynamic? get marketsectorid => _marketsectorid;
   String? get marketsectorname => _marketsectorname;
   String? get productdesc => _productdesc;
   String? get uomname => _uomname;
-  num? get dpl => _dpl;
-  num? get mrp => _mrp;
-  num? get packsize => _packsize;
+  dynamic? get dpl => _dpl;
+  dynamic? get mrp => _mrp;
+  dynamic? get packsize => _packsize;
   List<StockDetailMaster>? get stockDetailMaster => _stockDetailMaster;
 
   Map<String, dynamic> toJson() {
@@ -141,11 +141,11 @@ StockMaster copyWith({  String? productcode,
 class StockDetailMaster {
   StockDetailMaster({
       String? productcode, 
-      num? depotId, 
+      dynamic? depotId, 
       String? depotName, 
       String? depotCode, 
-      num? availbleQty, 
-      num? amount,}){
+      dynamic? availbleQty, 
+      dynamic? amount,}){
     _productcode = productcode;
     _depotId = depotId;
     _depotName = depotName;
@@ -163,17 +163,17 @@ class StockDetailMaster {
     _amount = json['Amount'];
   }
   String? _productcode;
-  num? _depotId;
+  dynamic? _depotId;
   String? _depotName;
   String? _depotCode;
-  num? _availbleQty;
-  num? _amount;
+  dynamic? _availbleQty;
+  dynamic? _amount;
 StockDetailMaster copyWith({  String? productcode,
-  num? depotId,
+  dynamic? depotId,
   String? depotName,
   String? depotCode,
-  num? availbleQty,
-  num? amount,
+  dynamic? availbleQty,
+  dynamic? amount,
 }) => StockDetailMaster(  productcode: productcode ?? _productcode,
   depotId: depotId ?? _depotId,
   depotName: depotName ?? _depotName,
@@ -182,11 +182,11 @@ StockDetailMaster copyWith({  String? productcode,
   amount: amount ?? _amount,
 );
   String? get productcode => _productcode;
-  num? get depotId => _depotId;
+  dynamic? get depotId => _depotId;
   String? get depotName => _depotName;
   String? get depotCode => _depotCode;
-  num? get availbleQty => _availbleQty;
-  num? get amount => _amount;
+  dynamic? get availbleQty => _availbleQty;
+  dynamic? get amount => _amount;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

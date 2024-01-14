@@ -82,6 +82,7 @@ class _StockScreenState extends State<StockScreen> {
                                       onTap: () {
                                         stockController.isSelectDepot= true;
                                         stockController.isSelectSku= false;
+                                        stockController.isVisibleMarketSector= false;
                                         stockController.update();
 
                                       },
@@ -151,7 +152,7 @@ class _StockScreenState extends State<StockScreen> {
 
                                 ],
                               ),
-                              GestureDetector(
+                             stockController.isSelectSku? GestureDetector(
                                 onTap: () {
                                   stockController.isVisibleMarketSector =
                                   !stockController.isVisibleMarketSector;
@@ -178,8 +179,8 @@ class _StockScreenState extends State<StockScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
-                              Visibility(
+                              ):SizedBox(),
+                             stockController.isSelectSku? Visibility(
                                 visible: stockController.isVisibleMarketSector,
                                 child: Column(
                                   children: [
@@ -189,7 +190,7 @@ class _StockScreenState extends State<StockScreen> {
                                       child: ListView.builder(
                                         itemCount: marketSectorController
                                             .marketSectorModelData!.data!.length,
-                                        itemBuilder: (BuildContext context, int index) {
+                                        itemBuilder: (BuildContext context, dynamic index) {
                                           return Row(
                                             children: [
                                               Checkbox(
@@ -273,12 +274,60 @@ class _StockScreenState extends State<StockScreen> {
                                     )
                                   ],
                                 ),
-                              ),
+                              ):SizedBox(),
                               Expanded(
                                 child:stockController.filterStockDataModel!.stockMaster!.isNotEmpty? ListView.builder(
                                   itemCount: stockController.filterStockDataModel!.stockMaster!.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return GestureDetector(
+                                  itemBuilder: (BuildContext context, dynamic index) {
+                                    return stockController.isSelectDepot?Card(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text( stockController.filterStockDataModel!.stockMaster![index].productcode.toString(),
+                                                    style: TextStyle(
+                                                        color: primaryColor,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold)),
+                                                Text("${stockController.filterStockDataModel!.stockMaster![index].packsize.toString()} ${stockController.filterStockDataModel!.stockMaster![index].uomname.toString()}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w600)),
+                                              ],
+                                            ),
+                                            Text(stockController.filterStockDataModel!.stockMaster![index].productdesc.toString(),
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold)),
+                                            SizedBox(height: 12,),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text( "DPL : ${stockController.filterStockDataModel!.stockMaster![index].dpl.toString()}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w700)),
+                                                Text("MRP : ${stockController.filterStockDataModel!.stockMaster![index].mrp.toString()} ",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.w700)),
+                                              ],
+                                            ),
+
+                                            // Divider(),
+
+                                          ],
+                                        ),
+                                      ),
+                                    ):GestureDetector(
                                       onTap: (){
                                         Get.to(StockSukDetailsScreen(stockDetails:stockController.filterStockDataModel!.stockMaster!, index: index ,));
                                       },
