@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/Model/OutStandingModel.dart';
@@ -171,7 +172,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 43),
                                       child:
-                                      Text("BucketTotal- \u{20B9}${outStandingController.filteredCustomerList![index].bucketTotal==null?"0":outStandingController.filteredCustomerList![index].bucketTotal.truncate().toString() }",
+                                      Text("BucketTotal- \u{20B9}${outStandingController.filteredCustomerList![index].bucketTotal==null?"0":formatNumber(outStandingController.filteredCustomerList![index].bucketTotal.truncate()) }",
                                         style: TextStyle(
                                             color: blackTextColor,
                                             fontSize: 16,
@@ -201,7 +202,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                         fontFamily:
                                         'Nunito Sans'),
                                   ),
-                                    Text(outStandingController.filteredCustomerList![index].age030==null?"0":outStandingController.filteredCustomerList![index].age030.truncate().toString(),
+                                    Text(outStandingController.filteredCustomerList![index].age030==null?"0":formatNumber(outStandingController.filteredCustomerList![index].age030.truncate()),
                                     style: TextStyle(
                                         color: blackTextColor,
                                         fontSize: 16,
@@ -231,7 +232,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                         fontFamily:
                                         'Nunito Sans'),
                                   ),
-                                    Text(outStandingController.filteredCustomerList![index].age3160==null?"0":outStandingController.filteredCustomerList![index].age3160.truncate().toString(),
+                                    Text(outStandingController.filteredCustomerList![index].age3160==null?"0":formatNumber(outStandingController.filteredCustomerList![index].age3160.truncate()),
                                     style: TextStyle(
                                         color: blackTextColor,
                                         fontSize: 16,
@@ -261,7 +262,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                         fontFamily:
                                         'Nunito Sans'),
                                   ),
-                                    Text(outStandingController.filteredCustomerList![index].age6190==null?"0":outStandingController.filteredCustomerList![index].age6190.truncate().toString(),
+                                    Text(outStandingController.filteredCustomerList![index].age6190==null?"0":formatNumber(outStandingController.filteredCustomerList![index].age6190.truncate()),
                                     style: TextStyle(
                                         color: blackTextColor,
                                         fontSize: 16,
@@ -291,7 +292,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                         fontFamily:
                                         'Nunito Sans'),
                                   ),
-                                    Text(outStandingController.filteredCustomerList![index].age91120==null?"0":outStandingController.filteredCustomerList![index].age91120.truncate().toString(),
+                                    Text(outStandingController.filteredCustomerList![index].age91120==null?"0":formatNumber(outStandingController.filteredCustomerList![index].age91120.truncate()),
                                     style: TextStyle(
                                         color: blackTextColor,
                                         fontSize: 16,
@@ -321,7 +322,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                         fontFamily:
                                         'Nunito Sans'),
                                   ),
-                                    Text(outStandingController.filteredCustomerList![index].age121150==null?"0":outStandingController.filteredCustomerList![index].age121150.truncate().toString(),
+                                    Text(outStandingController.filteredCustomerList![index].age121150==null?"0":formatNumber(outStandingController.filteredCustomerList![index].age121150.truncate()),
                                     style: TextStyle(
                                         color: blackTextColor,
                                         fontSize: 16,
@@ -351,7 +352,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                         fontFamily:
                                         'Nunito Sans'),
                                   ),
-                                    Text(outStandingController.filteredCustomerList![index].age151180==null?"0":outStandingController.filteredCustomerList![index].age151180.truncate().toString(),
+                                    Text(outStandingController.filteredCustomerList![index].age151180==null?"0":formatNumber(outStandingController.filteredCustomerList![index].age151180.truncate()),
                                     style: TextStyle(
                                         color: blackTextColor,
                                         fontSize: 16,
@@ -381,7 +382,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                         fontFamily:
                                         'Nunito Sans'),
                                   ),
-                                    Text(outStandingController.filteredCustomerList![index].age181Above==null?"0":outStandingController.filteredCustomerList![index].age181Above.truncate().toString(),
+                                    Text(outStandingController.filteredCustomerList![index].age181Above==null?"0":formatNumber(outStandingController.filteredCustomerList![index].age181Above.truncate()),
                                     style: TextStyle(
                                         color: blackTextColor,
                                         fontSize: 16,
@@ -408,5 +409,9 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
         ],
       ),
     ));
+  }
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,##,##,##,###',);
+    return formatter.format(number);
   }
 }

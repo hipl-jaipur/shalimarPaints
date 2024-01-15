@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
+import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_order-widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -157,7 +158,14 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                   visible: stockController.isVisible,
                                   child: GestureDetector(
                                     onTap: () {
-                                      Get.to(MyCartPage());
+                                      if (stockController.totalQty == 0) {
+                                        showSnackBar(
+                                            "Sorry!!",
+                                            "Please Add Any Product.",
+                                            Colors.redAccent);
+                                      } else {
+                                        Get.to(MyCartPage());
+                                      }
                                     },
                                     child: Container(
                                       height: 50,

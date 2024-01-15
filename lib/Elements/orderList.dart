@@ -54,6 +54,13 @@ class _OrderListState extends State<OrderList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Text(
+                  "SAP Order Number#: ${widget.orderDataList![widget.index].sAPordernumber.toString()}",
+                  maxLines: 2,
+                  style: TextStyle(
+                      color: blackTextColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold)),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(
@@ -124,7 +131,9 @@ class _OrderListState extends State<OrderList> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  widget.orderDataList![widget.index].sAPordernumber == null
+                  widget.orderDataList![widget.index].sAPordernumber == null &&
+                          widget.orderDataList![widget.index].sAPordernumber ==
+                              ""
                       ? SizedBox()
                       : SizedBox(
                           height: 30,
@@ -196,13 +205,33 @@ class _OrderListState extends State<OrderList> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                        color: Colors.green.shade100,
+                        color: widget.orderDataList![widget.index]
+                                        .sAPordernumber ==
+                                    null ||
+                                widget.orderDataList![widget.index]
+                                        .sAPordernumber ==
+                                    ""
+                            ? Colors.green.shade100
+                            : Colors.red.shade100,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: Colors.green,
+                          color: widget.orderDataList![widget.index]
+                                          .sAPordernumber ==
+                                      null ||
+                                  widget.orderDataList![widget.index]
+                                          .sAPordernumber ==
+                                      ""
+                              ? Colors.green
+                              : Colors.red,
                         )),
                     child: Text(
-                      "Pending",
+                      widget.orderDataList![widget.index].sAPordernumber ==
+                                  null ||
+                              widget.orderDataList![widget.index]
+                                      .sAPordernumber ==
+                                  ""
+                          ? "Pending"
+                          : "Close",
                       //  "${widget.orderDataList![widget.index].orderStatus.toString()}",
                       maxLines: 2,
                       style: TextStyle(

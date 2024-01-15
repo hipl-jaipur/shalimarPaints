@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shalimar/Controller/activity_controller.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/get_customer_note_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_schedule_data_controller.dart';
@@ -71,6 +72,9 @@ class _CheckInPageState extends State<CheckInPage> {
   GetNoteDataController noteDataController = Get.put(GetNoteDataController());
   GetScheduleDataController scheduleDataController =
       Get.put(GetScheduleDataController());
+  GetUserActivityController getUserActivityController =
+      Get.put(GetUserActivityController());
+  ActivityController activityController = Get.put(ActivityController());
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -93,6 +97,7 @@ class _CheckInPageState extends State<CheckInPage> {
     // noteDataController.levelCode.value = controller.levelCode.value;
     noteDataController.fetchData(controller.levelCode.value);
     scheduleDataController.fetchData(controller.levelCode.value);
+    activityController.getActivityData(controller.levelCode.value);
   }
 
   double _appBarHeight = 60.0;
@@ -106,9 +111,6 @@ class _CheckInPageState extends State<CheckInPage> {
       }
     });
   }
-
-  GetUserActivityController getUserActivityController =
-      Get.put(GetUserActivityController());
 
   @override
   Widget build(BuildContext context) {
@@ -435,11 +437,11 @@ class _CheckInPageState extends State<CheckInPage> {
                                 SizedBox(
                                   height: 250.0,
                                   child: Card(
-                                    child: noteDataController
-                                                    .getcustomerNoteDataModel ==
+                                    child: activityController
+                                                    .activityDataModel ==
                                                 null ||
-                                            noteDataController
-                                                    .getcustomerNoteDataModel!
+                                            activityController
+                                                    .activityDataModel!
                                                     .data!
                                                     .length ==
                                                 0
@@ -450,8 +452,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                                 fontWeight: FontWeight.w500),
                                           ))
                                         : ListView.builder(
-                                            itemCount: noteDataController
-                                                .getcustomerNoteDataModel!
+                                            itemCount: activityController
+                                                .activityDataModel!
                                                 .data!
                                                 .length,
                                             itemBuilder: (context, index) {
@@ -480,21 +482,24 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                     .spaceBetween,
                                                             children: [
                                                               Text(
-                                                                  "${noteDataController.getcustomerNoteDataModel!.data![index].activityName}"),
-                                                              Text(
-                                                                  "${noteDataController.getcustomerNoteDataModel!.data![index].createdOn}")
+                                                                  "${activityController.activityDataModel!.data![index].activityName}"),
                                                             ],
                                                           ),
                                                           SizedBox(
                                                             height: 5,
                                                           ),
                                                           Text(
-                                                              "Code: ${noteDataController.getcustomerNoteDataModel!.data![index].customerCode}"),
+                                                              "Code: ${activityController.activityDataModel!.data![index].customerCode}"),
                                                           SizedBox(
                                                             height: 5,
                                                           ),
                                                           Text(
-                                                              "Descriptiion: ${noteDataController.getcustomerNoteDataModel!.data![index].activityDescription}"),
+                                                              "Descriptiion: ${activityController.activityDataModel!.data![index].activityDescription}"),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Text(
+                                                              "${activityController.activityDataModel!.data![index].createdOn}")
                                                         ]),
                                                   ),
                                                 ),
@@ -704,8 +709,8 @@ class _CheckInPageState extends State<CheckInPage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          shape:
-              BeveledRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: CircleBorder(),
+          // BeveledRectangleBorder(borderRadius: BorderRadius.circular(200)),
           onPressed: showMenu,
           child: Icon(Icons.home_filled),
           elevation: 10.0,

@@ -64,22 +64,25 @@ class _TakeOrderListState extends State<TakeOrderList> {
                             icon: Icon(Icons.remove_circle),
                             onPressed: () {
                               setState(() {
-                                // widget.isVisible = true;
                                 if (stockDataController.myList[widget.index]
                                         ["Qty"] !=
                                     0) {
                                   stockDataController.myList[widget.index]
                                       ["Qty"]--;
 
-                                  // stockDataController.myList[widget.index]
-                                  //     ["mrp"]--;
                                   stockDataController.totalQty =
                                       stockDataController.totalQty.toInt() - 1;
 
-                                  // stockDataController.totalAmount =
-                                  //     (stockDataController.myList[widget.index]
-                                  //             ["mrp"] *
-                                  //         stockDataController.totalQty);
+                                  //price
+                                  stockDataController.myList[widget.index]
+                                          ["mrp"] =
+                                      widget.availableStockDataModel
+                                          .data![widget.index].dpl;
+
+                                  stockDataController.totalAmount =
+                                      stockDataController.totalAmount -
+                                          stockDataController
+                                              .myList[widget.index]["mrp"];
 
                                   stockDataController.isVisible = true;
                                   stockDataController.myList.add({
@@ -125,21 +128,23 @@ class _TakeOrderListState extends State<TakeOrderList> {
                           color: primaryColor,
                           onPressed: () {
                             setState(() {
+                              //qty
                               stockDataController.isVisible = true;
-                              // widget.isVisible = true;
-                              // counter++;
                               stockDataController.myList[widget.index]["Qty"]++;
-                              // stockDataController.myList[widget.index]["mrp"];
 
                               stockDataController.totalQty =
                                   stockDataController.totalQty.toInt() + 1;
 
-                              // stockDataController.totalAmount =
-                              //     (stockDataController.totalAmount) +
-                              //         (stockDataController.myList[widget.index]
-                              //                 ["mrp"] *
-                              //             stockDataController
-                              //                 .myList[widget.index]["Qty"]);
+                              //price
+
+                              stockDataController.myList[widget.index]["mrp"] =
+                                  widget.availableStockDataModel
+                                      .data![widget.index].dpl;
+
+                              stockDataController.totalAmount =
+                                  stockDataController.totalAmount +
+                                      stockDataController.myList[widget.index]
+                                          ["mrp"];
 
                               stockDataController.myList.add({
                                 "productcode": widget.availableStockDataModel
@@ -151,21 +156,26 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                 "mrp": stockDataController.amount,
                                 "Qty": stockDataController.counter
                               });
+
                               stockDataController.myList[widget.index]["mrp"] =
                                   ((widget.availableStockDataModel
                                           .data![widget.index].dpl)! *
                                       stockDataController.myList[widget.index]
                                           ["Qty"]);
+
                               stockDataController.myList[widget.index]
                                       ["productcode"] =
                                   widget.availableStockDataModel
                                       .data![widget.index].productcode;
+
                               stockDataController.myList[widget.index]["name"] =
                                   widget.availableStockDataModel
                                       .data![widget.index].productdesc;
+
                               stockDataController.myList[widget.index]["dpl"] =
                                   widget.availableStockDataModel
                                       .data![widget.index].dpl;
+
                               stockDataController.update();
                               print(stockDataController.myList[widget.index]
                                   ["totalPrice"]);

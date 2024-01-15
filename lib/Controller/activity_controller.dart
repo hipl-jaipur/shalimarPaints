@@ -13,8 +13,8 @@ import '../Model/StockShowModel.dart';
 import '../utils/consts.dart';
 
 class ActivityController extends GetxController {
-  var isLoading =false;
-  var isActivity =false;
+  var isLoading = false;
+  var isActivity = false;
 
   ActivityDataModel? activityDataModel;
   AvtivityMasterDataModel? activityMasterDataModel;
@@ -22,28 +22,25 @@ class ActivityController extends GetxController {
 
   List<dynamic> sectionlist = [];
 
-@override
-Future<void> onInit() async {
-  super.onInit();
-  getActivityData();
-  getActivityMasterData();
-}
+  // @override
+  // Future<void> onInit() async {
+  //   super.onInit();
+  //   // getActivityData();
+  //   getActivityMasterData();
+  // }
 
-  getActivityData() async {
+  getActivityData(String customerCode) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Activity Data api called');
 
     try {
-      isLoading =true;
+      isLoading = true;
       update();
 
       print('Get Activity Data API called');
 
-      final body ={
-        "UserId": empId,
-        "CustomerCode": ""
-      };
+      final body = {"UserId": empId, "CustomerCode": customerCode};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -73,7 +70,6 @@ Future<void> onInit() async {
           var result = jsonDecode(res.body);
           activityDataModel = ActivityDataModel.fromJson(result);
           filterActivityDataModel = ActivityDataModel.fromJson(result);
-
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -87,25 +83,24 @@ Future<void> onInit() async {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading= false;
+      isLoading = false;
 
       update();
     }
   }
+
   getActivityMasterData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Activity Master Data api called');
 
     try {
-      isLoading =true;
+      isLoading = true;
       update();
 
       print('Get Activity Data API called');
 
-      final body = {
-
-      };
+      final body = {};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -134,7 +129,6 @@ Future<void> onInit() async {
         if (data != null) {
           var result = jsonDecode(res.body);
           activityMasterDataModel = AvtivityMasterDataModel.fromJson(result);
-
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -148,14 +142,9 @@ Future<void> onInit() async {
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading= false;
+      isLoading = false;
 
       update();
     }
   }
-
-
-
-
-
 }

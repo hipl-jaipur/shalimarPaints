@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Home_Screen/Stock_Screen/stock_suk_details_screen.dart';
 
 import '../../Controller/get_available_stock_data-controller.dart';
-import '../../Controller/outstanding_controller.dart';
 import '../../Controller/stock_controller.dart';
 import '../../Elements/common_searchbar_widget.dart';
 import '../../utils/colors.dart';
@@ -83,7 +81,9 @@ class _StockScreenState extends State<StockScreen> {
                                         stockController.isSelectDepot= true;
                                         stockController.isSelectSku= false;
                                         stockController.isVisibleMarketSector= false;
-                                        stockController. getStockData();
+                                        // stockController. getStockData();
+                                        // stockController.filterStockDataModel!.stockMaster!.clear();
+                                        stockController.idDepot=0;
                                         stockController.update();
 
                                       },
@@ -121,7 +121,9 @@ class _StockScreenState extends State<StockScreen> {
                                       onTap: () {
                                         stockController.isSelectDepot= false;
                                         stockController.isSelectSku= true;
-                                        stockController. getStockData();
+                                        // stockController. getStockData();
+                                        // stockController.filterStockDataModel!.stockMaster!.clear();
+                                        stockController.idMarke=0;
                                         stockController.update();
                                       },
                                       child: Container(
@@ -169,7 +171,7 @@ class _StockScreenState extends State<StockScreen> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Market Sector',
+                                        ' Select Market Sector',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,
@@ -181,7 +183,34 @@ class _StockScreenState extends State<StockScreen> {
                                     ],
                                   ),
                                 ),
-                              ):SizedBox(),
+                              ):GestureDetector(
+                               onTap: () {
+                                 stockController.isVisibleMarketDepot =
+                                 !stockController.isVisibleMarketDepot;
+                                 stockController.update();
+                               },
+                               child: Container(
+                                 height: 35,
+                                 color: primaryColor,
+                                 margin: EdgeInsets.symmetric(vertical: 8),
+                                 padding: EdgeInsets.symmetric(horizontal: 12),
+                                 child: Row(
+                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                   children: [
+                                     Text(
+                                       ' Select Depot ',
+                                       style: TextStyle(
+                                         color: Colors.white,
+                                         fontSize: 16,
+                                         fontFamily: 'Raleway',
+                                         fontWeight: FontWeight.w700,
+                                       ),
+                                     ),
+                                     Icon(Icons.arrow_drop_down_sharp)
+                                   ],
+                                 ),
+                               ),
+                             ),
                              stockController.isSelectSku? Visibility(
                                 visible: stockController.isVisibleMarketSector,
                                 child: Column(
@@ -193,59 +222,34 @@ class _StockScreenState extends State<StockScreen> {
                                         itemCount: marketSectorController
                                             .marketSectorModelData!.data!.length,
                                         itemBuilder: (BuildContext context, dynamic index) {
-                                          return Row(
-                                            children: [
-                                          Expanded(
-                                            child: CheckboxListTile(
-                                            title: Text(""),
-                                            value: index == stockController.selectedValue,
-                                            onChanged: (bool? value) {
-                                            setState(() {
-                                            stockController.selectedValue = value! ? index : -1;
-                                            });
+                                          return GestureDetector(
+                                            onTap:(){
+                                              stockController.idMarke=marketSectorController.marketSectorModelData!
+                                                  .data![index].marketsectorid;
+                                              stockController. getStockData(stockController.idMarke,0);
+                                              stockController.isVisibleMarketSector=false;
+                                              stockController.update();
                                             },
-                                            ),
-                                          ),
-                                              Checkbox(
-                                                  value: stockController.sectionlist
-                                                      .contains(marketSectorController
-                                                      .marketSectorModelData!
-                                                      .data![index].marketsectorid),
-                                                  onChanged: (v) {
-                                                    if (stockController.sectionlist.contains(marketSectorController
-                                                        .marketSectorModelData!.data![index].marketsectorid)) {
-                                                      stockController.sectionlist
-                                                          .remove(marketSectorController
-                                                          .marketSectorModelData!.data![index].marketsectorid);
-                                                    } else {
-                                                      stockController.sectionlist.add(
-                                                          marketSectorController
-                                                              .marketSectorModelData!
-                                                              .data![index].marketsectorid);
-                                                    }
+                                            child: Container(
 
-                                                    stockController.update();
-                                                    print(stockController.sectionlist);
-                                                  }),
-                                              Container(
-                                                child: Text(
-                                                  marketSectorController.marketSectorModelData!
-                                                      .data![index].marketsectorname
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                    fontFamily: 'Raleway',
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
+                                              padding: EdgeInsets.all(8),
+                                              child: Text(
+                                                marketSectorController.marketSectorModelData!
+                                                    .data![index].marketsectorname
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  color:stockController.idMarke==marketSectorController.marketSectorModelData!.data![index].marketsectorid? primaryColor:Colors.black,
+                                                  fontSize: 16,
+                                                  fontFamily: 'Raleway',
+                                                  fontWeight: FontWeight.w700,
                                                 ),
                                               ),
-                                            ],
+                                            ),
                                           );
                                         },
                                       ),
                                     ),
-                                    Row(
+                                  /*  Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         GestureDetector(
@@ -284,10 +288,92 @@ class _StockScreenState extends State<StockScreen> {
                                             ),),
                                         ),
                                       ],
-                                    )
+                                    )*/
                                   ],
                                 ),
-                              ):SizedBox(),
+                              ):Visibility(
+                               visible: stockController.isVisibleMarketDepot,
+                               child: Column(
+                                 children: [
+                                   Container(
+                                     height: 300,
+                                     color: primaryLight,
+                                     child: ListView.builder(
+                                       itemCount: stockController
+                                           .depotMasterDataModel!.data!.length,
+                                       itemBuilder: (BuildContext context, dynamic index) {
+                                         return GestureDetector(
+                                           onTap:(){
+                                             stockController.idDepot=stockController
+                                                 .depotMasterDataModel!
+                                                 .data![index]!.levelID!;
+                                             stockController. getStockData(0,stockController.idDepot);
+                                             stockController.isVisibleMarketDepot=false;
+                                             stockController.update();
+                                           },
+                                           child: Container(
+
+                                             padding: EdgeInsets.all(8),
+                                             child: Text(
+                                               stockController
+                                                   .depotMasterDataModel!.data![index].levelName
+                                                   .toString(),
+                                               style: TextStyle(
+                                                 color:stockController.idDepot==stockController
+                                                     .depotMasterDataModel!.data![index].levelID? primaryColor:Colors.black,
+                                                 fontSize: 16,
+                                                 fontFamily: 'Raleway',
+                                                 fontWeight: FontWeight.w700,
+                                               ),
+                                             ),
+                                           ),
+                                         );
+                                       },
+                                     ),
+                                   ),
+                                   /*  Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (){
+                                            stockController
+                                                .filterStockDataModel!.stockMaster!
+                                                .clear();
+                                            for (var add in stockController
+                                                .stockDataModel!.stockMaster!) {
+                                              stockController
+                                                  .filterStockDataModel!.stockMaster!
+                                                  .add(add);
+                                            }
+                                            stockController.isVisibleMarketSector =false;
+                                            stockController.filterStockDataModel!.stockMaster!.removeWhere((item) => !stockController.sectionlist.contains(item.marketsectorid));
+
+
+                                            stockController.update();
+
+
+                                          },
+                                          child: Container(
+                                            width: 100,
+                                            height: 30,
+                                            color: primaryColor,
+                                            child: Center(
+                                              child: Text(
+                                              'Apply',
+                                              style: TextStyle(
+                                                color:  Colors.white,
+                                                fontSize: 16,
+                                                fontFamily: 'Raleway',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                                                                      ),
+                                            ),),
+                                        ),
+                                      ],
+                                    )*/
+                                 ],
+                               ),
+                             ),
                               SizedBox(height: 10,),
                               stockController.isLoading?Center(child: CircularProgressIndicator()):  stockController.filterStockDataModel!=null?  Expanded(
                                 child:stockController.filterStockDataModel!.stockMaster!.isNotEmpty? ListView.builder(
@@ -307,11 +393,19 @@ class _StockScreenState extends State<StockScreen> {
                                                         color: primaryColor,
                                                         fontSize: 16,
                                                         fontWeight: FontWeight.bold)),
-                                                Text("${stockController.filterStockDataModel!.stockMaster![index].packsize.toString()} ${stockController.filterStockDataModel!.stockMaster![index].uomname.toString()}",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w600)),
+                                                Row(
+                                                  children: [
+                                                    Text(stockController.filterStockDataModel!.stockMaster![index].packsize!.toStringAsFixed(0),
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.bold)),    Text(" ${stockController.filterStockDataModel!.stockMaster![index].uomname.toString()}",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.bold)),
+                                                  ],
+                                                ),
                                               ],
                                             ),
                                             Text(stockController.filterStockDataModel!.stockMaster![index].productdesc.toString(),
@@ -320,6 +414,23 @@ class _StockScreenState extends State<StockScreen> {
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.bold)),
                                             SizedBox(height: 12,),
+                                            Row(
+                                              children: [
+                                                Text( "Depot :(${stockController.filterStockDataModel!.stockMaster![index].stockDetailMaster![0].depotCode.toString()}) Qty:",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w700)),
+                                                SizedBox(width: 5,),
+                                                Text( stockController.filterStockDataModel!.stockMaster![index].stockDetailMaster![0].availbleQty.toStringAsFixed(0),
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w700)),
+                                              ],
+                                            ),
+                                            SizedBox(height: 12,),
+
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
@@ -361,11 +472,19 @@ class _StockScreenState extends State<StockScreen> {
                                                           color: primaryColor,
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.bold)),
-                                                  Text("${stockController.filterStockDataModel!.stockMaster![index].packsize.toString()} ${stockController.filterStockDataModel!.stockMaster![index].uomname.toString()}",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.bold)),
+                                                  Row(
+                                                    children: [
+                                                      Text(stockController.filterStockDataModel!.stockMaster![index].packsize!.toStringAsFixed(0),
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight: FontWeight.bold)),    Text(" ${stockController.filterStockDataModel!.stockMaster![index].uomname.toString()}",
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight: FontWeight.bold)),
+                                                    ],
+                                                  ),
                                                 ],
                                               ),
                                               Text(stockController.filterStockDataModel!.stockMaster![index].productdesc.toString(),

@@ -5,6 +5,7 @@ import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
+import 'package:shalimar/Controller/stock_controller.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
@@ -35,6 +36,8 @@ class CustomerHomeScreen extends StatefulWidget {
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   // ZoneDataController zoneDataController = Get.put(ZoneDataController());
+
+  StockController stockController = Get.put(StockController());
   CustomerHireDataController customerHireDataController =
       Get.put(CustomerHireDataController());
   OutStandingController outStandingController =

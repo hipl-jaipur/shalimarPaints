@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
@@ -142,7 +143,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                   fontFamily: 'Nunito Sans'),
                                             ),
                                             Text(
-                                              outStandingController.filteredZoneList![index].bucketTotal==null?"0":outStandingController.filteredZoneList![index].bucketTotal.truncate().toString(),
+                                              outStandingController.filteredZoneList![index].bucketTotal==null?"0":formatNumber(outStandingController.filteredZoneList![index].bucketTotal.truncate()),
                                               style: TextStyle(
                                                   color: primaryColor,
                                                   fontSize: 16,
@@ -171,7 +172,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text( outStandingController.filteredZoneList![index].age030==null?"0":outStandingController.filteredZoneList![index].age030.truncate().toString(),
+                                          Text( outStandingController.filteredZoneList![index].age030==null?"0":formatNumber(outStandingController.filteredZoneList![index].age030.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -201,7 +202,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text( outStandingController.filteredZoneList![index].age3160==null?"0":outStandingController.filteredZoneList![index].age3160.truncate().toString(),
+                                          Text( outStandingController.filteredZoneList![index].age3160==null?"0":formatNumber(outStandingController.filteredZoneList![index].age3160.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -231,7 +232,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age6190==null?"0":outStandingController.filteredZoneList![index].age6190.truncate().toString(),
+                                          Text(outStandingController.filteredZoneList![index].age6190==null?"0":formatNumber(outStandingController.filteredZoneList![index].age6190.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -261,7 +262,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age91120==null?"0":outStandingController.filteredZoneList![index].age91120.truncate().toString(),
+                                          Text(outStandingController.filteredZoneList![index].age91120==null?"0":formatNumber(outStandingController.filteredZoneList![index].age91120.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -291,7 +292,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age121150==null?"0":outStandingController.filteredZoneList![index].age121150.truncate().toString(),
+                                          Text(outStandingController.filteredZoneList![index].age121150==null?"0":formatNumber(outStandingController.filteredZoneList![index].age121150.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -321,7 +322,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age151180==null?"0":outStandingController.filteredZoneList![index].age151180.truncate().toString(),
+                                          Text(outStandingController.filteredZoneList![index].age151180==null?"0":formatNumber(outStandingController.filteredZoneList![index].age151180.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -351,7 +352,7 @@ class _OutStandingZoneState extends State<OutStandingZone> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredZoneList![index].age181Above==null?"0":outStandingController.filteredZoneList![index].age181Above.truncate().toString(),
+                                          Text(outStandingController.filteredZoneList![index].age181Above==null?"0":formatNumber(outStandingController.filteredZoneList![index].age181Above.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -379,4 +380,9 @@ class _OutStandingZoneState extends State<OutStandingZone> {
           ),
         )); });
   }
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,##,##,##,###',);
+    return formatter.format(number);
+  }
+
 }

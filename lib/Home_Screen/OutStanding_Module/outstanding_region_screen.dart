@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -154,7 +155,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                   fontWeight: FontWeight.w500,
                                                   fontFamily: 'Nunito Sans'),
                                             ),
-                                            Text(outStandingController.filteredRegionList![index].bucketTotal==null?"0":outStandingController.filteredRegionList![index].bucketTotal.truncate().toString(),
+                                            Text(outStandingController.filteredRegionList![index].bucketTotal==null?"0":formatNumber(outStandingController.filteredRegionList![index].bucketTotal.truncate()),
                                               style: TextStyle(
                                                   color: blackTextColor,
                                                   fontSize: 16,
@@ -183,7 +184,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredRegionList![index].age030==null?"0":outStandingController.filteredRegionList![index].age030.truncate().toString(),
+                                          Text(outStandingController.filteredRegionList![index].age030==null?"0":formatNumber(outStandingController.filteredRegionList![index].age030.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -213,7 +214,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredRegionList![index].age3160==null?"0":outStandingController.filteredRegionList![index].age3160.truncate().toString(),
+                                          Text(outStandingController.filteredRegionList![index].age3160==null?"0":formatNumber(outStandingController.filteredRegionList![index].age3160.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -243,7 +244,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                          Text(outStandingController.filteredRegionList![index].age6190==null?"0":outStandingController.filteredRegionList![index].age6190.truncate().toString(),
+                                          Text(outStandingController.filteredRegionList![index].age6190==null?"0":formatNumber(outStandingController.filteredRegionList![index].age6190.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -273,7 +274,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredRegionList![index].age91120==null?"0":outStandingController.filteredRegionList![index].age6190.truncate().toString(),
+                                            Text(outStandingController.filteredRegionList![index].age91120==null?"0":formatNumber(outStandingController.filteredRegionList![index].age6190.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -303,7 +304,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredRegionList![index].age121150==null?"0":outStandingController.filteredRegionList![index].age121150.truncate().toString(),
+                                            Text(outStandingController.filteredRegionList![index].age121150==null?"0":formatNumber(outStandingController.filteredRegionList![index].age121150.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -333,7 +334,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredRegionList![index].age151180==null?"0":outStandingController.filteredRegionList![index].age151180.truncate().toString(),
+                                            Text(outStandingController.filteredRegionList![index].age151180==null?"0":formatNumber(outStandingController.filteredRegionList![index].age151180.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -363,7 +364,7 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredRegionList![index].age181Above==null?"0":outStandingController.filteredRegionList![index].age181Above.truncate().toString(),
+                                            Text(outStandingController.filteredRegionList![index].age181Above==null?"0":formatNumber(outStandingController.filteredRegionList![index].age181Above.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -390,5 +391,9 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
             ],
           ),
         ));
+  }
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,##,##,##,###',);
+    return formatter.format(number);
   }
 }

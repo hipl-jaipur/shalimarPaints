@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
@@ -155,7 +156,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                   fontWeight: FontWeight.w500,
                                                   fontFamily: 'Nunito Sans'),
                                             ),
-                                              Text(outStandingController.filteredTerritorList![index].bucketTotal==null?"0":outStandingController.filteredTerritorList![index].bucketTotal.truncate().toString(),
+                                              Text(outStandingController.filteredTerritorList![index].bucketTotal==null?"0":formatNumber(outStandingController.filteredTerritorList![index].bucketTotal.truncate()),
                                               style: TextStyle(
                                                   color: blackTextColor,
                                                   fontSize: 16,
@@ -184,7 +185,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredTerritorList![index].age030==null?"0":outStandingController.filteredTerritorList![index].age030.truncate().toString(),
+                                            Text(outStandingController.filteredTerritorList![index].age030==null?"0":formatNumber(outStandingController.filteredTerritorList![index].age030.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -214,7 +215,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredTerritorList![index].age3160==null?"0":outStandingController.filteredTerritorList![index].age3160.truncate().toString(),
+                                            Text(outStandingController.filteredTerritorList![index].age3160==null?"0":formatNumber(outStandingController.filteredTerritorList![index].age3160.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -244,7 +245,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredTerritorList![index].age6190==null?"0":outStandingController.filteredTerritorList![index].age6190.truncate().toString(),
+                                            Text(outStandingController.filteredTerritorList![index].age6190==null?"0":formatNumber(outStandingController.filteredTerritorList![index].age6190.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -274,7 +275,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredTerritorList![index].age91120==null?"0":outStandingController.filteredTerritorList![index].age91120.truncate().toString(),
+                                            Text(outStandingController.filteredTerritorList![index].age91120==null?"0":formatNumber(outStandingController.filteredTerritorList![index].age91120.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -304,7 +305,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredTerritorList![index].age121150==null?"0":outStandingController.filteredTerritorList![index].age121150.truncate().toString(),
+                                            Text(outStandingController.filteredTerritorList![index].age121150==null?"0":formatNumber(outStandingController.filteredTerritorList![index].age121150.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -334,7 +335,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredTerritorList![index].age151180==null?"0":outStandingController.filteredTerritorList![index].age151180.truncate().toString(),
+                                            Text(outStandingController.filteredTerritorList![index].age151180==null?"0":formatNumber(outStandingController.filteredTerritorList![index].age151180.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -364,7 +365,7 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                                 fontFamily:
                                                 'Nunito Sans'),
                                           ),
-                                            Text(outStandingController.filteredTerritorList![index].age181Above==null?"0":outStandingController.filteredTerritorList![index].age181Above.truncate().toString(),
+                                            Text(outStandingController.filteredTerritorList![index].age181Above==null?"0":formatNumber(outStandingController.filteredTerritorList![index].age181Above.truncate()),
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 16,
@@ -391,5 +392,9 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
             ],
           ),
         ));
+  }
+  String formatNumber(int number) {
+    final formatter = NumberFormat('#,##,##,##,###',);
+    return formatter.format(number);
   }
 }
