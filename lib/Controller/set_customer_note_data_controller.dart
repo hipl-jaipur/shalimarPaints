@@ -8,10 +8,13 @@ import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'get_customer_note_data_controller.dart';
+
 class SetCustomerNoteDataController extends GetxController {
   var isLoading = false.obs;
   // var levelCode = "".obs;
   TextEditingController noteController = TextEditingController();
+  GetNoteDataController noteDataController = Get.put(GetNoteDataController());
 
   fetchData({required levelCode, required BuildContext context }) async {
     try {
@@ -69,6 +72,8 @@ class SetCustomerNoteDataController extends GetxController {
           var result = jsonDecode(res.body);
           showSnackBar("Success!!", result['Message'], Colors.greenAccent);
           noteController.clear();
+          noteDataController.fetchData(levelCode);
+          noteDataController.update();
            Navigator.pop(context);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);

@@ -8,6 +8,8 @@ import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'get_customer_schedule_data_controller.dart';
+
 class SetCustomerScheduleController extends GetxController {
   var isLoading = false.obs;
   TextEditingController remarkController = TextEditingController();
@@ -16,7 +18,8 @@ class SetCustomerScheduleController extends GetxController {
   TextEditingController dateController = TextEditingController();
   var schdulefor = "".obs;
   var scheduleDetailsMaster = [].obs;
-
+  GetScheduleDataController scheduleDataController =
+  Get.put(GetScheduleDataController());
   fetchData({required BuildContext context, required String levelCode}) async {
     try {
       isLoading(true);
@@ -74,6 +77,8 @@ class SetCustomerScheduleController extends GetxController {
           startTimeController.clear();
           endTimeController.clear();
           dateController.clear();
+          scheduleDataController.fetchData(levelCode);
+          scheduleDataController.update();
           Navigator.pop(context);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);

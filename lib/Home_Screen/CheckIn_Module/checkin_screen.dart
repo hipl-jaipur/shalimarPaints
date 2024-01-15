@@ -75,6 +75,7 @@ class _CheckInPageState extends State<CheckInPage> {
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
   ActivityController activityController = Get.put(ActivityController());
+
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -337,87 +338,94 @@ class _CheckInPageState extends State<CheckInPage> {
                                     )
                                   ],
                                 ),
-
-                                SizedBox(
-                                    height: 250.0,
-                                    child: Card(
-                                      child: scheduleDataController
-                                                      .getScheduleDataModel ==
-                                                  null ||
-                                              scheduleDataController
-                                                      .getScheduleDataModel!
-                                                      .data!
-                                                      .length ==
-                                                  0
-                                          ? Center(
-                                              child: Text(
-                                                "No Data Available",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            )
-                                          : ListView.builder(
-                                              itemCount: scheduleDataController
-                                                  .getScheduleDataModel!
-                                                  .data!
-                                                  .length,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color:
-                                                                primaryColor),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                    "Schedule For: ${scheduleDataController.getScheduleDataModel!.data![index].schdulefor}"),
-                                                                Text(
-                                                                    "Date: ${scheduleDataController.getScheduleDataModel!.data![index].date}")
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                    "Start Time: ${scheduleDataController.getScheduleDataModel!.data![index].starttime}"),
-                                                                Text(
-                                                                    "End Time: ${scheduleDataController.getScheduleDataModel!.data![index].endtime}"),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                          ]),
+                                GetBuilder<GetScheduleDataController>(
+                                    init: GetScheduleDataController(),
+                                    builder: (scheduleDataController) {
+                                      return SizedBox(
+                                          height: 250.0,
+                                          child: Card(
+                                            child: scheduleDataController
+                                                            .getScheduleDataModel ==
+                                                        null ||
+                                                    scheduleDataController
+                                                            .getScheduleDataModel!
+                                                            .data!
+                                                            .length ==
+                                                        0
+                                                ? Center(
+                                                    child: Text(
+                                                      "No Data Available",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500),
                                                     ),
+                                                  )
+                                                : ListView.builder(
+                                                    itemCount:
+                                                        scheduleDataController
+                                                            .getScheduleDataModel!
+                                                            .data!
+                                                            .length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10.0),
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                              border: Border.all(
+                                                                  color:
+                                                                      primaryColor),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                          "Schedule For: ${scheduleDataController.getScheduleDataModel!.data![index].schdulefor}"),
+                                                                      Text(
+                                                                          "Date: ${scheduleDataController.getScheduleDataModel!.data![index].date}")
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      Text(
+                                                                          "Start Time: ${scheduleDataController.getScheduleDataModel!.data![index].starttime}"),
+                                                                      Text(
+                                                                          "End Time: ${scheduleDataController.getScheduleDataModel!.data![index].endtime}"),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                ]),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
-                                                );
-                                              },
-                                            ),
-                                    )),
+                                          ));
+                                    }),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -559,78 +567,86 @@ class _CheckInPageState extends State<CheckInPage> {
                                     )
                                   ],
                                 ),
-
-                                SizedBox(
-                                  height: 250.0,
-                                  child: Card(
-                                    child: noteDataController
-                                                    .getcustomerNoteDataModel ==
-                                                null ||
-                                            noteDataController
-                                                    .getcustomerNoteDataModel!
-                                                    .data!
-                                                    .length ==
-                                                0
-                                        ? Center(
-                                            child: Text(
-                                            "No Data Available",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500),
-                                          ))
-                                        : ListView.builder(
-                                            itemCount: noteDataController
-                                                .getcustomerNoteDataModel!
-                                                .data!
-                                                .length,
-                                            itemBuilder: (context, index) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: primaryColor),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                  "${noteDataController.getcustomerNoteDataModel!.data![index].activityName}"),
-                                                              Text(
-                                                                  "${noteDataController.getcustomerNoteDataModel!.data![index].createdOn}")
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Text(
-                                                              "Code: ${noteDataController.getcustomerNoteDataModel!.data![index].customerCode}"),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Text(
-                                                              "Descriptiion: ${noteDataController.getcustomerNoteDataModel!.data![index].activityDescription}"),
-                                                        ]),
-                                                  ),
+                                GetBuilder<GetNoteDataController>(
+                                    init: GetNoteDataController(),
+                                    builder: (noteDataController) {
+                                      return SizedBox(
+                                        height: 250.0,
+                                        child: Card(
+                                          child: noteDataController
+                                                          .getcustomerNoteDataModel ==
+                                                      null ||
+                                                  noteDataController
+                                                          .getcustomerNoteDataModel!
+                                                          .data!
+                                                          .length ==
+                                                      0
+                                              ? Center(
+                                                  child: Text(
+                                                  "No Data Available",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ))
+                                              : ListView.builder(
+                                                  itemCount: noteDataController
+                                                      .getcustomerNoteDataModel!
+                                                      .data!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10.0),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                color:
+                                                                    primaryColor),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10)),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        "${noteDataController.getcustomerNoteDataModel!.data![index].activityName}"),
+                                                                    Text(
+                                                                        "${noteDataController.getcustomerNoteDataModel!.data![index].createdOn}")
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                    "Code: ${noteDataController.getcustomerNoteDataModel!.data![index].customerCode}"),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                    "Descriptiion: ${noteDataController.getcustomerNoteDataModel!.data![index].activityDescription}"),
+                                                              ]),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
-                                              );
-                                            },
-                                          ),
-                                  ),
-                                ),
+                                        ),
+                                      );
+                                    }),
                                 // CheckInCardView(
                                 //   title: "View Open Orders",
                                 //   onPressed: () {

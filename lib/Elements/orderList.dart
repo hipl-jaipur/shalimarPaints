@@ -143,7 +143,10 @@ class _OrderListState extends State<OrderList> {
                                   tag: "Edit",
                                   orderNumber: widget
                                       .orderDataList![widget.index]
-                                      .ordernumber!));
+                                      .ordernumber!,
+                                  productList: widget
+                                      .orderDataList![widget.index]
+                                      .orderDetailMaster));
                             },
                             child: Text(
                               "Edit",
@@ -173,7 +176,8 @@ class _OrderListState extends State<OrderList> {
                   child: SizedBox(
                     height: 100,
                     child: ListView.builder(
-                      itemCount: widget.orderDataList!.length,
+                      itemCount: widget.orderDataList![widget.index]
+                          .orderDetailMaster!.length,
                       itemBuilder: (context, i) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),

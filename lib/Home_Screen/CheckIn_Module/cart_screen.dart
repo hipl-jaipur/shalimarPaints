@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/set_order_data_controller.dart';
+import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/take_order_screen.dart';
+import 'package:shalimar/Model/get_order_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
@@ -11,7 +13,8 @@ import '../../Controller/get_available_stock_data-controller.dart';
 class MyCartPage extends StatefulWidget {
   String? tag;
   String? orderNumber;
-  MyCartPage({super.key, this.tag, this.orderNumber});
+  List<OrderDetailMaster>? productList;
+  MyCartPage({super.key, this.tag, this.orderNumber, this.productList});
 
   @override
   State<MyCartPage> createState() => _MyCartPageState();
@@ -40,8 +43,14 @@ class _MyCartPageState extends State<MyCartPage> {
     print(myCartList.length);
     print(myCartList);
 
-    for (var i in myCartList) {
-      total = total + i['mrp'];
+    if (widget.tag == 'Edit') {
+      for (var i in widget.productList!) {
+        total = total + i.mrp!;
+      }
+    } else {
+      for (var i in myCartList) {
+        total = total + i['mrp'];
+      }
     }
 
     super.initState();
@@ -123,7 +132,9 @@ class _MyCartPageState extends State<MyCartPage> {
                         ),
                         Expanded(
                             child: ListView.builder(
-                          itemCount: myCartList.length,
+                          itemCount: widget.tag == 'Edit'
+                              ? widget.productList!.length
+                              : myCartList.length,
                           itemBuilder: (context, index) {
                             for (var i in myCartList) {
                               total = total + i['mrp'];
@@ -141,13 +152,17 @@ class _MyCartPageState extends State<MyCartPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                            "${myCartList[index]["productcode"].toString()} - ${myCartList[index]["name"].toString()}",
+                                            widget.tag == 'Edit'
+                                                ? "${widget.productList![index].productcode.toString()} - ${widget.productList![index].productdesc.toString()}"
+                                                : "${myCartList[index]["productcode"].toString()} - ${myCartList[index]["name"].toString()}",
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400)),
                                         Text(
-                                            "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
+                                            widget.tag == 'Edit'
+                                                ? "\u{20B9}${widget.productList![index].dpl!.toStringAsFixed(2)}/NOS"
+                                                : "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
                                             style: TextStyle(
                                                 color: blackTextColor,
                                                 fontSize: 12,
@@ -170,7 +185,9 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
-                                                    "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
+                                                    widget.tag == 'Edit'
+                                                        ? "\u{20B9}${widget.productList![index].dpl!.toStringAsFixed(2)}/NOS"
+                                                        : "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
                                                     style: TextStyle(
                                                         color: blackTextColor,
                                                         fontSize: 14,
@@ -189,7 +206,9 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
-                                                    "${stockController.myList[index]["Qty"].toString()}",
+                                                    widget.tag == 'Edit'
+                                                        ? "\u{20B9}${widget.productList![index].qty!.toStringAsFixed(2)}/NOS"
+                                                        : "${stockController.myList[index]["Qty"].toString()}",
                                                     style: TextStyle(
                                                         color: blackTextColor,
                                                         fontSize: 14,
@@ -208,7 +227,9 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
-                                                    "\u{20B9}${stockController.myList[index]["mrp"].toStringAsFixed(2)}/NOS",
+                                                    widget.tag == 'Edit'
+                                                        ? "\u{20B9}${widget.productList![index].mrp!.toStringAsFixed(2)}/NOS"
+                                                        : "\u{20B9}${stockController.myList[index]["mrp"].toStringAsFixed(2)}/NOS",
                                                     style: TextStyle(
                                                         color: blackTextColor,
                                                         fontSize: 14,
@@ -356,6 +377,11 @@ class _MyCartPageState extends State<MyCartPage> {
                                         widget.orderNumber != null
                                             ? widget.orderNumber
                                             : "");
+                                  } else {
+                                    showSnackBar(
+                                        "Retry",
+                                        "Please Enter Remark!!",
+                                        Colors.redAccent);
                                   }
                                 },
                                 child: Container(

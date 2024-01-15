@@ -98,16 +98,19 @@ class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
                             SizedBox(
                               height: 10,
                             ),
-                            orderDataController.getOrderDataModel == null
+                            orderDataController.getOrderDataModel == null ||
+                                    orderDataController.getOrderDataModel!
+                                            .orderData!.length ==
+                                        0
                                 ? Card(
                                     child: Container(
                                         width:
                                             MediaQuery.of(context).size.width,
                                         child: Padding(
                                             padding: const EdgeInsets.all(15.0),
-                                            child: Text(
-                                                orderDataController
-                                                    .noRecord.value,
+                                            child: Text("No Record Found",
+                                                // orderDataController
+                                                //     .noRecord.value,
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 20,
