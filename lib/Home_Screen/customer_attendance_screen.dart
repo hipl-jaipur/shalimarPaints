@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_getx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:shalimar/Controller/get_customer_schedule_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -30,10 +26,12 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
     // TODO: implement initState
     super.initState();
     dataController.getActivityDetailData();
-    for (var i in dataController.getActivityDetailDataModel!.data!) {
-      var dateList = i.createdOn!.split('T');
-      date = DateFormat('dd/MM/yyyy').format(DateTime.parse(dateList[0]));
-      // date = dateList[0];
+    if (dataController.getActivityDetailDataModel != null) {
+      for (var i in dataController.getActivityDetailDataModel!.data!) {
+        var dateList = i.createdOn!.split('T');
+        date = DateFormat('dd/MM/yyyy').format(DateTime.parse(dateList[0]));
+        // date = dateList[0];
+      }
     }
   }
 
