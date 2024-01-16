@@ -14,10 +14,12 @@ import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_region_scree
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_territory_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_zone_screen.dart';
 import 'package:shalimar/Home_Screen/Stock_Screen/stock_list_scrren.dart';
+import 'package:shalimar/Home_Screen/Teams_Module/teams_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Controller/teams_controller.dart';
 import 'Activity_Screen/activity_screen.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -44,9 +46,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       Get.put(OutStandingController());
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
-  GetAvailableStockDataController marketSectorController =
-      Get.put(GetAvailableStockDataController());
-
+  GetAvailableStockDataController marketSectorController = Get.put(GetAvailableStockDataController());
+  TeamsController teamsController = Get.put(TeamsController());
+@override
+  void initState() {
+    // TODO: implement initState
+  teamsController. getTeamsData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -226,27 +233,36 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                 //     )),
                                 //   ),
                                 // ),
-                                Container(
-                                  child: Card(
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.people_alt_rounded,
-                                            color: primaryColor,
-                                            size: 40,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text('Teams',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold)),
-                                        ],
+                                GestureDetector(
+                                  onTap: (){
+                                    teamsController.filteredLevelFirstList.clear();
+                                    teamsController.filteredLevelFirstList = teamsController.temasDataList!.data!
+                                        .where((item) => item.hirelevel == 1)
+                                        .toList();
+                                    Get.to(TeamsScreen());
+                                  },
+                                  child: Container(
+                                    child: Card(
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.people_alt_rounded,
+                                              color: primaryColor,
+                                              size: 40,
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text('Teams',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold)),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),

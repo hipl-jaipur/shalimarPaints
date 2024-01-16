@@ -171,7 +171,7 @@ class _StockScreenState extends State<StockScreen> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        ' Select Market Sector',
+                                        stockController.marketSectorName,
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,
@@ -197,8 +197,7 @@ class _StockScreenState extends State<StockScreen> {
                                  child: Row(
                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                    children: [
-                                     Text(
-                                       ' Select Depot ',
+                                     Text(stockController.depotName,
                                        style: TextStyle(
                                          color: Colors.white,
                                          fontSize: 16,
@@ -228,6 +227,8 @@ class _StockScreenState extends State<StockScreen> {
                                                   .data![index].marketsectorid;
                                               stockController. getStockData(stockController.idMarke,0);
                                               stockController.isVisibleMarketSector=false;
+                                              stockController.marketSectorName=marketSectorController.marketSectorModelData!
+                                                  .data![index].marketsectorname.toString();
                                               stockController.update();
                                             },
                                             child: Container(
@@ -249,46 +250,7 @@ class _StockScreenState extends State<StockScreen> {
                                         },
                                       ),
                                     ),
-                                  /*  Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: (){
-                                            stockController
-                                                .filterStockDataModel!.stockMaster!
-                                                .clear();
-                                            for (var add in stockController
-                                                .stockDataModel!.stockMaster!) {
-                                              stockController
-                                                  .filterStockDataModel!.stockMaster!
-                                                  .add(add);
-                                            }
-                                            stockController.isVisibleMarketSector =false;
-                                            stockController.filterStockDataModel!.stockMaster!.removeWhere((item) => !stockController.sectionlist.contains(item.marketsectorid));
 
-
-                                            stockController.update();
-
-
-                                          },
-                                          child: Container(
-                                            width: 100,
-                                            height: 30,
-                                            color: primaryColor,
-                                            child: Center(
-                                              child: Text(
-                                              'Apply',
-                                              style: TextStyle(
-                                                color:  Colors.white,
-                                                fontSize: 16,
-                                                fontFamily: 'Raleway',
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                                                                      ),
-                                            ),),
-                                        ),
-                                      ],
-                                    )*/
                                   ],
                                 ),
                               ):Visibility(
@@ -309,6 +271,9 @@ class _StockScreenState extends State<StockScreen> {
                                                  .data![index]!.levelID!;
                                              stockController. getStockData(0,stockController.idDepot);
                                              stockController.isVisibleMarketDepot=false;
+                                             stockController.depotName=stockController
+                                                 .depotMasterDataModel!
+                                                 .data![index]!.levelName.toString();
                                              stockController.update();
                                            },
                                            child: Container(
@@ -331,46 +296,7 @@ class _StockScreenState extends State<StockScreen> {
                                        },
                                      ),
                                    ),
-                                   /*  Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: (){
-                                            stockController
-                                                .filterStockDataModel!.stockMaster!
-                                                .clear();
-                                            for (var add in stockController
-                                                .stockDataModel!.stockMaster!) {
-                                              stockController
-                                                  .filterStockDataModel!.stockMaster!
-                                                  .add(add);
-                                            }
-                                            stockController.isVisibleMarketSector =false;
-                                            stockController.filterStockDataModel!.stockMaster!.removeWhere((item) => !stockController.sectionlist.contains(item.marketsectorid));
 
-
-                                            stockController.update();
-
-
-                                          },
-                                          child: Container(
-                                            width: 100,
-                                            height: 30,
-                                            color: primaryColor,
-                                            child: Center(
-                                              child: Text(
-                                              'Apply',
-                                              style: TextStyle(
-                                                color:  Colors.white,
-                                                fontSize: 16,
-                                                fontFamily: 'Raleway',
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                                                                      ),
-                                            ),),
-                                        ),
-                                      ],
-                                    )*/
                                  ],
                                ),
                              ),

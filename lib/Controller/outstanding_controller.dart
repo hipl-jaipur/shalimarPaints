@@ -103,7 +103,8 @@ class OutStandingController extends GetxController {
               .where((item) => item.entitytype == "Customer")
               .toList();
           print(filteredAllCustomerList!.length);
-        } else {
+        }
+        else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
         }

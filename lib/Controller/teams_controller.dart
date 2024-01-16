@@ -7,35 +7,18 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Elements/commom_snackbar_widget.dart';
-import '../Model/DepotMasterDataModel.dart';
-import '../Model/StockShowModel.dart';
+import '../Model/EmployeeDetailsModel.dart';
+import '../Model/TeamsDataModel.dart';
 import '../utils/consts.dart';
 
-class StockController extends GetxController {
-var isSelectDepot =false;
-var isSelectSku =false;
-var isLoading =false;
-int selectedValue = -1;
-int idMarke=0;
-int idDepot=0;
-var depotName="Select Depot";
-var marketSectorName="Select Market Sector";
+class TeamsController extends GetxController {
+  var isLoading =false;
+  TeamsDataModel? temasDataList;
+  EmployeeDetailsModel? employeeDetailsModel;
+  List<Data> filteredLevelFirstList = [];
 
-var isVisibleMarketSector =false;
-var isVisibleMarketDepot =false;
-StockShowModel? stockDataModel;
-StockShowModel? filterStockDataModel;
-DepotMasterDataModel? depotMasterDataModel;
 
-List<dynamic> sectionlist = [];
-
-@override
-Future<void> onInit() async {
-  super.onInit();
-  getDepotMasterData();
-}
-
-  getStockData(var marketId,idDepot) async {
+  getTeamsData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Stock Data api called');
@@ -44,12 +27,10 @@ Future<void> onInit() async {
       isLoading =true;
       update();
 
-      print('Get OutStanding Data API called');
+      print('Get Teams Data API called');
 
       final body = {
         "EmployeeId": empId,
-        "MarketSectorId": marketId,
-        "DepotId": idDepot
       };
 
       Map<String, String> requestHeaders = {
@@ -58,12 +39,12 @@ Future<void> onInit() async {
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getStockData),
+      final res = await http.post(Uri.parse(AppConstants.getTeamsData),
           body: jsonEncode(body), headers: requestHeaders);
       print(res);
       if (kDebugMode) {
-        print("******Get Stock  API called****");
-        print(AppConstants.getStockData);
+        print("******Get Teams  API called****");
+        print(AppConstants.getTeamsData);
         print(requestHeaders);
         print(body);
         print(res.statusCode);
@@ -78,9 +59,11 @@ Future<void> onInit() async {
       if (res.statusCode == 200) {
         if (data != null) {
           var result = jsonDecode(res.body);
-          stockDataModel = StockShowModel.fromJson(result);
-          filterStockDataModel = StockShowModel.fromJson(result);
-
+          temasDataList = TeamsDataModel.fromJson(result);
+          // filterStockDataModel = StockShowModel.fromJson(result);
+          filteredLevelFirstList = temasDataList!.data!
+              .where((item) => item.hirelevel == 1)
+              .toList();
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -99,20 +82,19 @@ Future<void> onInit() async {
       update();
     }
   }
-  getDepotMasterData() async {
+  getEmployData(var employeId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
-    print('Depot Master Data api called');
+    print('Employe Data api called');
 
     try {
-      // isLoading =true;
-      // update();
+      isLoading =true;
+      update();
 
-      print('Get OutStanding Data API called');
+      print('Get Employe Data API called');
 
-      final body ={
-        "EmployeeId": empId,
-        "EntityType": "depot"
+      final body = {
+        "EmployeeId": employeId,
       };
 
       Map<String, String> requestHeaders = {
@@ -121,12 +103,12 @@ Future<void> onInit() async {
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getDepotMasterData),
+      final res = await http.post(Uri.parse(AppConstants.getEmployeeData),
           body: jsonEncode(body), headers: requestHeaders);
       print(res);
       if (kDebugMode) {
-        print("******Get Depot  API called****");
-        print(AppConstants.getDepotMasterData);
+        print("******Get Employe  API called****");
+        print(AppConstants.getEmployeeData);
         print(requestHeaders);
         print(body);
         print(res.statusCode);
@@ -141,8 +123,8 @@ Future<void> onInit() async {
       if (res.statusCode == 200) {
         if (data != null) {
           var result = jsonDecode(res.body);
-          depotMasterDataModel = DepotMasterDataModel.fromJson(result);
-
+          employeeDetailsModel = EmployeeDetailsModel.fromJson(result);
+          // filterStockDataModel = StockShowModel.fromJson(result);
 
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
@@ -162,9 +144,6 @@ Future<void> onInit() async {
       update();
     }
   }
-
-
-
 
 
 }

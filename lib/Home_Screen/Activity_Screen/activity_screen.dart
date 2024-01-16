@@ -294,6 +294,9 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                                   .createdOn
                                                                   .toString()));
                                                       return controller
+                                                          .filterActivityDataModel!
+                                                          .data![index]!
+                                                          .customername==null? SizedBox():controller
                                                               .filterActivityDataModel!
                                                               .data![index]!
                                                               .customername!
@@ -322,7 +325,7 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                                             Row(
                                                                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                           children: [
-                                                                            Text(controller.filterActivityDataModel!.data![index].customername.toString(),
+                                                                            Text(controller.filterActivityDataModel!.data![index].customername.toString()??"",
                                                                                 style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                                                                             Text("(${controller.filterActivityDataModel!.data![index].customerCode.toString()}) ",
                                                                                 style: TextStyle(color: primaryColor, fontSize: 16, fontWeight: FontWeight.w600)),

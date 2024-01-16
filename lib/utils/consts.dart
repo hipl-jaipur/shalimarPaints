@@ -47,6 +47,7 @@ class AppConstants {
   static const String getDepotMasterData =
       "${BASE_URL}GetMasterByEmployeeIdData";
 
-  static const String getActivityDetailData =
-      "${BASE_URL}GetActivityDetailData";
+  static const String getActivityDetailData = "${BASE_URL}GetActivityDetailData";
+  static const String getTeamsData = "${BASE_URL}GetEmployeeHireData";
+  static const String getEmployeeData = "${BASE_URL}GetEmployeeData";
 }
