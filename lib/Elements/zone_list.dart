@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/customer_hire_data_controller.dart';
-import 'package:shalimar/Controller/terriotory_data_controller.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_depot_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_detail_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_regions_screen.dart';
@@ -162,18 +161,18 @@ Widget depotListData(
 
 Widget terriotoryListData(
   BuildContext context,
-  int index,
+  int index, List<Data> terriotoryList,
 ) {
-  TerriotoryDataController terriotoryDataController =
-      Get.put(TerriotoryDataController());
+  // TerriotoryDataController terriotoryDataController =
+  //     Get.put(TerriotoryDataController());
   // var terriotoryData = Get.put(CustomerHireDataController());
-  CustomerHireDataController customerHireDataController =
-      Get.put(CustomerHireDataController());
+  // CustomerHireDataController customerHireDataController =
+  //     Get.put(CustomerHireDataController());
   return GestureDetector(
     onTap: () {
       Get.to(MyCustomerDetailsPage(), arguments: [
-        customerHireDataController.terriotoryList[index].levelName.toString(),
-        customerHireDataController.terriotoryList[index].levelID,
+        terriotoryList[index].levelName.toString(),
+        terriotoryList[index].levelID,
       ]);
 
       // Get.to(MyCustomerDetailsPage(), arguments: terriotoryDataModel.data![index].territoryName.toString());
@@ -189,7 +188,7 @@ Widget terriotoryListData(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-                customerHireDataController!.terriotoryList[index].levelName
+                terriotoryList[index].levelName
                     .toString(),
                 style: TextStyle(
                     color: Colors.black,

@@ -34,7 +34,7 @@ class _OrderListState extends State<OrderList> {
     super.initState();
     for (var i in widget.orderDataList![widget.index].orderDetailMaster!) {
       totalQty = totalQty + i.qty!.toInt();
-      totalAmount = totalAmount + i.dpl!.toDouble();
+      totalAmount = totalAmount + i.mrp!.toDouble();
     }
   }
 
@@ -144,6 +144,8 @@ class _OrderListState extends State<OrderList> {
                                   orderNumber: widget
                                       .orderDataList![widget.index]
                                       .ordernumber!,
+                                  orderRemark: widget
+                                      .orderDataList![widget.index].remarks!,
                                   productList: widget
                                       .orderDataList![widget.index]
                                       .orderDetailMaster));
@@ -193,8 +195,16 @@ class _OrderListState extends State<OrderList> {
                                     "Product Name: ${widget.orderDataList![widget.index].orderDetailMaster![i].productdesc}"),
                                 Text(
                                     "Qty: ${widget.orderDataList![widget.index].orderDetailMaster![i].qty!.toInt()}"),
-                                Text(
-                                    "Amount: ${widget.orderDataList![widget.index].orderDetailMaster![i].dpl!.toStringAsFixed(2)}"),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                        "Price: ${widget.orderDataList![widget.index].orderDetailMaster![i].dpl!.toStringAsFixed(2)}"),
+                                    Text(
+                                        "Totoal Price: ${widget.orderDataList![widget.index].orderDetailMaster![i].mrp!.toStringAsFixed(2)}"),
+                                  ],
+                                ),
                               ],
                             ),
                           ),

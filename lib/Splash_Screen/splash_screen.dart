@@ -45,8 +45,16 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(child: Image.asset(Images.splashbg)),
-      ),
+          child: Stack(
+        children: [
+          SizedBox(
+              width: double.infinity,
+              child: Image.asset(
+                Images.splashbg,
+                fit: BoxFit.fill,
+              )),
+        ],
+      )),
     );
   }
 }

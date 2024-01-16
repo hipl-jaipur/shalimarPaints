@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
-import 'package:shalimar/Model/GetScheduleDataModel.dart';
-import 'package:shalimar/Model/GetcustomerNoteDataModel.dart';
-import 'package:shalimar/Model/zone_data_model.dart';
+import 'package:shalimar/Model/get_schedule_data_model.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,12 +20,14 @@ class GetScheduleDataController extends GetxController {
   //   fetchData();
   // }
 
+  
+
   fetchData(String levelCode) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var EmployeeId = prefs.getInt('EmployeeId');
     try {
       isLoading(true);
-      print('Note Schedule api called');
+      print('Get Schedule api called');
 
       final body = {"CustomerCode": levelCode, "UserId": EmployeeId};
 
@@ -63,6 +63,7 @@ class GetScheduleDataController extends GetxController {
           if (data['Data'] != null) {
             var result = jsonDecode(res.body);
             getScheduleDataModel = GetScheduleDataModel.fromJson(result);
+            print("ListSchedule:  ${getScheduleDataModel!.data}");
           } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);
             return null;

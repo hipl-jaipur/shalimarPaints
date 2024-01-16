@@ -32,13 +32,27 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    terriotoryList = levelID != null && levelID != ""
-        ? customerHireDataController!.terriotoryList!
-            .where((element) => element.parentLevelID == levelID)
-            .toList()
-        : customerHireDataController.terriotoryList;
 
-    print('customerList: $terriotoryList');
+    if (levelID != null && levelID != "") {
+      for (var i = 0;
+          i < customerHireDataController.terriotoryList.length;
+          i++) {
+        if (levelID ==
+            customerHireDataController.terriotoryList[i].parentLevelID) {
+          terriotoryList.add(customerHireDataController.terriotoryList[i]);
+        }
+      }
+    } else {
+      terriotoryList.addAll(customerHireDataController.terriotoryList);
+    }
+
+    // terriotoryList = levelID != null && levelID != ""
+    //     ? customerHireDataController.terriotoryList
+    //         .where((element) => element.parentLevelID == levelID)
+    //         .toList()
+    //     : customerHireDataController.terriotoryList;
+
+    print('customerList1: $terriotoryList');
   }
 
   Widget build(BuildContext context) {
@@ -156,7 +170,7 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
                                                           _searchController.text
                                                               .toLowerCase())
                                                   ? terriotoryListData(
-                                                      context, index)
+                                                      context, index, terriotoryList)
                                                   : SizedBox();
                                             },
                                           ),

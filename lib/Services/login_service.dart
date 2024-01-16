@@ -89,13 +89,12 @@ class LoginServices {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("logintoken");
 
-
     final body = {
       "LoginHistoryMaster": {
         "EmployeeId": employeeID.toString(),
         "Source": "",
         "OS": Platform.operatingSystem,
-        "MobileModelName":androidInfo.brand,
+        "MobileModelName": androidInfo.brand,
         //  Platform.isAndroid ? androidInfo.model : iosInfo.utsname.machine,
         "MobileModelNumber": androidInfo.model,
         "PIN": "",
@@ -150,6 +149,120 @@ class LoginServices {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
         }
+      } else {
+        showSnackBar("Error!!", data['Message'], Colors.redAccent);
+        return null;
+      }
+    } else {
+      showSnackBar("Error!!", data['Message'], Colors.redAccent);
+      return null;
+    }
+  }
+
+  static Future forgotPassword(var emailID) async {
+    if (kDebugMode) {
+      print('Forgot Password api called');
+    }
+
+    final body = {
+      "employee_emailorcode": emailID,
+    };
+
+    if (kDebugMode) {
+      print("******Forgot Password api called****");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    print(requestHeaders);
+
+    if (kDebugMode) {
+      print("**********");
+    }
+
+    final res = await http.post(Uri.parse(AppConstants.forgetPassword),
+        body: jsonEncode(body), headers: requestHeaders);
+
+    print(res);
+
+    if (kDebugMode) {
+      print("******Forgot Password api called****");
+
+      print(AppConstants.forgetPassword);
+      print(requestHeaders);
+      print(body);
+      print(res.statusCode);
+    }
+
+    var data = json.decode(res.body);
+
+    if (kDebugMode) {
+      print(data);
+    }
+
+    if (res.statusCode == 200) {
+      if (data != null) {
+        return data;
+      } else {
+        showSnackBar("Error!!", data['Message'], Colors.redAccent);
+        return null;
+      }
+    } else {
+      showSnackBar("Error!!", data['Message'], Colors.redAccent);
+      return null;
+    }
+  }
+
+  static Future setEmployeeNewPassword(var newPass, var empID) async {
+    if (kDebugMode) {
+      print('Employee New Password api called');
+    }
+
+    final body = {
+      "employee_code": "",
+      "employee_email": empID,
+      "password": newPass
+    };
+
+    if (kDebugMode) {
+      print("******Employee New Password api called****");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    print(requestHeaders);
+
+    if (kDebugMode) {
+      print("**********");
+    }
+
+    final res = await http.post(Uri.parse(AppConstants.setEmployeeNewPassword),
+        body: jsonEncode(body), headers: requestHeaders);
+
+    print(res);
+
+    if (kDebugMode) {
+      print("******Employee New Password api called****");
+
+      print(AppConstants.setEmployeeNewPassword);
+      print(requestHeaders);
+      print(body);
+      print(res.statusCode);
+    }
+
+    var data = json.decode(res.body);
+
+    if (kDebugMode) {
+      print(data);
+    }
+
+    if (res.statusCode == 200) {
+      if (data != null) {
+        return data;
       } else {
         showSnackBar("Error!!", data['Message'], Colors.redAccent);
         return null;

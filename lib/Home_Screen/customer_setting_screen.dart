@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Login_Screen/login_screen.dart';
+import 'package:shalimar/NewPassword_Screen/change_new_password_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,8 +36,8 @@ class _CustomerSettingScreenState extends State<CustomerSettingScreen> {
                       height: 50,
                     ),
                     GestureDetector(
-                      onDoubleTap: () {
-                        
+                      onTap: () {
+                        Get.to(NewPasswordPage());
                       },
                       child: Card(
                         child: Container(

@@ -3,21 +3,21 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shalimar/Controller/login_controller.dart';
+import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
 import 'package:shalimar/Elements/custom_text_field.dart';
-import 'package:shalimar/NewPassword_Screen/forgot_password_screen.dart';
-import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class NewPasswordPage extends StatefulWidget {
+  const NewPasswordPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<NewPasswordPage> createState() => _NewPasswordPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _NewPasswordPageState extends State<NewPasswordPage> {
   bool showPassword = true;
+  bool showConfirmPassword = true;
   String versionName = "";
   final _formKey = GlobalKey<FormState>();
   var loginController = Get.put(LoginController());
@@ -60,36 +60,19 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Image.asset(
                                       Images.shalimarLogoHorizontal),
                                 ),
-                                CustomTextField(
-                                  controller:
-                                      loginController.usernameController,
-                                  AutovalidateModes:
-                                      AutovalidateMode.onUserInteraction,
-                                  hintText: 'Enter Email',
-                                  labelText: 'Email*',
-                                  onIconTap: () {},
-                                  icon: Container(
-                                    height: 14,
-                                    margin: const EdgeInsets.all(15),
-                                    width: 14,
-                                    child: const Icon(Icons.mail_outline),
-                                  ),
-                                  isTrue: true,
-                                  obscureText: false,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "The Email is required.";
-                                    }
-                                    return null;
-                                  },
+                                Text(
+                                  "Change Password",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 CustomTextField(
-                                  controller:
-                                      loginController.passwordController,
+                                  controller: loginController.newPassController,
                                   AutovalidateModes:
                                       AutovalidateMode.onUserInteraction,
-                                  hintText: 'Enter Password',
-                                  labelText: 'Password*',
+                                  hintText: 'New Password',
+                                  labelText: 'New Password*',
                                   obscureText: showPassword,
                                   onIconTap: () {},
                                   icon: Container(
@@ -125,41 +108,76 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Get.to(ForgotPasswordPage());
-                                        
-
-                                        print("00");
-                                      },
-                                      child: Text(
-                                        "Forgot Password?",
-                                        style: TextStyle(
-                                            color: primaryColor,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400),
-                                      ),
+                                CustomTextField(
+                                  controller:
+                                      loginController.conformNewPassController,
+                                  AutovalidateModes:
+                                      AutovalidateMode.onUserInteraction,
+                                  hintText: 'Confirm New Password',
+                                  labelText: 'Confirm New Password*',
+                                  obscureText: showConfirmPassword,
+                                  onIconTap: () {},
+                                  icon: Container(
+                                    height: 14,
+                                    margin: const EdgeInsets.all(15),
+                                    width: 14,
+                                    child: const Icon(Icons.lock_outline),
+                                  ),
+                                  isTrue: true,
+                                  isPassword: true,
+                                  iconPerfix: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        showConfirmPassword =
+                                            !showConfirmPassword;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 14,
+                                      margin: EdgeInsets.all(15),
+                                      width: 14,
+                                      child: showConfirmPassword
+                                          ? const Icon(Icons.visibility_off)
+                                          : const Icon(Icons.visibility),
                                     ),
-                                  ],
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "The Password is required.";
+                                    }
+                                    if (value.length < 6) {
+                                      return "The password field must be at least 6 characters";
+                                    }
+                                    return null;
+                                  },
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 40),
+                                      const EdgeInsets.symmetric(vertical: 10),
                                   child: CustomButton(
-                                    btnName: 'Login Now',
+                                    btnName: 'Change Password',
                                     onPressed: () {
-                                      // Get.to(MyHomePage());
                                       if (_formKey.currentState!.validate()) {
-                                        loginController.loginCall();
+                                        if (controller
+                                            .conformNewPassController.text ==
+                                            controller
+                                                .newPassController.text) {
+                                          controller
+                                              .setEmpNewPasswordCall(context);
+                                        } else {
+                                          showSnackBar(
+                                              "Sorry!!",
+                                              "Confirm New Password is not Match New Password.",
+                                              Colors.redAccent);
+                                        }
+
+                                        // controller.forgotPasswordCall(context);
                                       }
                                     },
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
                               ],
                             ),

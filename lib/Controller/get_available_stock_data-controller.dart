@@ -14,7 +14,7 @@ class GetAvailableStockDataController extends GetxController {
   var isLoading = false;
   var isVisible = false;
   var isVisibleMarketSector = false;
-  var d = false;
+  var d = true;
   var i = false;
   int totalQty = 0;
   var totalAmount = 0.0;

@@ -14,8 +14,6 @@ import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
-import 'package:shalimar/Elements/common_card_view_widget.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/customer_profile_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/make_complain_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/take_note_screen.dart';
@@ -99,18 +97,6 @@ class _CheckInPageState extends State<CheckInPage> {
     noteDataController.fetchData(controller.levelCode.value);
     scheduleDataController.fetchData(controller.levelCode.value);
     activityController.getActivityData(controller.levelCode.value);
-  }
-
-  double _appBarHeight = 60.0;
-
-  void _openBottomAppBar() {
-    setState(() {
-      if (_appBarHeight > 60) {
-        _appBarHeight = 60.0;
-      } else {
-        _appBarHeight = 300.0;
-      }
-    });
   }
 
   @override
@@ -651,73 +637,6 @@ class _CheckInPageState extends State<CheckInPage> {
                                         ),
                                       );
                                     }),
-                                // CheckInCardView(
-                                //   title: "View Open Orders",
-                                //   onPressed: () {
-                                //     orderDataController.fetchOrderData(
-                                //         customerCode:
-                                //             controller.levelCode.value);
-                                //     Get.to(ViewOpenOrderPage());
-                                //   },
-                                // ),
-                                // CheckInCardView(
-                                //   title: "Schedule A Visit",
-                                //   onPressed: () {
-                                //     getUserActivityController.fetchData();
-                                //     Get.to(ScheduleVisitPage());
-                                //   },
-                                // ),
-                                // CheckInCardView(
-                                //   title: "Customer Profile",
-                                //   onPressed: () {
-                                //     Get.to(CustomerProfilePage());
-                                //   },
-                                // ),
-                                // CheckInCardView(
-                                //   title: "Take Order",
-                                //   onPressed: () {
-                                //     stockController.totalQty = 0;
-                                //     stockController.totalAmount = 0.0;
-                                //     stockController.isVisible = false;
-                                //     stockController.myList.clear();
-                                //     stockController.d = false;
-                                //     stockController.i = false;
-                                //     stockController.sectionlist.clear();
-
-                                //     stockController.fetchData(
-                                //         customerCode:
-                                //             controller.levelCode.value);
-                                //     setOrderDataController.customerCode.value =
-                                //         controller.levelCode.value;
-
-                                //     Get.to(TakeOrderPage());
-                                //   },
-                                // ),
-                                // CheckInCardView(
-                                //   title: "Collect Payment",
-                                //   onPressed: () {
-                                //     Get.to(CollectPaymentPage());
-                                //   },
-                                // ),
-                                // CheckInCardView(
-                                //   title: "Make Complain",
-                                //   onPressed: () {
-                                //     Get.to(ComplainPage(),
-                                //         arguments: controller.levelCode.value);
-                                //   },
-                                // ),
-                                // CheckInCardView(
-                                //   title: "Take Notes",
-                                //   onPressed: () {
-                                //     Get.to(TakeNotePage(), arguments: [
-                                //       controller.levelName.value,
-                                //       controller.levelCode.value,
-                                //       controller.levelAddress.value
-                                //     ]
-                                //         // customerProfileData
-                                //         );
-                                //   },
-                                // ),
                               ],
                             ),
                           ),

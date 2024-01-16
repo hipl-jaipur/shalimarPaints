@@ -6,6 +6,7 @@ class AppConstants {
   static const String login = "${BASE_URL}GetLoginData";
   static const String updateLoginData = "${BASE_URL}UpdateLoginData";
   static const String forgetPassword = "${BASE_URL}ForgetPassword";
+  static const String setEmployeeNewPassword = "${BASE_URL}SetEmployeePassword";
   static const String getCustomerHireData = "${BASE_URL}GetCustomerHireData";
   static const String getZoneData = "${BASE_URL}GetZoneData";
   static const String getRegionData = "${BASE_URL}GetRegionData";

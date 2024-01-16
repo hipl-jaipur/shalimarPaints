@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
+import 'package:shalimar/Controller/get_customer_schedule_data_controller.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Controller/stock_controller.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
+import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_depot_Screen.dart';
@@ -18,9 +19,6 @@ import 'package:shalimar/Home_Screen/Teams_Module/teams_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../Controller/teams_controller.dart';
-import 'Activity_Screen/activity_screen.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
   String EmployeeName;
@@ -46,14 +44,19 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       Get.put(OutStandingController());
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
-  GetAvailableStockDataController marketSectorController = Get.put(GetAvailableStockDataController());
+  GetAvailableStockDataController marketSectorController =
+      Get.put(GetAvailableStockDataController());
+  GetScheduleDataController scheduleDataController =
+      Get.put(GetScheduleDataController());
+
   TeamsController teamsController = Get.put(TeamsController());
-@override
+  @override
   void initState() {
     // TODO: implement initState
-  teamsController. getTeamsData();
+    teamsController.getTeamsData();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,6 +145,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   onTap: () {
                                     // getUserActivityController.fetchData();
                                     // Get.to(ScheduleVisitPage());
+                                    scheduleDataController.fetchData("");
                                     Get.to(MyScedulePage());
                                   },
                                   child: Card(
@@ -234,11 +238,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                 //   ),
                                 // ),
                                 GestureDetector(
-                                  onTap: (){
-                                    teamsController.filteredLevelFirstList.clear();
-                                    teamsController.filteredLevelFirstList = teamsController.temasDataList!.data!
-                                        .where((item) => item.hirelevel == 1)
-                                        .toList();
+                                  onTap: () {
+                                    teamsController.filteredLevelFirstList
+                                        .clear();
+                                    teamsController.filteredLevelFirstList =
+                                        teamsController.temasDataList!.data!
+                                            .where(
+                                                (item) => item.hirelevel == 1)
+                                            .toList();
                                     Get.to(TeamsScreen());
                                   },
                                   child: Container(
@@ -260,7 +267,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 16,
-                                                    fontWeight: FontWeight.bold)),
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                           ],
                                         ),
                                       ),

@@ -8,13 +8,16 @@ import 'package:shalimar/utils/colors.dart';
 class TakeOrderList extends StatefulWidget {
   int index;
   BuildContext context;
-  AvailableStockDataModel availableStockDataModel;
+  List<Data> productList;
+
+  // AvailableStockDataModel availableStockDataModel;
 
   TakeOrderList({
     super.key,
     required this.index,
     required this.context,
-    required this.availableStockDataModel,
+    required this.productList,
+    // required this.availableStockDataModel,
   });
 
   @override
@@ -31,7 +34,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
     // TODO: implement initState
 
     super.initState();
-    for (var i in widget.availableStockDataModel.data!) {
+    for (var i in widget.productList!) {
       if (i.lastUpdatedOn == null) {
         date = "";
       } else {
@@ -56,7 +59,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                        "${widget.availableStockDataModel.data![widget.index].productcode.toString()} - ${widget.availableStockDataModel.data![widget.index].productdesc.toString()}",
+                        "${widget.productList![widget.index].productcode.toString()} - ${widget.productList![widget.index].productdesc.toString()}",
                         style: TextStyle(
                             color: blackTextColor,
                             fontSize: 16,
@@ -65,7 +68,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                       height: 10,
                     ),
                     Text(
-                        "\u{20B9}${widget.availableStockDataModel.data![widget.index].dpl.toString()}/NOS",
+                        "\u{20B9}${widget.productList![widget.index].dpl.toString()}/NOS",
                         style: TextStyle(
                             color: blackTextColor,
                             fontSize: 14,
@@ -74,8 +77,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                       height: 10,
                     ),
                     Text(
-                        widget.availableStockDataModel.data![widget.index]
-                                .division!
+                        widget.productList![widget.index].division!
                                 .contains('I')
                             ? "Category: Industrail"
                             : "Category: Decorative",
@@ -102,8 +104,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                   //price
                                   stockDataController.myList[widget.index]
                                           ["mrp"] =
-                                      widget.availableStockDataModel
-                                          .data![widget.index].dpl;
+                                      widget.productList[widget.index].dpl;
 
                                   stockDataController.totalAmount =
                                       stockDataController.totalAmount -
@@ -112,40 +113,30 @@ class _TakeOrderListState extends State<TakeOrderList> {
 
                                   stockDataController.isVisible = true;
                                   stockDataController.myList.add({
-                                    "productcode": widget
-                                        .availableStockDataModel
-                                        .data![widget.index]
+                                    "productcode": widget.productList[widget.index]
                                         .productcode,
-                                    "name": widget.availableStockDataModel
-                                        .data![widget.index].productdesc,
-                                    "dpl": widget.availableStockDataModel
-                                        .data![widget.index].dpl,
+                                    "name":widget.productList[widget.index].productdesc,
+                                    "dpl": widget.productList[widget.index].dpl,
                                     "mrp": stockDataController.amount,
                                     "Qty": stockDataController.counter,
-                                    "category": widget.availableStockDataModel
-                                        .data![widget.index].division
+                                    "category": widget.productList[widget.index].division
                                   });
                                   stockDataController.myList[widget.index]
-                                      ["mrp"] = (widget.availableStockDataModel
-                                          .data![widget.index].dpl)! *
+                                      ["mrp"] = (widget.productList[widget.index].dpl)! *
                                       stockDataController.myList[widget.index]
                                           ["Qty"];
                                   stockDataController.myList[widget.index]
                                           ["productcode"] =
-                                      widget.availableStockDataModel
-                                          .data![widget.index].productcode;
+                                      widget.productList[widget.index].productcode;
                                   stockDataController.myList[widget.index]
                                           ["name"] =
-                                      widget.availableStockDataModel
-                                          .data![widget.index].productdesc;
+                                      widget.productList[widget.index].productdesc;
                                   stockDataController.myList[widget.index]
                                           ["dpl"] =
-                                      widget.availableStockDataModel
-                                          .data![widget.index].dpl;
+                                     widget.productList[widget.index].dpl;
                                   stockDataController.myList[widget.index]
                                           ["category"] =
-                                      widget.availableStockDataModel
-                                          .data![widget.index].division;
+                                    widget.productList[widget.index].division;
 
                                   stockDataController.update();
                                   print(stockDataController.myList);
@@ -170,8 +161,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                               //price
 
                               stockDataController.myList[widget.index]["mrp"] =
-                                  widget.availableStockDataModel
-                                      .data![widget.index].dpl;
+                                  widget.productList[widget.index].dpl;
 
                               stockDataController.totalAmount =
                                   stockDataController.totalAmount +
@@ -179,40 +169,32 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                           ["mrp"];
 
                               stockDataController.myList.add({
-                                "productcode": widget.availableStockDataModel
-                                    .data![widget.index].productcode,
-                                "name": widget.availableStockDataModel
-                                    .data![widget.index].productdesc,
-                                "dpl": widget.availableStockDataModel
-                                    .data![widget.index].dpl,
+                                "productcode": widget.productList[widget.index].productcode,
+                                "name": widget.productList[widget.index].productdesc,
+                                "dpl": widget.productList[widget.index].dpl,
                                 "mrp": stockDataController.amount,
                                 "Qty": stockDataController.counter,
-                                "category": widget.availableStockDataModel
-                                    .data![widget.index].division
+                                "category": widget.productList[widget.index].division
                               });
 
                               stockDataController.myList[widget.index]
                                       ["category"] =
-                                  widget.availableStockDataModel
-                                      .data![widget.index].division;
+                                 widget.productList[widget.index].division;
+
                               stockDataController.myList[widget.index]["mrp"] =
-                                  ((widget.availableStockDataModel
-                                          .data![widget.index].dpl)! *
+                                  ((widget.productList[widget.index].dpl)! *
                                       stockDataController.myList[widget.index]
                                           ["Qty"]);
 
                               stockDataController.myList[widget.index]
                                       ["productcode"] =
-                                  widget.availableStockDataModel
-                                      .data![widget.index].productcode;
+                                 widget.productList[widget.index].productcode;
 
                               stockDataController.myList[widget.index]["name"] =
-                                  widget.availableStockDataModel
-                                      .data![widget.index].productdesc;
+                                 widget.productList[widget.index].productdesc;
 
                               stockDataController.myList[widget.index]["dpl"] =
-                                  widget.availableStockDataModel
-                                      .data![widget.index].dpl;
+                                 widget.productList[widget.index].dpl;
 
                               stockDataController.update();
                               print(stockDataController.myList[widget.index]
@@ -287,7 +269,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                                       fontWeight:
                                                           FontWeight.w400)),
                                               Text(
-                                                  "${widget.availableStockDataModel.data![widget.index].availbleQty.toString()}",
+                                                  "${widget.productList[widget.index].availbleQty.toString()}",
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 14,
@@ -306,7 +288,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                                       fontWeight:
                                                           FontWeight.w400)),
                                               Text(
-                                                  "${widget.availableStockDataModel.data![widget.index].openorderQty.toString()}",
+                                                  "${widget.productList[widget.index].openorderQty.toString()}",
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 14,
@@ -342,9 +324,9 @@ class _TakeOrderListState extends State<TakeOrderList> {
                               color: primaryColor,
                             )),
                         Text(
-                            "Available Stock: ${widget.availableStockDataModel.data![widget.index].availbleQty.toString()}"),
+                            "Available Stock: ${widget.productList[widget.index].availbleQty.toString()}"),
                         Text(
-                            "Last Order: ${widget.availableStockDataModel.data![widget.index].openorderQty.toString()}")
+                            "Last Order: ${widget.productList[widget.index].openorderQty.toString()}")
                       ],
                     )
                   ],

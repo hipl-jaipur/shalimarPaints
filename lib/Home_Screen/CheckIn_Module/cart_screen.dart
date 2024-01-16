@@ -13,8 +13,14 @@ import '../../Controller/get_available_stock_data-controller.dart';
 class MyCartPage extends StatefulWidget {
   String? tag;
   String? orderNumber;
+  String? orderRemark;
   List<OrderDetailMaster>? productList;
-  MyCartPage({super.key, this.tag, this.orderNumber, this.productList});
+  MyCartPage(
+      {super.key,
+      this.tag,
+      this.orderNumber,
+      this.orderRemark,
+      this.productList});
 
   @override
   State<MyCartPage> createState() => _MyCartPageState();
@@ -29,8 +35,9 @@ class _MyCartPageState extends State<MyCartPage> {
   var total = 0.0;
   List<Map<dynamic, dynamic>> myCartList = [];
   final _formKey = GlobalKey<FormState>();
-  var totalPrice = 0.0;
-  var totalQty = 0;
+  // dynamic dplPrice = 0.0;
+  // dynamic totalPrice = 0.0;
+  // dynamic totalQty = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -44,12 +51,22 @@ class _MyCartPageState extends State<MyCartPage> {
     print(myCartList);
 
     if (widget.tag == 'Edit') {
+      widget.orderRemark != null
+          ? setOrderDataController.remarkController.text = widget.orderRemark!
+          : "";
       for (var i in widget.productList!) {
         total = total + i.mrp!;
+        // dplPrice = i.dpl;
+        // totalQty = i.qty!.toInt();
+        // totalPrice = i.mrp;
       }
     } else {
+      setOrderDataController.remarkController.text = "";
       for (var i in myCartList) {
         total = total + i['mrp'];
+        // dplPrice = i["dpl"];
+        // totalQty = i["Qty"];
+        // totalPrice = i['mrp'];
       }
     }
 
@@ -136,9 +153,9 @@ class _MyCartPageState extends State<MyCartPage> {
                               ? widget.productList!.length
                               : myCartList.length,
                           itemBuilder: (context, index) {
-                            for (var i in myCartList) {
-                              total = total + i['mrp'];
-                            }
+                            // for (var i in myCartList) {
+                            //   total = total + i['mrp'];
+                            // }
                             return Card(
                               child: Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
@@ -160,6 +177,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400)),
                                         Text(
+                                            // "\u{20B9}${dplPrice.toStringAsFixed(2)}/NOS",
                                             widget.tag == 'Edit'
                                                 ? "\u{20B9}${widget.productList![index].dpl!.toStringAsFixed(2)}/NOS"
                                                 : "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
@@ -185,6 +203,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
+                                                    // "\u{20B9}${dplPrice.toStringAsFixed(2)}/NOS",
                                                     widget.tag == 'Edit'
                                                         ? "\u{20B9}${widget.productList![index].dpl!.toStringAsFixed(2)}/NOS"
                                                         : "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
@@ -206,8 +225,10 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
+                                                    // "${totalQty}",
+
                                                     widget.tag == 'Edit'
-                                                        ? "\u{20B9}${widget.productList![index].qty!.toStringAsFixed(2)}/NOS"
+                                                        ? "${widget.productList![index].qty!.toInt()}"
                                                         : "${stockController.myList[index]["Qty"].toString()}",
                                                     style: TextStyle(
                                                         color: blackTextColor,
@@ -227,6 +248,8 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
+                                                    // "\u{20B9}${totalPrice.toStringAsFixed(2)}/NOS",
+
                                                     widget.tag == 'Edit'
                                                         ? "\u{20B9}${widget.productList![index].mrp!.toStringAsFixed(2)}/NOS"
                                                         : "\u{20B9}${stockController.myList[index]["mrp"].toStringAsFixed(2)}/NOS",
@@ -242,81 +265,210 @@ class _MyCartPageState extends State<MyCartPage> {
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        // Row(
-                                        //   mainAxisAlignment:
-                                        //       MainAxisAlignment.end,
-                                        //   children: <Widget>[
-                                        //     IconButton(
-                                        //         icon: Icon(Icons.remove_circle),
-                                        //         onPressed: () {
-                                        //           setState(() {
-                                        //             // if (stockController
-                                        //             //             .myList[index]
-                                        //             //         ["Qty"] !=
-                                        //             //     0) {
-                                        //             //   var qty = stockController
-                                        //             //           .myList[index]
-                                        //             //       ["Qty"]--;
-                                        //             //   stockController
-                                        //             //               .myList[index]
-                                        //             //           ["mrp"] =
-                                        //             //       stockController.myList[
-                                        //             //                   index]
-                                        //             //               ["dpl"] *
-                                        //             //           qty;
-                                        //             //   stockController.update();
-                                        //             //   print(stockController
-                                        //             //       .myList);
-                                        //             // }
-                                        //           });
-                                        //         },
-                                        //         color: primaryColor),
-                                        //     Text(
-                                        //         "${stockController.myList[index]["Qty"].toString()}"),
-                                        //     IconButton(
-                                        //       icon: Icon(Icons.add_circle),
-                                        //       color: primaryColor,
-                                        //       onPressed: () {
-                                        //         setState(() {
-                                        //           // stockController.myList[index]
-                                        //           //     ["Qty"]++;
-
-                                        //           // stockController.totalQty =
-                                        //           //     stockController.totalQty
-                                        //           //             .toInt() +
-                                        //           //         1;
-
-                                        //           // stockController.update();
-                                        //           // print(stockController
-                                        //           //         .myList[index]
-                                        //           //     ["totalPrice"]);
-                                        //           // print(stockController.myList);
-                                        //         });
-                                        //       },
-                                        //     ),
-                                        //   ],
-                                        // ),
                                         Row(
-                                          children: [
-                                            Expanded(
-                                              child: OutlinedButton(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            IconButton(
+                                                icon: Icon(Icons.remove_circle),
                                                 onPressed: () {
-                                                  Get.off(TakeOrderPage());
+                                                  setState(() {
+                                                    if (widget.tag == 'Edit') {
+                                                      if (widget
+                                                              .productList![
+                                                                  index]
+                                                              .qty !=
+                                                          0) {
+                                                        // totalQty--;
+                                                        widget
+                                                                .productList![
+                                                                    index]
+                                                                .qty! -
+                                                            1;
+
+                                                        stockController
+                                                                .totalQty =
+                                                            stockController
+                                                                    .totalQty
+                                                                    .toInt() -
+                                                                1;
+
+                                                        // widget
+                                                        //     .productList![index]
+                                                        //     .mrp = widget
+                                                        //         .productList![
+                                                        //             index]
+                                                        //         .mrp! +
+                                                        //     widget
+                                                        //         .productList![
+                                                        //             index]
+                                                        //         .dpl!;
+
+                                                        total = total -
+                                                            widget
+                                                                .productList![
+                                                                    index]
+                                                                .dpl!;
+
+                                                        stockController
+                                                                .totalAmount =
+                                                            total;
+
+                                                        stockController
+                                                            .update();
+                                                      }
+                                                    } else {
+                                                      if (stockController
+                                                                  .myList[index]
+                                                              ["Qty"] !=
+                                                          0) {
+                                                        stockController
+                                                                .myList[index]
+                                                            ["Qty"]--;
+
+                                                        stockController
+                                                                .totalQty =
+                                                            stockController
+                                                                    .totalQty
+                                                                    .toInt() -
+                                                                1;
+
+                                                        stockController.myList[
+                                                                index]["mrp"] =
+                                                            stockController.myList[
+                                                                        index]
+                                                                    ["mrp"] -
+                                                                myCartList[
+                                                                        index]
+                                                                    ["dpl"];
+
+                                                        total = total -
+                                                            myCartList[index]
+                                                                ["dpl"];
+
+                                                        stockController
+                                                                .totalAmount =
+                                                            total;
+
+                                                        stockController
+                                                            .update();
+                                                        print(stockController
+                                                            .myList);
+                                                      }
+                                                    }
+                                                  });
                                                 },
-                                                child: Text(
-                                                  "Edit",
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                              ),
+                                                color: primaryColor),
+                                            Text(widget.tag == 'Edit'
+                                                ? "${widget.productList![index].qty!.toInt()}"
+                                                : "${stockController.myList[index]["Qty"].toString()}"),
+                                            IconButton(
+                                              icon: Icon(Icons.add_circle),
+                                              color: primaryColor,
+                                              onPressed: () {
+                                                setState(() {
+                                                  if (widget.tag == 'Edit') {
+                                                    // totalQty++;
+                                                    widget.productList![index]
+                                                            .qty! +
+                                                        1;
+
+                                                    // widget.productList![index]
+                                                    //     .mrp = widget
+                                                    //         .productList![index]
+                                                    //         .mrp! +
+                                                    //     widget
+                                                    //         .productList![index]
+                                                    //         .dpl!;
+
+                                                    stockController.totalQty =
+                                                        stockController.totalQty
+                                                                .toInt() +
+                                                            1;
+                                                    // widget.productList![index]
+                                                    //     .mrp = widget
+                                                    //         .productList![index]
+                                                    //         .mrp! +
+                                                    //     widget
+                                                    //         .productList![index]
+                                                    //         .dpl!;
+
+                                                    total = total +
+                                                        widget
+                                                            .productList![index]
+                                                            .dpl!;
+
+                                                    stockController
+                                                        .totalAmount = total;
+
+                                                    stockController.update();
+                                                  } else {
+                                                    stockController
+                                                        .myList[index]["Qty"]++;
+
+                                                    stockController
+                                                                .myList[index]
+                                                            ["mrp"] =
+                                                        stockController.myList[
+                                                                index]["mrp"] +
+                                                            myCartList[index]
+                                                                ["dpl"];
+
+                                                    total = total +
+                                                        myCartList[index]
+                                                            ["dpl"];
+
+                                                    stockController.totalQty =
+                                                        stockController.totalQty
+                                                                .toInt() +
+                                                            1;
+
+                                                    stockController
+                                                        .totalAmount = total;
+
+                                                    stockController.update();
+                                                  }
+
+                                                  // stockController.myList[index]
+                                                  //         ["mrp"] =
+                                                  //     myCartList[index]["dpl"];
+
+                                                  // stockController
+                                                  //         .myList[index]
+                                                  //     ["mrp"];
+
+                                                  // stockController.myList[index]
+                                                  //     ["mrp"] = stockController
+                                                  //             .myList[index]
+                                                  //         ["mrp"] +
+                                                  //     stockController
+                                                  //         .myList[index]["mrp"];
+                                                });
+                                              },
                                             ),
                                           ],
-                                        )
+                                        ),
+                                        // Row(
+                                        //   children: [
+                                        //     Expanded(
+                                        //       child: OutlinedButton(
+                                        //         onPressed: () {
+                                        //           Get.off(TakeOrderPage());
+                                        //         },
+                                        //         child: Text(
+                                        //           "Edit",
+                                        //           maxLines: 2,
+                                        //           style: TextStyle(
+                                        //               color: Colors.black,
+                                        //               fontSize: 16,
+                                        //               fontWeight:
+                                        //                   FontWeight.bold),
+                                        //           textAlign: TextAlign.start,
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // )
                                       ],
                                     ),
                                   )),
@@ -329,7 +481,7 @@ class _MyCartPageState extends State<MyCartPage> {
                               child: GestureDetector(
                                 onTap: () {
                                   widget.tag == "Edit"
-                                      ? Get.off(TakeOrderPage())
+                                      ? Get.off(TakeOrderPage( ))
                                       : Get.back();
                                 },
                                 child: Container(
@@ -371,12 +523,20 @@ class _MyCartPageState extends State<MyCartPage> {
                                   //         ? widget.orderNumber!
                                   //         : "";
                                   if (_formKey.currentState!.validate()) {
+                                    // if (totalQty == 0) {
+                                    //   showSnackBar(
+                                    //     "Retry",
+                                    //     "Qty is 0, you Can Not Update This Item.",
+                                    //     Colors.redAccent);
+
+                                    // } else {
                                     setOrderDataController.fetchData(
                                         context,
                                         myCartList,
                                         widget.orderNumber != null
                                             ? widget.orderNumber
                                             : "");
+                                    // }
                                   } else {
                                     showSnackBar(
                                         "Retry",

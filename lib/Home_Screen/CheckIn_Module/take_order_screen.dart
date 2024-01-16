@@ -9,6 +9,7 @@ import 'package:shalimar/utils/images.dart';
 import 'package:top_modal_sheet/top_modal_sheet.dart';
 
 import '../../Elements/filter_sheet_widget.dart';
+import '../../Model/available_stock_data_model.dart';
 
 class TakeOrderPage extends StatefulWidget {
   const TakeOrderPage({super.key});
@@ -22,11 +23,18 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
   GetAvailableStockDataController stockController =
       Get.put(GetAvailableStockDataController());
 
+  List<Data> productList = [];
+
   @override
   void initState() {
     // TODO: implement initState
-
     super.initState();
+
+    if (stockController.filterAvailableStockDataModel != null) {
+      productList = stockController.filterAvailableStockDataModel!.data!
+          .where((element) => element.division!.contains("D"))
+          .toList();
+    }
   }
 
   @override
@@ -112,18 +120,12 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                stockController.filterAvailableStockDataModel!
-                                        .data!.isNotEmpty
+                                productList!.isNotEmpty
                                     ? Expanded(
                                         child: ListView.builder(
-                                        itemCount: stockController
-                                            .filterAvailableStockDataModel!
-                                            .data!
-                                            .length,
+                                        itemCount: productList!.length,
                                         itemBuilder: (context, index) {
-                                          return stockController
-                                                  .availableStockDataModel!
-                                                  .data![index]
+                                          return productList![index]
                                                   .productdesc!
                                                   .toLowerCase()
                                                   .contains(_searchController
@@ -132,9 +134,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                               ? TakeOrderList(
                                                   index: index,
                                                   context: context,
-                                                  availableStockDataModel:
-                                                      stockController
-                                                          .filterAvailableStockDataModel!)
+                                                  productList: productList!)
                                               : SizedBox();
                                         },
                                       ))
@@ -165,21 +165,6 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                             Colors.redAccent);
                                       } else {
                                         Get.to(MyCartPage());
-                                        // for (var i = 0;
-                                        //     i <=
-                                        //         stockDataController
-                                        //             .myList.length;
-                                        //     i++) {
-                                        //   if (stockDataController.myList[i]
-                                        //       .containsValue('D')) {
-                                        //     showSnackBar(
-                                        //         "Sorry!!",
-                                        //         "Please Add Same Category Product.",
-                                        //         Colors.redAccent);
-                                        //   } else {
-                                        //     Get.to(MyCartPage());
-                                        //   }
-                                        // }
                                       }
                                     },
                                     child: Container(
