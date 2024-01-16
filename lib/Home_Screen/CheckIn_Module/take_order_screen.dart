@@ -165,6 +165,21 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                             Colors.redAccent);
                                       } else {
                                         Get.to(MyCartPage());
+                                        // for (var i = 0;
+                                        //     i <=
+                                        //         stockDataController
+                                        //             .myList.length;
+                                        //     i++) {
+                                        //   if (stockDataController.myList[i]
+                                        //       .containsValue('D')) {
+                                        //     showSnackBar(
+                                        //         "Sorry!!",
+                                        //         "Please Add Same Category Product.",
+                                        //         Colors.redAccent);
+                                        //   } else {
+                                        //     Get.to(MyCartPage());
+                                        //   }
+                                        // }
                                       }
                                     },
                                     child: Container(

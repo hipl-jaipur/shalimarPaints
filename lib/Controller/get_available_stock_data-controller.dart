@@ -18,6 +18,7 @@ class GetAvailableStockDataController extends GetxController {
   var i = false;
   int totalQty = 0;
   var totalAmount = 0.0;
+  var productCategory = "";
   AvailableStockDataModel? availableStockDataModel;
   AvailableStockDataModel? filterAvailableStockDataModel;
   MarketSectorModel? marketSectorModelData;
@@ -78,7 +79,8 @@ class GetAvailableStockDataController extends GetxController {
                   "price":map.dpl,
                   "totalPrice":totalAmount,*/
               "Qty": counter,
-              "mrp": amount
+              "mrp": amount,
+              "productCategory": productCategory
             });
           }
 

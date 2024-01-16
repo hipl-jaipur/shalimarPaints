@@ -623,7 +623,11 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                           .spaceBetween,
                                                                   children: [
                                                                     Text(
-                                                                        "${noteDataController.getcustomerNoteDataModel!.data![index].activityName}"),
+                                                                      "Note: ${noteDataController.getcustomerNoteDataModel!.data![index].note}",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              primaryColor),
+                                                                    ),
                                                                     Text(
                                                                         "${noteDataController.getcustomerNoteDataModel!.data![index].createdOn}")
                                                                   ],

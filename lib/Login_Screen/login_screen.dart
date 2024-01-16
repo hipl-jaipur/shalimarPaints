@@ -146,9 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                                       const EdgeInsets.symmetric(vertical: 40),
                                   child: CustomButton(
                                     btnName: 'Login Now',
-                                    onPressed: ()  {
-                                      
-
+                                    onPressed: () {
                                       // Get.to(MyHomePage());
                                       if (_formKey.currentState!.validate()) {
                                         loginController.loginCall();

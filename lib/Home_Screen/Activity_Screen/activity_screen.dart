@@ -283,6 +283,8 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             dynamic index) {
+                                                          DateTime dateTime = DateTime.parse(controller.filterActivityDataModel!.data![index].createdOn.toString());
+                                                          String formattedDate = formatDateWithoutTime(dateTime);
                                                       var date = DateFormat(
                                                               'dd/mm/yyyy')
                                                           .format(DateTime
@@ -346,9 +348,7 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                                           MainAxisAlignment
                                                                               .spaceBetween,
                                                                       children: [
-                                                                        Text(
-                                                                            date
-                                                                                .toString(),
+                                                                        Text(formattedDate,
                                                                             style: TextStyle(
                                                                                 color: Colors.black,
                                                                                 fontSize: 14,
@@ -381,5 +381,9 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                       ),
                     ));
         });
+  }
+  String formatDateWithoutTime(DateTime dateTime) {
+    final formatter = DateFormat('dd/MM/yyyy');
+    return formatter.format(dateTime);
   }
 }

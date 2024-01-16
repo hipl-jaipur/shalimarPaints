@@ -16,7 +16,7 @@ class SetCustomerNoteDataController extends GetxController {
   TextEditingController noteController = TextEditingController();
   GetNoteDataController noteDataController = Get.put(GetNoteDataController());
 
-  fetchData({required levelCode, required BuildContext context }) async {
+  fetchData({required levelCode, required BuildContext context}) async {
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -74,7 +74,7 @@ class SetCustomerNoteDataController extends GetxController {
           noteController.clear();
           noteDataController.fetchData(levelCode);
           noteDataController.update();
-           Navigator.pop(context);
+          Navigator.pop(context);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;

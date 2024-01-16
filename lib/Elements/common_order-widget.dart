@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -23,12 +24,21 @@ class TakeOrderList extends StatefulWidget {
 class _TakeOrderListState extends State<TakeOrderList> {
   GetAvailableStockDataController stockDataController =
       Get.put(GetAvailableStockDataController());
+  var date = "";
 
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
+    for (var i in widget.availableStockDataModel.data!) {
+      if (i.lastUpdatedOn == null) {
+        date = "";
+      } else {
+        var dateList = i.lastUpdatedOn!.split('T');
+        date = DateFormat('dd/MM/yyyy').format(DateTime.parse(dateList[0]));
+      }
+    }
   }
 
   @override
@@ -49,10 +59,26 @@ class _TakeOrderListState extends State<TakeOrderList> {
                         "${widget.availableStockDataModel.data![widget.index].productcode.toString()} - ${widget.availableStockDataModel.data![widget.index].productdesc.toString()}",
                         style: TextStyle(
                             color: blackTextColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400)),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
                         "\u{20B9}${widget.availableStockDataModel.data![widget.index].dpl.toString()}/NOS",
+                        style: TextStyle(
+                            color: blackTextColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                        widget.availableStockDataModel.data![widget.index]
+                                .division!
+                                .contains('I')
+                            ? "Category: Industrail"
+                            : "Category: Decorative",
                         style: TextStyle(
                             color: blackTextColor,
                             fontSize: 14,
@@ -95,7 +121,9 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                     "dpl": widget.availableStockDataModel
                                         .data![widget.index].dpl,
                                     "mrp": stockDataController.amount,
-                                    "Qty": stockDataController.counter
+                                    "Qty": stockDataController.counter,
+                                    "category": widget.availableStockDataModel
+                                        .data![widget.index].division
                                   });
                                   stockDataController.myList[widget.index]
                                       ["mrp"] = (widget.availableStockDataModel
@@ -114,6 +142,10 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                           ["dpl"] =
                                       widget.availableStockDataModel
                                           .data![widget.index].dpl;
+                                  stockDataController.myList[widget.index]
+                                          ["category"] =
+                                      widget.availableStockDataModel
+                                          .data![widget.index].division;
 
                                   stockDataController.update();
                                   print(stockDataController.myList);
@@ -154,9 +186,15 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                 "dpl": widget.availableStockDataModel
                                     .data![widget.index].dpl,
                                 "mrp": stockDataController.amount,
-                                "Qty": stockDataController.counter
+                                "Qty": stockDataController.counter,
+                                "category": widget.availableStockDataModel
+                                    .data![widget.index].division
                               });
 
+                              stockDataController.myList[widget.index]
+                                      ["category"] =
+                                  widget.availableStockDataModel
+                                      .data![widget.index].division;
                               stockDataController.myList[widget.index]["mrp"] =
                                   ((widget.availableStockDataModel
                                           .data![widget.index].dpl)! *
@@ -230,8 +268,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w400)),
-                                              Text(
-                                                  "${widget.availableStockDataModel.data![widget.index].lastUpdatedOn.toString()}",
+                                              Text("${date}",
                                                   style: TextStyle(
                                                       color: blackTextColor,
                                                       fontSize: 14,

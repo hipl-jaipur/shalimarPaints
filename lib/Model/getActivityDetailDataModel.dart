@@ -1,5 +1,5 @@
-class GetcustomerNoteDataModel {
-  GetcustomerNoteDataModel({
+class GetActivityDetailDataModel {
+  GetActivityDetailDataModel({
     bool? status,
     String? message,
     List<Data>? data,
@@ -9,7 +9,7 @@ class GetcustomerNoteDataModel {
     _data = data;
   }
 
-  GetcustomerNoteDataModel.fromJson(dynamic json) {
+  GetActivityDetailDataModel.fromJson(dynamic json) {
     _status = json['Status'];
     _message = json['Message'];
     if (json['Data'] != null) {
@@ -22,12 +22,12 @@ class GetcustomerNoteDataModel {
   bool? _status;
   String? _message;
   List<Data>? _data;
-  GetcustomerNoteDataModel copyWith({
+  GetActivityDetailDataModel copyWith({
     bool? status,
     String? message,
     List<Data>? data,
   }) =>
-      GetcustomerNoteDataModel(
+      GetActivityDetailDataModel(
         status: status ?? _status,
         message: message ?? _message,
         data: data ?? _data,
@@ -50,16 +50,17 @@ class GetcustomerNoteDataModel {
 class Data {
   Data({
     dynamic? activityDetailID,
-    String? note,
     dynamic? activityID,
     String? activityName,
     String? activityDescription,
-    String? customerCode,
+    dynamic customerCode,
     dynamic? userID,
     dynamic? latitude,
     dynamic? longitude,
+    bool? isValid,
     String? createdOn,
     String? updatedOn,
+    String? status,
     dynamic customername,
     dynamic zoneName,
     dynamic depotName,
@@ -67,7 +68,6 @@ class Data {
     String? employeeName,
   }) {
     _activityDetailID = activityDetailID;
-    _note = note;
     _activityID = activityID;
     _activityName = activityName;
     _activityDescription = activityDescription;
@@ -75,8 +75,10 @@ class Data {
     _userID = userID;
     _latitude = latitude;
     _longitude = longitude;
+    _isValid = isValid;
     _createdOn = createdOn;
     _updatedOn = updatedOn;
+    _status = status;
     _customername = customername;
     _zoneName = zoneName;
     _depotName = depotName;
@@ -86,7 +88,6 @@ class Data {
 
   Data.fromJson(dynamic json) {
     _activityDetailID = json['ActivityDetailID'];
-    _note = json['Note'];
     _activityID = json['ActivityID'];
     _activityName = json['ActivityName'];
     _activityDescription = json['ActivityDescription'];
@@ -94,26 +95,28 @@ class Data {
     _userID = json['UserID'];
     _latitude = json['Latitude'];
     _longitude = json['Longitude'];
+    _isValid = json['IsValid'];
     _createdOn = json['CreatedOn'];
     _updatedOn = json['UpdatedOn'];
+    _status = json['Status'];
     _customername = json['customername'];
     _zoneName = json['zone_name'];
     _depotName = json['depot_name'];
     _territoryName = json['territory_name'];
     _employeeName = json['employee_name'];
   }
-
   dynamic? _activityDetailID;
-  String? _note;
   dynamic? _activityID;
   String? _activityName;
   String? _activityDescription;
-  String? _customerCode;
+  dynamic _customerCode;
   dynamic? _userID;
   dynamic? _latitude;
   dynamic? _longitude;
+  bool? _isValid;
   String? _createdOn;
   String? _updatedOn;
+  String? _status;
   dynamic _customername;
   dynamic _zoneName;
   dynamic _depotName;
@@ -121,16 +124,17 @@ class Data {
   String? _employeeName;
   Data copyWith({
     dynamic? activityDetailID,
-    String? note,
     dynamic? activityID,
     String? activityName,
     String? activityDescription,
-    String? customerCode,
+    dynamic customerCode,
     dynamic? userID,
     dynamic? latitude,
     dynamic? longitude,
+    bool? isValid,
     String? createdOn,
     String? updatedOn,
+    String? status,
     dynamic customername,
     dynamic zoneName,
     dynamic depotName,
@@ -139,7 +143,6 @@ class Data {
   }) =>
       Data(
         activityDetailID: activityDetailID ?? _activityDetailID,
-        note: note ?? _note,
         activityID: activityID ?? _activityID,
         activityName: activityName ?? _activityName,
         activityDescription: activityDescription ?? _activityDescription,
@@ -147,8 +150,10 @@ class Data {
         userID: userID ?? _userID,
         latitude: latitude ?? _latitude,
         longitude: longitude ?? _longitude,
+        isValid: isValid ?? _isValid,
         createdOn: createdOn ?? _createdOn,
         updatedOn: updatedOn ?? _updatedOn,
+        status: status ?? _status,
         customername: customername ?? _customername,
         zoneName: zoneName ?? _zoneName,
         depotName: depotName ?? _depotName,
@@ -156,16 +161,17 @@ class Data {
         employeeName: employeeName ?? _employeeName,
       );
   dynamic? get activityDetailID => _activityDetailID;
-  String? get note => _note;
   dynamic? get activityID => _activityID;
   String? get activityName => _activityName;
   String? get activityDescription => _activityDescription;
-  String? get customerCode => _customerCode;
+  dynamic get customerCode => _customerCode;
   dynamic? get userID => _userID;
   dynamic? get latitude => _latitude;
   dynamic? get longitude => _longitude;
+  bool? get isValid => _isValid;
   String? get createdOn => _createdOn;
   String? get updatedOn => _updatedOn;
+  String? get status => _status;
   dynamic get customername => _customername;
   dynamic get zoneName => _zoneName;
   dynamic get depotName => _depotName;
@@ -175,7 +181,6 @@ class Data {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['ActivityDetailID'] = _activityDetailID;
-    map['Note'] = _note;
     map['ActivityID'] = _activityID;
     map['ActivityName'] = _activityName;
     map['ActivityDescription'] = _activityDescription;
@@ -183,8 +188,10 @@ class Data {
     map['UserID'] = _userID;
     map['Latitude'] = _latitude;
     map['Longitude'] = _longitude;
+    map['IsValid'] = _isValid;
     map['CreatedOn'] = _createdOn;
     map['UpdatedOn'] = _updatedOn;
+    map['Status'] = _status;
     map['customername'] = _customername;
     map['zone_name'] = _zoneName;
     map['depot_name'] = _depotName;

@@ -416,12 +416,22 @@ class _StockScreenState extends State<StockScreen> {
                                             SizedBox(height: 12,),
                                             Row(
                                               children: [
-                                                Text( "Depot :(${stockController.filterStockDataModel!.stockMaster![index].stockDetailMaster![0].depotCode.toString()}) Qty:",
+                                                Text( "Depot :${stockController.filterStockDataModel!.stockMaster![index].stockDetailMaster![0].depotName.toString()}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w700)), Text( "(${stockController.filterStockDataModel!.stockMaster![index].stockDetailMaster![0].depotCode.toString()})",
+                                                    style: TextStyle(
+                                                        color: primaryColor,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w700)),
+                                                SizedBox(width: 12,),
+                                                Text( "Qty : ",
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 16,
                                                         fontWeight: FontWeight.w700)),
-                                                SizedBox(width: 5,),
+
                                                 Text( stockController.filterStockDataModel!.stockMaster![index].stockDetailMaster![0].availbleQty.toStringAsFixed(0),
                                                     style: TextStyle(
                                                         color: Colors.black,
