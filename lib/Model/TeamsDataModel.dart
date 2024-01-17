@@ -46,9 +46,9 @@ TeamsDataModel copyWith({  bool? status,
 
 class Data {
   Data({
-      num? hirelevel, 
-      num? reportingmgrId, 
-      num? employeeid, 
+      num? hirelevel,
+      num? reportingmgrId,
+    dynamic? employeeid,
       String? employeecode, 
       String? employeename, 
       String? designationName, 
@@ -73,14 +73,14 @@ class Data {
   }
   num? _hirelevel;
   num? _reportingmgrId;
-  num? _employeeid;
+  dynamic? _employeeid;
   String? _employeecode;
   String? _employeename;
   String? _designationName;
   String? _status;
 Data copyWith({  num? hirelevel,
   num? reportingmgrId,
-  num? employeeid,
+  dynamic? employeeid,
   String? employeecode,
   String? employeename,
   String? designationName,
@@ -95,7 +95,7 @@ Data copyWith({  num? hirelevel,
 );
   num? get hirelevel => _hirelevel;
   num? get reportingmgrId => _reportingmgrId;
-  num? get employeeid => _employeeid;
+  dynamic? get employeeid => _employeeid;
   String? get employeecode => _employeecode;
   String? get employeename => _employeename;
   String? get designationName => _designationName;

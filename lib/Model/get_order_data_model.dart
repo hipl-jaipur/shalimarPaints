@@ -46,7 +46,7 @@ GetOrderDataModel copyWith({  bool? status,
 
 class OrderData {
   OrderData({
-      num? activityDetailID, 
+      num? activityDetailID,
       String? orderSource, 
       String? customercode, 
       String? customercodeshipto, 
@@ -54,10 +54,10 @@ class OrderData {
       String? remarks, 
       String? ordernumber, 
       String? orderdate, 
-      num? activityID, 
-      num? userID, 
-      num? latitude, 
-      num? longitude, 
+      num? activityID,
+      num? userID,
+      num? latitude,
+      num? longitude,
       String? sAPordernumber, 
       String? sAPRemark, 
       String? orderStatus, 
@@ -238,9 +238,9 @@ class OrderDetailMaster {
   OrderDetailMaster({
       String? ordernumber, 
       String? productcode, 
-      num? qty, 
-      num? dpl, 
-      num? mrp, 
+      num? qty,
+      num? dpl,
+      num? mrp,
       String? productdesc, 
       String? marketsectorname, 
       String? productgroupname,}){

@@ -46,15 +46,15 @@ EmployeeDetailsModel copyWith({  bool? status,
 
 class EmployeeDetails {
   EmployeeDetails({
-      num? employeeID, 
+    dynamic? employeeID,
       bool? isValid, 
       String? employeeCode, 
       String? employeeName, 
       String? employeeEmail, 
-      num? employeeMobile, 
-      num? designationId, 
+      num? employeeMobile,
+      num? designationId,
       String? designationName, 
-      num? reportingmgrId, 
+      num? reportingmgrId,
       dynamic reportingmgrName, 
       String? division, 
       String? status,}){
@@ -86,7 +86,7 @@ class EmployeeDetails {
     _division = json['Division'];
     _status = json['Status'];
   }
-  num? _employeeID;
+  dynamic? _employeeID;
   bool? _isValid;
   String? _employeeCode;
   String? _employeeName;
@@ -123,7 +123,7 @@ class EmployeeDetails {
   division: division ?? _division,
   status: status ?? _status,
 );
-  num? get employeeID => _employeeID;
+  dynamic? get employeeID => _employeeID;
   bool? get isValid => _isValid;
   String? get employeeCode => _employeeCode;
   String? get employeeName => _employeeName;

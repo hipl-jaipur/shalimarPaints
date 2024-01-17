@@ -22,6 +22,8 @@ class SetActivityDetailDataController extends GetxController {
   var levelCode = "".obs;
   var levelAddress = "".obs;
   var isCheckinOnSite = false.obs;
+
+  var attendanceId=0;
   GetActivityDetailDataModel? getActivityDetailDataModel;
 
   // void startTimer() {
@@ -111,7 +113,7 @@ class SetActivityDetailDataController extends GetxController {
     }
   }
 
-  getActivityDetailData() async {
+  getActivityDetailData(bool tag ,var id) async {
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -120,7 +122,7 @@ class SetActivityDetailDataController extends GetxController {
 
       print('get Activity Detail Data API called');
 
-      final body = {"ActivityId": activityID, "UserId": employeeId};
+      final body = {"ActivityId": activityID, "UserId":tag ?employeeId:id};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',

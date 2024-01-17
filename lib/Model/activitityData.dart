@@ -46,7 +46,7 @@ ActivitityData copyWith({  bool? status,
 
 class Data {
   Data({
-      num? userActivityID, 
+      num? userActivityID,
       String? activityName, 
       dynamic activityDescription, 
       bool? isvalid, 

@@ -1,36 +1,36 @@
-class OnStandingModel {
-  OnStandingModel({
+class TargetVsActualDataModel {
+  TargetVsActualDataModel({
       bool? status, 
       String? message, 
-      List<outStanding>? data,}){
+      List<Data>? data,}){
     _status = status;
     _message = message;
     _data = data;
 }
 
-  OnStandingModel.fromJson(dynamic json) {
+  TargetVsActualDataModel.fromJson(dynamic json) {
     _status = json['Status'];
     _message = json['Message'];
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
-        _data?.add(outStanding.fromJson(v));
+        _data?.add(Data.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<outStanding>? _data;
-OnStandingModel copyWith({  bool? status,
+  List<Data>? _data;
+TargetVsActualDataModel copyWith({  bool? status,
   String? message,
-  List<outStanding>? data,
-}) => OnStandingModel(  status: status ?? _status,
+  List<Data>? data,
+}) => TargetVsActualDataModel(  status: status ?? _status,
   message: message ?? _message,
   data: data ?? _data,
 );
   bool? get status => _status;
   String? get message => _message;
-  List<outStanding>? get data => _data;
+  List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -44,27 +44,20 @@ OnStandingModel copyWith({  bool? status,
 
 }
 
-class outStanding {
-  outStanding({
+class Data {
+  Data({
       String? entitytype, 
-      num? parentLevelID,
-      num? levelID,
+      num? parentLevelID, 
+      num? levelID, 
       String? levelName, 
       String? levelCode, 
-      num? levelMgrId,
+      num? levelMgrId, 
       String? levelMgrName, 
       String? levelMgrDesignation, 
-      num? srno,
-      dynamic finalOS, 
-      dynamic unadjusted, 
-      dynamic age030, 
-      dynamic age3160, 
-      dynamic age6190, 
-      dynamic age91120, 
-      dynamic age121150, 
-      dynamic age151180, 
-      dynamic age181Above, 
-      dynamic bucketTotal, 
+      num? srno, 
+      num? target, 
+      num? sales, 
+      num? achivementPer, 
       num? hireLevel,}){
     _entitytype = entitytype;
     _parentLevelID = parentLevelID;
@@ -75,20 +68,13 @@ class outStanding {
     _levelMgrName = levelMgrName;
     _levelMgrDesignation = levelMgrDesignation;
     _srno = srno;
-    _finalOS = finalOS;
-    _unadjusted = unadjusted;
-    _age030 = age030;
-    _age3160 = age3160;
-    _age6190 = age6190;
-    _age91120 = age91120;
-    _age121150 = age121150;
-    _age151180 = age151180;
-    _age181Above = age181Above;
-    _bucketTotal = bucketTotal;
+    _target = target;
+    _sales = sales;
+    _achivementPer = achivementPer;
     _hireLevel = hireLevel;
 }
 
-  outStanding.fromJson(dynamic json) {
+  Data.fromJson(dynamic json) {
     _entitytype = json['entitytype'];
     _parentLevelID = json['ParentLevelID'];
     _levelID = json['LevelID'];
@@ -98,16 +84,9 @@ class outStanding {
     _levelMgrName = json['LevelMgr_Name'];
     _levelMgrDesignation = json['LevelMgr_Designation'];
     _srno = json['srno'];
-    _finalOS = json['FinalOS'];
-    _unadjusted = json['Unadjusted'];
-    _age030 = json['age_0_30'];
-    _age3160 = json['age_31_60'];
-    _age6190 = json['age_61_90'];
-    _age91120 = json['age_91_120'];
-    _age121150 = json['age_121_150'];
-    _age151180 = json['age_151_180'];
-    _age181Above = json['age_181_above'];
-    _bucketTotal = json['BucketTotal'];
+    _target = json['Target'];
+    _sales = json['Sales'];
+    _achivementPer = json['AchivementPer'];
     _hireLevel = json['HireLevel'];
   }
   String? _entitytype;
@@ -119,18 +98,11 @@ class outStanding {
   String? _levelMgrName;
   String? _levelMgrDesignation;
   num? _srno;
-  dynamic _finalOS;
-  dynamic _unadjusted;
-  dynamic _age030;
-  dynamic _age3160;
-  dynamic _age6190;
-  dynamic _age91120;
-  dynamic _age121150;
-  dynamic _age151180;
-  dynamic _age181Above;
-  dynamic _bucketTotal;
+  num? _target;
+  num? _sales;
+  num? _achivementPer;
   num? _hireLevel;
-  outStanding copyWith({  String? entitytype,
+Data copyWith({  String? entitytype,
   num? parentLevelID,
   num? levelID,
   String? levelName,
@@ -139,18 +111,11 @@ class outStanding {
   String? levelMgrName,
   String? levelMgrDesignation,
   num? srno,
-  dynamic finalOS,
-  dynamic unadjusted,
-  dynamic age030,
-  dynamic age3160,
-  dynamic age6190,
-  dynamic age91120,
-  dynamic age121150,
-  dynamic age151180,
-  dynamic age181Above,
-  dynamic bucketTotal,
+  num? target,
+  num? sales,
+  num? achivementPer,
   num? hireLevel,
-}) => outStanding(  entitytype: entitytype ?? _entitytype,
+}) => Data(  entitytype: entitytype ?? _entitytype,
   parentLevelID: parentLevelID ?? _parentLevelID,
   levelID: levelID ?? _levelID,
   levelName: levelName ?? _levelName,
@@ -159,16 +124,9 @@ class outStanding {
   levelMgrName: levelMgrName ?? _levelMgrName,
   levelMgrDesignation: levelMgrDesignation ?? _levelMgrDesignation,
   srno: srno ?? _srno,
-  finalOS: finalOS ?? _finalOS,
-  unadjusted: unadjusted ?? _unadjusted,
-  age030: age030 ?? _age030,
-  age3160: age3160 ?? _age3160,
-  age6190: age6190 ?? _age6190,
-  age91120: age91120 ?? _age91120,
-  age121150: age121150 ?? _age121150,
-  age151180: age151180 ?? _age151180,
-  age181Above: age181Above ?? _age181Above,
-  bucketTotal: bucketTotal ?? _bucketTotal,
+  target: target ?? _target,
+  sales: sales ?? _sales,
+  achivementPer: achivementPer ?? _achivementPer,
   hireLevel: hireLevel ?? _hireLevel,
 );
   String? get entitytype => _entitytype;
@@ -180,16 +138,9 @@ class outStanding {
   String? get levelMgrName => _levelMgrName;
   String? get levelMgrDesignation => _levelMgrDesignation;
   num? get srno => _srno;
-  dynamic get finalOS => _finalOS;
-  dynamic get unadjusted => _unadjusted;
-  dynamic get age030 => _age030;
-  dynamic get age3160 => _age3160;
-  dynamic get age6190 => _age6190;
-  dynamic get age91120 => _age91120;
-  dynamic get age121150 => _age121150;
-  dynamic get age151180 => _age151180;
-  dynamic get age181Above => _age181Above;
-  dynamic get bucketTotal => _bucketTotal;
+  num? get target => _target;
+  num? get sales => _sales;
+  num? get achivementPer => _achivementPer;
   num? get hireLevel => _hireLevel;
 
   Map<String, dynamic> toJson() {
@@ -203,16 +154,9 @@ class outStanding {
     map['LevelMgr_Name'] = _levelMgrName;
     map['LevelMgr_Designation'] = _levelMgrDesignation;
     map['srno'] = _srno;
-    map['FinalOS'] = _finalOS;
-    map['Unadjusted'] = _unadjusted;
-    map['age_0_30'] = _age030;
-    map['age_31_60'] = _age3160;
-    map['age_61_90'] = _age6190;
-    map['age_91_120'] = _age91120;
-    map['age_121_150'] = _age121150;
-    map['age_151_180'] = _age151180;
-    map['age_181_above'] = _age181Above;
-    map['BucketTotal'] = _bucketTotal;
+    map['Target'] = _target;
+    map['Sales'] = _sales;
+    map['AchivementPer'] = _achivementPer;
     map['HireLevel'] = _hireLevel;
     return map;
   }

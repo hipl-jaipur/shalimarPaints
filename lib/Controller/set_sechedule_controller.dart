@@ -77,7 +77,7 @@ class SetCustomerScheduleController extends GetxController {
           startTimeController.clear();
           endTimeController.clear();
           dateController.clear();
-          scheduleDataController.fetchData(levelCode);
+          scheduleDataController.fetchData(levelCode,0,true);
           scheduleDataController.update();
           Navigator.pop(context);
         } else {

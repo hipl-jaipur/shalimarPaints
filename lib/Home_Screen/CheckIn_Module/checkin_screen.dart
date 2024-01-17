@@ -21,6 +21,7 @@ import 'package:shalimar/Home_Screen/CheckIn_Module/take_order_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/view_open_order_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckInPage extends StatefulWidget {
   String? tag;
@@ -96,6 +97,7 @@ class _CheckInPageState extends State<CheckInPage> {
   @override
   void initState() {
     // TODO: implement initState
+    getId();
     super.initState();
 
     // if (widget.tag != "Order Success") {
@@ -108,10 +110,13 @@ class _CheckInPageState extends State<CheckInPage> {
 
     // noteDataController.levelCode.value = controller.levelCode.value;
     noteDataController.fetchData(controller.levelCode.value);
-    scheduleDataController.fetchData(controller.levelCode.value);
-    activityController.getActivityData(controller.levelCode.value);
+    scheduleDataController.fetchData(controller.levelCode.value,0,true);
+    activityController.getActivityData(controller.levelCode.value,employeeId);
   }
-
+  getId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    employeeId = prefs.getInt("EmployeeId")!;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

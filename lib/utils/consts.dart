@@ -3,6 +3,7 @@ class AppConstants {
   static const String BASE_URL = 'https://mayanksoftwares.in/';
   static const String USER_ID = 'userId';
 
+
   static const String login = "${BASE_URL}GetLoginData";
   static const String updateLoginData = "${BASE_URL}UpdateLoginData";
   static const String forgetPassword = "${BASE_URL}ForgetPassword";
@@ -51,4 +52,5 @@ class AppConstants {
   static const String getActivityDetailData = "${BASE_URL}GetActivityDetailData";
   static const String getTeamsData = "${BASE_URL}GetEmployeeHireData";
   static const String getEmployeeData = "${BASE_URL}GetEmployeeData";
+  static const String getTargetVsActualData = "${BASE_URL}GetCustomerHireTargetVsActual";
 }

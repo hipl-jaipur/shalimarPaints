@@ -15,7 +15,7 @@ class TeamsScreen extends StatefulWidget {
 }
 
 class _TeamsScreenState extends State<TeamsScreen> {
-  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,58 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                searchBar(_searchController),
+                                TextField(
+                                  controller: searchController,
+                                  textInputAction: TextInputAction.search,
+                                  textCapitalization: TextCapitalization.words,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    contentPadding: const EdgeInsets.fromLTRB(
+                                        20.0, 0.0, 20.0, 0.0),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                          color: Color(0xffECE6E6),
+                                        )),
+                                    disabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                          color: Color(0xffECE6E6),
+                                        )),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                          color: Color(0xffECE6E6),
+                                        )),
+                                    hintText: 'Search',
+                                    prefixIcon: IconButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_circle_left,
+                                          color: primaryColor,
+                                          size: 40,
+                                        )),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(
+                                          Icons.sort_rounded,
+                                          color: primaryColor,
+                                          size: 40,
+                                        )),
+                                  ),
+                                  onChanged: (c){
+                                    setState(() {
+
+                                    });
+                                  },
+                                ),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -54,42 +105,35 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                                 controller.temasDataList != null
                                             ? ListView.builder(
                                                 itemCount: controller
-                                                    .filteredLevelFirstList!
+                                                    .temasDataList!.data!
                                                     .length,
                                                 itemBuilder:
                                                     (BuildContext context,
                                                         dynamic index) {
-                                                  return GestureDetector(
+
+                                                  return controller.temasDataList!.data![index]
+                                                      .employeename!
+                                                      .toLowerCase()
+                                                      .contains(searchController
+                                                      .text
+                                                      .toLowerCase())? GestureDetector(
                                                     onTap: () {
                                                       Get.to(TeamsDetailsScreen(
                                                         id: controller
-                                                            .filteredLevelFirstList[
+                                                            .temasDataList!.data![
                                                                 index]
                                                             .employeeid
                                                             .toString(),
                                                       ));
                                                     },
                                                     child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: controller
-                                                                      .filteredLevelFirstList[
+                                                      margin: EdgeInsets.symmetric(
+                                                          horizontal: controller
+                                                                      .temasDataList!.data![
                                                                           index]
                                                                       .hirelevel ==
-                                                                  2
-                                                              ? 12
-                                                              : controller
-                                                                          .filteredLevelFirstList[
-                                                                              index]
-                                                                          .hirelevel ==
-                                                                      3
-                                                                  ? 25
-                                                                  : controller.filteredLevelFirstList![index]
-                                                                              .hirelevel ==
-                                                                          4
-                                                                      ? 30
-                                                                      : controller.filteredLevelFirstList![index].hirelevel == 5
-                                                                          ? 40
-                                                                          : 0),
+                                                                  1 ?0:14
+                                                      ),
                                                       child: Card(
                                                         child: Padding(
                                                           padding:
@@ -97,7 +141,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                                                   .all(8.0),
                                                           child: Row(
                                                             children: [
-                                                              GestureDetector(
+                                                       /*       GestureDetector(
                                                                 onTap: () {
                                                                   controller.filteredLevelFirstList.addAll(controller
                                                                       .temasDataList!
@@ -125,8 +169,8 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                                                         .grey,
                                                                     child: Center(
                                                                         child: Icon(
-                                                                            Icons.add))),
-                                                              ),
+                                                                            Icons.add))),*/
+                                                              // ),
                                                               SizedBox(
                                                                 width: 15,
                                                               ),
@@ -179,7 +223,7 @@ class _TeamsScreenState extends State<TeamsScreen> {
                                                         ),
                                                       ),
                                                     ),
-                                                  );
+                                                  ):SizedBox();
                                                 },
                                               )
                                             : Center(

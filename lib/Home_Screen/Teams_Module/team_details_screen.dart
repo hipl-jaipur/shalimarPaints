@@ -2,14 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:shalimar/Home_Screen/Activity_Screen/activity_screen.dart';
+import 'package:shalimar/Home_Screen/Teams_Module/emp_team_screen.dart';
 
 import '../../Controller/teams_controller.dart';
 import '../../Elements/common_searchbar_widget.dart';
 import '../../utils/colors.dart';
 import '../../utils/images.dart';
+import '../Customer_Module/my_scedule_screen.dart';
+import '../customer_attendance_screen.dart';
 
 class TeamsDetailsScreen extends StatefulWidget {
   final String id;
+
   const TeamsDetailsScreen({super.key, required this.id});
 
   @override
@@ -26,6 +31,7 @@ class _TeamsDetailsScreenState extends State<TeamsDetailsScreen> {
     teamsController.getEmployData(widget.id);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TeamsController>(
@@ -44,90 +50,180 @@ class _TeamsDetailsScreenState extends State<TeamsDetailsScreen> {
                                 fit: BoxFit.fill,
                               )),
                           Positioned(
-                              child: Padding(
-                            padding: const EdgeInsets.all(14.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                searchBar(_searchController),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 25,
-                                            child: Icon(Icons.person),
-                                          ),
-                                          SizedBox(height: 5,),
-                                          Text(controller.employeeDetailsModel!
-                                              .data![0].employeeName
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: primaryColor,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold)) ,
-                                          SizedBox(height: 5,),
-                                          Text("Designation: ${controller.employeeDetailsModel!.data![0].designationName.toString()}",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold)),
-
-                                          SizedBox(height: 5,),
-                                          CircleAvatar(
-                                            radius: 15,
-                                            backgroundColor: primaryColor,
-                                            child: Icon(Icons.phone,size: 16,color: Colors.white,),),
-                                          SizedBox(height: 10,),
-                                          Container(
-                                            color: primaryLight,
-                                            child: Column(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 14.0,right: 14,top: 14,bottom: 10),
+                                    child: searchBar(_searchController),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    color: primaryLight,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 25,
+                                              child: Icon(Icons.person),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                                controller.employeeDetailsModel!
+                                                    .data![0].employeeName
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: primaryColor,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold)),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                                "Designation: ${controller.employeeDetailsModel!.data![0].designationName.toString()}",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold)),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                ListTile(
-                                                  leading: Icon(Icons.local_activity_outlined),
-                                                  title: Text('Activity History'),
+                                                CircleAvatar(
+                                                  radius: 15,
+                                                  backgroundColor: primaryColor,
+                                                  child: Icon(
+                                                    Icons.phone,
+                                                    size: 16,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                                ListTile(
-                                                  leading: Icon(Icons.route),
-                                                  title: Text('Route'),
-                                                ),  ListTile(
-                                                  leading: Icon(Icons.menu_book),
-                                                  title: Text('Attendance'),
-                                                ),
-                                                ListTile(
-                                                  leading: Icon(Icons.class_),
-                                                  title: Text('Schedule'),
-                                                ), ListTile(
-                                                  leading: Icon(Icons.person),
-                                                  title: Text('Profile'),
-                                                ),
-                                                ListTile(
-                                                  leading: Icon(Icons.people_alt_outlined),
-                                                  title: Text('Team'),
+                                                SizedBox(width: 20,),
+                                                CircleAvatar(
+                                                  radius: 15,
+                                                  backgroundColor: primaryColor,
+                                                  child: Icon(
+                                                    Icons.email_outlined,
+                                                    size: 16,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          )
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                    controller.employeeDetailsModel!.data![0].reportingmgrName??"",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.bold)),
+                                                Text(
+                                                    " > ${controller.employeeDetailsModel!.data![0].employeeName}",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.bold)),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
 
-                                        ],
-                                      ),
+
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Card(
+                                              child: ListTile(
+                                        onTap: (){
+                                          Get.to(() =>CustomerActivityScreen(tag: 'Team', id: controller.employeeDetailsModel!.data![0].employeeID,));
+                                                                                },
+                                                leading: Icon(Icons
+                                                    .local_activity_outlined),
+                                                title:
+                                                    Text('Activity History'),
+                                              ),
+                                            ),
+
+                                            Card(
+                                              child: ListTile(
+                                                onTap: (){
+
+                                                  Get.to(()=>CustomerAttendanceScreen(tag: false, id: controller.employeeDetailsModel!.data![0].employeeID,));
+                                                },
+                                                leading:
+                                                    Icon(Icons.menu_book),
+                                                title: Text('Attendance'),
+                                              ),
+                                            ),
+                                            Card(
+                                              child: ListTile(
+                                                onTap: (){
+
+                                                  Get.to(MyScedulePage(tag: false, id:  controller.employeeDetailsModel!.data![0].employeeID,));
+                                                },
+                                                leading: Icon(Icons.class_),
+                                                title: Text('Schedule'),
+                                              ),
+                                            ),
+                                            Card(
+                                              child: ListTile(
+                                                leading: Icon(Icons.person),
+                                                title: Text('Profile'),
+                                              ),
+                                            ),
+                                            Card(
+                                              child: ListTile(
+                                                onTap: () {
+                                                  teamsController
+                                                      .filteredLevelFirstList
+                                                      .clear();
+                                                  teamsController
+                                                          .filteredLevelFirstList =
+                                                      teamsController
+                                                          .temasDataList!
+                                                          .data!
+                                                          .where((item) =>
+                                                              item.reportingmgrId ==
+                                                              controller
+                                                                  .employeeDetailsModel!
+                                                                  .data![0]
+                                                                  .employeeID)
+                                                          .toList();
+                                                  Get.to(() => EmpTeamsScreen());
+                                                },
+
+                                                leading: Icon(Icons
+                                                    .people_alt_outlined),
+                                                title: Text('Team'),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
                                     ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ))
+                                  )
+                                ],
+                              ))
                         ],
                       ),
                     ));

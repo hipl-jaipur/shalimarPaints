@@ -29,7 +29,7 @@ class ActivityController extends GetxController {
   //   getActivityMasterData();
   // }
 
-  getActivityData(String customerCode) async {
+  getActivityData(var customerCode,employeeId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Activity Data api called');
@@ -40,7 +40,7 @@ class ActivityController extends GetxController {
 
       print('Get Activity Data API called');
 
-      final body = {"UserId": empId, "CustomerCode": customerCode};
+      final body = {"UserId": employeeId, "CustomerCode": customerCode};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',

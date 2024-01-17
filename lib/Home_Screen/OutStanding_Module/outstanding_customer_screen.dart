@@ -155,7 +155,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                             child: FittedBox(
                                               fit: BoxFit.fill,
                                               child: Text(
-                                                "${outStandingController.filteredCustomerList![index].levelName.toString()}(${ outStandingController.filteredCustomerList![index].levelID.toString()})",
+                                                "${outStandingController.filteredCustomerList![index].levelName.toString()}(${ outStandingController.filteredCustomerList![index].levelCode.toString()})",
                                                 style: TextStyle(
                                                     color: blackTextColor,
                                                     fontSize: 16,

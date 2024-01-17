@@ -22,14 +22,14 @@ class GetScheduleDataController extends GetxController {
 
   
 
-  fetchData(String levelCode) async {
+  fetchData(var levelCode ,id,bool tag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var EmployeeId = prefs.getInt('EmployeeId');
     try {
       isLoading(true);
       print('Get Schedule api called');
 
-      final body = {"CustomerCode": levelCode, "UserId": EmployeeId};
+      final body = {"CustomerCode": levelCode, "UserId":tag? EmployeeId:id};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',

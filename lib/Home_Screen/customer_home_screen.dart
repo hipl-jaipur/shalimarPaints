@@ -20,6 +20,13 @@ import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Controller/target_vs_actual_controller.dart';
+import 'Target_Vs_Actual_Screen/target_vas_actual_region_screen.dart';
+import 'Target_Vs_Actual_Screen/target_vs_actual_customer_screen.dart';
+import 'Target_Vs_Actual_Screen/target_vs_actual_depot_screen.dart';
+import 'Target_Vs_Actual_Screen/target_vs_actual_territory_svreen.dart';
+import 'Target_Vs_Actual_Screen/target_vs_actual_zone_csreen.dart';
+
 class CustomerHomeScreen extends StatefulWidget {
   String EmployeeName;
   String Email;
@@ -46,8 +53,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       Get.put(GetUserActivityController());
   GetAvailableStockDataController marketSectorController =
       Get.put(GetAvailableStockDataController());
-  GetScheduleDataController scheduleDataController =
-      Get.put(GetScheduleDataController());
+  GetScheduleDataController scheduleDataController = Get.put(GetScheduleDataController());
+  TargetVsActualController targetVsActualController = Get.put(TargetVsActualController());
 
   TeamsController teamsController = Get.put(TeamsController());
   @override
@@ -145,8 +152,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                   onTap: () {
                                     // getUserActivityController.fetchData();
                                     // Get.to(ScheduleVisitPage());
-                                    scheduleDataController.fetchData("");
-                                    Get.to(MyScedulePage());
+
+                                    Get.to(MyScedulePage(tag: true, id: 0,));
                                   },
                                   child: Card(
                                     child: Center(
@@ -214,38 +221,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                     )),
                                   ),
                                 ),
-                                // Container(
-                                //   child: Card(
-                                //     child: Center(
-                                //         child: Column(
-                                //       mainAxisAlignment: MainAxisAlignment.center,
-                                //       children: [
-                                //         Icon(
-                                //           Icons.menu_book_outlined,
-                                //           color: primaryColor,
-                                //           size: 40,
-                                //         ),
-                                //         SizedBox(
-                                //           height: 10,
-                                //         ),
-                                //         Text('Learn',
-                                //             style: TextStyle(
-                                //                 color: Colors.black,
-                                //                 fontSize: 16,
-                                //                 fontWeight: FontWeight.bold)),
-                                //       ],
-                                //     )),
-                                //   ),
-                                // ),
+
                                 GestureDetector(
                                   onTap: () {
-                                    teamsController.filteredLevelFirstList
+                             /*       teamsController.filteredLevelFirstList
                                         .clear();
                                     teamsController.filteredLevelFirstList =
                                         teamsController.temasDataList!.data!
                                             .where(
                                                 (item) => item.hirelevel == 1)
-                                            .toList();
+                                            .toList();*/
                                     Get.to(TeamsScreen());
                                   },
                                   child: Container(
@@ -354,35 +339,56 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                     ),
                                   ),
                                 ),
-                                // GestureDetector(
-                                //   onTap: (){
-                                //     Get.to(ActivityScreen());
-                                //   },
-                                //   child: Container(
-                                //     child: Card(
-                                //       child: Center(
-                                //           child: Column(
-                                //             mainAxisAlignment:
-                                //             MainAxisAlignment.center,
-                                //             children: [
-                                //               Icon(
-                                //                 Icons.local_activity_outlined,
-                                //                 color: primaryColor,
-                                //                 size: 40,
-                                //               ),
-                                //               SizedBox(
-                                //                 height: 10,
-                                //               ),
-                                //               Text('Activity',
-                                //                   style: TextStyle(
-                                //                       color: Colors.black,
-                                //                       fontSize: 16,
-                                //                       fontWeight: FontWeight.bold)),
-                                //             ],
-                                //           )),
-                                //     ),
-                                //   ),
-                                // ),
+                                GestureDetector(
+                                  onTap: () {
+                                    if (targetVsActualController
+                                        .filteredZoneList.length >
+                                        0) {
+                                      Get.to(TargetVsActualZone());
+                                    } else if (targetVsActualController
+                                        .filteredAllRegionList.length >
+                                        0) {
+                                      Get.to(TargetVsActyalRegion());
+                                    } else if (targetVsActualController
+                                        .filteredAllDepotList.length >
+                                        0) {
+                                      Get.to(TargetVsActualDepot());
+                                    } else if (targetVsActualController
+                                        .filteredAllTerritorList.length >
+                                        0) {
+                                      Get.to(TargetVsActualTerritory());
+                                    } else if (targetVsActualController
+                                        .filteredAllCustomerList.length >
+                                        0) {
+                                      Get.to(TargetVsActualCustomer());
+                                    }
+                                    // Get.to(OutStandingScreen());
+                                  },
+                                  child: Container(
+                                    child: Card(
+                                      child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.tag,
+                                                color: primaryColor,
+                                                size: 40,
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text('Target Vs Actual',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.bold)),
+                                            ],
+                                          )),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           )

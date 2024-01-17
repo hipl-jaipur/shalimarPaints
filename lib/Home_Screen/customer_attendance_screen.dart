@@ -7,8 +7,12 @@ import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
+import '../Elements/common_searchbar_widget.dart';
+
 class CustomerAttendanceScreen extends StatefulWidget {
-  const CustomerAttendanceScreen({super.key});
+  final bool tag;
+  final int id;
+  const CustomerAttendanceScreen({super.key, required this.tag, required this.id});
 
   @override
   State<CustomerAttendanceScreen> createState() =>
@@ -16,6 +20,8 @@ class CustomerAttendanceScreen extends StatefulWidget {
 }
 
 class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   SetActivityDetailDataController dataController =
       Get.put(SetActivityDetailDataController());
 
@@ -25,14 +31,14 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    dataController.getActivityDetailData();
-    if (dataController.getActivityDetailDataModel != null) {
+    dataController.getActivityDetailData(widget.tag,widget.id);
+  /*  if (dataController.getActivityDetailDataModel != null) {
       for (var i in dataController.getActivityDetailDataModel!.data!) {
         var dateList = i.createdOn!.split('T');
-        date = DateFormat('dd/MM/yyyy').format(DateTime.parse(dateList[0]));
+        date = DateFormat('dd/MM/yyyy hh').format(DateTime.parse(dateList[0]));
         // date = dateList[0];
       }
-    }
+    }*/
   }
 
   @override
@@ -61,7 +67,7 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                             SizedBox(
                               height: 20,
                             ),
-                            Row(
+                          widget.tag?  Row(
                               children: [
                                 Expanded(
                                     child: OutlinedButton(
@@ -104,7 +110,7 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold))))
                               ],
-                            ),
+                            ): searchBar(_searchController),
                             SizedBox(
                               height: 20,
                             ),
@@ -149,6 +155,11 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                                   .data!
                                                   .length,
                                               itemBuilder: (context, index) {
+
+                                                DateTime time = DateTime.parse(controller.getActivityDetailDataModel!.data![index].createdOn.toString());
+
+                                                // Format the DateTime object to display in the desired format
+                                                String formattedDateTime = DateFormat('yyyy-MM-dd  HH:mm:ss.SSS').format(time);
                                                 return Padding(
                                                   padding: const EdgeInsets.all(
                                                       10.0),
@@ -184,7 +195,7 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                                               height: 5,
                                                             ),
                                                             Text(
-                                                                "Date: ${date}"),
+                                                                "Date: ${formattedDateTime}"),
                                                             SizedBox(
                                                               height: 5,
                                                             ),

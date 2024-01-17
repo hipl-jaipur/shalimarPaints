@@ -11,3 +11,4 @@ Color blackDarkTheme =  Color(0xff2C2C2C);
 Color greyColor = Colors.grey;
 
 
+var employeeId = 0;

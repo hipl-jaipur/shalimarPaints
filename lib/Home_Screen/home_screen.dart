@@ -86,6 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    getId();
     _getCurrentPosition();
     _pageController = PageController(initialPage: 0);
   }
@@ -101,7 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
       this._page = page;
     });
   }
-
+  getId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    employeeId = prefs.getInt("EmployeeId")!;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,8 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
               EmployeeName: widget.EmployeeName,
               Email: widget.Email,
               DesignationName: widget.DesignationName),
-          CustomerAttendanceScreen(),
-          CustomerActivityScreen(),
+          CustomerAttendanceScreen(tag: true, id: 0,),
+          CustomerActivityScreen(tag: '', id:employeeId,),
           CustomerSupportScreen(),
           CustomerSettingScreen(),
         ],

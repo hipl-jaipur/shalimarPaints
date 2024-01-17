@@ -61,9 +61,14 @@ class TeamsController extends GetxController {
           var result = jsonDecode(res.body);
           temasDataList = TeamsDataModel.fromJson(result);
           // filterStockDataModel = StockShowModel.fromJson(result);
-          filteredLevelFirstList = temasDataList!.data!
+
+          for(var i in temasDataList!.data!){
+            filteredLevelFirstList.add(i);
+          }
+
+         /* filteredLevelFirstList = temasDataList!.data!
               .where((item) => item.hirelevel == 1)
-              .toList();
+              .toList();*/
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;

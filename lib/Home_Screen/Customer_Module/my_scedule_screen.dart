@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Controller/get_customer_schedule_data_controller.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
 class MyScedulePage extends StatefulWidget {
-  const MyScedulePage({super.key});
+  final bool tag;
+  final int id;
+  const MyScedulePage({super.key, required this.tag, required this.id});
 
   @override
   State<MyScedulePage> createState() => _MyScedulePageState();
@@ -14,13 +17,13 @@ class MyScedulePage extends StatefulWidget {
 
 class _MyScedulePageState extends State<MyScedulePage> {
   final TextEditingController _searchController = TextEditingController();
-
+  GetScheduleDataController getScheduleDataController= Get.put(GetScheduleDataController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+    getScheduleDataController.fetchData(null,widget.id,widget.tag);
   }
 
   @override
@@ -127,6 +130,15 @@ class _MyScedulePageState extends State<MyScedulePage> {
                                                   .data!
                                                   .length,
                                               itemBuilder: (context, index) {
+
+                                                DateTime timeStart = DateTime.parse("2022-01-01 " + controller.getScheduleDataModel!.data![index].starttime.toString());
+                                                DateTime timeEnd = DateTime.parse("2022-01-01 " + controller.getScheduleDataModel!.data![index].endtime.toString());
+
+                                                // Format the DateTime object to display in the desired format
+                                                String formattedTimeStart = "${timeStart.hour}:${timeStart.minute}:${timeStart.second}";
+                                                String formattedTimeEnd = "${timeEnd.hour}:${timeEnd.minute}:${timeEnd.second}";
+
+
                                                 return controller
                                                   .getScheduleDataModel!
                                                   .data![index]!
@@ -176,10 +188,9 @@ class _MyScedulePageState extends State<MyScedulePage> {
                                                                   MainAxisAlignment
                                                                       .spaceBetween,
                                                               children: [
+                                                                Text("Start Time: ${formattedTimeStart}"),
                                                                 Text(
-                                                                    "Start Time: ${controller.getScheduleDataModel!.data![index].starttime}"),
-                                                                Text(
-                                                                    "End Time: ${controller.getScheduleDataModel!.data![index].endtime}"),
+                                                                    "End Time: ${formattedTimeEnd}"),
                                                               ],
                                                             ),
                                                             SizedBox(
