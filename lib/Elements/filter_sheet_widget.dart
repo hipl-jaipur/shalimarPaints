@@ -14,12 +14,24 @@ class _DumyModalState extends State<DumyModal> {
   GetAvailableStockDataController stockDataController =
       Get.put(GetAvailableStockDataController());
 
+  // Future<int> getValue() async {
+  //   if (stockDataController.i || stockDataController.d) {
+  //     stockDataController.d
+  //         ? stockDataController.filterAvailableStockDataModel!.data!
+  //             .removeWhere((item) => item.division.toString().trim() == "I")
+  //         : stockDataController.filterAvailableStockDataModel!.data!
+  //             .removeWhere((item) => item.division.toString().trim() == "D");
+  //   }
+
+  //   return Future.value(5);
+  // }
+
   Future<int> getValue() async {
     if (stockDataController.i || stockDataController.d) {
       stockDataController.d
-          ? stockDataController.filterAvailableStockDataModel!.data!
+          ? stockDataController.filterAvailableStockDataModel!
               .removeWhere((item) => item.division.toString().trim() == "I")
-          : stockDataController.filterAvailableStockDataModel!.data!
+          : stockDataController.filterAvailableStockDataModel!
               .removeWhere((item) => item.division.toString().trim() == "D");
     }
 
@@ -91,6 +103,21 @@ class _DumyModalState extends State<DumyModal> {
                                       !stockDataController.d;
                                   stockDataController.i = false;
 
+                                  // if (stockDataController
+                                  //         .filterAvailableStockDataModel !=
+                                  //     null) {
+                                  //   stockDataController.productList =
+                                  //       stockDataController
+                                  //           .filterAvailableStockDataModel!
+                                  //           .data!
+                                  //           .where((element) =>
+                                  //               element.division!.contains("D"))
+                                  //           .toList();
+                                  // }
+
+                                  // print(
+                                  //     "D-----${stockDataController.productList}");
+
                                   print("D-----${stockDataController.d}");
                                 });
                               },
@@ -129,6 +156,20 @@ class _DumyModalState extends State<DumyModal> {
                                       !stockDataController.i;
                                   stockDataController.d = false;
 
+                                  // if (stockDataController
+                                  //         .filterAvailableStockDataModel !=
+                                  //     null) {
+                                  //   stockDataController.productList =
+                                  //       stockDataController
+                                  //           .filterAvailableStockDataModel!
+                                  //           .data!
+                                  //           .where((element) =>
+                                  //               element.division!.contains("I"))
+                                  //           .toList();
+                                  // }
+
+                                  // print(
+                                  //     "I-----${stockDataController.productList}");
                                   print("I-----${stockDataController.i}");
                                 });
                               },
@@ -257,13 +298,13 @@ class _DumyModalState extends State<DumyModal> {
                                 btnName: "Clear",
                                 onPressed: () {
                                   stockDataController
-                                      .filterAvailableStockDataModel!.data!
+                                      .filterAvailableStockDataModel!
                                       .clear();
                                   stockDataController.sectionlist.clear();
                                   for (var add in stockDataController
                                       .availableStockDataModel!.data!) {
                                     stockDataController
-                                        .filterAvailableStockDataModel!.data!
+                                        .filterAvailableStockDataModel!
                                         .add(add);
                                   }
 
@@ -272,7 +313,7 @@ class _DumyModalState extends State<DumyModal> {
                                   stockDataController.update();
                                   print(stockDataController
                                       .filterAvailableStockDataModel!
-                                      .data!
+                                      
                                       .length);
                                   Get.back();
                                 }),
@@ -310,19 +351,21 @@ class _DumyModalState extends State<DumyModal> {
                                       stockDataController
                                           .sectionlist.isNotEmpty) {
                                     stockDataController
-                                        .filterAvailableStockDataModel!.data!
+                                        // .filterAvailableStockDataModel!.data!
+                                        .filterAvailableStockDataModel!
                                         .clear();
                                     for (var add in stockDataController
                                         .availableStockDataModel!.data!) {
                                       stockDataController
-                                          .filterAvailableStockDataModel!.data!
+                                          // .filterAvailableStockDataModel!.data!
+                                          .filterAvailableStockDataModel!
                                           .add(add);
                                     }
                                     getValue().then((v) {
                                       stockDataController.sectionlist.isNotEmpty
                                           ? stockDataController
+                                              // .filterAvailableStockDataModel!.data!
                                               .filterAvailableStockDataModel!
-                                              .data!
                                               .removeWhere((item) =>
                                                   !stockDataController
                                                       .sectionlist
@@ -331,8 +374,9 @@ class _DumyModalState extends State<DumyModal> {
                                           : null;
                                       stockDataController.update();
                                       print(stockDataController
+                                          // .filterAvailableStockDataModel!.data!
+
                                           .filterAvailableStockDataModel!
-                                          .data!
                                           .length);
                                       Get.back();
                                     });

@@ -141,7 +141,8 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                   color: Colors.white,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold)),
-                                          Text("Count: ${customerTypeList.length}",
+                                          Text(
+                                              "Count: ${customerTypeList.length}",
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14,

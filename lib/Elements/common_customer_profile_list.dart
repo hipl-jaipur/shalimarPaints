@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' show cos, sqrt, asin;
 
 import 'package:flutter/material.dart';
@@ -103,6 +104,23 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     return true;
   }
 
+  // Timer? timer;
+  // int start = 0;
+
+  // void startTimer() {
+  //   timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       start++;
+  //     });
+  //   });
+  // }
+
+  // @override
+  // void dispose() {
+  //   _timer!.cancel();
+  //   super.dispose();
+  // }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -203,28 +221,85 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      controller.fetchData(
-                          levelCode: widget.customerList[widget.index].levelCode
-                              .toString(),
-                          activityID: 8);
-                      showSnackBar(
-                          "You are CheckedIn at",
-                          widget.customerList[widget.index].levelName
-                              .toString(),
-                          Colors.greenAccent);
+                      
+                      // startTimer();
 
-                      Get.to(
-                        CheckInPage(),
-                      );
-                      controller.levelCode.value = widget
-                          .customerList[widget.index].levelCode
-                          .toString();
-                      controller.levelName.value = widget
-                          .customerList[widget.index].levelName
-                          .toString();
-                      controller.levelAddress.value =
-                          widget.customerList[widget.index].address1.toString();
-                      controller.isCheckinOnSite.value = true;
+                      // final snackBar = SnackBar(
+                      //   behavior: SnackBarBehavior.fixed,
+                      //   content: const Text('Hi, I am a SnackBar!'),
+                      //   backgroundColor: (primaryColor),
+                      //   action: SnackBarAction(
+                      //     label: 'CheckOut',
+                      //     onPressed: () {},
+                      //   ),
+                      // );
+
+                      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                      // Get.showSnackbar(
+                      //   GetSnackBar(
+                      //     snackPosition: SnackPosition.TOP ,
+                      //     title: "CheckIn",
+                      //     message: 'User Registered Successfully',
+                      //     duration: const Duration(seconds: 10),
+                      //     backgroundColor: primaryColor,
+
+                      //   ),
+                      // );
+
+                      if (controller.checkIn == false) {
+                        controller.checkIn = true;
+                        controller.checkinCustomer = widget
+                            .customerList[widget.index].levelName
+                            .toString();
+                        controller.fetchData(
+                            levelCode: widget
+                                .customerList[widget.index].levelCode
+                                .toString(),
+                            activityID: 8);
+                        showSnackBar(
+                            "You are CheckedIn at",
+                            widget.customerList[widget.index].levelName
+                                .toString(),
+                            Colors.greenAccent);
+                        Get.to(
+                          CheckInPage(tag: ""),
+                        );
+                        controller.levelCode.value = widget
+                            .customerList[widget.index].levelCode
+                            .toString();
+                        controller.levelName.value = widget
+                            .customerList[widget.index].levelName
+                            .toString();
+                        controller.levelAddress.value = widget
+                            .customerList[widget.index].address1
+                            .toString();
+                        controller.isCheckinOnSite.value = true;
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                    'Alert!!'),
+                                content: Text(
+                                    "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    child: Text('Ok'),
+                                    onPressed: () {
+                                      // Navigator.pop(context);
+                                      Get.back();
+
+                                      // Get.off(
+                                      //   CheckInPage(),
+                                      // );
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.all(8),
@@ -256,7 +331,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           Colors.greenAccent);
 
                       Get.to(
-                        CheckInPage(),
+                        CheckInPage(tag: ""),
                       );
                       controller.levelCode.value = widget
                           .customerList[widget.index].levelCode

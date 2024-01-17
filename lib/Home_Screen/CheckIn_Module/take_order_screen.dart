@@ -4,12 +4,12 @@ import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_order-widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
+import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:top_modal_sheet/top_modal_sheet.dart';
 
 import '../../Elements/filter_sheet_widget.dart';
-import '../../Model/available_stock_data_model.dart';
 
 class TakeOrderPage extends StatefulWidget {
   const TakeOrderPage({super.key});
@@ -29,13 +29,9 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    if (stockController.filterAvailableStockDataModel != null) {
-      productList = stockController.filterAvailableStockDataModel!.data!
-          .where((element) => element.division!.contains("D"))
-          .toList();
-    }
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -120,12 +116,17 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                productList!.isNotEmpty
+                                stockController.filterAvailableStockDataModel!
+                                        .isNotEmpty
                                     ? Expanded(
                                         child: ListView.builder(
-                                        itemCount: productList!.length,
+                                        itemCount: stockController
+                                            .filterAvailableStockDataModel!
+                                            .length,
                                         itemBuilder: (context, index) {
-                                          return productList![index]
+                                          return stockController
+                                                  .filterAvailableStockDataModel![
+                                                      index]
                                                   .productdesc!
                                                   .toLowerCase()
                                                   .contains(_searchController
@@ -134,7 +135,8 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                               ? TakeOrderList(
                                                   index: index,
                                                   context: context,
-                                                  productList: productList!)
+                                                  productList: stockController
+                                                      .filterAvailableStockDataModel!)
                                               : SizedBox();
                                         },
                                       ))
@@ -158,13 +160,49 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                   visible: stockController.isVisible,
                                   child: GestureDetector(
                                     onTap: () {
+                                      print(
+                                          "NewList0: ${stockController.myList.length}");
+                                      print("List1: ${stockController.myList}");
+
+                                      stockController.update();
+
                                       if (stockController.totalQty == 0) {
                                         showSnackBar(
                                             "Sorry!!",
                                             "Please Add Any Product.",
                                             Colors.redAccent);
                                       } else {
-                                        Get.to(MyCartPage());
+
+                                        for (int i = 0;
+                                            i < stockController.myList.length;
+                                            i++) {
+                                          if (stockController.myList[i]
+                                                  ['category'] !=
+                                              null) {
+                                            if (stockController.myList[i]
+                                                        ['category']
+                                                    .replaceAll(" ", "") !=
+                                                stockController.myList[0]
+                                                        ['category']
+                                                    .replaceAll(" ", "")) {
+                                              stockController.catCheck = true;
+                                              break;
+                                            } else {
+                                              stockController.catCheck = false;
+                                            }
+                                          }
+                                        }
+
+                                        if (stockController.catCheck) {
+                                          showSnackBar(
+                                              "Sorry!! You are Selected Decorative and Industrial Division Product.",
+                                              "Please Add Same Division Product.",
+                                              Colors.redAccent);
+                                          stockController.catCheck = false;
+                                        } else {
+                                          Get.to(MyCartPage());
+                                          stockController.catCheck = false;
+                                        }
                                       }
                                     },
                                     child: Container(

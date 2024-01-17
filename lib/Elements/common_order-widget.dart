@@ -34,7 +34,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
     // TODO: implement initState
 
     super.initState();
-    for (var i in widget.productList!) {
+    for (var i in widget.productList) {
       if (i.lastUpdatedOn == null) {
         date = "";
       } else {
@@ -67,24 +67,26 @@ class _TakeOrderListState extends State<TakeOrderList> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        "\u{20B9}${widget.productList![widget.index].dpl.toString()}/NOS",
-                        style: TextStyle(
-                            color: blackTextColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            "\u{20B9}${widget.productList![widget.index].dpl.toString()}/NOS",
+                            style: TextStyle(
+                                color: blackTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                        Text(
+                            "Division: ${widget.productList![widget.index].division!}",
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                      ],
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                        widget.productList![widget.index].division!
-                                .contains('I')
-                            ? "Category: Industrail"
-                            : "Category: Decorative",
-                        style: TextStyle(
-                            color: blackTextColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -92,6 +94,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                             icon: Icon(Icons.remove_circle),
                             onPressed: () {
                               setState(() {
+                                stockDataController.catCheck = false;
                                 if (stockDataController.myList[widget.index]
                                         ["Qty"] !=
                                     0) {
@@ -113,34 +116,42 @@ class _TakeOrderListState extends State<TakeOrderList> {
 
                                   stockDataController.isVisible = true;
                                   stockDataController.myList.add({
-                                    "productcode": widget.productList[widget.index]
-                                        .productcode,
-                                    "name":widget.productList[widget.index].productdesc,
+                                    "productcode": widget
+                                        .productList[widget.index].productcode,
+                                    "name": widget
+                                        .productList[widget.index].productdesc,
                                     "dpl": widget.productList[widget.index].dpl,
                                     "mrp": stockDataController.amount,
                                     "Qty": stockDataController.counter,
-                                    "category": widget.productList[widget.index].division
+                                    "category": widget
+                                        .productList[widget.index].division
                                   });
                                   stockDataController.myList[widget.index]
-                                      ["mrp"] = (widget.productList[widget.index].dpl)! *
+                                      ["mrp"] = (widget
+                                          .productList[widget.index].dpl)! *
                                       stockDataController.myList[widget.index]
                                           ["Qty"];
                                   stockDataController.myList[widget.index]
                                           ["productcode"] =
-                                      widget.productList[widget.index].productcode;
+                                      widget.productList[widget.index]
+                                          .productcode;
                                   stockDataController.myList[widget.index]
                                           ["name"] =
-                                      widget.productList[widget.index].productdesc;
+                                      widget.productList[widget.index]
+                                          .productdesc;
                                   stockDataController.myList[widget.index]
                                           ["dpl"] =
-                                     widget.productList[widget.index].dpl;
+                                      widget.productList[widget.index].dpl;
                                   stockDataController.myList[widget.index]
                                           ["category"] =
-                                    widget.productList[widget.index].division;
+                                      widget.productList[widget.index].division;
 
                                   stockDataController.update();
                                   print(stockDataController.myList);
                                 }
+                                setState(() {
+                                  stockDataController.myList;
+                                });
                               });
                             },
                             color: primaryColor),
@@ -151,6 +162,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
                           color: primaryColor,
                           onPressed: () {
                             setState(() {
+                              stockDataController.catCheck = false;
+
                               //qty
                               stockDataController.isVisible = true;
                               stockDataController.myList[widget.index]["Qty"]++;
@@ -169,17 +182,20 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                           ["mrp"];
 
                               stockDataController.myList.add({
-                                "productcode": widget.productList[widget.index].productcode,
-                                "name": widget.productList[widget.index].productdesc,
+                                "productcode": widget
+                                    .productList[widget.index].productcode,
+                                "name": widget
+                                    .productList[widget.index].productdesc,
                                 "dpl": widget.productList[widget.index].dpl,
                                 "mrp": stockDataController.amount,
                                 "Qty": stockDataController.counter,
-                                "category": widget.productList[widget.index].division
+                                "category":
+                                    widget.productList[widget.index].division
                               });
 
                               stockDataController.myList[widget.index]
                                       ["category"] =
-                                 widget.productList[widget.index].division;
+                                  widget.productList[widget.index].division;
 
                               stockDataController.myList[widget.index]["mrp"] =
                                   ((widget.productList[widget.index].dpl)! *
@@ -188,18 +204,21 @@ class _TakeOrderListState extends State<TakeOrderList> {
 
                               stockDataController.myList[widget.index]
                                       ["productcode"] =
-                                 widget.productList[widget.index].productcode;
+                                  widget.productList[widget.index].productcode;
 
                               stockDataController.myList[widget.index]["name"] =
-                                 widget.productList[widget.index].productdesc;
+                                  widget.productList[widget.index].productdesc;
 
                               stockDataController.myList[widget.index]["dpl"] =
-                                 widget.productList[widget.index].dpl;
+                                  widget.productList[widget.index].dpl;
 
                               stockDataController.update();
                               print(stockDataController.myList[widget.index]
                                   ["totalPrice"]);
                               print(stockDataController.myList);
+                              setState(() {
+                                stockDataController.myList;
+                              });
                             });
                           },
                         ),

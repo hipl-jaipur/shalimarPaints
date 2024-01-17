@@ -40,140 +40,175 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   physics: NeverScrollableScrollPhysics(),
                   child: Stack(
                     children: [
-                      Image.asset(Images.bg_2),
+                      Image.asset(Images.bg_3),
                       Positioned(
                         child: Container(
                           width: double.infinity,
                           padding: const EdgeInsets.only(
                               top: 12, left: 15, right: 15, bottom: 25),
-                          margin: const EdgeInsets.only(left: 16, right: 16),
+                          // margin: const EdgeInsets.only(left: 16, right: 16),
                           child: Form(
                             key: _formKey,
                             child: Column(
                               children: [
                                 const SizedBox(
-                                  height: 100,
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_circle_left,
+                                          color: Colors.white,
+                                          size: 40,
+                                        )),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "Change Password",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white),
+                                    )
+                                  ],
                                 ),
                                 SizedBox(
-                                  width: 200,
-                                  height: 200,
-                                  child: Image.asset(
-                                      Images.shalimarLogoHorizontal),
+                                  height: 10,
                                 ),
-                                Text(
-                                  "Change Password",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                CustomTextField(
-                                  controller: loginController.newPassController,
-                                  AutovalidateModes:
-                                      AutovalidateMode.onUserInteraction,
-                                  hintText: 'New Password',
-                                  labelText: 'New Password*',
-                                  obscureText: showPassword,
-                                  onIconTap: () {},
-                                  icon: Container(
-                                    height: 14,
-                                    margin: const EdgeInsets.all(15),
-                                    width: 14,
-                                    child: const Icon(Icons.lock_outline),
-                                  ),
-                                  isTrue: true,
-                                  isPassword: true,
-                                  iconPerfix: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showPassword = !showPassword;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 14,
-                                      margin: EdgeInsets.all(15),
-                                      width: 14,
-                                      child: showPassword
-                                          ? const Icon(Icons.visibility_off)
-                                          : const Icon(Icons.visibility),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "The Password is required.";
-                                    }
-                                    if (value.length < 6) {
-                                      return "The password field must be at least 6 characters";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                CustomTextField(
-                                  controller:
-                                      loginController.conformNewPassController,
-                                  AutovalidateModes:
-                                      AutovalidateMode.onUserInteraction,
-                                  hintText: 'Confirm New Password',
-                                  labelText: 'Confirm New Password*',
-                                  obscureText: showConfirmPassword,
-                                  onIconTap: () {},
-                                  icon: Container(
-                                    height: 14,
-                                    margin: const EdgeInsets.all(15),
-                                    width: 14,
-                                    child: const Icon(Icons.lock_outline),
-                                  ),
-                                  isTrue: true,
-                                  isPassword: true,
-                                  iconPerfix: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showConfirmPassword =
-                                            !showConfirmPassword;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: 14,
-                                      margin: EdgeInsets.all(15),
-                                      width: 14,
-                                      child: showConfirmPassword
-                                          ? const Icon(Icons.visibility_off)
-                                          : const Icon(Icons.visibility),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "The Password is required.";
-                                    }
-                                    if (value.length < 6) {
-                                      return "The password field must be at least 6 characters";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  child: CustomButton(
-                                    btnName: 'Change Password',
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        if (controller
-                                            .conformNewPassController.text ==
-                                            controller
-                                                .newPassController.text) {
-                                          controller
-                                              .setEmpNewPasswordCall(context);
-                                        } else {
-                                          showSnackBar(
-                                              "Sorry!!",
-                                              "Confirm New Password is not Match New Password.",
-                                              Colors.redAccent);
-                                        }
+                                Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                      children: [
+                                        CustomTextField(
+                                          controller:
+                                              loginController.newPassController,
+                                          AutovalidateModes: AutovalidateMode
+                                              .onUserInteraction,
+                                          hintText: 'New Password',
+                                          labelText: 'New Password*',
+                                          obscureText: showPassword,
+                                          onIconTap: () {},
+                                          icon: Container(
+                                            height: 14,
+                                            margin: const EdgeInsets.all(15),
+                                            width: 14,
+                                            child:
+                                                const Icon(Icons.lock_outline),
+                                          ),
+                                          isTrue: true,
+                                          isPassword: true,
+                                          iconPerfix: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                showPassword = !showPassword;
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 14,
+                                              margin: EdgeInsets.all(15),
+                                              width: 14,
+                                              child: showPassword
+                                                  ? const Icon(
+                                                      Icons.visibility_off)
+                                                  : const Icon(
+                                                      Icons.visibility),
+                                            ),
+                                          ),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return "The Password is required.";
+                                            }
+                                            if (value.length < 6) {
+                                              return "The password field must be at least 6 characters";
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        CustomTextField(
+                                          controller: loginController
+                                              .conformNewPassController,
+                                          AutovalidateModes: AutovalidateMode
+                                              .onUserInteraction,
+                                          hintText: 'Confirm New Password',
+                                          labelText: 'Confirm New Password*',
+                                          obscureText: showConfirmPassword,
+                                          onIconTap: () {},
+                                          icon: Container(
+                                            height: 14,
+                                            margin: const EdgeInsets.all(15),
+                                            width: 14,
+                                            child:
+                                                const Icon(Icons.lock_outline),
+                                          ),
+                                          isTrue: true,
+                                          isPassword: true,
+                                          iconPerfix: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                showConfirmPassword =
+                                                    !showConfirmPassword;
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 14,
+                                              margin: EdgeInsets.all(15),
+                                              width: 14,
+                                              child: showConfirmPassword
+                                                  ? const Icon(
+                                                      Icons.visibility_off)
+                                                  : const Icon(
+                                                      Icons.visibility),
+                                            ),
+                                          ),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return "The Password is required.";
+                                            }
+                                            if (value.length < 6) {
+                                              return "The password field must be at least 6 characters";
+                                            }
+                                            return null;
+                                          },
+                                        ),SizedBox(height: 50,),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: CustomButton(
+                                            btnName: 'Change Password',
+                                            onPressed: () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                if (controller
+                                                        .conformNewPassController
+                                                        .text ==
+                                                    controller.newPassController
+                                                        .text) {
+                                                  controller
+                                                      .setEmpNewPasswordCall(
+                                                          context);
+                                                } else {
+                                                  showSnackBar(
+                                                      "Sorry!!",
+                                                      "Confirm New Password is not Match New Password.",
+                                                      Colors.redAccent);
+                                                }
 
-                                        // controller.forgotPasswordCall(context);
-                                      }
-                                    },
+                                                // controller.forgotPasswordCall(context);
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    )),
                                   ),
                                 ),
                                 const SizedBox(

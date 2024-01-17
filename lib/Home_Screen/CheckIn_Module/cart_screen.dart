@@ -176,15 +176,33 @@ class _MyCartPageState extends State<MyCartPage> {
                                                 color: blackTextColor,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400)),
-                                        Text(
-                                            // "\u{20B9}${dplPrice.toStringAsFixed(2)}/NOS",
-                                            widget.tag == 'Edit'
-                                                ? "\u{20B9}${widget.productList![index].dpl!.toStringAsFixed(2)}/NOS"
-                                                : "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
-                                            style: TextStyle(
-                                                color: blackTextColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                                // "\u{20B9}${dplPrice.toStringAsFixed(2)}/NOS",
+                                                widget.tag == 'Edit'
+                                                    ? "\u{20B9}${widget.productList![index].dpl!.toStringAsFixed(2)}/NOS"
+                                                    : "\u{20B9}${myCartList[index]["dpl"].toStringAsFixed(2)}/NOS",
+                                                style: TextStyle(
+                                                    color: blackTextColor,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                            Text(
+                                                // "\u{20B9}${dplPrice.toStringAsFixed(2)}/NOS",
+                                                widget.tag == 'Edit'
+                                                    ? ""
+                                                    : "Division: ${myCartList[index]["category"]}",
+                                                style: TextStyle(
+                                                    color: primaryColor,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                          ],
+                                        ),
+
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -481,7 +499,7 @@ class _MyCartPageState extends State<MyCartPage> {
                               child: GestureDetector(
                                 onTap: () {
                                   widget.tag == "Edit"
-                                      ? Get.off(TakeOrderPage( ))
+                                      ? Get.off(TakeOrderPage())
                                       : Get.back();
                                 },
                                 child: Container(

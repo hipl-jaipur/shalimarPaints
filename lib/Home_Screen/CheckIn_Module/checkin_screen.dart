@@ -23,13 +23,17 @@ import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
 class CheckInPage extends StatefulWidget {
+  String? tag;
   // String? levelName;
   // String? levelCode;
   // String? levelAddress;
   // bool? isCheckinOnSite;
+  // var startTime;
 
   CheckInPage({
     super.key,
+    this.tag
+    // this.startTime
     // this.levelName,
     // this.levelCode,
     // this.levelAddress,
@@ -65,14 +69,15 @@ class _CheckInPageState extends State<CheckInPage> {
 
   // var customerProfileData = Get.arguments;
 
-  Timer? _timer;
-  int _start = 0;
   GetNoteDataController noteDataController = Get.put(GetNoteDataController());
   GetScheduleDataController scheduleDataController =
       Get.put(GetScheduleDataController());
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
   ActivityController activityController = Get.put(ActivityController());
+
+  Timer? _timer;
+  int _start = 0;
 
   void startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -82,17 +87,25 @@ class _CheckInPageState extends State<CheckInPage> {
     });
   }
 
-  @override
-  void dispose() {
-    _timer!.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _timer!.cancel();
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    // if (widget.tag != "Order Success") {
+    //   startTimer();
+    // }
+    // else{
+    //   _start++;
+    // }
     startTimer();
+
     // noteDataController.levelCode.value = controller.levelCode.value;
     noteDataController.fetchData(controller.levelCode.value);
     scheduleDataController.fetchData(controller.levelCode.value);
@@ -158,6 +171,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
+                                        controller.checkIn = false;
+                                        // controller.timer!.cancel();
                                         controller.fetchData(
                                             levelCode:
                                                 controller.levelCode.value,
@@ -280,7 +295,6 @@ class _CheckInPageState extends State<CheckInPage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -752,8 +766,9 @@ class _CheckInPageState extends State<CheckInPage> {
                                       stockController.totalAmount = 0.0;
                                       stockController.isVisible = false;
                                       stockController.myList.clear();
-                                      stockController.d = false;
+                                      stockController.d = true;
                                       stockController.i = false;
+                                      stockController.catCheck = false;
                                       stockController.sectionlist.clear();
 
                                       stockController.fetchData(

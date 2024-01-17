@@ -74,18 +74,7 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
     super.initState();
   }
 
-  // List<String> selectedOptions = [];
-  // void _onCheckboxChanged(String remark, bool value, num? userActivityID) {
-  //   setState(() {
-  //     if (value) {
-  //       scheduleController.scheduleDetailsMaster
-  //           .add({"useractivityid": userActivityID, "remark": remark});
-  //     } else {
-  //       scheduleController.scheduleDetailsMaster
-  //           .remove({"useractivityid": userActivityID, "remark": remark});
-  //     }
-  //   });
-  // }
+ 
 
   final _formKey = GlobalKey<FormState>();
 

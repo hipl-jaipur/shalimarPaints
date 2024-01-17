@@ -18,14 +18,18 @@ class GetAvailableStockDataController extends GetxController {
   var i = false;
   int totalQty = 0;
   var totalAmount = 0.0;
-  var productCategory = "";
+  // var productCategory = "";
   AvailableStockDataModel? availableStockDataModel;
-  AvailableStockDataModel? filterAvailableStockDataModel;
+  // AvailableStockDataModel? filterAvailableStockDataModel;
   MarketSectorModel? marketSectorModelData;
   List<dynamic> sectionlist = [];
   List<Map<dynamic, dynamic>> myList = [];
   int counter = 0;
   double amount = 0.0;
+  bool catCheck = false;
+
+  List<Data> filterAvailableStockDataModel = [];
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -70,8 +74,15 @@ class GetAvailableStockDataController extends GetxController {
         if (data != null) {
           var result = jsonDecode(res.body);
           availableStockDataModel = AvailableStockDataModel.fromJson(result);
-          filterAvailableStockDataModel =
-              AvailableStockDataModel.fromJson(result);
+          // filterAvailableStockDataModel =
+          //     AvailableStockDataModel.fromJson(result);
+
+          filterAvailableStockDataModel = availableStockDataModel!.data!
+              .where((element) => element.division!.contains("D"))
+              .toList();
+
+          // filterAvailableStockDataModel = result;
+
           for (var map in availableStockDataModel!.data!) {
             myList.add({
               /*"id":map.productcode,
@@ -80,8 +91,8 @@ class GetAvailableStockDataController extends GetxController {
                   "totalPrice":totalAmount,*/
               "Qty": counter,
               "mrp": amount,
-              "productCategory": productCategory
             });
+
           }
 
           print(myList.length);

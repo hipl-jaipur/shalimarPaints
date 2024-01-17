@@ -10,6 +10,12 @@ import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SetActivityDetailDataController extends GetxController {
+  // int startTime = 0;
+
+  // Timer? timer;
+  bool checkIn = false;
+  bool timerstop = false;
+  var checkinCustomer = "";
   var isLoading = false.obs;
   var isTimerVisible = false.obs;
   var levelName = "".obs;
@@ -17,6 +23,14 @@ class SetActivityDetailDataController extends GetxController {
   var levelAddress = "".obs;
   var isCheckinOnSite = false.obs;
   GetActivityDetailDataModel? getActivityDetailDataModel;
+
+  // void startTimer() {
+  //   timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  //     setState(() {
+  //       startTime++;
+  //     });
+  //   });
+  // }
 
   fetchData({
     required String levelCode,
