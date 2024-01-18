@@ -70,27 +70,20 @@ class _CheckInPageState extends State<CheckInPage> {
       Get.put(GetUserActivityController());
   ActivityController activityController = Get.put(ActivityController());
 
-  TimerService timerService = Get.find<TimerService>();
+  // TimerService timerService = Get.find<TimerService>();
+  // final TimerController timerController = TimerController();
+  final TimerService timerService = Get.put(TimerService());
+
 
   @override
   void initState() {
     // TODO: implement initState
     getId();
     super.initState();
+    // TimerService().startTimer();
     noteDataController.fetchData(controller.levelCode.value);
     scheduleDataController.fetchData(controller.levelCode.value, 0, true);
     activityController.getActivityData(controller.levelCode.value, employeeId);
-    timerService.startTimer();
-
-    
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    //  timerService.elapsedSeconds.value = 0;
-    //  timerService._timer.cancel();
-    // await controller.stopWatchTimer.dispose();
   }
 
   getId() async {
@@ -102,12 +95,12 @@ class _CheckInPageState extends State<CheckInPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context, false);
-        return Future.value(false);
-        // controller.update();
+        // Navigator.pop(context, false);
+        // return Future.value(false);
+        controller.update();
         // // controller.checkIn = true;
         // // timerService.elapsedSeconds;
-        // return true;
+        return true;
       },
       child: Scaffold(
           body: SafeArea(
@@ -156,6 +149,12 @@ class _CheckInPageState extends State<CheckInPage> {
                                               SizedBox(
                                                 width: 5.0,
                                               ),
+
+                                              // Obx(
+                                              //   () => Text(
+                                              //       'Timer Count: ${cont.formattedTime(timeInSecond: cont.counter.value)}'),
+                                              // )
+
                                               Obx(
                                                 () => Text(
                                                   'Checkin Timer: ${timerService.formattedTime(timeInSecond: timerService.elapsedSeconds.value)} ',
@@ -164,23 +163,14 @@ class _CheckInPageState extends State<CheckInPage> {
                                                           FontWeight.w500),
                                                 ),
                                               ),
-                                              // Text(
-                                              //   "Checkin Timer: ${_start}",
-                                              //   style: TextStyle(
-                                              //       fontWeight:
-                                              //           FontWeight.w500),
-                                              // ),
                                             ],
                                           ),
                                         ),
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          // timerService.elapsedSeconds.value = 0;
                                           controller.checkIn = false;
-                                          timerService.stopTimer();
-                                          // controller.timer!.cancel();
-                                          // _timer!.cancel();
+                                          // timerService.stopTimer();
                                           controller.fetchData(
                                               levelCode:
                                                   controller.levelCode.value,
@@ -747,7 +737,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                       orderDataController.fetchOrderData(
                                           customerCode:
                                               controller.levelCode.value);
-                                      Get.to(ViewOpenOrderPage());
+                                      Get.to(ViewOpenOrderPage(tag: "View Open Order"));
                                     },
                                   ),
                                   ListTile(

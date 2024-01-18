@@ -7,6 +7,7 @@ import 'package:shalimar/Home_Screen/Customer_Module/customer_regions_screen.dar
 import 'package:shalimar/Home_Screen/Customer_Module/customer_terriotory_screen.dart';
 import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget zoneList(
   BuildContext context,
@@ -161,7 +162,8 @@ Widget depotListData(
 
 Widget terriotoryListData(
   BuildContext context,
-  int index, List<Data> terriotoryList,
+  int index,
+  List<Data> terriotoryList,
 ) {
   // TerriotoryDataController terriotoryDataController =
   //     Get.put(TerriotoryDataController());
@@ -169,7 +171,12 @@ Widget terriotoryListData(
   // CustomerHireDataController customerHireDataController =
   //     Get.put(CustomerHireDataController());
   return GestureDetector(
-    onTap: () {
+    onTap: () async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString(
+          'CustomerName', terriotoryList[index].levelName.toString());
+      prefs.setInt('levelID', terriotoryList[index].levelID!.toInt());
+
       Get.to(MyCustomerDetailsPage(), arguments: [
         terriotoryList[index].levelName.toString(),
         terriotoryList[index].levelID,
@@ -187,9 +194,7 @@ Widget terriotoryListData(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-                terriotoryList[index].levelName
-                    .toString(),
+            Text(terriotoryList[index].levelName.toString(),
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
