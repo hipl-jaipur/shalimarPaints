@@ -159,7 +159,7 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                                 DateTime time = DateTime.parse(controller.getActivityDetailDataModel!.data![index].createdOn.toString());
 
                                                 // Format the DateTime object to display in the desired format
-                                                String formattedDateTime = DateFormat('yyyy-MM-dd  HH:mm:ss.SSS').format(time);
+                                                String formattedDateTime = DateFormat('yyyy-MM-dd ( h:mm a )').format(time);
                                                 return Padding(
                                                   padding: const EdgeInsets.all(
                                                       10.0),

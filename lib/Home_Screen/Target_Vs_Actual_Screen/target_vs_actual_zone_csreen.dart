@@ -258,14 +258,14 @@ class _TargetVsActualZoneState extends State<TargetVsActualZone> {
                                                     targetVsActualController
                                                                 .filteredZoneList![
                                                                     index]
-                                                                .sales ==
+                                                                .achivementPer ==
                                                             null
                                                         ? "0"
                                                         : formatNumber(
                                                             targetVsActualController
                                                                 .filteredZoneList![
                                                                     index]
-                                                                .sales!
+                                                                .achivementPer!
                                                                 .truncate()),
                                                     style: TextStyle(
                                                         color: blackTextColor,

@@ -46,17 +46,17 @@ GetScheduleDataModel copyWith({  bool? status,
 
 class Data {
   Data({
-      num? scheduleid, 
+      num? scheduleid,
       String? customercode, 
       String? schdulefor, 
       String? date, 
       String? starttime, 
       String? endtime, 
       String? remark, 
-      num? isvalid, 
-      num? createdby, 
+      num? isvalid,
+      num? createdby,
       String? createdon, 
-      num? updatedby, 
+      num? updatedby,
       String? updatedon, 
       String? customername, 
       String? zoneName, 
@@ -212,9 +212,9 @@ Data copyWith({  num? scheduleid,
 
 class ScheduleDetails {
   ScheduleDetails({
-      num? scheduleid, 
+      num? scheduleid,
       String? customercode, 
-      num? useractivityid, 
+      num? useractivityid,
       String? activityName, 
       dynamic activityDescription, 
       dynamic remark, 

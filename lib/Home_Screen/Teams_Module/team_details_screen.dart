@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:shalimar/Home_Screen/Activity_Screen/activity_screen.dart';
+import 'package:shalimar/Home_Screen/Teams_Module/emp_team_profile.dart';
 import 'package:shalimar/Home_Screen/Teams_Module/emp_team_screen.dart';
 
 import '../../Controller/teams_controller.dart';
@@ -187,6 +188,9 @@ class _TeamsDetailsScreenState extends State<TeamsDetailsScreen> {
                                             ),
                                             Card(
                                               child: ListTile(
+                                                onTap: (){
+                                                  Get.to(()=>TeamsProfileScreen(id:controller.employeeDetailsModel!.data![0].employeeID,));
+                                                },
                                                 leading: Icon(Icons.person),
                                                 title: Text('Profile'),
                                               ),

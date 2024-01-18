@@ -131,14 +131,14 @@ class _MyScedulePageState extends State<MyScedulePage> {
                                                   .length,
                                               itemBuilder: (context, index) {
 
-                                                DateTime timeStart = DateTime.parse("2022-01-01 " + controller.getScheduleDataModel!.data![index].starttime.toString());
-                                                DateTime timeEnd = DateTime.parse("2022-01-01 " + controller.getScheduleDataModel!.data![index].endtime.toString());
-
-                                                // Format the DateTime object to display in the desired format
-                                                String formattedTimeStart = "${timeStart.hour}:${timeStart.minute}:${timeStart.second}";
-                                                String formattedTimeEnd = "${timeEnd.hour}:${timeEnd.minute}:${timeEnd.second}";
 
 
+                                                DateTime parsedTime = DateFormat('HH:mm:ss').parse(controller.getScheduleDataModel!.data![index].endtime.toString());
+                                                DateTime parsedTimeStart = DateFormat('HH:mm:ss').parse(controller.getScheduleDataModel!.data![index].starttime.toString());
+
+                                                // Format the time using intl package
+                                                String formattedTime = DateFormat('h:mm a').format(parsedTime);
+                                                String formattedTimeStart = DateFormat('h:mm a').format(parsedTimeStart);
                                                 return controller
                                                   .getScheduleDataModel!
                                                   .data![index]!
@@ -174,12 +174,17 @@ class _MyScedulePageState extends State<MyScedulePage> {
                                                                   MainAxisAlignment
                                                                       .spaceBetween,
                                                               children: [
-                                                                Text(
-                                                                    "Schedule For: ${controller.getScheduleDataModel!.data![index].schdulefor}"),
-                                                                Text(
-                                                                    "Date: ${controller.getScheduleDataModel!.data![index].date}")
+                                                                Flexible(child: Container(child: FittedBox(
+                                                                    fit: BoxFit.fill,
+                                                                    child: Text("Schedule For: ${controller.getScheduleDataModel!.data![index].schdulefor}(${controller.getScheduleDataModel!.data![index].customername})")))),
+
                                                               ],
                                                             ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Text(
+                                                                "Date: ${controller.getScheduleDataModel!.data![index].date}"),
                                                             SizedBox(
                                                               height: 5,
                                                             ),
@@ -190,7 +195,7 @@ class _MyScedulePageState extends State<MyScedulePage> {
                                                               children: [
                                                                 Text("Start Time: ${formattedTimeStart}"),
                                                                 Text(
-                                                                    "End Time: ${formattedTimeEnd}"),
+                                                                    "End Time: ${formattedTime}"),
                                                               ],
                                                             ),
                                                             SizedBox(
