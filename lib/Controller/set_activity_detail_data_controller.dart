@@ -10,6 +10,18 @@ import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SetActivityDetailDataController extends GetxController {
+
+  
+// @override
+  // Future<void> onInit() async {
+  //   super.onInit();
+  //   fetchZoneData(zoneId: zoneId.toInt());
+  // }
+
+ 
+ 
+
+  
   // int startTime = 0;
 
   // Timer? timer;

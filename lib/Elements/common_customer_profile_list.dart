@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
+import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/checkin_screen.dart';
 import 'package:shalimar/Model/customer_data_model.dart';
@@ -28,6 +29,8 @@ class CustomerProfileList extends StatefulWidget {
 }
 
 class _CustomerProfileListState extends State<CustomerProfileList> {
+  TimerService timerService = Get.find<TimerService>();
+
   SetActivityDetailDataController controller =
       Get.put(SetActivityDetailDataController());
 
@@ -103,23 +106,6 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     }
     return true;
   }
-
-  // Timer? timer;
-  // int start = 0;
-
-  // void startTimer() {
-  //   timer = Timer.periodic(Duration(seconds: 1), (timer) {
-  //     setState(() {
-  //       start++;
-  //     });
-  //   });
-  // }
-
-  // @override
-  // void dispose() {
-  //   _timer!.cancel();
-  //   super.dispose();
-  // }
 
   @override
   void initState() {
@@ -221,7 +207,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      
+                      // Get.to(CountUpTimerPage());
+
                       // startTimer();
 
                       // final snackBar = SnackBar(
@@ -262,6 +249,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             widget.customerList[widget.index].levelName
                                 .toString(),
                             Colors.greenAccent);
+
                         Get.to(
                           CheckInPage(tag: ""),
                         );
@@ -280,8 +268,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text(
-                                    'Alert!!'),
+                                title: Text('Alert!!'),
                                 content: Text(
                                     "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
                                 actions: <Widget>[

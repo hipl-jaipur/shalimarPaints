@@ -21,7 +21,6 @@ import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Controller/target_vs_actual_controller.dart';
-import '../Controller/timer_controller.dart';
 import 'Target_Vs_Actual_Screen/target_vas_actual_region_screen.dart';
 import 'Target_Vs_Actual_Screen/target_vs_actual_customer_screen.dart';
 import 'Target_Vs_Actual_Screen/target_vs_actual_depot_screen.dart';
@@ -67,7 +66,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TimerService timerService = Get.find<TimerService>();
 
     return Scaffold(
       body: SafeArea(
@@ -143,12 +141,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                               ),
                             ),
                           ),
-                          Obx(
-                                () => Text(
-                              'Elapsed Time: ${timerService .elapsedSeconds} seconds',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
+                          
                           Expanded(
                             child: GridView.count(
                               primary: false,
