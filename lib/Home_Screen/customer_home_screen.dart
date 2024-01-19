@@ -53,8 +53,10 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       Get.put(GetUserActivityController());
   GetAvailableStockDataController marketSectorController =
       Get.put(GetAvailableStockDataController());
-  GetScheduleDataController scheduleDataController = Get.put(GetScheduleDataController());
-  TargetVsActualController targetVsActualController = Get.put(TargetVsActualController());
+  GetScheduleDataController scheduleDataController =
+      Get.put(GetScheduleDataController());
+  TargetVsActualController targetVsActualController =
+      Get.put(TargetVsActualController());
 
   TeamsController teamsController = Get.put(TeamsController());
   @override
@@ -66,7 +68,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: GetX<CustomerHireDataController>(
@@ -141,7 +142,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                               ),
                             ),
                           ),
-                          
                           Expanded(
                             child: GridView.count(
                               primary: false,
@@ -155,7 +155,10 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                     // getUserActivityController.fetchData();
                                     // Get.to(ScheduleVisitPage());
 
-                                    Get.to(MyScedulePage(tag: true, id: 0,));
+                                    Get.to(MyScedulePage(
+                                      tag: true,
+                                      id: 0,
+                                    ));
                                   },
                                   child: Card(
                                     child: Center(
@@ -223,10 +226,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                     )),
                                   ),
                                 ),
-
                                 GestureDetector(
                                   onTap: () {
-                             /*       teamsController.filteredLevelFirstList
+                                    /*       teamsController.filteredLevelFirstList
                                         .clear();
                                     teamsController.filteredLevelFirstList =
                                         teamsController.temasDataList!.data!
@@ -234,6 +236,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                 (item) => item.hirelevel == 1)
                                             .toList();*/
                                     Get.to(TeamsScreen());
+
+                                    // Get.to(TreeNode());
                                   },
                                   child: Container(
                                     child: Card(
@@ -344,23 +348,23 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                 GestureDetector(
                                   onTap: () {
                                     if (targetVsActualController
-                                        .filteredZoneList.length >
+                                            .filteredZoneList.length >
                                         0) {
                                       Get.to(TargetVsActualZone());
                                     } else if (targetVsActualController
-                                        .filteredAllRegionList.length >
+                                            .filteredAllRegionList.length >
                                         0) {
                                       Get.to(TargetVsActyalRegion());
                                     } else if (targetVsActualController
-                                        .filteredAllDepotList.length >
+                                            .filteredAllDepotList.length >
                                         0) {
                                       Get.to(TargetVsActualDepot());
                                     } else if (targetVsActualController
-                                        .filteredAllTerritorList.length >
+                                            .filteredAllTerritorList.length >
                                         0) {
                                       Get.to(TargetVsActualTerritory());
                                     } else if (targetVsActualController
-                                        .filteredAllCustomerList.length >
+                                            .filteredAllCustomerList.length >
                                         0) {
                                       Get.to(TargetVsActualCustomer());
                                     }
@@ -370,24 +374,24 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                     child: Card(
                                       child: Center(
                                           child: Column(
-                                            mainAxisAlignment:
+                                        mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.tag,
-                                                color: primaryColor,
-                                                size: 40,
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text('Target Vs Actual',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold)),
-                                            ],
-                                          )),
+                                        children: [
+                                          Icon(
+                                            Icons.tag,
+                                            color: primaryColor,
+                                            size: 40,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('Target Vs Actual',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold)),
+                                        ],
+                                      )),
                                     ),
                                   ),
                                 ),

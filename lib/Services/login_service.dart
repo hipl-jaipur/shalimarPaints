@@ -61,6 +61,7 @@ class LoginServices {
       if (data != null) {
         if (data['Data'] != null) {
           // updateLoginData(data['Data'][0]['EmployeeId']);
+
           return data;
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
@@ -76,7 +77,66 @@ class LoginServices {
     }
   }
 
-  static Future updateLoginData(employeeID) async {
+  static Future sessionCheck(var employeeId, token) async {
+    if (kDebugMode) {
+      print('sessionCheck api called');
+    }
+
+    final body = {
+      "TokenData": {"EmployeeId": employeeId, "Token": token}
+    };
+
+    // final userMaster = {"USERMASTER": body};
+    print(jsonEncode(body));
+
+    if (kDebugMode) {
+      print("******sessionCheck Api Call****");
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+
+    print(requestHeaders);
+
+    if (kDebugMode) {
+      print("**********");
+    }
+
+    final res = await http.post(Uri.parse(AppConstants.sessionCheck),
+        body: jsonEncode(body), headers: requestHeaders);
+
+    print(res);
+
+    if (kDebugMode) {
+      print("******sessionCheck Api Call****");
+      print("******sessionCheck Api Call****");
+      print(AppConstants.sessionCheck);
+      print(requestHeaders);
+      print(body);
+      print(res.statusCode);
+    }
+
+    var data = json.decode(res.body);
+
+    if (kDebugMode) {
+      print(data);
+    }
+
+    if (res.statusCode == 200) {
+      if (data != null) {
+        return data;
+      } else {
+        showSnackBar("Error!!", data['Message'], Colors.redAccent);
+        return null;
+      }
+    } else {
+      showSnackBar("Error!!", data['Message'], Colors.redAccent);
+      return null;
+    }
+  }
+
+  static Future updateLoginData(employeeID, userID) async {
     if (kDebugMode) {
       print('update Login Data api called');
     }
@@ -87,27 +147,24 @@ class LoginServices {
     // IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("logintoken");
+    // final token = prefs.getString("logintoken");
 
     final body = {
-      "LoginHistoryMaster": {
-        "EmployeeId": employeeID.toString(),
-        "Source": "",
-        "OS": Platform.operatingSystem,
-        "MobileModelName": androidInfo.brand,
-        //  Platform.isAndroid ? androidInfo.model : iosInfo.utsname.machine,
-        "MobileModelNumber": androidInfo.model,
-        "PIN": "",
-        "GCMRegId": "",
-        "Version": androidInfo.version,
-        "IMEI": Platform.operatingSystem == "ios" ? "iOS Device" : "Andorid",
-        "IP": "string",
-        "LoginDateTime": DateTime.now().toString(),
-        "UserId": employeeID,
-        "IsActive": 0,
-        "FireBaseToken": token
-      }
+      "EmployeeId": employeeID.toString(),
+      "Source": "",
+      "OS": Platform.operatingSystem,
+      "MobileModelName": androidInfo.brand,
+      "MobileModelNumber": androidInfo.model,
+      "GCMRegId": "",
+      "Version": androidInfo.version.release,
+      "IMEI": "",
+      "IP": "",
+      "UserId": userID,
+      "FireBaseToken": ""
     };
+
+    final userMaster = {"LoginHistoryMaster": body};
+    print(jsonEncode(userMaster));
 
     if (kDebugMode) {
       print("******Update Login Data Api Call****");
@@ -124,14 +181,14 @@ class LoginServices {
     }
 
     final res = await http.post(Uri.parse(AppConstants.updateLoginData),
-        body: jsonEncode(body), headers: requestHeaders);
+        body: jsonEncode(userMaster), headers: requestHeaders);
 
     print(res);
 
     if (kDebugMode) {
       print(AppConstants.updateLoginData);
       print(requestHeaders);
-      print(body);
+      print(userMaster);
       print(res.statusCode);
     }
 
@@ -143,12 +200,7 @@ class LoginServices {
 
     if (res.statusCode == 200) {
       if (data != null) {
-        if (data['Data'] != null) {
-          return data;
-        } else {
-          showSnackBar("Error!!", data['Message'], Colors.redAccent);
-          return null;
-        }
+        return data;
       } else {
         showSnackBar("Error!!", data['Message'], Colors.redAccent);
         return null;

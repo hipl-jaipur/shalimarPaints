@@ -15,8 +15,16 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   var userName = "".obs;
   var division = "".obs;
+  var status = false.obs;
 
   var isLoading = false.obs;
+
+  
+   @override
+  Future<void> onInit() async {
+    super.onInit();
+   sessionCheckCall();
+  }
 
   loginCall() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -45,6 +53,32 @@ class LoginController extends GetxController {
               EmployeeName: value['Data'][0]["EmployeeName"],
               Email: value['Data'][0]["Email"],
               DesignationName: value['Data'][0]["DesignationName"]));
+
+          LoginServices.updateLoginData(
+                  prefs.getString('Email'), prefs.getInt('EmployeeId'))
+              .then((value) {
+            if (value != null) {
+              showSnackBar(
+                  value['Message'], "Login Details Saved", Colors.greenAccent);
+            }
+          });
+        }
+      });
+    } catch (e) {
+      isLoading(false);
+    }
+  }
+
+  sessionCheckCall() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var employeeID = prefs.getInt('EmployeeId');
+    var token = prefs.getString('logintoken');
+    isLoading(true);
+    try {
+      await LoginServices.sessionCheck(employeeID, token).then((value) {
+        isLoading(false);
+        if (value != null) {
+          status.value = value[0]["Status"];
         }
       });
     } catch (e) {
@@ -107,7 +141,6 @@ class LoginController extends GetxController {
                     ElevatedButton(
                       child: Text('Ok'),
                       onPressed: () {
-                        
                         prefs.clear();
                         Get.offAll(LoginPage());
                       },

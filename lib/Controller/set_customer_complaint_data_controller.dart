@@ -9,7 +9,6 @@ import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Model/UploadFileModel.dart';
 
 class SetCustomerComplaintDataController extends GetxController {
   var isLoading = false.obs;

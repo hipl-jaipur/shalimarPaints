@@ -126,14 +126,14 @@ class _CheckInPageState extends State<CheckInPage> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Visibility(
-                                        visible:
+                                  Visibility(
+                                    visible:
                                             controller.isCheckinOnSite.value,
-                                        child: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
                                           padding: EdgeInsets.all(8),
                                           decoration: BoxDecoration(
                                               color: Colors.white,
@@ -149,12 +149,12 @@ class _CheckInPageState extends State<CheckInPage> {
                                               SizedBox(
                                                 width: 5.0,
                                               ),
-
+                                        
                                               // Obx(
                                               //   () => Text(
                                               //       'Timer Count: ${cont.formattedTime(timeInSecond: cont.counter.value)}'),
                                               // )
-
+                                        
                                               Obx(
                                                 () => Text(
                                                   'Checkin Timer: ${timerService.formattedTime(timeInSecond: timerService.elapsedSeconds.value)} ',
@@ -166,50 +166,50 @@ class _CheckInPageState extends State<CheckInPage> {
                                             ],
                                           ),
                                         ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          controller.checkIn = false;
-                                          timerService.stopTimer();
-                                          controller.fetchData(
-                                              levelCode:
-                                                  controller.levelCode.value,
-                                              activityID: 10);
-                                          showSnackBar(
-                                              "You are Checked out at",
-                                              controller.levelName.value,
-                                              Colors.greenAccent);
-                                          Navigator.pop(context);
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          child: SingleChildScrollView(
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.logout_outlined,
-                                                  size: 30,
-                                                  color: primaryColor,
-                                                ),
-                                                SizedBox(
-                                                  width: 5.0,
-                                                ),
-                                                Text(
-                                                  "CheckOut",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            controller.checkIn = false;
+                                            timerService.stopTimer();
+                                            controller.fetchData(
+                                                levelCode:
+                                                    controller.levelCode.value,
+                                                activityID: 10);
+                                            showSnackBar(
+                                                "You are Checked out at",
+                                                controller.levelName.value,
+                                                Colors.greenAccent);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: SingleChildScrollView(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.logout_outlined,
+                                                    size: 30,
+                                                    color: primaryColor,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5.0,
+                                                  ),
+                                                  Text(
+                                                    "CheckOut",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 20,

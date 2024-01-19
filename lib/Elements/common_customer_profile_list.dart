@@ -183,7 +183,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                         Text(
                             distance != null
                                 ? "Distance: ${distance!.toInt()} KM Away"
-                                : "",
+                                : "Distance: ? KM Away",
                             style: TextStyle(
                                 color: primaryColor,
                                 fontSize: 14,
@@ -316,7 +316,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                               return AlertDialog(
                                 title: Text('Alert!!'),
                                 content: Text(
-                                    "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
+                                    "You are already checkin at ${controller.levelName}, Please CheckOut at ${controller.levelName}"),
                                 actions: <Widget>[
                                   ElevatedButton(
                                     child: Text('Ok'),
