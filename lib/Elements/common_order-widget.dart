@@ -124,7 +124,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                     "mrp": stockDataController.amount,
                                     "Qty": stockDataController.counter,
                                     "category": widget
-                                        .productList[widget.index].division
+                                        .productList[widget.index].division!.trim()
                                   });
                                   stockDataController.myList[widget.index]
                                       ["mrp"] = (widget
@@ -144,9 +144,16 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                       widget.productList[widget.index].dpl;
                                   stockDataController.myList[widget.index]
                                           ["category"] =
-                                      widget.productList[widget.index].division;
+                                      widget.productList[widget.index].division!.trim();
 
                                   stockDataController.update();
+                                  print(stockDataController.myList);
+                                } if (stockDataController.myList[widget.index]
+                                ["Qty"]==0) {
+                                  // Remove 'age' key only for the map at the specified index
+                                  stockDataController.myList[widget.index].remove('category');
+                                  stockDataController.update();
+                                  // print('\nList after removing "age" key at index $indexToRemove:');
                                   print(stockDataController.myList);
                                 }
                                 setState(() {
@@ -190,12 +197,12 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                 "mrp": stockDataController.amount,
                                 "Qty": stockDataController.counter,
                                 "category":
-                                    widget.productList[widget.index].division
+                                    widget.productList[widget.index].division!.trim()
                               });
 
                               stockDataController.myList[widget.index]
                                       ["category"] =
-                                  widget.productList[widget.index].division;
+                                  widget.productList[widget.index].division!.trim();
 
                               stockDataController.myList[widget.index]["mrp"] =
                                   ((widget.productList[widget.index].dpl)! *

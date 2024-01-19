@@ -170,7 +170,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                       GestureDetector(
                                         onTap: () {
                                           controller.checkIn = false;
-                                          // timerService.stopTimer();
+                                          timerService.stopTimer();
                                           controller.fetchData(
                                               levelCode:
                                                   controller.levelCode.value,

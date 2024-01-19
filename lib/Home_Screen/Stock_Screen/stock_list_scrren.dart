@@ -19,7 +19,7 @@ class StockScreen extends StatefulWidget {
 }
 
 class _StockScreenState extends State<StockScreen> {
-  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   StockController stockController =
   Get.put(StockController());
 
@@ -57,7 +57,58 @@ class _StockScreenState extends State<StockScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              searchBar(_searchController),
+                              TextField(
+                                controller: searchController,
+                                textInputAction: TextInputAction.search,
+                                textCapitalization: TextCapitalization.words,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  contentPadding: const EdgeInsets.fromLTRB(
+                                      20.0, 0.0, 20.0, 0.0),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                        color: Color(0xffECE6E6),
+                                      )),
+                                  disabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                        color: Color(0xffECE6E6),
+                                      )),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                        color: Color(0xffECE6E6),
+                                      )),
+                                  hintText: 'Search',
+                                  prefixIcon: IconButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_circle_left,
+                                        color: primaryColor,
+                                        size: 40,
+                                      )),
+                                  suffixIcon: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.sort_rounded,
+                                        color: primaryColor,
+                                        size: 40,
+                                      )),
+                                ),
+                                onChanged: (c){
+                                  setState(() {
+
+                                  });
+                                },
+                              ),
                               SizedBox(
                                 height: 20,
                               ),
@@ -221,7 +272,7 @@ class _StockScreenState extends State<StockScreen> {
                                         itemCount: marketSectorController
                                             .marketSectorModelData!.data!.length,
                                         itemBuilder: (BuildContext context, dynamic index) {
-                                          return GestureDetector(
+                                          return  GestureDetector(
                                             onTap:(){
                                               stockController.idMarke=marketSectorController.marketSectorModelData!
                                                   .data![index].marketsectorid;
@@ -305,7 +356,17 @@ class _StockScreenState extends State<StockScreen> {
                                 child:stockController.filterStockDataModel!.stockMaster!.isNotEmpty? ListView.builder(
                                   itemCount: stockController.filterStockDataModel!.stockMaster!.length,
                                   itemBuilder: (BuildContext context, dynamic index) {
-                                    return stockController.isSelectDepot?Card(
+                                    return stockController.filterStockDataModel!.stockMaster![index]!
+                                        .productcode!
+                                        .toLowerCase()
+                                        .contains(searchController
+                                        .text
+                                        .toLowerCase()) ||stockController.filterStockDataModel!.stockMaster![index]!
+                                        .productdesc!
+                                        .toLowerCase()
+                                        .contains(searchController
+                                        .text
+                                        .toLowerCase()) ? stockController.isSelectDepot?Card(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Column(
@@ -435,7 +496,7 @@ class _StockScreenState extends State<StockScreen> {
                                           ),
                                         ),
                                       ),
-                                    );
+                                    ):SizedBox();
                                   },
                                 ):Center(
                                   child: Text("No Data Found",

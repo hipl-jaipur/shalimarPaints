@@ -59,6 +59,7 @@ class TimerWidget extends StatelessWidget {
               onTap: () {
                 isVisible = false;
                 controller.checkIn = false;
+                timerService.stopTimer();
                 // controller.timer!.cancel();
                 // _timer!.cancel();
                 controller.fetchData(

@@ -51,7 +51,7 @@ class ComplainPageState extends State<ComplainPage> {
   int subCategoryID = 0;
 
   String productDropdownvalue = 'Product';
-  String productCode = "";
+  var productCode = "";
 
   DateTime selectedDate = DateTime.now();
 
@@ -72,6 +72,7 @@ class ComplainPageState extends State<ComplainPage> {
 
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
+
   void _pickImageBase64() async {
     try {
       // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
@@ -97,13 +98,18 @@ class ComplainPageState extends State<ComplainPage> {
   }
 
   final List<File> _images = [];
+  List<Map<dynamic, dynamic>> myImagesList = [];
 
   // File? _imageFile;
   String? _base64Image;
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 25,
+        maxHeight: 480,
+        maxWidth: 640);
 
     if (pickedFile != null) {
       setState(() {
@@ -111,57 +117,20 @@ class ComplainPageState extends State<ComplainPage> {
         print("ImageList1: $_imageFile");
         _images.add(_imageFile!);
       });
-
       String imgpath = pickedFile.path;
       File imgfile = File(imgpath);
       Uint8List imgbytes = await imgfile.readAsBytes();
       String bs4str = base64.encode(imgbytes);
       print("ImageList2: $bs4str");
 
-      // String bs4strr = "/9j/4VG+RXhpZgAATU0AKgAAAAgADQEAAAMAAAABC7gAAAEBAAMAAAABD6AAAAEPAAIAAAAHAAAAqgEQAAIAAAALAAAAsgESAAMAAAABAAEAAAEaAAUAAAABAAAAvgEbAAUAAAABAAAAxgEoAAMAAAABAAIAAAEyAAIAAAAUAAAAzgITAAMAAAABAAEAAIdpAAQAAAABAAAA6poAAAIAAAAHAAAA4oglAAQAAAABAAADAgAAA+BYaWFvbWkAAE0yMDEySzExQUkAAAAAAEgAAAABAAAASAAAAAEyMDI0OjAxOjEyIDE2OjE0OjU5AE1pIDExWAAAAB+CmgAFAAAAAQAAAmSCnQAFAAAAAQAAAmyIIgADAAAAAQACAACIJwADAAAAAQE+AACQAAAHAAAABDAyMjCQAwACAAAAFAAAAnSQBAACAAAAFAAAAoiRAQAHAAAABAECAwCSAQAKAAAAAQAAApySAgAFAAAAAQAAAqSSAwAKAAAAAQAAAqySBAAKAAAAAQAAArSSBQAFAAAAAQAAArySBwADAAAAAQACAACSCAADAAAAAQAVAACSCQADAAAAAQAQAACSCgAFAAAAAQAAAsSSkAACAAAABwAAAsySkQACAAAABwAAAtSSkgACAAAABwAAAtygAAAHAAAABDAxMDCgAQADAAAAAQABAACgAgAEAAAAAQAAC7igAwAEAAAAAQAAD6CgBQAEAAAAAQAAAuOiFwADAAAAAQABAACjAQABAAAAAQEAAACkAgADAAAAAQAAAACkAwADAAAAAQAAAACkBQADAAAAAQAZAACkBgADAAAAAQAAAAAAAAAAAAAAAQAAADIAAACzAAAAZDIwMjQ6MDE6MTIgMTY6MTQ6NTkAMjAyNDowMToxMiAxNjoxNDo1OQAAABYLAAAD6AAAAKcAAABk////wwAAAGQAAAAAAAAABgAAAKcAAABkAAASZgAAA+gwNjMwMjEAADA2MzAyMQAAMDYzMDIxAAACAAEAAgA";
-      Uint8List decodedbytes = base64.decode(bs4str);
-      File decodedimgfile = await File("image.jpg").writeAsBytes(decodedbytes);
-      String decodedpath = decodedimgfile.path;
-      print("ImageList2: $decodedpath");
-
-      // var image = imageToBase64(_imageFile!.path);
-
-      // print("ImageList2: $image");
-
-      // Uint8List bytes = _imageFile!.readAsBytesSync();
-      // String base64Image = base64Encode(bytes);
-      // print("ImageList2: $base64Image");
-
-      // getUint8ListFromFile(_imageFile!);
-
-      // final bytes = io.File(pickedFile.path).readAsBytesSync();
-      // String img64 = base64Encode(bytes);
-      // print("ImageList2: $img64");
-
-      //  uploadImageController.fetchData(img64, "jpg");
-
-      //convert Path to File
-      // Uint8List imagebytes = await _imageFile!.readAsBytes(); //convert to bytes
-      // String base64string = base64.encode(imagebytes);
-      // print("ImageList2: $base64string");
-      // Uint8List decodedbytes = base64.decode(base64string);
-      // print("ImageList3: $decodedbytes");
-
-      // Uint8List _bytes = await _imageFile!.readAsBytes();
-      // String base64String = base64.encode(_bytes);
-      // print("ImageList2 : $base64String");
-
-      // List<int> imageBytes = File(pickedFile.path).readAsBytesSync();
-      // print(imageBytes);
-      // String base64Image = base64Encode(imageBytes);
-      // print("ImageList2: $base64Image");
-
-      // final bytes = File(pickedFile.path).readAsBytesSync();
-      // String _base64Image = "data:image/png;base64," + base64Encode(bytes);
-
-      // print("ImageList3 : $_base64Image");
-
-      // _convertImageToBase64();
+      complaintController.uploadFileChunked(pickedFile.path).then((value) {
+        myImagesList.add({
+          "ImageType": value['Type'],
+          "ImageSize": value['SizeinMB'],
+          "ImageName": value['Data']
+        });
+        print(myImagesList);
+      });
     }
   }
 
@@ -253,8 +222,10 @@ class ComplainPageState extends State<ComplainPage> {
   final FocusNode _textFieldFocusNodePlant = FocusNode();
   final TextEditingController _textEditingController = TextEditingController();
   final TextEditingController _plantEditingController = TextEditingController();
+
   static String _displayStringForOption(dynamic option) =>
       option.subcategoryName.toString();
+
   static String _plantDisplayStringForOption(dynamic option) =>
       option.subcategoryName.toString();
 
@@ -284,21 +255,24 @@ class ComplainPageState extends State<ComplainPage> {
                   Images.bg_3,
                   fit: BoxFit.fill,
                 )),
-                
             Positioned(
               child: Stack(
                 children: [
-                  Positioned(child:  Visibility(
-                                              visible:
-                                                  setActivityController.checkIn,
-                                              child: TimerWidget())),
+                  Positioned(
+                      child: Visibility(
+                          visible: setActivityController.checkIn,
+                          child: TimerWidget())),
                   Obx(
                     () => productDataController.isLoading.value
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
                         : Padding(
-                            padding: const EdgeInsets.only(bottom: 18.0, left: 18.0, right: 18.0, top: 50.0),
+                            padding: const EdgeInsets.only(
+                                bottom: 18.0,
+                                left: 18.0,
+                                right: 18.0,
+                                top: 50.0),
                             child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -360,19 +334,21 @@ class ComplainPageState extends State<ComplainPage> {
                                                   style: TextStyle(
                                                       color: primaryColor,
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.bold),
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 Text(
                                                   "Please fill out our complaint here",
                                                   style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 14,
-                                                      fontWeight: FontWeight.w400),
+                                                      fontWeight:
+                                                          FontWeight.w400),
                                                 ),
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-                                                SizedBox(
+                                                /* SizedBox(
                                                   height: 10,
                                                 ),
                                                 // SizedBox(
@@ -534,7 +510,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                 //         return const Iterable<
                                                 //             SubCategory>.empty();
                                                 //       }
-                  
+
                                                 //       debugPrint(
                                                 //           'subCategoryList: ${subCategoryList}');
                                                 //       List<SubCategory>
@@ -615,7 +591,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                   // Down Arrow Icon
                                                   icon: const Icon(
                                                       Icons.keyboard_arrow_down),
-                  
+
                                                   // Array list of items
                                                   items:
                                                       // [
@@ -679,7 +655,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                       //     );
                                                       //   }).toList(),
                                                       // ],
-                  
+
                                                       subCategoryDataController
                                                           .subCatagoryDataModel!
                                                           .data!
@@ -693,7 +669,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                           .toString()),
                                                     );
                                                   }).toList(),
-                  
+
                                                   // After selecting the desired option,it will
                                                   // change button value to selected value
                                                   onChanged: (val) {
@@ -703,11 +679,417 @@ class ComplainPageState extends State<ComplainPage> {
                                                         "subCategory ID: $subCategoryID");
                                                     setState(() {});
                                                   },
+                                                ),*/
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                LayoutBuilder(
+                                                  builder:
+                                                      (context, constraints) =>
+                                                          Autocomplete<String>(
+                                                    optionsBuilder:
+                                                        (TextEditingValue
+                                                            textEditingValue) {
+                                                      Map<String, dynamic>
+                                                          kOptions = {};
+                                                      List<String> _kOptions =
+                                                          <String>[];
+                                                      List<String> _idOptions =
+                                                          <String>[];
+                                                      for (var str
+                                                          in subCategoryDataController
+                                                              .subCatagoryDataModel!
+                                                              .data!) {
+                                                        if (str.subcategoryName!
+                                                            .toLowerCase()
+                                                            .contains(
+                                                                textEditingValue
+                                                                    .text
+                                                                    .toLowerCase())) {
+                                                          _kOptions.add(str
+                                                              .subcategoryName
+                                                              .toString());
+                                                          _idOptions.add(str
+                                                              .subcategoryName
+                                                              .toString());
+                                                        }
+                                                      }
+                                                      return _kOptions;
+                                                    },
+                                                    onSelected:
+                                                        (selectedValue) {
+                                                      if (kDebugMode) {
+                                                        print(
+                                                            'Selected: $selectedValue - $subCategoryDataController.subCatagoryDataModel!.data');
+                                                      }
+
+                                                      subCategoryID = subCategoryDataController
+                                                          .subCatagoryDataModel!
+                                                          .data![subCategoryDataController
+                                                              .subCatagoryDataModel!
+                                                              .data!
+                                                              .indexWhere((element) =>
+                                                                  element
+                                                                      .subcategoryName ==
+                                                                  selectedValue)]
+                                                          .subCategoryID;
+                                                    },
+                                                    fieldViewBuilder: (BuildContext
+                                                            context,
+                                                        TextEditingController
+                                                            textEditingController,
+                                                        FocusNode focusNode,
+                                                        VoidCallback
+                                                            onFieldSubmitted) {
+                                                      return TextFormField(
+                                                        autovalidateMode:
+                                                            AutovalidateMode
+                                                                .onUserInteraction,
+                                                        validator: (value) {
+                                                          if (value == null ||
+                                                              value.isEmpty) {
+                                                            return "The Subcategory is required.";
+                                                          }
+                                                          return null;
+                                                        },
+                                                        controller:
+                                                            textEditingController,
+                                                        focusNode: focusNode,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                suffixIcon:
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () {},
+                                                                        icon:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_down_sharp,
+                                                                          size:
+                                                                              22,
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                labelText:
+                                                                    'Subcategory',
+                                                                hintText:
+                                                                    'Enter Subcategory',
+                                                                labelStyle:
+                                                                    const TextStyle(
+                                                                        color: Color(
+                                                                            0xff0A2540)),
+                                                                border:
+                                                                    const OutlineInputBorder(),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                        borderRadius: const BorderRadius
+                                                                            .all(
+                                                                            Radius.circular(
+                                                                                3)),
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                disabledBorder:
+                                                                    const OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                3)),
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                enabledBorder:
+                                                                    const OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                3)),
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                contentPadding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            12)),
+                                                      );
+                                                    },
+                                                    optionsViewBuilder:
+                                                        (context, onSelected,
+                                                                options) =>
+                                                            Align(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: Material(
+                                                        shape:
+                                                            const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.vertical(
+                                                                  bottom: Radius
+                                                                      .circular(
+                                                                          4.0)),
+                                                        ),
+                                                        child: SizedBox(
+                                                          height: 62.0 *
+                                                              options.length,
+                                                          width: constraints
+                                                              .biggest.width,
+                                                          // <-- Right here !
+                                                          child:
+                                                              ListView.builder(
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            itemCount:
+                                                                options.length,
+                                                            shrinkWrap: false,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              final String
+                                                                  option =
+                                                                  options
+                                                                      .elementAt(
+                                                                          index);
+                                                              /*  var cityName = masterController
+                                                                  .customerListData[masterController.customerListData
+                                                                  .indexWhere((element) =>
+                                                              element.customerName == option)]
+                                                                  .cityName;*/
+                                                              /*
+                                                              var guardianName = masterController
+                                                                  .customerListData[masterController
+                                                                  .customerListData
+                                                                  .indexWhere((element) =>
+                                                              element.customerName == option)]
+                                                                  .guardianName!
+                                                                  .isNotEmpty
+                                                                  ? masterController
+                                                                  .customerListData[masterController
+                                                                  .customerListData
+                                                                  .indexWhere((element) =>
+                                                              element.customerName == option)]
+                                                                  .guardianName
+                                                                  : "N/A";*/
+
+                                                              return ListTile(
+                                                                onTap: () => {
+                                                                  onSelected(
+                                                                      "$option"),
+                                                                },
+                                                                title: Text(option
+                                                                    .toString()),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
                                                 SizedBox(
                                                   height: 20,
                                                 ),
-                                                DropdownButtonFormField<Product>(
+                                                LayoutBuilder(
+                                                  builder:
+                                                      (context, constraints) =>
+                                                          Autocomplete<String>(
+                                                    optionsBuilder:
+                                                        (TextEditingValue
+                                                            textEditingValue) {
+                                                      Map<String, dynamic>
+                                                          kOptions = {};
+                                                      List<String> _kOptions =
+                                                          <String>[];
+                                                      List<String> _idOptions =
+                                                          <String>[];
+                                                      for (var str
+                                                          in productDataController
+                                                              .productDataModel!
+                                                              .data!) {
+                                                        if (str.productdesc!
+                                                            .toLowerCase()
+                                                            .contains(
+                                                                textEditingValue
+                                                                    .text
+                                                                    .toLowerCase())) {
+                                                          _kOptions.add(str
+                                                              .productdesc
+                                                              .toString());
+                                                          // _idOptions.add(str.productdesc.toString());
+                                                        }
+                                                      }
+                                                      return _kOptions;
+                                                    },
+                                                    onSelected:
+                                                        (selectedValue) {
+                                                      if (kDebugMode) {
+                                                        print(
+                                                            'Selected: $selectedValue ');
+                                                      }
+
+                                                      productCode = productDataController
+                                                          .productDataModel!
+                                                          .data![productDataController
+                                                              .productDataModel!
+                                                              .data!
+                                                              .indexWhere((element) =>
+                                                                  element
+                                                                      .productdesc ==
+                                                                  selectedValue)]
+                                                          .productcode
+                                                          .toString();
+                                                    },
+                                                    fieldViewBuilder: (BuildContext
+                                                            context,
+                                                        TextEditingController
+                                                            textEditingController,
+                                                        FocusNode focusNode,
+                                                        VoidCallback
+                                                            onFieldSubmitted) {
+                                                      return TextFormField(
+                                                        autovalidateMode:
+                                                            AutovalidateMode
+                                                                .onUserInteraction,
+                                                        validator: (value) {
+                                                          if (value == null ||
+                                                              value.isEmpty) {
+                                                            return "The Product is required.";
+                                                          }
+                                                          return null;
+                                                        },
+                                                        controller:
+                                                            textEditingController,
+                                                        focusNode: focusNode,
+                                                        decoration:
+                                                            InputDecoration(
+                                                                suffixIcon:
+                                                                    IconButton(
+                                                                        onPressed:
+                                                                            () {},
+                                                                        icon:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .keyboard_arrow_down_sharp,
+                                                                          size:
+                                                                              22,
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                labelText:
+                                                                    'Product',
+                                                                hintText:
+                                                                    'Enter Product Name',
+                                                                labelStyle:
+                                                                    const TextStyle(
+                                                                        color: Color(
+                                                                            0xff0A2540)),
+                                                                border:
+                                                                    const OutlineInputBorder(),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                        borderRadius: const BorderRadius
+                                                                            .all(
+                                                                            Radius.circular(
+                                                                                3)),
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                disabledBorder:
+                                                                    const OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                3)),
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                enabledBorder:
+                                                                    const OutlineInputBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(
+                                                                                3)),
+                                                                        borderSide:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              Colors.black,
+                                                                        )),
+                                                                contentPadding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            12)),
+                                                      );
+                                                    },
+                                                    optionsViewBuilder:
+                                                        (context, onSelected,
+                                                                options) =>
+                                                            Align(
+                                                      alignment:
+                                                          Alignment.topLeft,
+                                                      child: Material(
+                                                        shape:
+                                                            const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.vertical(
+                                                                  bottom: Radius
+                                                                      .circular(
+                                                                          4.0)),
+                                                        ),
+                                                        child: SizedBox(
+                                                          height: 62.0 *
+                                                              options.length,
+                                                          width: constraints
+                                                              .biggest.width,
+                                                          // <-- Right here !
+                                                          child:
+                                                              ListView.builder(
+                                                            padding:
+                                                                EdgeInsets.zero,
+                                                            itemCount:
+                                                                options.length,
+                                                            shrinkWrap: false,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              final String
+                                                                  option =
+                                                                  options
+                                                                      .elementAt(
+                                                                          index);
+                                                              var productCodeName = productDataController
+                                                                  .productDataModel!
+                                                                  .data![productDataController
+                                                                      .productDataModel!
+                                                                      .data!
+                                                                      .indexWhere((element) =>
+                                                                          element
+                                                                              .productdesc ==
+                                                                          option)]
+                                                                  .productcode;
+
+                                                              return ListTile(
+                                                                onTap: () => {
+                                                                  onSelected(
+                                                                      "$option"),
+                                                                },
+                                                                title: Text(
+                                                                    "$productCodeName ${option.toString()}"),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                /*DropdownButtonFormField<Product>(
                                                   decoration: InputDecoration(
                                                     contentPadding:
                                                         const EdgeInsets.fromLTRB(
@@ -752,7 +1134,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                   // Down Arrow Icon
                                                   icon: const Icon(
                                                       Icons.keyboard_arrow_down),
-                  
+
                                                   // Array list of items
                                                   items: productDataController
                                                               .productDataModel !=
@@ -772,12 +1154,12 @@ class ComplainPageState extends State<ComplainPage> {
                                                   // After selecting the desired option,it will
                                                   // change button value to selected value
                                                   onChanged: (val) {
-                                                    productCode = val!.productcode!;
+                                                    // productCode = val!.productcode!;
                                                     print(
                                                         "productCode: $productCode");
                                                     setState(() {});
                                                   },
-                                                ),
+                                                ),*/
                                                 SizedBox(
                                                   height: 20,
                                                 ),
@@ -791,28 +1173,32 @@ class ComplainPageState extends State<ComplainPage> {
                                                       color: Colors.black),
                                                   decoration: InputDecoration(
                                                       contentPadding:
-                                                          const EdgeInsets.fromLTRB(
-                                                              20.0, 0.0, 20.0, 0.0),
-                                                      border: OutlineInputBorder(),
+                                                          const EdgeInsets
+                                                              .fromLTRB(20.0,
+                                                              0.0, 20.0, 0.0),
+                                                      border:
+                                                          OutlineInputBorder(),
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                               borderRadius:
-                                                                  BorderRadius.all(
-                                                                      Radius
+                                                                  BorderRadius
+                                                                      .all(Radius
                                                                           .circular(
                                                                               3)),
                                                               borderSide:
                                                                   BorderSide(
-                                                                color: Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                               )),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderSide: BorderSide(
-                                                            color: Colors
-                                                                .black), //<-- SEE HERE
+                                                            color:
+                                                                Colors.black),
+                                                        //<-- SEE HERE
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5.0),
+                                                            BorderRadius
+                                                                .circular(5.0),
                                                       ),
                                                       hintText:
                                                           "Enter Batch Number",
@@ -833,40 +1219,40 @@ class ComplainPageState extends State<ComplainPage> {
                                                     return null;
                                                   },
                                                 ),
-                                                SizedBox(
-                                                  height: 20,
-                                                ),
-                  
-                                               
-                  
                                                 SizedBox(height: 20),
                                                 DropdownButtonFormField<Data>(
                                                   validator: (value) {
                                                     if (value == null ||
-                                                        value.plantname!.isEmpty) {
+                                                        value.plantname!
+                                                            .isEmpty) {
                                                       return "The Plant is required.";
                                                     }
                                                     return null;
                                                   },
                                                   decoration: InputDecoration(
                                                     contentPadding:
-                                                        const EdgeInsets.fromLTRB(
-                                                            20.0, 0.0, 20.0, 0.0),
-                                                    border: OutlineInputBorder(),
+                                                        const EdgeInsets
+                                                            .fromLTRB(20.0, 0.0,
+                                                            20.0, 0.0),
+                                                    border:
+                                                        OutlineInputBorder(),
                                                     focusedBorder:
                                                         OutlineInputBorder(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        3)),
-                                                            borderSide: BorderSide(
-                                                              color: Colors.black,
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            3)),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color:
+                                                                  Colors.black,
                                                             )),
                                                     enabledBorder:
                                                         OutlineInputBorder(
                                                       borderSide: BorderSide(
-                                                          color: Colors
-                                                              .black), //<-- SEE HERE
+                                                          color: Colors.black),
+                                                      //<-- SEE HERE
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               5.0),
@@ -875,17 +1261,20 @@ class ComplainPageState extends State<ComplainPage> {
                                                   isExpanded: true,
                                                   // Initial Value
                                                   // value: ,
-                                                  hint: plantDropdownvalue == "" ||
-                                                          plantDropdownvalue == null
+                                                  hint: plantDropdownvalue ==
+                                                              "" ||
+                                                          plantDropdownvalue ==
+                                                              null
                                                       ? Text("Plant")
-                                                      : Text(plantDropdownvalue),
+                                                      : Text(
+                                                          plantDropdownvalue),
                                                   // Down Arrow Icon
-                                                  icon: const Icon(
-                                                      Icons.keyboard_arrow_down),
-                  
+                                                  icon: const Icon(Icons
+                                                      .keyboard_arrow_down),
+
                                                   // Array list of items
                                                   items:
-                  
+
                                                       // [
                                                       //   DropdownMenuItem<String>(
                                                       //     value: 'Other',
@@ -930,21 +1319,24 @@ class ComplainPageState extends State<ComplainPage> {
                                                       //           : SizedBox(),
                                                       //     ),
                                                       // ],
-                  
+
                                                       plantDataController
                                                           .plantDataModel!.data!
                                                           .map((Data option) {
-                                                    return DropdownMenuItem<Data>(
+                                                    return DropdownMenuItem<
+                                                        Data>(
                                                       value: option,
-                                                      child: Text(option.plantname
+                                                      child: Text(option
+                                                          .plantname
                                                           .toString()),
                                                     );
                                                   }).toList(),
-                  
+
                                                   // After selecting the desired option,it will
                                                   // change button value to selected value
                                                   onChanged: (val) {
-                                                    plantID = val!.plantid!.toInt();
+                                                    plantID =
+                                                        val!.plantid!.toInt();
                                                     print("Plant ID: $plantID");
                                                     setState(() {});
                                                   },
@@ -964,7 +1356,8 @@ class ComplainPageState extends State<ComplainPage> {
                                                       border: Border.all(
                                                           color: Colors.black),
                                                       borderRadius:
-                                                          BorderRadius.circular(5)),
+                                                          BorderRadius.circular(
+                                                              5)),
                                                   width: double.infinity,
                                                   child: Row(
                                                     children: [
@@ -977,18 +1370,26 @@ class ComplainPageState extends State<ComplainPage> {
                                                             itemCount:
                                                                 _images.length,
                                                             itemBuilder:
-                                                                (context, index) {
+                                                                (context,
+                                                                    index) {
                                                               return Padding(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                        .all(5.0),
-                                                                child: Image.file(
-                                                                  fit: BoxFit.fill,
-                                                                  File(
-                                                                      _images[index]
+                                                                        .all(
+                                                                        5.0),
+                                                                child: Stack(
+                                                                  children: [
+                                                                    Image.file(
+                                                                      fit: BoxFit
+                                                                          .fill,
+                                                                      File(_images[
+                                                                              index]
                                                                           .path),
-                                                                  height: 100,
-                                                                  width: 80,
+                                                                      height:
+                                                                          100,
+                                                                      width: 80,
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               );
                                                             }),
@@ -1001,7 +1402,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                         onPressed: () {
                                                           // _pickImage;
                                                           // _pickImage();
-                                                          _pickImageBase64();
+                                                          _pickImage();
                                                         },
                                                       ),
                                                     ],
@@ -1014,8 +1415,9 @@ class ComplainPageState extends State<ComplainPage> {
                                                   onTap: () {
                                                     _selectDate(context);
                                                   },
-                                                  controller: complaintController
-                                                      .dateController,
+                                                  controller:
+                                                      complaintController
+                                                          .dateController,
                                                   readOnly: true,
                                                   onChanged: (value) {
                                                     setState(() {
@@ -1036,31 +1438,35 @@ class ComplainPageState extends State<ComplainPage> {
                                                   style: TextStyle(
                                                       color: Colors.black),
                                                   decoration: InputDecoration(
-                                                      prefixIcon: Icon(Icons
-                                                          .calendar_month),
+                                                      prefixIcon: Icon(
+                                                          Icons.calendar_month),
                                                       contentPadding:
-                                                          const EdgeInsets.fromLTRB(
-                                                              20.0, 0.0, 20.0, 0.0),
-                                                      border: OutlineInputBorder(),
+                                                          const EdgeInsets
+                                                              .fromLTRB(20.0,
+                                                              0.0, 20.0, 0.0),
+                                                      border:
+                                                          OutlineInputBorder(),
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                               borderRadius:
-                                                                  BorderRadius.all(
-                                                                      Radius
+                                                                  BorderRadius
+                                                                      .all(Radius
                                                                           .circular(
                                                                               3)),
                                                               borderSide:
                                                                   BorderSide(
-                                                                color: Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                               )),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderSide: BorderSide(
-                                                            color: Colors
-                                                                .black), //<-- SEE HERE
+                                                            color:
+                                                                Colors.black),
+                                                        //<-- SEE HERE
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5.0),
+                                                            BorderRadius
+                                                                .circular(5.0),
                                                       ),
                                                       hintText:
                                                           "Manufacturing Date",
@@ -1078,8 +1484,9 @@ class ComplainPageState extends State<ComplainPage> {
                                                   height: 20,
                                                 ),
                                                 TextFormField(
-                                                  controller: complaintController
-                                                      .damagedQtyController,
+                                                  controller:
+                                                      complaintController
+                                                          .damagedQtyController,
                                                   enabled: true,
                                                   maxLines: 1,
                                                   cursorColor: Colors.black,
@@ -1087,28 +1494,32 @@ class ComplainPageState extends State<ComplainPage> {
                                                       color: Colors.black),
                                                   decoration: InputDecoration(
                                                       contentPadding:
-                                                          const EdgeInsets.fromLTRB(
-                                                              20.0, 0.0, 20.0, 0.0),
-                                                      border: OutlineInputBorder(),
+                                                          const EdgeInsets
+                                                              .fromLTRB(20.0,
+                                                              0.0, 20.0, 0.0),
+                                                      border:
+                                                          OutlineInputBorder(),
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                               borderRadius:
-                                                                  BorderRadius.all(
-                                                                      Radius
+                                                                  BorderRadius
+                                                                      .all(Radius
                                                                           .circular(
                                                                               3)),
                                                               borderSide:
                                                                   BorderSide(
-                                                                color: Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                               )),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderSide: BorderSide(
-                                                            color: Colors
-                                                                .black), //<-- SEE HERE
+                                                            color:
+                                                                Colors.black),
+                                                        //<-- SEE HERE
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5.0),
+                                                            BorderRadius
+                                                                .circular(5.0),
                                                       ),
                                                       hintText: "Damaged Qty",
                                                       hintStyle: TextStyle(
@@ -1140,12 +1551,11 @@ class ComplainPageState extends State<ComplainPage> {
                                                       color: Colors.black),
                                                   decoration: InputDecoration(
                                                       contentPadding:
-                                                          const EdgeInsets.fromLTRB(
-                                                              20.0,
-                                                              40.0,
-                                                              20.0,
-                                                              0.0),
-                                                      border: OutlineInputBorder(),
+                                                          const EdgeInsets
+                                                              .fromLTRB(20.0,
+                                                              40.0, 20.0, 0.0),
+                                                      border:
+                                                          OutlineInputBorder(),
                                                       focusedBorder:
                                                           OutlineInputBorder(
                                                               borderRadius:
@@ -1155,16 +1565,18 @@ class ComplainPageState extends State<ComplainPage> {
                                                                               3)),
                                                               borderSide:
                                                                   BorderSide(
-                                                                color: Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                               )),
                                                       enabledBorder:
                                                           OutlineInputBorder(
                                                         borderSide: BorderSide(
-                                                            color: Colors
-                                                                .black), //<-- SEE HERE
+                                                            color:
+                                                                Colors.black),
+                                                        //<-- SEE HERE
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5.0),
+                                                            BorderRadius
+                                                                .circular(5.0),
                                                       ),
                                                       hintText: "Description",
                                                       hintStyle: TextStyle(
@@ -1191,14 +1603,19 @@ class ComplainPageState extends State<ComplainPage> {
                                                   onPressed: () {
                                                     if (_formKey.currentState!
                                                         .validate()) {
-                                                      complaintController.fetchData(
-                                                          SubCategoryID:
-                                                              subCategoryID,
-                                                          ProductCode: productCode,
-                                                          PlantID: plantID,
-                                                          CustomerCode:
-                                                              Get.arguments,
-                                                          context: context);
+                                                      complaintController
+                                                          .fetchData(
+                                                              SubCategoryID:
+                                                                  subCategoryID,
+                                                              ProductCode:
+                                                                  productCode
+                                                                      .toString(),
+                                                              PlantID: plantID,
+                                                              CustomerCode:
+                                                                  Get.arguments,
+                                                              context: context,
+                                                              imagesList:
+                                                                  myImagesList);
                                                     }
                                                   },
                                                 )
@@ -1238,31 +1655,40 @@ class ComplainPageState extends State<ComplainPage> {
                                               enabled: false,
                                               maxLines: 1,
                                               cursorColor: Colors.black,
-                                              style: TextStyle(color: Colors.black),
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                               decoration: InputDecoration(
                                                   contentPadding:
                                                       const EdgeInsets.fromLTRB(
                                                           20.0, 0.0, 20.0, 0.0),
                                                   border: OutlineInputBorder(),
-                                                  focusedBorder: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(3)),
-                                                      borderSide: BorderSide(
-                                                        color: Colors.black,
-                                                      )),
-                                                  enabledBorder: OutlineInputBorder(
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color: Colors
-                                                            .black), //<-- SEE HERE
+                                                        color: Colors.black),
+                                                    //<-- SEE HERE
                                                     borderRadius:
-                                                        BorderRadius.circular(5.0),
+                                                        BorderRadius.circular(
+                                                            5.0),
                                                   ),
-                                                  hintText: "Fresh Desk Ticket No",
+                                                  hintText:
+                                                      "Fresh Desk Ticket No",
                                                   hintStyle: TextStyle(
                                                     color: Colors.black,
                                                   ),
-                                                  labelText: "Fresh Desk Ticket No",
+                                                  labelText:
+                                                      "Fresh Desk Ticket No",
                                                   labelStyle: TextStyle(
                                                     color: Colors.black,
                                                   ),
@@ -1275,25 +1701,32 @@ class ComplainPageState extends State<ComplainPage> {
                                               enabled: false,
                                               maxLines: 1,
                                               cursorColor: Colors.black,
-                                              style: TextStyle(color: Colors.black),
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                               decoration: InputDecoration(
                                                   contentPadding:
                                                       const EdgeInsets.fromLTRB(
                                                           20.0, 0.0, 20.0, 0.0),
                                                   border: OutlineInputBorder(),
-                                                  focusedBorder: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(3)),
-                                                      borderSide: BorderSide(
-                                                        color: Colors.black,
-                                                      )),
-                                                  enabledBorder: OutlineInputBorder(
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color: Colors
-                                                            .black), //<-- SEE HERE
+                                                        color: Colors.black),
+                                                    //<-- SEE HERE
                                                     borderRadius:
-                                                        BorderRadius.circular(5.0),
+                                                        BorderRadius.circular(
+                                                            5.0),
                                                   ),
                                                   hintText: "Ticket Date",
                                                   hintStyle: TextStyle(
@@ -1312,25 +1745,35 @@ class ComplainPageState extends State<ComplainPage> {
                                               enabled: false,
                                               maxLines: 2,
                                               cursorColor: Colors.black,
-                                              style: TextStyle(color: Colors.black),
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                               decoration: InputDecoration(
                                                   contentPadding:
                                                       const EdgeInsets.fromLTRB(
-                                                          20.0, 40.0, 20.0, 0.0),
+                                                          20.0,
+                                                          40.0,
+                                                          20.0,
+                                                          0.0),
                                                   border: OutlineInputBorder(),
-                                                  focusedBorder: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(3)),
-                                                      borderSide: BorderSide(
-                                                        color: Colors.black,
-                                                      )),
-                                                  enabledBorder: OutlineInputBorder(
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color: Colors
-                                                            .black), //<-- SEE HERE
+                                                        color: Colors.black),
+                                                    //<-- SEE HERE
                                                     borderRadius:
-                                                        BorderRadius.circular(5.0),
+                                                        BorderRadius.circular(
+                                                            5.0),
                                                   ),
                                                   hintText: "Status",
                                                   hintStyle: TextStyle(
@@ -1349,25 +1792,35 @@ class ComplainPageState extends State<ComplainPage> {
                                               enabled: false,
                                               maxLines: 2,
                                               cursorColor: Colors.black,
-                                              style: TextStyle(color: Colors.black),
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                               decoration: InputDecoration(
                                                   contentPadding:
                                                       const EdgeInsets.fromLTRB(
-                                                          20.0, 40.0, 20.0, 0.0),
+                                                          20.0,
+                                                          40.0,
+                                                          20.0,
+                                                          0.0),
                                                   border: OutlineInputBorder(),
-                                                  focusedBorder: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(3)),
-                                                      borderSide: BorderSide(
-                                                        color: Colors.black,
-                                                      )),
-                                                  enabledBorder: OutlineInputBorder(
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          3)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: Colors.black,
+                                                          )),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
                                                     borderSide: BorderSide(
-                                                        color: Colors
-                                                            .black), //<-- SEE HERE
+                                                        color: Colors.black),
+                                                    //<-- SEE HERE
                                                     borderRadius:
-                                                        BorderRadius.circular(5.0),
+                                                        BorderRadius.circular(
+                                                            5.0),
                                                   ),
                                                   hintText: "Remark",
                                                   hintStyle: TextStyle(

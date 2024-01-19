@@ -130,7 +130,6 @@ class TeamsController extends GetxController {
           var result = jsonDecode(res.body);
           employeeDetailsModel = EmployeeDetailsModel.fromJson(result);
           // filterStockDataModel = StockShowModel.fromJson(result);
-
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;

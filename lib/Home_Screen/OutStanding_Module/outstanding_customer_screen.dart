@@ -18,16 +18,15 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
   final TextEditingController searchController = TextEditingController();
   OutStandingController outStandingController =
       Get.put(OutStandingController());
-  List<OutStandingList> uniquenum = [];
 
   @override
   void initState() {
     // TODO: implement initState
-    if( outStandingController.filteredCustomerList.isEmpty &&  outStandingController.filteredAllCustomerList.isNotEmpty){
+   /* if( outStandingController.filteredCustomerList.isEmpty &&  outStandingController.filteredAllCustomerList.isNotEmpty){
       outStandingController.filteredCustomerList.addAll(outStandingController.filteredAllCustomerList);
-    }
+    }*/
 
-    print('List: ${ outStandingController.filteredCustomerList}');
+    print('List: ${ outStandingController.filteredCustomerList.length}');
 
     super.initState();
   }
@@ -121,7 +120,7 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                   height: 15,
                 ),
                 Expanded(
-                  child: ListView.builder(
+                  child:outStandingController.filteredCustomerList.isNotEmpty? ListView.builder(
                     itemCount: outStandingController.filteredCustomerList!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return outStandingController.filteredCustomerList![index]!
@@ -401,6 +400,14 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                         ),
                       ):SizedBox();
                     },
+                  ):Center(
+                    child: Text(
+                      "No Data Available",
+                      style: TextStyle(
+                        fontSize: 20,
+                          fontWeight:
+                          FontWeight.w500),
+                    ),
                   ),
                 )
               ],

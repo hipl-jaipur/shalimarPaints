@@ -53,4 +53,5 @@ class AppConstants {
   static const String getTeamsData = "${BASE_URL}GetEmployeeHireData";
   static const String getEmployeeData = "${BASE_URL}GetEmployeeData";
   static const String getTargetVsActualData = "${BASE_URL}GetCustomerHireTargetVsActual";
+  static const String fileUpload = "${BASE_URL}File/UploadWebFile";
 }

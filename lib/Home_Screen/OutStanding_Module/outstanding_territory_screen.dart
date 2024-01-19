@@ -138,8 +138,9 @@ class _OutStandingTerritoryState extends State<OutStandingTerritory> {
                                       onTap: () {
                                         outStandingController.filteredCustomerList = outStandingController
                                             .filteredAllCustomerList!.where((item) => item.parentLevelID == outStandingController.filteredTerritorList![index].levelID ).toList();
-                                        print(outStandingController.filteredDepotList!.length);
-                                        Get.to(OutStandingCustomer());
+                                        print(outStandingController.filteredTerritorList![index].levelID);
+                                        print(outStandingController.filteredCustomerList!.length);
+                                        Get.to(() => OutStandingCustomer());
                                       },
                                       child: Container(
                                         padding: EdgeInsets.all(12),

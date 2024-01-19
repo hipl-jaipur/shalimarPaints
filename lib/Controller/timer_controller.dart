@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 
 class TimerService extends GetxService {
   RxInt elapsedSeconds = 0.obs;
-  late Timer _timer;
+  late Timer timer;
 
-  @override
+ /* @override
   onInit() {
     super.onInit();
-    _timer = Timer.periodic(Duration(seconds: 1), _onTimerTick);
-  }
+    // timer = Timer.periodic(Duration(seconds: 1), onTimerTick);
+  }*/
 
   formattedTime({required int timeInSecond}) {
     int sec = timeInSecond % 60;
@@ -22,23 +22,29 @@ class TimerService extends GetxService {
     return "$hour:$minute:$second";
   }
 
-  void _onTimerTick(Timer timer) {
-    elapsedSeconds++;
+  void onTimerTick(Timer timer) {
+    ++elapsedSeconds;
   }
 
   void startTimer() {
-   _onTimerTick;
+    print("Start_____Timer");
+   onTimerTick;
   }
 
   void stopTimer() {
-    if (_timer.isActive) {
-      _timer.cancel();
-    }
+    print("Timer Close");
+    print(timer.isActive);
+    // if (_timer.isActive==false) {
+      print("Timer Close_____1");
+      elapsedSeconds.value=0;
+      timer.cancel();
+    super.onClose();
+    // }
   }
 
   @override
   void onClose() {
-    _timer.cancel();
+    timer.cancel();
     super.onClose();
   }
 }

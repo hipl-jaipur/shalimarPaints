@@ -210,7 +210,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                     onTap: () {
                       if (controller.checkIn == false) {
                         controller.checkIn = true;
-                        controller.checkinCustomer = widget
+                       timerService.timer = Timer.periodic(Duration(seconds: 1), timerService.onTimerTick);
+                          controller.checkinCustomer = widget
                             .customerList[widget.index].levelName
                             .toString();
                         controller.fetchData(

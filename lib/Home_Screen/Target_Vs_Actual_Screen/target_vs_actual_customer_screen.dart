@@ -23,9 +23,9 @@ class _TargetVsActualCustomerState extends State<TargetVsActualCustomer> {
   @override
   void initState() {
     // TODO: implement initState
-    if( targetVsActualController.filteredCustomerList.isEmpty &&  targetVsActualController.filteredAllCustomerList.isNotEmpty){
+   /* if( targetVsActualController.filteredCustomerList.isEmpty &&  targetVsActualController.filteredAllCustomerList.isNotEmpty){
       targetVsActualController.filteredCustomerList.addAll(targetVsActualController.filteredAllCustomerList);
-    }
+    }*/
 
     print('List: ${ targetVsActualController.filteredCustomerList}');
 
@@ -121,7 +121,7 @@ class _TargetVsActualCustomerState extends State<TargetVsActualCustomer> {
                           height: 15,
                         ),
                         Expanded(
-                          child: ListView.builder(
+                          child:targetVsActualController.filteredCustomerList.isNotEmpty? ListView.builder(
                             itemCount: targetVsActualController.filteredCustomerList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return targetVsActualController.filteredCustomerList![index]!
@@ -284,6 +284,14 @@ class _TargetVsActualCustomerState extends State<TargetVsActualCustomer> {
                                 ),
                               ):SizedBox();
                             },
+                          ):Center(
+                            child: Text(
+                              "No Data Available",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight:
+                                  FontWeight.w500),
+                            ),
                           ),
                         )
                       ],
