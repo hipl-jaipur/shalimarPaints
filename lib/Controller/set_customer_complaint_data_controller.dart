@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Model/UploadFileModel.dart';
 
 class SetCustomerComplaintDataController extends GetxController {
   var isLoading = false.obs;
@@ -20,6 +23,7 @@ class SetCustomerComplaintDataController extends GetxController {
       required String ProductCode,
       required int PlantID,
       required CustomerCode,
+      required var imagesList,
       required BuildContext context}) async {
     try {
       isLoading(true);
@@ -57,7 +61,7 @@ class SetCustomerComplaintDataController extends GetxController {
         "Latitude": LAT,
         "Longitude": LNG,
         "PlantId": PlantID,
-        "ComplaintImage": []
+        "ComplaintImage": imagesList
       };
 
       Map<String, String> requestHeaders = {
@@ -112,4 +116,93 @@ class SetCustomerComplaintDataController extends GetxController {
       isLoading(false);
     }
   }
-}
+  Future<dynamic> uploadFileChunked(String filePath, ) async {
+    var uri = Uri.parse("https://mayanksoftwares.in/api/File/UploadWebFile");
+
+    var request = http.MultipartRequest('POST', uri);
+
+    // Open the file as a stream
+    var fileStream = http.ByteStream(File(filePath).openRead());
+    var length = await File(filePath).length();
+
+    // Use chunked transfer encoding
+    var multipartFile = http.MultipartFile(
+      'file',
+      fileStream,
+      length,
+      filename: filePath.split('/').last,
+    );
+
+    request.files.add(multipartFile);
+
+      var response = await request.send().then((value) async {
+
+        var res = await value.stream.toBytes();
+        var alldata = String.fromCharCodes(res);
+
+        print(value.statusCode);
+        print(request.fields);
+        var data = jsonDecode(alldata);
+        print(data);
+
+      if (value.statusCode == 200) {
+        if(data!=null){
+        print('File uploaded successfully');
+        print(data);
+        return data;
+
+        }
+      } else {
+        print('File upload failed with status ${value.statusCode}');
+      }
+      });
+
+  return response;}
+  }
+
+/*
+  uploadFileImagesSet(File? prfileImageFile) async {
+
+
+    Map<String, String> requestHeaders = {
+      'Content-type': 'multipart/form-data',
+    };
+
+    var request = new http.MultipartRequest(
+        "POST", Uri.parse("${AppConstants.fileUpload}"));
+
+    print("${AppConstants.fileUpload}");
+    print(requestHeaders);
+    print(prfileImageFile);
+
+    print(request.fields);
+    request.headers.addAll(requestHeaders);
+    if (prfileImageFile != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'File', prfileImageFile.path));
+    }
+    var data1 = await request.send().then((value) async {
+      var res = await value.stream.toBytes();
+      var alldata = String.fromCharCodes(res);
+
+      print(value.statusCode);
+      print(request.fields);
+      var data = jsonDecode(alldata);
+      if (value.statusCode == 200) {
+        print(data);
+        if (data != null) {
+          print("*********");
+          return data;
+        } else {
+          return data;
+        }
+      } else {}
+      print(data);
+      return null;
+    });
+    return data1;
+  }
+*/
+
+
+
