@@ -13,6 +13,7 @@ import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
+import 'package:shalimar/Home_Screen/CheckIn_Module/collect_payment_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/make_complain_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/take_note_screen.dart';
@@ -826,6 +827,22 @@ class _CheckInPageState extends State<CheckInPage> {
                                       ]
                                           // customerProfileData
                                           );
+                                    },
+                                  ),                 ListTile(
+                                    title: Text(
+                                      "Take Payment",
+                                      style: TextStyle(
+                                          color: primaryColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    leading: Icon(
+                                      Icons.menu_book_outlined,
+                                      color: primaryColor,
+                                    ),
+                                    onTap: () {
+                                    Get.to(CollectPaymentPage()  ,arguments:
+                                        controller.levelCode.value);
                                     },
                                   ),
                                 ],

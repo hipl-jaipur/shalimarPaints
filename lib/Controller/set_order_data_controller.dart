@@ -93,6 +93,7 @@ class SetOrderDataController extends GetxController {
                       child: Text('Ok'),
                       onPressed: () {
                         Navigator.pop(context);
+                        Navigator.pop(context);
                         Get.back();
 
                         // Get.off(

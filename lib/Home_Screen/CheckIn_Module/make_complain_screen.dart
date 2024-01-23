@@ -17,6 +17,7 @@ import 'package:shalimar/Elements/timer_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
+import '../../Elements/commom_snackbar_widget.dart';
 import '../../Model/plant_data_model.dart';
 import '../../Model/product_data_model.dart';
 import '../../Model/subCatagory_data_model.dart';
@@ -73,31 +74,8 @@ class ComplainPageState extends State<ComplainPage> {
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
-  void _pickImageBase64() async {
-    try {
-      // pick image from gallery, change ImageSource.camera if you want to capture image from camera.
-      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      // read picked image byte data.
-      Uint8List imagebytes = await image!.readAsBytes();
-      // using base64 encoder convert image into base64 string.
-      String _base64String = base64.encode(imagebytes);
-      print("ImageList2: $_base64String");
 
-      final imageTemp = File(image.path);
-      print("ImageList1: $imageTemp");
-      setState(() {
-        this._imageFile =
-            imageTemp; // setState to image the UI and show picked image on screen.
-      });
-    } on PlatformException catch (e) {
-      if (kDebugMode) {
-        print('error');
-      }
-    }
-  }
-
-  final List<File> _images = [];
+  final List<File> imagesList = [];
   List<Map<dynamic, dynamic>> myImagesList = [];
 
   // File? _imageFile;
@@ -115,7 +93,7 @@ class ComplainPageState extends State<ComplainPage> {
       setState(() {
         _imageFile = File(pickedFile.path);
         print("ImageList1: $_imageFile");
-        _images.add(_imageFile!);
+        imagesList.add(_imageFile!);
       });
       String imgpath = pickedFile.path;
       File imgfile = File(imgpath);
@@ -1368,7 +1346,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                             scrollDirection:
                                                                 Axis.horizontal,
                                                             itemCount:
-                                                                _images.length,
+                                                            imagesList.length,
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
@@ -1382,7 +1360,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                                     Image.file(
                                                                       fit: BoxFit
                                                                           .fill,
-                                                                      File(_images[
+                                                                      File(imagesList[
                                                                               index]
                                                                           .path),
                                                                       height:
@@ -1603,6 +1581,8 @@ class ComplainPageState extends State<ComplainPage> {
                                                   onPressed: () {
                                                     if (_formKey.currentState!
                                                         .validate()) {
+                                                      if(myImagesList.isNotEmpty){
+
                                                       complaintController
                                                           .fetchData(
                                                               SubCategoryID:
@@ -1615,7 +1595,10 @@ class ComplainPageState extends State<ComplainPage> {
                                                                   Get.arguments,
                                                               context: context,
                                                               imagesList:
-                                                                  myImagesList);
+                                                                  myImagesList);}
+                                                      else{
+                                                        showSnackBar("Error!!", " Please Select Images", Colors.redAccent);
+                                                      }
                                                     }
                                                   },
                                                 )

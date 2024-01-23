@@ -283,7 +283,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                   child: GestureDetector(
                     onTap: () {
                       if (controller.checkIn == false) {
-                        controller.checkIn = true;
+                        // controller.checkIn = true;
                         controller.fetchData(
                             levelCode: widget
                                 .customerList[widget.index].levelCode

@@ -35,14 +35,14 @@ class _SplashPageState extends State<SplashPage> {
     var designationName = prefs.getString('DesignationName');
     var employeeID = prefs.getInt('EmployeeId');
     var token = prefs.getString('logintoken');
-    // var status;
+    var status =prefs.getBool("userlogindone")??false;
 
     // LoginServices.sessionCheck(employeeID, token).then((value) => {
     //       if (value != null) {status = value['Status']}
     //     });
 
     Timer(Duration(seconds: 3), () {
-      if (loginController.status.value == true) {
+      if (status) {
         Get.off(MyHomePage(
             EmployeeName: eName.toString(),
             Email: email.toString(),

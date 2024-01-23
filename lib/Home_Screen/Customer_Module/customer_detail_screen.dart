@@ -5,6 +5,7 @@ import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Elements/common_customer_profile_list.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
+import 'package:shalimar/Home_Screen/CheckIn_Module/add_customer_screen.dart';
 import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -224,31 +225,36 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                                     .w400)),
                                                   ],
                                                 ),
-                                                Container(
-                                                  padding: EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        "Add Customer",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5.0,
-                                                      ),
-                                                      Icon(
-                                                        Icons.add_box_rounded,
-                                                        size: 30,
-                                                        color: primaryColor,
-                                                      )
-                                                    ],
+                                                InkWell(
+                                                  onTap: (){
+                                                    Get.to(AddCustomerPage());
+                                                  },
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "Add Customer",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5.0,
+                                                        ),
+                                                        Icon(
+                                                          Icons.add_box_rounded,
+                                                          size: 30,
+                                                          color: primaryColor,
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 )
                                               ],

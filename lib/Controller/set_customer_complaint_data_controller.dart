@@ -99,6 +99,7 @@ class SetCustomerComplaintDataController extends GetxController {
           descriptionController.clear();
           dateController.clear();
           Navigator.pop(context);
+          Navigator.pop(context);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
