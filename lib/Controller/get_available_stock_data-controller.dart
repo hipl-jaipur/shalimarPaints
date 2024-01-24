@@ -18,12 +18,13 @@ class GetAvailableStockDataController extends GetxController {
   var i = false;
   int totalQty = 0;
   var totalAmount = 0.0;
-  // var productCategory = "";
+  var productCategory = "";
   AvailableStockDataModel? availableStockDataModel;
   // AvailableStockDataModel? filterAvailableStockDataModel;
   MarketSectorModel? marketSectorModelData;
   List<dynamic> sectionlist = [];
   List<Map<dynamic, dynamic>> myList = [];
+  List<Map<dynamic, dynamic>> myNewList = [];
   int counter = 0;
   double amount = 0.0;
   bool catCheck = false;

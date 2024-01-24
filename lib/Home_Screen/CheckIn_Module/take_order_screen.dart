@@ -225,17 +225,10 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                       .myList
                                                                       .length;
                                                               i++) {
-                                                            if (controller
-                                                                        .myList[i]
-                                                                    [
-                                                                    'category'] !=
-                                                                null) {
-                                                              if (controller
-                                                                          .myList[
-                                                                              i]
-                                                                              [
-                                                                              'category']
-                                                                          .trim() !=
+                                                            if (controller.myList[i]['category'] !=
+                                                                    null ) {
+                                                              if (controller.myList[i]['category']
+                                                                          .trim() != 
                                                                       "D"
                                                                   // stockController
                                                                   //     .productCategory

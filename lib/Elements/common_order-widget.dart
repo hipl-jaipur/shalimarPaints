@@ -28,6 +28,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
   GetAvailableStockDataController stockDataController =
       Get.put(GetAvailableStockDataController());
   var date = "";
+  // var countr = 0;
 
   @override
   void initState() {
@@ -154,6 +155,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                 if (stockDataController.myList[widget.index]
                                         ["Qty"] ==
                                     0) {
+                                  // stockDataController.myList
+                                  //     .removeAt(widget.index);
                                   // Remove  key only for the map at the specified index
                                   stockDataController.myList[widget.index]
                                       .remove('category');
@@ -180,24 +183,14 @@ class _TakeOrderListState extends State<TakeOrderList> {
                           icon: Icon(Icons.add_circle),
                           color: primaryColor,
                           onPressed: () {
-                            // SharedPreferences prefs =
-                            //     await SharedPreferences.getInstance();
-                            // prefs.setString(
-                            //     "Division",
-                            //     widget.productList[widget.index].division!
-                            //         .trim());
                             setState(() {
                               stockDataController.catCheck = false;
-
-                              //division
-                              // stockDataController.productCategory = widget
-                              //     .productList[widget.index].division!
-                              //     .trim();
+                              stockDataController.isVisible = true;
 
                               //qty
-                              stockDataController.isVisible = true;
                               stockDataController.myList[widget.index]["Qty"]++;
 
+                             
                               stockDataController.totalQty =
                                   stockDataController.totalQty.toInt() + 1;
 
@@ -222,7 +215,6 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                 "category": widget
                                     .productList[widget.index].division!
                                     .trim()
-                                // stockDataController.productCategory
                               });
 
                               stockDataController.myList[widget.index]
@@ -249,9 +241,6 @@ class _TakeOrderListState extends State<TakeOrderList> {
                               print(stockDataController.myList[widget.index]
                                   ["totalPrice"]);
                               print(stockDataController.myList);
-                              setState(() {
-                                stockDataController.myList;
-                              });
                             });
                           },
                         ),
