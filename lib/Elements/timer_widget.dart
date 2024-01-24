@@ -31,28 +31,30 @@ class TimerWidget extends StatelessWidget {
           children: [
             Visibility(
               visible: controller.isCheckinOnSite.value,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    controller.levelName.value,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, color: primaryColor),
-                  ),
-                  SizedBox(
-                    width: 5.0,
-                  ),
-                  Obx(
-                    () => Flexible(
-                      child: Text(
-                        "Checked-in: ${timerService.formattedTime(timeInSecond: timerService.elapsedSeconds.value)}",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, color: Colors.black),
+              child: Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      controller.levelName.value,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: primaryColor,fontSize: 13),
+                    ),
+                    SizedBox(
+                      width: 5.0,
+                    ),
+                    Obx(
+                      () => Flexible(
+                        child: Text(
+                          "Checked-in: ${timerService.formattedTime(timeInSecond: timerService.elapsedSeconds.value)}",
+                          style: TextStyle(fontSize: 13,
+                              fontWeight: FontWeight.w500, color: Colors.black),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             GestureDetector(
