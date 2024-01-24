@@ -33,6 +33,7 @@ class CustomerHomeScreen extends StatefulWidget {
   String EmployeeName;
   String Email;
   String DesignationName;
+
   CustomerHomeScreen(
       {super.key,
       required this.EmployeeName,
@@ -60,8 +61,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   TargetVsActualController targetVsActualController =
       Get.put(TargetVsActualController());
   SetActivityDetailDataController setActivityController =
-  Get.put(SetActivityDetailDataController());
+      Get.put(SetActivityDetailDataController());
   TeamsController teamsController = Get.put(TeamsController());
+
   @override
   void initState() {
     // TODO: implement initState
@@ -88,337 +90,370 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                       )),
                   Positioned(
                     child: GetBuilder<SetActivityDetailDataController>(
-    init: SetActivityDetailDataController(),
-    builder: (controller) {
-    return Stack(
-
-                        children: [
-
-                          Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                setActivityController.checkIn? SizedBox(height: 40,):SizedBox(),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                        init: SetActivityDetailDataController(),
+                        builder: (controller) {
+                          return Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    setActivityController.checkIn
+                                        ? SizedBox(
+                                            height: 40,
+                                          )
+                                        : SizedBox(),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: Card(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Container(
-                                                    width: 150,
-                                                    height: 60,
-                                                    child: Image.asset(Images
-                                                        .shalimarLogoHorizontal)),
-                                                Icon(
-                                                  Icons.notifications_rounded,
-                                                  color: primaryColor,
-                                                )
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            Text(
-                                              widget.EmployeeName,
-                                              style: TextStyle(
-                                                  color: primaryColor,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              widget.Email,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              widget.DesignationName,
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400),
-                                              textAlign: TextAlign.left,
-                                            )
-                                          ]),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: GridView.count(
-                                    primary: false,
-                                    padding: const EdgeInsets.all(20),
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 10,
-                                    crossAxisCount: 2,
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () {
-                                          // getUserActivityController.fetchData();
-                                          // Get.to(ScheduleVisitPage());
-
-                                          Get.to(MyScedulePage(
-                                            tag: true,
-                                            id: 0,
-                                          ));
-                                        },
-                                        child: Card(
-                                          child: Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.calendar_month_sharp,
-                                                  color: primaryColor,
-                                                  size: 40,
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Container(
+                                                        width: 150,
+                                                        height: 60,
+                                                        child: Image.asset(Images
+                                                            .shalimarLogoHorizontal)),
+                                                    Icon(
+                                                      Icons
+                                                          .notifications_rounded,
+                                                      color: primaryColor,
+                                                    )
+                                                  ],
                                                 ),
                                                 SizedBox(
                                                   height: 10,
                                                 ),
-                                                Text("My Schedule",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold)),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          final SharedPreferences prefs =
-                                              await SharedPreferences.getInstance();
-                                          var division = prefs.getString('Division');
-                                          // zoneDataController.fetchZoneData(zoneId: 0);
-                                          customerHireDataController
-                                              .getCustomerHireData();
-
-                                          // Get.to(MyCustomerZonePage());
-
-                                          // Get.to(division == 1
-                                          //     ? MyCustomerZonePage()
-                                          //     : division == 2
-                                          //         ? MyCustomerRegionsPage()
-                                          //         : division == 3
-                                          //             ? MyCustomerDepotPage()
-                                          //             : MyCustomerTerriotoryPage());
-                                        },
-                                        child: Card(
-                                          child: Center(
-                                              child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.person,
-                                                color: primaryColor,
-                                                size: 40,
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text('Customer',
+                                                Text(
+                                                  widget.EmployeeName,
+                                                  style: TextStyle(
+                                                      color: primaryColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  widget.Email,
                                                   style: TextStyle(
                                                       color: Colors.black,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.bold)),
-                                            ],
-                                          )),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                                Text(
+                                                  widget.DesignationName,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                  textAlign: TextAlign.left,
+                                                )
+                                              ]),
                                         ),
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          /*       teamsController.filteredLevelFirstList
-                                              .clear();
-                                          teamsController.filteredLevelFirstList =
-                                              teamsController.temasDataList!.data!
-                                                  .where(
-                                                      (item) => item.hirelevel == 1)
-                                                  .toList();*/
-                                          Get.to(TeamsScreen());
+                                    ),
+                                    Expanded(
+                                      child: GridView.count(
+                                        primary: false,
+                                        padding: const EdgeInsets.all(20),
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                        crossAxisCount: 2,
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            onTap: () {
+                                              // getUserActivityController.fetchData();
+                                              // Get.to(ScheduleVisitPage());
 
-                                          // Get.to(TreeNode());
-                                        },
-                                        child: Container(
-                                          child: Card(
-                                            child: Center(
-                                              child: Column(
+                                              Get.to(MyScedulePage(
+                                                tag: true,
+                                                id: 0,
+                                              ));
+                                            },
+                                            child: Card(
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .calendar_month_sharp,
+                                                      color: primaryColor,
+                                                      size: 40,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text("My Schedule",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final SharedPreferences prefs =
+                                                  await SharedPreferences
+                                                      .getInstance();
+                                              var division =
+                                                  prefs.getString('Division');
+                                              // zoneDataController.fetchZoneData(zoneId: 0);
+                                              customerHireDataController
+                                                  .getCustomerHireData();
+
+                                              // Get.to(MyCustomerZonePage());
+
+                                              // Get.to(division == 1
+                                              //     ? MyCustomerZonePage()
+                                              //     : division == 2
+                                              //         ? MyCustomerRegionsPage()
+                                              //         : division == 3
+                                              //             ? MyCustomerDepotPage()
+                                              //             : MyCustomerTerriotoryPage());
+                                            },
+                                            child: Card(
+                                              child: Center(
+                                                  child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
-                                                    Icons.people_alt_rounded,
+                                                    Icons.person,
                                                     color: primaryColor,
                                                     size: 40,
                                                   ),
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                  Text('Teams',
+                                                  Text('Customer',
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.bold)),
                                                 ],
+                                              )),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              /*       teamsController.filteredLevelFirstList
+                                              .clear();
+                                          teamsController.filteredLevelFirstList =
+                                              teamsController.temasDataList!.data!
+                                                  .where(
+                                                      (item) => item.hirelevel == 1)
+                                                  .toList();*/
+                                              Get.to(TeamsScreen());
+
+                                              // Get.to(TreeNode());
+                                            },
+                                            child: Container(
+                                              child: Card(
+                                                child: Center(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .people_alt_rounded,
+                                                        color: primaryColor,
+                                                        size: 40,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text('Teams',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (outStandingController
-                                                  .filteredZoneList.length >
-                                              0) {
-                                            Get.to(OutStandingZone());
-                                          } else if (outStandingController
-                                                  .filteredAllRegionList.length >
-                                              0) {
-                                            Get.to(OutStandingRegion());
-                                          } else if (outStandingController
-                                                  .filteredAllDepotList.length >
-                                              0) {
-                                            Get.to(OutStandingDepot());
-                                          } else if (outStandingController
-                                                  .filteredAllTerritorList.length >
-                                              0) {
-                                            Get.to(OutStandingTerritory());
-                                          } else if (outStandingController
-                                                  .filteredAllCustomerList.length >
-                                              0) {
-                                            Get.to(OutStandingCustomer());
-                                          }
-                                          // Get.to(OutStandingScreen());
-                                        },
-                                        child: Container(
-                                          child: Card(
-                                            child: Center(
-                                                child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.people_alt_rounded,
-                                                  color: primaryColor,
-                                                  size: 40,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text('OutStanding',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold)),
-                                              ],
-                                            )),
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (outStandingController
+                                                      .filteredZoneList.length >
+                                                  0) {
+                                                Get.to(OutStandingZone());
+                                              } else if (outStandingController
+                                                      .filteredAllRegionList
+                                                      .length >
+                                                  0) {
+                                                Get.to(OutStandingRegion());
+                                              } else if (outStandingController
+                                                      .filteredAllDepotList
+                                                      .length >
+                                                  0) {
+                                                Get.to(OutStandingDepot());
+                                              } else if (outStandingController
+                                                      .filteredAllTerritorList
+                                                      .length >
+                                                  0) {
+                                                Get.to(OutStandingTerritory());
+                                              } else if (outStandingController
+                                                      .filteredAllCustomerList
+                                                      .length >
+                                                  0) {
+                                                Get.to(OutStandingCustomer());
+                                              }
+                                              // Get.to(OutStandingScreen());
+                                            },
+                                            child: Container(
+                                              child: Card(
+                                                child: Center(
+                                                    child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.people_alt_rounded,
+                                                      color: primaryColor,
+                                                      size: 40,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text('OutStanding',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.to(StockScreen());
-                                        },
-                                        child: Container(
-                                          child: Card(
-                                            child: Center(
-                                                child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.people_alt_rounded,
-                                                  color: primaryColor,
-                                                  size: 40,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text('Stock',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold)),
-                                              ],
-                                            )),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(StockScreen());
+                                            },
+                                            child: Container(
+                                              child: Card(
+                                                child: Center(
+                                                    child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.people_alt_rounded,
+                                                      color: primaryColor,
+                                                      size: 40,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text('Stock',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (targetVsActualController
-                                                  .filteredZoneList.length >
-                                              0) {
-                                            Get.to(TargetVsActualZone());
-                                          } else if (targetVsActualController
-                                                  .filteredAllRegionList.length >
-                                              0) {
-                                            Get.to(TargetVsActyalRegion());
-                                          } else if (targetVsActualController
-                                                  .filteredAllDepotList.length >
-                                              0) {
-                                            Get.to(TargetVsActualDepot());
-                                          } else if (targetVsActualController
-                                                  .filteredAllTerritorList.length >
-                                              0) {
-                                            Get.to(TargetVsActualTerritory());
-                                          } else if (targetVsActualController
-                                                  .filteredAllCustomerList.length >
-                                              0) {
-                                            Get.to(TargetVsActualCustomer());
-                                          }
-                                          // Get.to(OutStandingScreen());
-                                        },
-                                        child: Container(
-                                          child: Card(
-                                            child: Center(
-                                                child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.tag,
-                                                  color: primaryColor,
-                                                  size: 40,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text('Target Vs Actual',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold)),
-                                              ],
-                                            )),
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (targetVsActualController
+                                                      .filteredZoneList.length >
+                                                  0) {
+                                                Get.to(TargetVsActualZone());
+                                              } else if (targetVsActualController
+                                                      .filteredAllRegionList
+                                                      .length >
+                                                  0) {
+                                                Get.to(TargetVsActyalRegion());
+                                              } else if (targetVsActualController
+                                                      .filteredAllDepotList
+                                                      .length >
+                                                  0) {
+                                                Get.to(TargetVsActualDepot());
+                                              } else if (targetVsActualController
+                                                      .filteredAllTerritorList
+                                                      .length >
+                                                  0) {
+                                                Get.to(
+                                                    TargetVsActualTerritory());
+                                              } else if (targetVsActualController
+                                                      .filteredAllCustomerList
+                                                      .length >
+                                                  0) {
+                                                Get.to(
+                                                    TargetVsActualCustomer());
+                                              }
+                                              // Get.to(OutStandingScreen());
+                                            },
+                                            child: Container(
+                                              child: Card(
+                                                child: Center(
+                                                    child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.tag,
+                                                      color: primaryColor,
+                                                      size: 40,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text('Target Vs Actual',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                              child: Visibility(
-                                  visible: setActivityController.checkIn,
-                                  child: TimerWidget())),
-                        ],
-                      );
-                    }),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                  child: Visibility(
+                                      visible: setActivityController.checkIn,
+                                      child: TimerWidget())),
+                            ],
+                          );
+                        }),
                   ),
                 ],
               ),
