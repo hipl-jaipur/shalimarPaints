@@ -6,6 +6,7 @@ import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_order-widget.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
+import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:top_modal_sheet/top_modal_sheet.dart';
@@ -26,7 +27,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
   SetActivityDetailDataController setActivityController =
       Get.put(SetActivityDetailDataController());
 
-  // List<Data> productList = [];
+  List<Data> productList = [];
 
   @override
   void initState() {
@@ -36,9 +37,6 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-  // List<Data> addProductList;
-  List<Map<dynamic, dynamic>> addProductList = [];
-
     return GetBuilder<GetAvailableStockDataController>(
         init: GetAvailableStockDataController(),
         builder: (stockDataController) {
@@ -151,8 +149,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                         index: index,
                                                         context: context,
                                                         productList: stockController
-                                                            .filterAvailableStockDataModel!,
-                                                            addProductList: addProductList)
+                                                            .filterAvailableStockDataModel!)
                                                     : SizedBox();
                                               },
                                             ))
@@ -198,77 +195,90 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              OutlinedButton(
-                                                  onPressed: () {
-                                                    print(
-                                                        "NewList0: ${stockController.myList.length}");
-                                                    print(
-                                                        "List1: ${stockController.myList}");
+                                              GetBuilder<
+                                                  GetAvailableStockDataController>(
+                                                builder: (controller) {
+                                                  return OutlinedButton(
+                                                      onPressed: () {
+                                                        // SharedPreferences prefs =
+                                                        //     await SharedPreferences
+                                                        //         .getInstance();
+                                                        // var division = prefs.getString("Division");
+                                                        print(
+                                                            "NewList0: ${controller.myList.length}");
+                                                        print(
+                                                            "List1: ${controller.myList}");
 
-                                                    stockController.update();
+                                                        controller.update();
 
-                                                    if (stockController
-                                                            .totalQty ==
-                                                        0) {
-                                                      showSnackBar(
-                                                          "Sorry!!",
-                                                          "Please Add Any Product.",
-                                                          Colors.redAccent);
-                                                    } else {
-                                                      for (int i = 0;
-                                                          i <
-                                                              stockController
-                                                                  .myList
-                                                                  .length;
-                                                          i++) {
-                                                        if (stockController
-                                                                    .myList[i]
-                                                                ['category'] !=
-                                                            null) {
-                                                          if (stockController
-                                                                  .myList[i][
-                                                                      'category']
-                                                                  .replaceAll(
-                                                                      " ",
-                                                                      "") !=
-                                                              stockController
-                                                                  .myList[0][
-                                                                      'category']
-                                                                  .replaceAll(
-                                                                      " ",
-                                                                      "")) {
-                                                            stockController
+                                                        if (controller
+                                                                .totalQty ==
+                                                            0) {
+                                                          showSnackBar(
+                                                              "Sorry!!",
+                                                              "Please Add Any Product.",
+                                                              Colors.redAccent);
+                                                        } else {
+                                                          for (int i = 0;
+                                                              i <
+                                                                  controller
+                                                                      .myList
+                                                                      .length;
+                                                              i++) {
+                                                            if (controller
+                                                                        .myList[i]
+                                                                    [
+                                                                    'category'] !=
+                                                                null) {
+                                                              if (controller
+                                                                          .myList[
+                                                                              i]
+                                                                              [
+                                                                              'category']
+                                                                          .trim() !=
+                                                                      "D"
+                                                                  // stockController
+                                                                  //     .productCategory
+                                                                  ) {
+                                                                controller
+                                                                        .catCheck =
+                                                                    true;
+                                                                break;
+                                                              } else {
+                                                                controller
+                                                                        .catCheck =
+                                                                    false;
+                                                              }
+                                                            }
+                                                          }
+
+                                                          if (controller
+                                                              .catCheck) {
+                                                            showSnackBar(
+                                                                "Sorry!! You are Selected Decorative and Industrial Division Product.",
+                                                                "Please Add Same Division Product.",
+                                                                Colors
+                                                                    .redAccent);
+                                                            controller
                                                                     .catCheck =
-                                                                true;
-                                                            break;
+                                                                false;
                                                           } else {
-                                                            stockController
+                                                            Get.to(
+                                                                MyCartPage());
+                                                            controller
                                                                     .catCheck =
                                                                 false;
                                                           }
                                                         }
-                                                      }
-
-                                                      if (stockController
-                                                          .catCheck) {
-                                                        showSnackBar(
-                                                            "Sorry!! You are Selected Decorative and Industrial Division Product.",
-                                                            "Please Add Same Division Product.",
-                                                            Colors.redAccent);
-                                                        stockController
-                                                            .catCheck = false;
-                                                      } else {
-                                                        Get.to(MyCartPage());
-                                                        stockController
-                                                            .catCheck = false;
-                                                      }
-                                                    }
-                                                  },
-                                                  child: SizedBox(
-                                                      width: double.infinity,
-                                                      child: Center(
-                                                          child: Text(
-                                                              "CONTINUE")))),
+                                                      },
+                                                      child: const SizedBox(
+                                                          width:
+                                                              double.infinity,
+                                                          child: Center(
+                                                              child: Text(
+                                                                  "CONTINUE"))));
+                                                },
+                                              ),
                                             ],
                                           ),
                                         ),

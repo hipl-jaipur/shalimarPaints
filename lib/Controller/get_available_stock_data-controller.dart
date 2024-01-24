@@ -83,20 +83,20 @@ class GetAvailableStockDataController extends GetxController {
 
           // filterAvailableStockDataModel = result;
 
-          // for (var map in availableStockDataModel!.data!) {
-          //   myList.add({
-          //     /*"id":map.productcode,
-          //         "name":map.productdesc,
-          //         "price":map.dpl,
-          //         "totalPrice":totalAmount,*/
-          //     "Qty": counter,
-          //     "mrp": amount,
-          //   });
+          for (var map in availableStockDataModel!.data!) {
+            myList.add({
+              /*"id":map.productcode,
+                  "name":map.productdesc,
+                  "price":map.dpl,
+                  "totalPrice":totalAmount,*/
+              "Qty": counter,
+              "mrp": amount,
+              // "category": productCategory.trim()
+            });
+          }
 
-          // }
-
-          // print(myList.length);
-          // print(myList);
+          print(myList.length);
+          print(myList);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
