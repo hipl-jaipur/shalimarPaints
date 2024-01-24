@@ -6,6 +6,8 @@ import 'package:shalimar/Home_Screen/Customer_Module/customer_detail_screen.dart
 import 'package:shalimar/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Home_Screen/CheckIn_Module/checkin_screen.dart';
+
 class TimerWidget extends StatelessWidget {
   String? tag;
   TimerWidget({super.key, this.tag});
@@ -36,10 +38,17 @@ class TimerWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      controller.levelName.value,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: primaryColor,fontSize: 13),
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(
+                          CheckInPage(tag: ""),
+                        );
+                      },
+                      child: Text(
+                        controller.levelName.value,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, color: primaryColor,fontSize: 13),
+                      ),
                     ),
                     SizedBox(
                       width: 5.0,

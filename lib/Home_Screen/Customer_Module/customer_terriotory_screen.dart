@@ -61,7 +61,6 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
   }
 
   Widget build(BuildContext context) {
-    print("11111??????????>>>>>>>");
 
     return Scaffold(
       body: SafeArea(

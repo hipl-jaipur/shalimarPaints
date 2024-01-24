@@ -55,8 +55,8 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SetActivityDetailDataController>(
-      init: setActivityController,
-      builder: (controller) {
+      init: SetActivityDetailDataController(),
+      builder: (setActivityController) {
         return WillPopScope(
           onWillPop: () async {
             if (setActivityController.checkIn) {
@@ -66,7 +66,7 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                     return AlertDialog(
                       title: Text('Alert!!'),
                       content: Text(
-                          "Please CheckOut at ${controller.checkinCustomer}"),
+                          "Please CheckOut at ${setActivityController.checkinCustomer}"),
                       actions: <Widget>[
                         ElevatedButton(
                           child: Text('Ok'),
