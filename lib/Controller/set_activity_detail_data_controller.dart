@@ -46,7 +46,7 @@ class SetActivityDetailDataController extends GetxController {
   //   });
   // }
 
-  fetchData({
+ Future fetchData({
     required String levelCode,
     required int activityID,
   }) async {
@@ -125,7 +125,7 @@ class SetActivityDetailDataController extends GetxController {
     }
   }
 
-  getActivityDetailData(bool tag ,var id) async {
+ Future getActivityDetailData(bool tag ,var id) async {
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();

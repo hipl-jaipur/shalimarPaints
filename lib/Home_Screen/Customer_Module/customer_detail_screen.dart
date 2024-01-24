@@ -177,6 +177,8 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                 prefixIcon: IconButton(
                                                     onPressed: () {
                                                       Get.back();
+                                                      setActivityController.update();
+
                                                     },
                                                     icon: Icon(
                                                       Icons.arrow_circle_left,

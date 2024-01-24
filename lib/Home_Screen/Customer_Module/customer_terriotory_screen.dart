@@ -7,6 +7,9 @@ import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
+import '../../Controller/set_activity_detail_data_controller.dart';
+import '../../Elements/timer_widget.dart';
+
 class MyCustomerTerriotoryPage extends StatefulWidget {
   const MyCustomerTerriotoryPage({super.key});
 
@@ -18,6 +21,7 @@ class MyCustomerTerriotoryPage extends StatefulWidget {
 class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
   @override
   final TextEditingController _searchController = TextEditingController();
+
   // TerriotoryDataController terriotoryDataController =  Get.put(TerriotoryDataController());
   // String terriotoryName = Get.arguments;
   CustomerHireDataController customerHireDataController =
@@ -27,7 +31,8 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
 
   var terriotoryName = Get.arguments != null ? Get.arguments[0] : "";
   var levelID = Get.arguments != null ? Get.arguments[1] : "";
-
+  SetActivityDetailDataController setActivityController =
+  Get.put(SetActivityDetailDataController());
   @override
   void initState() {
     // TODO: implement initState
@@ -56,6 +61,8 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
   }
 
   Widget build(BuildContext context) {
+    print("11111??????????>>>>>>>");
+
     return Scaffold(
       body: SafeArea(
         child: GetX<CustomerHireDataController>(
@@ -72,128 +79,150 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
                         fit: BoxFit.fill,
                       )),
                   Positioned(
-                    child: Obx(
-                      () => customerHireDataController.isLoading.value
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(18.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextField(
-                                    controller: _searchController,
-                                    textInputAction: TextInputAction.search,
-                                    textCapitalization:
-                                        TextCapitalization.words,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      contentPadding: const EdgeInsets.fromLTRB(
-                                          20.0, 0.0, 20.0, 0.0),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30)),
-                                          borderSide: BorderSide(
-                                            color: Color(0xffECE6E6),
-                                          )),
-                                      disabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30)),
-                                          borderSide: BorderSide(
-                                            color: Color(0xffECE6E6),
-                                          )),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30)),
-                                          borderSide: BorderSide(
-                                            color: Color(0xffECE6E6),
-                                          )),
-                                      hintText: 'Search',
-                                      prefixIcon: IconButton(
-                                          onPressed: () {
-                                            Get.back();
-                                          },
-                                          icon: Icon(
-                                            Icons.arrow_circle_left,
-                                            color: primaryColor,
-                                            size: 40,
-                                          )),
-                                      suffixIcon: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.sort_rounded,
-                                            color: primaryColor,
-                                            size: 40,
-                                          )),
+                    child: GetBuilder<SetActivityDetailDataController>(
+                      init: SetActivityDetailDataController(),
+                      builder: (controller) {
+                        return Stack(
+                          children: [
+                            Obx(
+                                  () => customerHireDataController.isLoading.value
+                                  ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                                  : Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height:setActivityController.checkIn? 40:20,
                                     ),
-                                    onChanged: (value) {
-                                      setState(() {});
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
-                                      terriotoryName != null &&
-                                              terriotoryName != ""
-                                          ? "Terriotory: $terriotoryName"
-                                          : "Terriotory",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold)),
-                                  Text("Count: ${terriotoryList.length}",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400)),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  terriotoryList != null &&
-                                          terriotoryList.length != 0
-                                      ? Expanded(
-                                          child: ListView.builder(
-                                            itemCount:
-                                                terriotoryList.length ?? 0,
-                                            itemBuilder: (context, index) {
-                                              return terriotoryList![index]
-                                                      .levelName!
-                                                      .toLowerCase()
-                                                      .contains(
-                                                          _searchController.text
-                                                              .toLowerCase())
-                                                  ? terriotoryListData(
-                                                      context, index, terriotoryList)
-                                                  : SizedBox();
+                                    TextField(
+                                      controller: _searchController,
+                                      textInputAction: TextInputAction.search,
+                                      textCapitalization:
+                                      TextCapitalization.words,
+                                      decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                        const EdgeInsets.fromLTRB(
+                                            20.0, 0.0, 20.0, 0.0),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(30)),
+                                            borderSide: BorderSide(
+                                              color: Color(0xffECE6E6),
+                                            )),
+                                        disabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(30)),
+                                            borderSide: BorderSide(
+                                              color: Color(0xffECE6E6),
+                                            )),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(30)),
+                                            borderSide: BorderSide(
+                                              color: Color(0xffECE6E6),
+                                            )),
+                                        hintText: 'Search',
+                                        prefixIcon: IconButton(
+                                            onPressed: () {
+                                              Get.back();
                                             },
-                                          ),
-                                        )
-                                      : Card(
-                                          child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      15.0),
-                                                  child: Text("No Record Found",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 20,
-                                                          fontWeight: FontWeight
-                                                              .bold)))),
-                                        ),
-                                ],
+                                            icon: Icon(
+                                              Icons.arrow_circle_left,
+                                              color: primaryColor,
+                                              size: 40,
+                                            )),
+                                        suffixIcon: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                              Icons.sort_rounded,
+                                              color: primaryColor,
+                                              size: 40,
+                                            )),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {});
+                                      },
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                        terriotoryName != null &&
+                                            terriotoryName != ""
+                                            ? "Terriotory: $terriotoryName"
+                                            : "Terriotory",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    Text("Count: ${terriotoryList.length}",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400)),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    terriotoryList != null &&
+                                        terriotoryList.length != 0
+                                        ? Expanded(
+                                      child: ListView.builder(
+                                        itemCount:
+                                        terriotoryList.length ?? 0,
+                                        itemBuilder: (context, index) {
+                                          return terriotoryList![index]
+                                              .levelName!
+                                              .toLowerCase()
+                                              .contains(
+                                              _searchController
+                                                  .text
+                                                  .toLowerCase())
+                                              ? terriotoryListData(
+                                              context,
+                                              index,
+                                              terriotoryList)
+                                              : SizedBox();
+                                        },
+                                      ),
+                                    )
+                                        : Card(
+                                      child: Container(
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width,
+                                          child: Padding(
+                                              padding:
+                                              const EdgeInsets.all(
+                                                  15.0),
+                                              child: Text(
+                                                  "No Record Found",
+                                                  style: TextStyle(
+                                                      color:
+                                                      Colors.black,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .bold)))),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                    ),
+                            Positioned(
+                                child: Visibility(
+                                    visible: setActivityController.checkIn,
+                                    child: TimerWidget())),
+                          ],
+                        );
+
+                    },)
                   )
                 ],
               ),

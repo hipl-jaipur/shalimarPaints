@@ -87,7 +87,8 @@ class TimerWidget extends StatelessWidget {
                               } else {
                                 Get.off(MyCustomerDetailsPage(), arguments: [
                                   prefs.getString('CustomerName'),
-                                  prefs.getInt("levelID")
+                                  prefs.getInt("levelID"),
+                              controller.update()
                                 ]);
                               }
 

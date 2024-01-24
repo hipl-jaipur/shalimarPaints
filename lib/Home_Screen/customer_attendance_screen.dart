@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -22,27 +23,55 @@ class CustomerAttendanceScreen extends StatefulWidget {
 class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-  SetActivityDetailDataController dataController =
-      Get.put(SetActivityDetailDataController());
+  SetActivityDetailDataController dataController = Get.put(SetActivityDetailDataController());
 
   var date = "";
-
+  List<String> addresses = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    dataController.getActivityDetailData(widget.tag,widget.id);
-  /*  if (dataController.getActivityDetailDataModel != null) {
-      for (var i in dataController.getActivityDetailDataModel!.data!) {
-        var dateList = i.createdOn!.split('T');
-        date = DateFormat('dd/MM/yyyy hh').format(DateTime.parse(dateList[0]));
-        // date = dateList[0];
-      }
-    }*/
-  }
+    dataController.getActivityDetailData(widget.tag,widget.id).whenComplete(() {
+      getAddressesFromCoordinatesList();
+    });
 
+
+  }
+  Future<void> getAddressesFromCoordinatesList() async {
+    for (var coordinates in dataController.getActivityDetailDataModel!.data!) {
+      double latitude = coordinates.latitude!;
+      double longitude = coordinates.longitude!;
+
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+        if (placemarks != null && placemarks.isNotEmpty) {
+          Placemark place = placemarks[0];
+          setState(() {
+            addresses.add("${place.street}, ${place.locality}, ${place.country}");
+          });
+        } else {
+          setState(() {
+            addresses.add("Address not found");
+          });
+        }
+      } catch (e) {
+        print("Error: $e");
+        setState(() {
+          addresses.add("Error getting address");
+        });
+      }
+    }
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    getAddressesFromCoordinatesList();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: GetX<SetActivityDetailDataController>(
@@ -81,7 +110,14 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                           fontWeight: FontWeight.bold)),
                                   onPressed: () {
                                     controller.fetchData(
-                                        levelCode: "", activityID: 1);
+                                        levelCode: "", activityID: 1).whenComplete(() {
+                                      dataController.getActivityDetailData(widget.tag,widget.id).whenComplete(() {
+                                        getAddressesFromCoordinatesList();
+                                      });
+                                      // getAddressesFromCoordinatesList();
+
+
+                                    });
                                     showSnackBar(
                                         "Success",
                                         "Day Start Successfully.",
@@ -98,7 +134,14 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                         ),
                                         onPressed: () {
                                           controller.fetchData(
-                                              levelCode: "", activityID: 2);
+                                              levelCode: "", activityID: 2).whenComplete(() {
+
+                                            dataController.getActivityDetailData(widget.tag,widget.id).whenComplete(() {
+                                              getAddressesFromCoordinatesList();
+                                            });
+                                            // getAddressesFromCoordinatesList();
+
+                                          });
                                           showSnackBar(
                                               "Success",
                                               "Day End Successfully.",
@@ -160,6 +203,11 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
 
                                                 // Format the DateTime object to display in the desired format
                                                 String formattedDateTime = DateFormat('yyyy-MM-dd ( h:mm a )').format(time);
+
+                                                double latitude =controller.getActivityDetailDataModel!.data![index].latitude;
+                                                double longitude = controller.getActivityDetailDataModel!.data![index].longitude;
+                                                String address = addresses.length > index ? addresses[index] : '';
+
                                                 return Padding(
                                                   padding: const EdgeInsets.all(
                                                       10.0),
@@ -191,6 +239,10 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                                                 //     "Status: ${controller.getActivityDetailDataModel!.data![index].status}")
                                                               ],
                                                             ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Text('Address: $address'),
                                                             SizedBox(
                                                               height: 5,
                                                             ),
