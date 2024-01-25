@@ -1,40 +1,36 @@
-class EmployeeDetailsModel {
-  EmployeeDetailsModel({
-    bool? status,
-    String? message,
-    List<EmployeeDetails>? data,
-  }) {
+class TeamsModel {
+  TeamsModel({
+      bool? status, 
+      String? message, 
+      List<Data>? data,}){
     _status = status;
     _message = message;
     _data = data;
-  }
+}
 
-  EmployeeDetailsModel.fromJson(dynamic json) {
+  TeamsModel.fromJson(dynamic json) {
     _status = json['Status'];
     _message = json['Message'];
     if (json['Data'] != null) {
       _data = [];
       json['Data'].forEach((v) {
-        _data?.add(EmployeeDetails.fromJson(v));
+        _data?.add(Data.fromJson(v));
       });
     }
   }
   bool? _status;
   String? _message;
-  List<EmployeeDetails>? _data;
-  EmployeeDetailsModel copyWith({
-    bool? status,
-    String? message,
-    List<EmployeeDetails>? data,
-  }) =>
-      EmployeeDetailsModel(
-        status: status ?? _status,
-        message: message ?? _message,
-        data: data ?? _data,
-      );
+  List<Data>? _data;
+TeamsModel copyWith({  bool? status,
+  String? message,
+  List<Data>? data,
+}) => TeamsModel(  status: status ?? _status,
+  message: message ?? _message,
+  data: data ?? _data,
+);
   bool? get status => _status;
   String? get message => _message;
-  List<EmployeeDetails>? get data => _data;
+  List<Data>? get data => _data;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -45,25 +41,25 @@ class EmployeeDetailsModel {
     }
     return map;
   }
+
 }
 
-class EmployeeDetails {
-  EmployeeDetails({
-    dynamic? employeeID,
-    bool? isValid,
-    String? employeeCode,
-    String? employeeName,
-    String? employeeEmail,
-    num? employeeMobile,
-    num? designationId,
-    String? designationName,
-    num? reportingmgrId,
-    dynamic reportingmgrName,
-    String? division,
-    String? status,
-    num? profileSkip,
-    num? dealerCreation,
-  }) {
+class Data {
+  Data({
+      num? employeeID, 
+      bool? isValid, 
+      String? employeeCode, 
+      String? employeeName, 
+      String? employeeEmail, 
+      num? employeeMobile, 
+      num? designationId, 
+      String? designationName, 
+      num? reportingmgrId, 
+      String? reportingmgrName, 
+      String? division, 
+      String? status, 
+      num? profileSkip, 
+      num? dealerCreation,}){
     _employeeID = employeeID;
     _isValid = isValid;
     _employeeCode = employeeCode;
@@ -78,9 +74,9 @@ class EmployeeDetails {
     _status = status;
     _profileSkip = profileSkip;
     _dealerCreation = dealerCreation;
-  }
+}
 
-  EmployeeDetails.fromJson(dynamic json) {
+  Data.fromJson(dynamic json) {
     _employeeID = json['EmployeeID'];
     _isValid = json['isValid'];
     _employeeCode = json['employee_code'];
@@ -96,7 +92,7 @@ class EmployeeDetails {
     _profileSkip = json['ProfileSkip'];
     _dealerCreation = json['DealerCreation'];
   }
-  dynamic? _employeeID;
+  num? _employeeID;
   bool? _isValid;
   String? _employeeCode;
   String? _employeeName;
@@ -105,44 +101,41 @@ class EmployeeDetails {
   num? _designationId;
   String? _designationName;
   num? _reportingmgrId;
-  dynamic _reportingmgrName;
+  String? _reportingmgrName;
   String? _division;
   String? _status;
   num? _profileSkip;
   num? _dealerCreation;
-  EmployeeDetails copyWith({
-    num? employeeID,
-    bool? isValid,
-    String? employeeCode,
-    String? employeeName,
-    String? employeeEmail,
-    num? employeeMobile,
-    num? designationId,
-    String? designationName,
-    num? reportingmgrId,
-    dynamic reportingmgrName,
-    String? division,
-    String? status,
-    num? profileSkip,
-  num? dealerCreation
-  }) =>
-      EmployeeDetails(
-        employeeID: employeeID ?? _employeeID,
-        isValid: isValid ?? _isValid,
-        employeeCode: employeeCode ?? _employeeCode,
-        employeeName: employeeName ?? _employeeName,
-        employeeEmail: employeeEmail ?? _employeeEmail,
-        employeeMobile: employeeMobile ?? _employeeMobile,
-        designationId: designationId ?? _designationId,
-        designationName: designationName ?? _designationName,
-        reportingmgrId: reportingmgrId ?? _reportingmgrId,
-        reportingmgrName: reportingmgrName ?? _reportingmgrName,
-        division: division ?? _division,
-        status: status ?? _status,
-        profileSkip: profileSkip ?? _profileSkip,
-        dealerCreation: dealerCreation ?? _dealerCreation,
-      );
-  dynamic? get employeeID => _employeeID;
+Data copyWith({  num? employeeID,
+  bool? isValid,
+  String? employeeCode,
+  String? employeeName,
+  String? employeeEmail,
+  num? employeeMobile,
+  num? designationId,
+  String? designationName,
+  num? reportingmgrId,
+  String? reportingmgrName,
+  String? division,
+  String? status,
+  num? profileSkip,
+  num? dealerCreation,
+}) => Data(  employeeID: employeeID ?? _employeeID,
+  isValid: isValid ?? _isValid,
+  employeeCode: employeeCode ?? _employeeCode,
+  employeeName: employeeName ?? _employeeName,
+  employeeEmail: employeeEmail ?? _employeeEmail,
+  employeeMobile: employeeMobile ?? _employeeMobile,
+  designationId: designationId ?? _designationId,
+  designationName: designationName ?? _designationName,
+  reportingmgrId: reportingmgrId ?? _reportingmgrId,
+  reportingmgrName: reportingmgrName ?? _reportingmgrName,
+  division: division ?? _division,
+  status: status ?? _status,
+  profileSkip: profileSkip ?? _profileSkip,
+  dealerCreation: dealerCreation ?? _dealerCreation,
+);
+  num? get employeeID => _employeeID;
   bool? get isValid => _isValid;
   String? get employeeCode => _employeeCode;
   String? get employeeName => _employeeName;
@@ -151,12 +144,11 @@ class EmployeeDetails {
   num? get designationId => _designationId;
   String? get designationName => _designationName;
   num? get reportingmgrId => _reportingmgrId;
-  dynamic get reportingmgrName => _reportingmgrName;
+  String? get reportingmgrName => _reportingmgrName;
   String? get division => _division;
   String? get status => _status;
   num? get profileSkip => _profileSkip;
   num? get dealerCreation => _dealerCreation;
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -176,4 +168,5 @@ class EmployeeDetails {
     map['DealerCreation'] = _dealerCreation;
     return map;
   }
+
 }

@@ -57,4 +57,5 @@ class AppConstants {
   static const String sessionCheck = "${BASE_URL}SessionCheck";
   static const String getPaymentTypeData = "${BASE_URL}GetPaymentTypeData";
   static const String getCustomerData = "${BASE_URL}GetCustomerData";
+  static const String getGlobalParameterData = "${BASE_URL}GetGlobalParameterData";
 }

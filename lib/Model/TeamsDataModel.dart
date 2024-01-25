@@ -1,12 +1,14 @@
 class TeamsDataModel {
+
   TeamsDataModel({
-      bool? status, 
-      String? message, 
-      List<Data>? data,}){
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) {
     _status = status;
     _message = message;
     _data = data;
-}
+  }
 
   TeamsDataModel.fromJson(dynamic json) {
     _status = json['Status'];
@@ -21,13 +23,16 @@ class TeamsDataModel {
   bool? _status;
   String? _message;
   List<Data>? _data;
-TeamsDataModel copyWith({  bool? status,
-  String? message,
-  List<Data>? data,
-}) => TeamsDataModel(  status: status ?? _status,
-  message: message ?? _message,
-  data: data ?? _data,
-);
+  TeamsDataModel copyWith({
+    bool? status,
+    String? message,
+    List<Data>? data,
+  }) =>
+      TeamsDataModel(
+        status: status ?? _status,
+        message: message ?? _message,
+        data: data ?? _data,
+      );
   bool? get status => _status;
   String? get message => _message;
   List<Data>? get data => _data;
@@ -41,18 +46,19 @@ TeamsDataModel copyWith({  bool? status,
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      num? hirelevel,
-      num? reportingmgrId,
+    num? hirelevel,
+    num? reportingmgrId,
     dynamic? employeeid,
-      String? employeecode, 
-      String? employeename, 
-      String? designationName, 
-      String? status,}){
+    String? employeecode,
+    String? employeename,
+    String? designationName,
+    String? status,
+   
+  }) {
     _hirelevel = hirelevel;
     _reportingmgrId = reportingmgrId;
     _employeeid = employeeid;
@@ -60,7 +66,7 @@ class Data {
     _employeename = employeename;
     _designationName = designationName;
     _status = status;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _hirelevel = json['Hirelevel'];
@@ -78,21 +84,26 @@ class Data {
   String? _employeename;
   String? _designationName;
   String? _status;
-Data copyWith({  num? hirelevel,
-  num? reportingmgrId,
-  dynamic? employeeid,
-  String? employeecode,
-  String? employeename,
-  String? designationName,
-  String? status,
-}) => Data(  hirelevel: hirelevel ?? _hirelevel,
-  reportingmgrId: reportingmgrId ?? _reportingmgrId,
-  employeeid: employeeid ?? _employeeid,
-  employeecode: employeecode ?? _employeecode,
-  employeename: employeename ?? _employeename,
-  designationName: designationName ?? _designationName,
-  status: status ?? _status,
-);
+  Data copyWith({
+    num? hirelevel,
+    num? reportingmgrId,
+    dynamic? employeeid,
+    num? profileSkip,
+    num? dealerCreation,
+    String? employeecode,
+    String? employeename,
+    String? designationName,
+    String? status,
+  }) =>
+      Data(
+        hirelevel: hirelevel ?? _hirelevel,
+        reportingmgrId: reportingmgrId ?? _reportingmgrId,
+        employeeid: employeeid ?? _employeeid,
+        employeecode: employeecode ?? _employeecode,
+        employeename: employeename ?? _employeename,
+        designationName: designationName ?? _designationName,
+        status: status ?? _status,
+      );
   num? get hirelevel => _hirelevel;
   num? get reportingmgrId => _reportingmgrId;
   dynamic? get employeeid => _employeeid;
@@ -112,5 +123,4 @@ Data copyWith({  num? hirelevel,
     map['status'] = _status;
     return map;
   }
-
 }

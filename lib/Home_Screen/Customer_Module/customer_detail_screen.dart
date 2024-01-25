@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Controller/customer_hire_data_controller.dart';
+import 'package:shalimar/Controller/get_global_parameter_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Elements/common_customer_profile_list.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
@@ -9,6 +10,7 @@ import 'package:shalimar/Home_Screen/CheckIn_Module/add_customer_screen.dart';
 import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyCustomerDetailsPage extends StatefulWidget {
   const MyCustomerDetailsPage({super.key});
@@ -18,7 +20,8 @@ class MyCustomerDetailsPage extends StatefulWidget {
 }
 
 class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
-  _getRequests() async {}
+  GetGlobalParameterDataController getGlobalParameterDataController =
+      Get.put(GetGlobalParameterDataController());
   final TextEditingController _searchController = TextEditingController();
   var customerName = Get.arguments[0];
   var levelID = Get.arguments[1];
@@ -33,12 +36,19 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
   List<Data> customerTypeList = [];
   bool isSwitch = false;
   // bool isTimerVisible = true;
-  var customerType = "B ";
+  var customerType = "B";
+  var dealerCreation;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    getGlobalParameterDataController.fetchData().then((value) {
+      if (value != null) {
+        dealerCreation = value!.data![1].parameterValue;
+      }
+    });
 
     customerList = customerHireDataController!.customerList!
         .where((element) => element.parentLevelID == levelID)
@@ -385,7 +395,8 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                               index: index,
                                                               customerList:
                                                                   customerTypeList,
-                                                            )
+                                                              territoryId:
+                                                                  levelID)
                                                           : SizedBox();
                                                     },
                                                   ),
@@ -407,10 +418,74 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
             backgroundColor: primaryColor,
             label: Text(
               "Add Customer",
-              style: TextStyle(fontWeight: FontWeight.w500,color: Colors.white),
+              style:
+                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
             ),
-            onPressed: () {
-              Get.to(AddCustomerPage());
+            onPressed: () async {
+              SharedPreferences preferences =
+                  await SharedPreferences.getInstance();
+              var dealerCre = preferences.getInt("DealerCreation");
+              if (dealerCre.toString() != dealerCreation) {
+                Get.to(AddCustomerPage());
+              } else {
+                Get.dialog(
+                    barrierDismissible: false,
+                    Dialog(
+                      backgroundColor: Colors.white,
+                      child: WillPopScope(
+                        onWillPop: () async => false,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  "You have already Created Customers.",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Center(
+                                  child: Container(
+                                    height: 40,
+                                    width: 60,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: Text(
+                                      "Ok",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ));
+              }
             },
             icon: Icon(
               Icons.add_box_rounded,

@@ -43,8 +43,8 @@ class LoginController extends GetxController {
           prefs.setString('Email', value['Data'][0]["Email"]);
           prefs.setString(
               'DesignationName', value['Data'][0]["DesignationName"]);
-          prefs.setInt('ProfileSkip', value['Data'][0]["ProfileSkip"]);
-          prefs.setInt('DealerCreation', value['Data'][0]["DealerCreation"]);
+          // prefs.setInt('ProfileSkip', value['Data'][0]["ProfileSkip"]);
+          // prefs.setInt('DealerCreation', value['Data'][0]["DealerCreation"]);
 
           userName.value = value['Data'][0]["EmployeeName"];
 

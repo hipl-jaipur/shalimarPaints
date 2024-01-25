@@ -35,6 +35,8 @@ class SetActivityDetailDataController extends GetxController {
   var levelCode = "".obs;
   var levelAddress = "".obs;
   var isCheckinOnSite = false.obs;
+  var territoryId = 0;
+  var customerId = 0;
 
   var attendanceId=0;
   GetActivityDetailDataModel? getActivityDetailDataModel;
@@ -55,9 +57,6 @@ class SetActivityDetailDataController extends GetxController {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       var EmployeeId = prefs.getInt('EmployeeId');
-      // var checkinOnsite = 8;
-      // var checkinOffsite = 9;
-      // var checkOutActivity = 10;
       var LAT = prefs.getDouble('LAT');
       var LNG = prefs.getDouble('LNG');
 

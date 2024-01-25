@@ -35,6 +35,12 @@ class TeamsController extends GetxController {
   static List<MyNode> rootsSix = <MyNode>[];
   static List<MyNode> rootsSeven = <MyNode>[];
 
+  // @override
+  // Future<void> onInit() async {
+  //   super.onInit();
+  //   getTeamsData();
+  // }
+
   getTeamsData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
@@ -83,8 +89,6 @@ class TeamsController extends GetxController {
             filteredLevelFirstList.add(i);
           }
 
-          
-
           hireLevelOnelist = filteredLevelFirstList!
               .where((element) => element.hirelevel == 1)
               .toList();
@@ -110,7 +114,7 @@ class TeamsController extends GetxController {
           print("List2: ${hireLevelTwolist.length}");
 
           employeeId = empId;
-          
+
           for (var j = 0; j < hireLevelTwolist.length; j++) {
             if (employeeId == hireLevelTwolist[j].reportingmgrId) {
               rootsTwo.add(MyNode(
@@ -187,7 +191,6 @@ class TeamsController extends GetxController {
       update();
     }
   }
-  
 
   getEmployData(var employeId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -231,6 +234,11 @@ class TeamsController extends GetxController {
         if (data != null) {
           var result = jsonDecode(res.body);
           employeeDetailsModel = EmployeeDetailsModel.fromJson(result);
+
+          prefs.setInt(
+              'ProfileSkip', employeeDetailsModel!.data![0].profileSkip!.toInt());
+          prefs.setInt('DealerCreation',
+              employeeDetailsModel!.data![0].dealerCreation!.toInt());
           // filterStockDataModel = StockShowModel.fromJson(result);
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);

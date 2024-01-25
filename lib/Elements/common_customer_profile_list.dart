@@ -16,13 +16,14 @@ class CustomerProfileList extends StatefulWidget {
   List<Data> customerList;
   int index;
   BuildContext context;
+  int territoryId;
 
-  CustomerProfileList({
-    super.key,
-    required this.customerList,
-    required this.index,
-    required this.context,
-  });
+  CustomerProfileList(
+      {super.key,
+      required this.customerList,
+      required this.index,
+      required this.context,
+      required this.territoryId});
 
   @override
   State<CustomerProfileList> createState() => _CustomerProfileListState();
@@ -231,8 +232,12 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Colors.greenAccent);
 
                         Get.to(
-                          CheckInPage(tag: ""),
+                          CheckInPage(tag: ""),arguments: distance
                         );
+                        controller.customerId =
+                            widget.customerList[widget.index].levelID!.toInt();
+                        controller.territoryId = widget.territoryId.toInt();
+
                         controller.checkInlevelName.value = widget
                             .customerList[widget.index].levelName
                             .toString();

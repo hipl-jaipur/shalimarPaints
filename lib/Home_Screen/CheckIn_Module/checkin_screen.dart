@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/activity_controller.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
+import 'package:shalimar/Controller/get_customer_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_note_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_schedule_data_controller.dart';
+import 'package:shalimar/Controller/get_global_parameter_data_controller.dart';
 import 'package:shalimar/Controller/get_order_data_controller.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
 import 'package:shalimar/Controller/plant_data_controller.dart';
@@ -11,6 +13,7 @@ import 'package:shalimar/Controller/product_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
+import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/collect_payment_screen.dart';
@@ -20,6 +23,7 @@ import 'package:shalimar/Home_Screen/CheckIn_Module/take_note_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/take_order_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/view_open_order_screen.dart';
 import 'package:shalimar/utils/colors.dart';
+import 'package:shalimar/utils/consts.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,19 +35,23 @@ class CheckInPage extends StatefulWidget {
   // bool? isCheckinOnSite;
   // var startTime;
 
-  CheckInPage({super.key, this.tag
-      // this.startTime
-      // this.levelName,
-      // this.levelCode,
-      // this.levelAddress,
-      // this.isCheckinOnSite,
-      });
+  CheckInPage({
+    super.key,
+    this.tag,
+    // this.startTime
+    // this.levelName,
+    // this.levelCode,
+    // this.levelAddress,
+    // this.isCheckinOnSite,
+  });
 
   @override
   State<CheckInPage> createState() => _CheckInPageState();
 }
 
 class _CheckInPageState extends State<CheckInPage> {
+  GetCustomerDataController getCustomerDataController =
+      Get.put(GetCustomerDataController());
   SetActivityDetailDataController controller =
       Get.put(SetActivityDetailDataController());
 
@@ -70,16 +78,231 @@ class _CheckInPageState extends State<CheckInPage> {
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
   ActivityController activityController = Get.put(ActivityController());
+  GetGlobalParameterDataController getGlobalParameterDataController =
+      Get.put(GetGlobalParameterDataController());
+  TeamsController teamsController = Get.put(TeamsController());
 
   // TimerService timerService = Get.find<TimerService>();
   // final TimerController timerController = TimerController();
   final TimerService timerService = Get.put(TimerService());
+  var profileImage = "";
+  var isLock = false;
+  var profileSkip;
+
+  void _modalBottomSheetMenu() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await showModalBottomSheet(
+          isDismissible: false,
+          context: context,
+          builder: (builder) {
+            return Obx(
+              () => getGlobalParameterDataController.isLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : WillPopScope(
+                      onWillPop: () async => false,
+                      child: Container(
+                        height: 150,
+                        color: Colors
+                            .transparent, //could change this to Color(0xFF737373),
+                        //so you don't have to change MaterialApp canvasColor
+                        child: Container(
+                            decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10.0),
+                                    topRight: Radius.circular(10.0))),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Text(
+                                  "Please take customer picture before proceeding",
+                                  style: TextStyle(
+                                      color: primaryColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                    "This is occasional customer update process. Please comply",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w300)),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 100.0, vertical: 10.0),
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      decoration:
+                                          BoxDecoration(color: primaryColor),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Center(
+                                          child: Text(
+                                            "Take Photo",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    SharedPreferences pref =
+                                        await SharedPreferences.getInstance();
+                                    var empID = pref.getInt("EmployeeId");
+                                    teamsController.getEmployData(empID);
+                                    var skipProfile =
+                                        pref.getInt("ProfileSkip");
+                                    if (skipProfile! <= profileSkip) {
+                                      Get.back();
+                                      controller.fetchData(
+                                          levelCode: controller.levelCode.value,
+                                          activityID: 11);
+                                      teamsController.update();
+                                    } else {
+                                      Get.dialog(
+                                          barrierDismissible: false,
+                                          Dialog(
+                                            backgroundColor: Colors.white,
+                                            child: WillPopScope(
+                                              onWillPop: () async => false,
+                                              child: Container(
+                                                padding: EdgeInsets.all(10),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Center(
+                                                      child: Text(
+                                                        "Please Update Profile.",
+                                                        style: TextStyle(
+                                                            color: primaryColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10),
+                                                      child: Text(
+                                                        "You have already Skip Profile.",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Get.back();
+                                                      },
+                                                      child: Center(
+                                                        child: Container(
+                                                          height: 40,
+                                                          width: 60,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration: BoxDecoration(
+                                                              color:
+                                                                  primaryColor,
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                      .all(
+                                                                      Radius.circular(
+                                                                          10))),
+                                                          child: Text(
+                                                            "Ok",
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ));
+                                    }
+                                  },
+                                  child: const Text(
+                                    "Skip",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+            );
+          });
+    });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     getId();
     super.initState();
+
+    getGlobalParameterDataController.fetchData().then((value) {
+      if (value != null) {
+        profileSkip = value!.data![0].parameterValue;
+      }
+    });
+
+    // teamsController.getTeamsData();
+
+    if (Get.arguments == 0.0) {
+      _modalBottomSheetMenu();
+    }
+
+    getCustomerDataController
+        .fetchData(controller.customerId, controller.territoryId)
+        .then((value) {
+      if (value != null) {
+        profileImage = AppConstants.BASE_URL + value!.data![0].column1;
+        isLock = value!.data![0].islock ?? false;
+      }
+    });
     // TimerService().startTimer();
     noteDataController.fetchData(controller.levelCode.value);
     scheduleDataController.fetchData(controller.levelCode.value, 0, true);
@@ -237,11 +460,34 @@ class _CheckInPageState extends State<CheckInPage> {
                                                   child: SizedBox(
                                                     width: 80,
                                                     height: 80,
-                                                    child: CircleAvatar(
-                                                      child: Icon(
-                                                        Icons.person_sharp,
-                                                        size: 50,
-                                                      ),
+                                                    child: Obx(
+                                                      () =>
+                                                          getCustomerDataController
+                                                                  .isLoading
+                                                                  .value
+                                                              ? Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    valueColor:
+                                                                        AlwaysStoppedAnimation<Color>(
+                                                                            primaryColor),
+                                                                  ),
+                                                                )
+                                                              : CircleAvatar(
+                                                                  backgroundImage:
+                                                                      NetworkImage(profileImage !=
+                                                                              null
+                                                                          ? profileImage
+                                                                          : ""),
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+
+                                                                  // child: Icon(
+                                                                  //   Icons.person_sharp,
+                                                                  //   size: 50,
+                                                                  // ),
+                                                                ),
                                                     ),
                                                   ),
                                                 ),
@@ -256,20 +502,38 @@ class _CheckInPageState extends State<CheckInPage> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Container(
-                                                          width: 250,
-                                                          child: Text(
-                                                              controller
-                                                                  .levelName
-                                                                  .value,
-                                                              maxLines: 2,
-                                                              style: TextStyle(
-                                                                  color:
-                                                                      blackTextColor,
-                                                                  fontSize: 14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400)),
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              width: 250,
+                                                              child: Text(
+                                                                  controller
+                                                                      .levelName
+                                                                      .value,
+                                                                  maxLines: 2,
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                          blackTextColor,
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400)),
+                                                            ),
+                                                            Visibility(
+                                                              visible:
+                                                                  isLock != null
+                                                                      ? isLock
+                                                                      : false,
+                                                              child: IconButton(
+                                                                onPressed:
+                                                                    () {},
+                                                                icon: Icon(
+                                                                  Icons.edit,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                         SizedBox(
                                                           height: 5,
@@ -768,9 +1032,17 @@ class _CheckInPageState extends State<CheckInPage> {
                                       color: primaryColor,
                                     ),
                                     onTap: () {
+                                      Navigator.of(context).pop();
                                       orderDataController.fetchOrderData(
                                           customerCode:
                                               controller.levelCode.value);
+                                      // setOrderDataController.productList.clear();
+                                      setOrderDataController.myCartList!
+                                          .clear();
+                                      setOrderDataController.myCartEditList!
+                                          .clear();
+                                      setOrderDataController.total = 0.0;
+
                                       Get.to(ViewOpenOrderPage(
                                           tag: "View Open Order"));
                                     },
@@ -788,6 +1060,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                       color: primaryColor,
                                     ),
                                     onTap: () {
+                                      Navigator.of(context).pop();
                                       getUserActivityController.fetchData();
                                       Get.to(ScheduleVisitPage());
                                     },
@@ -805,6 +1078,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                       color: primaryColor,
                                     ),
                                     onTap: () {
+                                      Navigator.of(context).pop();
                                       stockController.totalQty = 0;
                                       stockController.totalAmount = 0.0;
                                       stockController.isVisible = false;
@@ -813,15 +1087,18 @@ class _CheckInPageState extends State<CheckInPage> {
                                       stockController.i = false;
                                       stockController.catCheck = false;
                                       stockController.sectionlist.clear();
+                                      setOrderDataController.total = 0.0;
 
-                                      stockController.fetchData(
+                                      /*stockController.fetchData(
                                           customerCode:
-                                              controller.levelCode.value);
+                                              controller.levelCode.value);*/
                                       setOrderDataController.customerCode
                                           .value = controller.levelCode.value;
-
-                                      Get.to(TakeOrderPage());
-                                    },
+                                      setOrderDataController.orderEditTag = "";
+                                      Get.to(TakeOrderPage(
+                                        tag: '',
+                                      ));
+                                    }
                                   ),
                                   ListTile(
                                     title: Text(
@@ -836,6 +1113,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                       color: primaryColor,
                                     ),
                                     onTap: () {
+                                      Navigator.of(context).pop();
                                       Get.to(ComplainPage(),
                                           arguments:
                                               controller.levelCode.value);
@@ -854,6 +1132,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                       color: primaryColor,
                                     ),
                                     onTap: () {
+                                      Navigator.of(context).pop();
                                       Get.to(TakeNotePage(), arguments: [
                                         controller.levelName.value,
                                         controller.levelCode.value,
@@ -876,6 +1155,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                       color: primaryColor,
                                     ),
                                     onTap: () {
+                                      Navigator.of(context).pop();
                                       Get.to(CollectPaymentPage(),
                                           arguments:
                                               controller.levelCode.value);
