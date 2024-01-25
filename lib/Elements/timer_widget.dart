@@ -17,12 +17,14 @@ class TimerWidget extends StatelessWidget {
   // TimerService timerService = Get.find<TimerService>();
   final TimerService timerService = Get.put(TimerService());
 
-  bool isVisible = true;
-
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isVisible,
+    return GestureDetector(
+      onTap: () {
+        Get.to(
+          CheckInPage(tag: ""),
+        );
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         height: 50,
@@ -38,17 +40,12 @@ class TimerWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: (){
-                        Get.to(
-                          CheckInPage(tag: ""),
-                        );
-                      },
-                      child: Text(
-                        controller.levelName.value,
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, color: primaryColor,fontSize: 13),
-                      ),
+                    Text(
+                      controller.checkInlevelName.value,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: primaryColor,
+                          fontSize: 13),
                     ),
                     SizedBox(
                       width: 5.0,
@@ -57,8 +54,10 @@ class TimerWidget extends StatelessWidget {
                       () => Flexible(
                         child: Text(
                           "Checked-in: ${timerService.formattedTime(timeInSecond: timerService.elapsedSeconds.value)}",
-                          style: TextStyle(fontSize: 13,
-                              fontWeight: FontWeight.w500, color: Colors.black),
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
                         ),
                       ),
                     ),
@@ -68,7 +67,6 @@ class TimerWidget extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                isVisible = false;
                 controller.checkIn = false;
                 timerService.stopTimer();
                 // controller.timer!.cancel();
@@ -81,7 +79,7 @@ class TimerWidget extends StatelessWidget {
                       return AlertDialog(
                         title: Text('Check Out!!'),
                         content: Text(
-                            "You are CheckOut at ${controller.levelName.value}"),
+                            "You are CheckOut at ${controller.checkInlevelName.value}"),
                         actions: <Widget>[
                           ElevatedButton(
                             child: Text('Ok'),
@@ -97,7 +95,7 @@ class TimerWidget extends StatelessWidget {
                                 Get.off(MyCustomerDetailsPage(), arguments: [
                                   prefs.getString('CustomerName'),
                                   prefs.getInt("levelID"),
-                              controller.update()
+                                  controller.update()
                                 ]);
                               }
 
@@ -108,9 +106,10 @@ class TimerWidget extends StatelessWidget {
                         ],
                       );
                     });
+                controller.update();
                 // showSnackBar("You are Checked out at", controller.levelName.value,
                 //     Colors.greenAccent);
-                // Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: Container(
                 padding: EdgeInsets.all(8),

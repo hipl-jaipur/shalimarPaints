@@ -29,6 +29,8 @@ class CustomerProfileList extends StatefulWidget {
 }
 
 class _CustomerProfileListState extends State<CustomerProfileList> {
+  // _getRequests() async {}
+
   // TimerService timerService = Get.put<TimerService>();
   final TimerService timerService = Get.put(TimerService());
 
@@ -53,18 +55,19 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
         });
       }
 
-      distance = calculateDistance(
-        prefs.getDouble("LAT"),
-        prefs.getDouble("LNG"),
-        widget.customerList[widget.index].latitude == null
-            ? 0.0
-            : widget.customerList[widget.index].latitude,
-        widget.customerList[widget.index].longitude == null
-            ? 0.0
-            : widget.customerList[widget.index].longitude,
-      );
+      if (widget.customerList[widget.index].latitude != null &&
+          widget.customerList[widget.index].longitude != null) {
+        distance = calculateDistance(
+          prefs.getDouble("LAT"),
+          prefs.getDouble("LNG"),
+          widget.customerList[widget.index].latitude,
+          widget.customerList[widget.index].longitude,
+        );
 
-      print("Distance: $distance");
+        print("Distance: $distance");
+      } else {
+        distance = 0.0;
+      }
     }).catchError((e) {
       debugPrint(e);
     });
@@ -181,7 +184,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           ),
                         ),
                         Text(
-                            distance != null
+                            distance != 0.0 && distance != null
                                 ? "Distance: ${distance!.toInt()} KM Away"
                                 : "Distance: ? KM Away",
                             style: TextStyle(
@@ -211,8 +214,9 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                       if (controller.checkIn == false) {
                         controller.checkIn = true;
                         controller.update();
-                       timerService.timer = Timer.periodic(Duration(seconds: 1), timerService.onTimerTick);
-                          controller.checkinCustomer = widget
+                        timerService.timer = Timer.periodic(
+                            Duration(seconds: 1), timerService.onTimerTick);
+                        controller.checkinCustomer = widget
                             .customerList[widget.index].levelName
                             .toString();
                         controller.fetchData(
@@ -229,6 +233,9 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                         Get.to(
                           CheckInPage(tag: ""),
                         );
+                        controller.checkInlevelName.value = widget
+                            .customerList[widget.index].levelName
+                            .toString();
                         controller.levelCode.value = widget
                             .customerList[widget.index].levelCode
                             .toString();
@@ -283,57 +290,55 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      if (controller.checkIn == false) {
-                        // controller.checkIn = true;
-                        controller.fetchData(
-                            levelCode: widget
-                                .customerList[widget.index].levelCode
-                                .toString(),
-                            activityID: 9);
-                        showSnackBar(
-                            "You are CheckedIn at",
-                            widget.customerList[widget.index].levelName
-                                .toString(),
-                            Colors.greenAccent);
+                      // if (controller.checkIn == false) {
+                      //  // controller.checkIn = true;
+                      controller.fetchData(
+                          levelCode: widget.customerList[widget.index].levelCode
+                              .toString(),
+                          activityID: 9);
+                      showSnackBar(
+                          "You are CheckedIn at",
+                          widget.customerList[widget.index].levelName
+                              .toString(),
+                          Colors.greenAccent);
 
-                        Get.to(
-                          CheckInPage(tag: ""),
-                        );
-                        controller.levelCode.value = widget
-                            .customerList[widget.index].levelCode
-                            .toString();
-                        controller.levelName.value = widget
-                            .customerList[widget.index].levelName
-                            .toString();
-                        controller.levelAddress.value = widget
-                            .customerList[widget.index].address1
-                            .toString();
-                        controller.isCheckinOnSite.value = false;
-                      }
-                      else{
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Alert!!'),
-                                content: Text(
-                                    "You are already checkin at ${controller.levelName}, Please CheckOut at ${controller.levelName}"),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    child: Text('Ok'),
-                                    onPressed: () {
-                                      // Navigator.pop(context);
-                                      Get.back();
+                      Get.to(
+                        CheckInPage(tag: ""),
+                      );
+                      controller.levelCode.value = widget
+                          .customerList[widget.index].levelCode
+                          .toString();
+                      controller.levelName.value = widget
+                          .customerList[widget.index].levelName
+                          .toString();
+                      controller.levelAddress.value =
+                          widget.customerList[widget.index].address1.toString();
+                      //   controller.isCheckinOnSite.value = false;
+                      // }
+                      // else {
+                      //   showDialog(
+                      //       context: context,
+                      //       builder: (BuildContext context) {
+                      //         return AlertDialog(
+                      //           title: Text('Alert!!'),
+                      //           content: Text(
+                      //               "You are already checkin at ${controller.levelName}, Please CheckOut at ${controller.levelName}"),
+                      //           actions: <Widget>[
+                      //             ElevatedButton(
+                      //               child: Text('Ok'),
+                      //               onPressed: () {
+                      //                 // Navigator.pop(context);
+                      //                 Get.back();
 
-                                      // Get.off(
-                                      //   CheckInPage(),
-                                      // );
-                                    },
-                                  ),
-                                ],
-                              );
-                            });
-                      }
+                      //                 // Get.off(
+                      //                 //   CheckInPage(),
+                      //                 // );
+                      //               },
+                      //             ),
+                      //           ],
+                      //         );
+                      //       });
+                      // }
                     },
                     child: Container(
                       padding: EdgeInsets.all(8),

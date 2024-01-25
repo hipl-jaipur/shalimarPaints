@@ -56,4 +56,5 @@ class AppConstants {
   static const String fileUpload = "${BASE_URL}File/UploadWebFile";
   static const String sessionCheck = "${BASE_URL}SessionCheck";
   static const String getPaymentTypeData = "${BASE_URL}GetPaymentTypeData";
+  static const String getCustomerData = "${BASE_URL}GetCustomerData";
 }

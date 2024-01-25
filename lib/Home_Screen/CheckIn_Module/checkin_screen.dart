@@ -12,7 +12,7 @@ import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
-import 'package:shalimar/Elements/commom_snackbar_widget.dart';
+import 'package:shalimar/Elements/timer_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/collect_payment_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/make_complain_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
@@ -75,7 +75,6 @@ class _CheckInPageState extends State<CheckInPage> {
   // final TimerController timerController = TimerController();
   final TimerService timerService = Get.put(TimerService());
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -94,497 +93,387 @@ class _CheckInPageState extends State<CheckInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Navigator.pop(context, false);
-        // return Future.value(false);
-        controller.update();
-        // // controller.checkIn = true;
-        // // timerService.elapsedSeconds;
-        return true;
-      },
-      child: Scaffold(
-          body: SafeArea(
-            child: Stack(
-              children: [
-                SizedBox(
-                    width: double.infinity,
-                    child: Image.asset(
-                      Images.bg_3,
-                      fit: BoxFit.fill,
-                    )),
-                Positioned(
-                  child: Obx(
-                    () => controller.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Visibility(
-                                    visible:
-                                            controller.isCheckinOnSite.value,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+    return GetBuilder<SetActivityDetailDataController>(
+      init: SetActivityDetailDataController(),
+      builder: (setActivityController) {
+        return Scaffold(
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  SizedBox(
+                      width: double.infinity,
+                      child: Image.asset(
+                        Images.bg_3,
+                        fit: BoxFit.fill,
+                      )),
+                  Positioned(
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          child: Visibility(
+                              visible: controller.checkIn,
+                              child: TimerWidget(
+                                tag: "",
+                              )),
+                        ),
+                        Obx(
+                          () => controller.isLoading.value
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: 18.0,
+                                      left: 18.0,
+                                      right: 18.0,
+                                      top: setActivityController.checkIn
+                                          ? 50.0
+                                          : 18.0),
+                                  child: SingleChildScrollView(
+                                    child: Column(
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.timer,
-                                                size: 30,
-                                                color: primaryColor,
-                                              ),
-                                              SizedBox(
-                                                width: 5.0,
-                                              ),
-                                        
-                                              // Obx(
-                                              //   () => Text(
-                                              //       'Timer Count: ${cont.formattedTime(timeInSecond: cont.counter.value)}'),
-                                              // )
-                                        
-                                              Obx(
-                                                () => Text(
-                                                  'Checkin Timer: ${timerService.formattedTime(timeInSecond: timerService.elapsedSeconds.value)} ',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                        // Visibility(
+                                        //   visible:
+                                        //       controller.isCheckinOnSite.value,
+                                        //   child: Row(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.spaceBetween,
+                                        //     children: [
+                                        //       Container(
+                                        //         padding: EdgeInsets.all(8),
+                                        //         decoration: BoxDecoration(
+                                        //             color: Colors.white,
+                                        //             borderRadius:
+                                        //                 BorderRadius.circular(5)),
+                                        //         child: Row(
+                                        //           children: [
+                                        //             Icon(
+                                        //               Icons.timer,
+                                        //               size: 30,
+                                        //               color: primaryColor,
+                                        //             ),
+                                        //             SizedBox(
+                                        //               width: 5.0,
+                                        //             ),
+
+                                        //             // Obx(
+                                        //             //   () => Text(
+                                        //             //       'Timer Count: ${cont.formattedTime(timeInSecond: cont.counter.value)}'),
+                                        //             // )
+
+                                        //             Obx(
+                                        //               () => Text(
+                                        //                 'Checkin Timer: ${timerService.formattedTime(timeInSecond: timerService.elapsedSeconds.value)} ',
+                                        //                 style: TextStyle(
+                                        //                     fontWeight:
+                                        //                         FontWeight.w500),
+                                        //               ),
+                                        //             ),
+                                        //           ],
+                                        //         ),
+                                        //       ),
+                                        //       GestureDetector(
+                                        //         onTap: () {
+                                        //           controller.checkIn = false;
+                                        //           timerService.stopTimer();
+                                        //           controller.fetchData(
+                                        //               levelCode: controller
+                                        //                   .levelCode.value,
+                                        //               activityID: 10);
+                                        //           showSnackBar(
+                                        //               "You are Checked out at",
+                                        //               controller.levelName.value,
+                                        //               Colors.greenAccent);
+                                        //           Navigator.pop(context);
+                                        //           controller.update();
+                                        //         },
+                                        //         child: Container(
+                                        //           padding:
+                                        //               const EdgeInsets.all(8),
+                                        //           decoration: BoxDecoration(
+                                        //               color: Colors.white,
+                                        //               borderRadius:
+                                        //                   BorderRadius.circular(
+                                        //                       5)),
+                                        //           child: SingleChildScrollView(
+                                        //             child: Row(
+                                        //               children: [
+                                        //                 Icon(
+                                        //                   Icons.logout_outlined,
+                                        //                   size: 30,
+                                        //                   color: primaryColor,
+                                        //                 ),
+                                        //                 SizedBox(
+                                        //                   width: 5.0,
+                                        //                 ),
+                                        //                 Text(
+                                        //                   "CheckOut",
+                                        //                   style: TextStyle(
+                                        //                       fontWeight:
+                                        //                           FontWeight
+                                        //                               .w500),
+                                        //                 ),
+                                        //               ],
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                        SizedBox(
+                                          height: 20,
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            controller.checkIn = false;
-                                            timerService.stopTimer();
-                                            controller.fetchData(
-                                                levelCode:
-                                                    controller.levelCode.value,
-                                                activityID: 10);
-                                            showSnackBar(
-                                                "You are Checked out at",
-                                                controller.levelName.value,
-                                                Colors.greenAccent);
-                                            Navigator.pop(context);
-                                          },
+                                        Card(
                                           child: Container(
-                                            padding: EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(5)),
-                                            child: SingleChildScrollView(
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.logout_outlined,
-                                                    size: 30,
-                                                    color: primaryColor,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 20),
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 10),
+                                                  child: SizedBox(
+                                                    width: 80,
+                                                    height: 80,
+                                                    child: CircleAvatar(
+                                                      child: Icon(
+                                                        Icons.person_sharp,
+                                                        size: 50,
+                                                      ),
+                                                    ),
                                                   ),
-                                                  SizedBox(
-                                                    width: 5.0,
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Flexible(
+                                                  child: FittedBox(
+                                                    fit: BoxFit.fill,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          width: 250,
+                                                          child: Text(
+                                                              controller
+                                                                  .levelName
+                                                                  .value,
+                                                              maxLines: 2,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      blackTextColor,
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400)),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                            "ID: ${controller.levelCode.value}",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    blackTextColor,
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400)),
+                                                        SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Container(
+                                                          width: 250,
+                                                          child: Text(
+                                                            controller
+                                                                .levelAddress
+                                                                .value,
+                                                            maxLines: 2,
+                                                            style: TextStyle(
+                                                                color:
+                                                                    primaryColor,
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                  Text(
-                                                    "CheckOut",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Card(
-                                    child: Container(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 20),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: SizedBox(
-                                              width: 80,
-                                              height: 80,
-                                              child: CircleAvatar(
-                                                child: Icon(
-                                                  Icons.person_sharp,
-                                                  size: 50,
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Schedules",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                getUserActivityController
+                                                    .fetchData();
+                                                Get.to(ScheduleVisitPage());
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "Add",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5.0,
+                                                    ),
+                                                    Icon(
+                                                      Icons.add_box_rounded,
+                                                      size: 30,
+                                                      color: primaryColor,
+                                                    )
+                                                  ],
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Flexible(
-                                            child: FittedBox(
-                                              fit: BoxFit.fill,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: 250,
-                                                    child: Text(
-                                                        controller
-                                                            .levelName.value,
-                                                        maxLines: 2,
-                                                        style: TextStyle(
-                                                            color:
-                                                                blackTextColor,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400)),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Text(
-                                                      "ID: ${controller.levelCode.value}",
-                                                      style: TextStyle(
-                                                          color: blackTextColor,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                                  SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Container(
-                                                    width: 250,
-                                                    child: Text(
-                                                      controller
-                                                          .levelAddress.value,
-                                                      maxLines: 2,
-                                                      style: TextStyle(
-                                                          color: primaryColor,
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w400),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Schedules",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          getUserActivityController.fetchData();
-                                          Get.to(ScheduleVisitPage());
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Add",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              Icon(
-                                                Icons.add_box_rounded,
-                                                size: 30,
-                                                color: primaryColor,
-                                              )
-                                            ],
-                                          ),
+                                            )
+                                          ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                  GetBuilder<GetScheduleDataController>(
-                                      init: GetScheduleDataController(),
-                                      builder: (scheduleDataController) {
-                                        return SizedBox(
-                                            height: 250.0,
-                                            child: Card(
-                                              child: scheduleDataController
-                                                              .getScheduleDataModel ==
-                                                          null ||
-                                                      scheduleDataController
-                                                              .getScheduleDataModel!
-                                                              .data!
-                                                              .length ==
-                                                          0
-                                                  ? Center(
-                                                      child: Text(
-                                                        "No Data Available",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                    )
-                                                  : ListView.builder(
-                                                      itemCount:
-                                                          scheduleDataController
-                                                              .getScheduleDataModel!
-                                                              .data!
-                                                              .length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
-                                                          child: Container(
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(
-                                                                    color:
-                                                                        primaryColor),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10)),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        Text(
-                                                                            "Schedule For: ${scheduleDataController.getScheduleDataModel!.data![index].schdulefor}"),
-                                                                        Text(
-                                                                            "Date: ${scheduleDataController.getScheduleDataModel!.data![index].date}")
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                      children: [
-                                                                        Text(
-                                                                            "Start Time: ${scheduleDataController.getScheduleDataModel!.data![index].starttime}"),
-                                                                        Text(
-                                                                            "End Time: ${scheduleDataController.getScheduleDataModel!.data![index].endtime}"),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height: 5,
-                                                                    ),
-                                                                  ]),
+                                        GetBuilder<GetScheduleDataController>(
+                                            init: GetScheduleDataController(),
+                                            builder: (scheduleDataController) {
+                                              return SizedBox(
+                                                  height: 250.0,
+                                                  child: Card(
+                                                    child: scheduleDataController
+                                                                    .getScheduleDataModel ==
+                                                                null ||
+                                                            scheduleDataController
+                                                                    .getScheduleDataModel!
+                                                                    .data!
+                                                                    .length ==
+                                                                0
+                                                        ? Center(
+                                                            child: Text(
+                                                              "No Data Available",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
                                                             ),
+                                                          )
+                                                        : ListView.builder(
+                                                            itemCount:
+                                                                scheduleDataController
+                                                                    .getScheduleDataModel!
+                                                                    .data!
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        10.0),
+                                                                child:
+                                                                    Container(
+                                                                  decoration: BoxDecoration(
+                                                                      border: Border.all(
+                                                                          color:
+                                                                              primaryColor),
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              10)),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
+                                                                    child: Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text("Schedule For: ${scheduleDataController.getScheduleDataModel!.data![index].schdulefor}"),
+                                                                              Text("Date: ${scheduleDataController.getScheduleDataModel!.data![index].date}")
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceBetween,
+                                                                            children: [
+                                                                              Text("Start Time: ${scheduleDataController.getScheduleDataModel!.data![index].starttime}"),
+                                                                              Text("End Time: ${scheduleDataController.getScheduleDataModel!.data![index].endtime}"),
+                                                                            ],
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height:
+                                                                                5,
+                                                                          ),
+                                                                        ]),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
-                                                        );
-                                                      },
-                                                    ),
-                                            ));
-                                      }),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Customer History",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 250.0,
-                                    child: Card(
-                                      child: activityController
-                                                      .activityDataModel ==
-                                                  null ||
-                                              activityController
-                                                      .activityDataModel!
-                                                      .data!
-                                                      .length ==
-                                                  0
-                                          ? Center(
-                                              child: Text(
-                                              "No Data Available",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500),
-                                            ))
-                                          : ListView.builder(
-                                              itemCount: activityController
-                                                  .activityDataModel!
-                                                  .data!
-                                                  .length,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color:
-                                                                primaryColor),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10)),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                    "${activityController.activityDataModel!.data![index].activityName}"),
-                                                              ],
-                                                            ),
-                                                            SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Text(
-                                                                "Code: ${activityController.activityDataModel!.data![index].customerCode}"),
-                                                            SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Text(
-                                                                "Descriptiion: ${activityController.activityDataModel!.data![index].activityDescription}"),
-                                                            SizedBox(
-                                                              height: 5,
-                                                            ),
-                                                            Text(
-                                                                "${activityController.activityDataModel!.data![index].createdOn}")
-                                                          ]),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Customer Notes",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.to(TakeNotePage(), arguments: [
-                                            controller.levelName.value,
-                                            controller.levelCode.value,
-                                            controller.levelAddress.value
-                                          ]
-                                              // customerProfileData
-                                              );
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Add",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              SizedBox(
-                                                width: 5.0,
-                                              ),
-                                              Icon(
-                                                Icons.add_box_rounded,
-                                                size: 30,
-                                                color: primaryColor,
-                                              )
-                                            ],
-                                          ),
+                                                  ));
+                                            }),
+                                        SizedBox(
+                                          height: 20,
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                  GetBuilder<GetNoteDataController>(
-                                      init: GetNoteDataController(),
-                                      builder: (noteDataController) {
-                                        return SizedBox(
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Customer History",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
                                           height: 250.0,
                                           child: Card(
-                                            child: noteDataController
-                                                            .getcustomerNoteDataModel ==
+                                            child: activityController
+                                                            .activityDataModel ==
                                                         null ||
-                                                    noteDataController
-                                                            .getcustomerNoteDataModel!
+                                                    activityController
+                                                            .activityDataModel!
                                                             .data!
                                                             .length ==
                                                         0
@@ -596,10 +485,11 @@ class _CheckInPageState extends State<CheckInPage> {
                                                             FontWeight.w500),
                                                   ))
                                                 : ListView.builder(
-                                                    itemCount: noteDataController
-                                                        .getcustomerNoteDataModel!
-                                                        .data!
-                                                        .length,
+                                                    itemCount:
+                                                        activityController
+                                                            .activityDataModel!
+                                                            .data!
+                                                            .length,
                                                     itemBuilder:
                                                         (context, index) {
                                                       return Padding(
@@ -630,25 +520,24 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                             .spaceBetween,
                                                                     children: [
                                                                       Text(
-                                                                        "Note: ${noteDataController.getcustomerNoteDataModel!.data![index].note}",
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                primaryColor),
-                                                                      ),
-                                                                      Text(
-                                                                          "${noteDataController.getcustomerNoteDataModel!.data![index].createdOn}")
+                                                                          "${activityController.activityDataModel!.data![index].activityName}"),
                                                                     ],
                                                                   ),
                                                                   SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   Text(
-                                                                      "Code: ${noteDataController.getcustomerNoteDataModel!.data![index].customerCode}"),
+                                                                      "Code: ${activityController.activityDataModel!.data![index].customerCode}"),
                                                                   SizedBox(
                                                                     height: 5,
                                                                   ),
                                                                   Text(
-                                                                      "Descriptiion: ${noteDataController.getcustomerNoteDataModel!.data![index].activityDescription}"),
+                                                                      "Descriptiion: ${activityController.activityDataModel!.data![index].activityDescription}"),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                  Text(
+                                                                      "${activityController.activityDataModel!.data![index].createdOn}")
                                                                 ]),
                                                           ),
                                                         ),
@@ -656,33 +545,177 @@ class _CheckInPageState extends State<CheckInPage> {
                                                     },
                                                   ),
                                           ),
-                                        );
-                                      }),
-                                ],
-                              ),
-                            ),
-                          ),
-                  ),
-                )
-              ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Customer Notes",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Get.to(TakeNotePage(),
+                                                    arguments: [
+                                                      controller
+                                                          .levelName.value,
+                                                      controller
+                                                          .levelCode.value,
+                                                      controller
+                                                          .levelAddress.value
+                                                    ]
+                                                    // customerProfileData
+                                                    );
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      "Add",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5.0,
+                                                    ),
+                                                    Icon(
+                                                      Icons.add_box_rounded,
+                                                      size: 30,
+                                                      color: primaryColor,
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        GetBuilder<GetNoteDataController>(
+                                            init: GetNoteDataController(),
+                                            builder: (noteDataController) {
+                                              return SizedBox(
+                                                height: 250.0,
+                                                child: Card(
+                                                  child: noteDataController
+                                                                  .getcustomerNoteDataModel ==
+                                                              null ||
+                                                          noteDataController
+                                                                  .getcustomerNoteDataModel!
+                                                                  .data!
+                                                                  .length ==
+                                                              0
+                                                      ? Center(
+                                                          child: Text(
+                                                          "No Data Available",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ))
+                                                      : ListView.builder(
+                                                          itemCount:
+                                                              noteDataController
+                                                                  .getcustomerNoteDataModel!
+                                                                  .data!
+                                                                  .length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      10.0),
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        color:
+                                                                            primaryColor),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10)),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                  child: Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Note: ${noteDataController.getcustomerNoteDataModel!.data![index].note}",
+                                                                              style: TextStyle(color: primaryColor),
+                                                                            ),
+                                                                            Text("${noteDataController.getcustomerNoteDataModel!.data![index].createdOn}")
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              5,
+                                                                        ),
+                                                                        Text(
+                                                                            "Code: ${noteDataController.getcustomerNoteDataModel!.data![index].customerCode}"),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              5,
+                                                                        ),
+                                                                        Text(
+                                                                            "Descriptiion: ${noteDataController.getcustomerNoteDataModel!.data![index].activityDescription}"),
+                                                                      ]),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                ),
+                                              );
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: FloatingActionButton(
-            shape: CircleBorder(),
-            // BeveledRectangleBorder(borderRadius: BorderRadius.circular(200)),
-            onPressed: showMenu,
-            child: Icon(Icons.home_filled),
-            elevation: 10.0,
-          ),
-          bottomNavigationBar: SizedBox(
-            height: 40,
-            child: BottomAppBar(
-                color: Colors.red[100],
-                shape: const CircularNotchedRectangle(),
-                child: Container()),
-          )),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: FloatingActionButton(
+              shape: CircleBorder(),
+              // BeveledRectangleBorder(borderRadius: BorderRadius.circular(200)),
+              onPressed: showMenu,
+              child: Icon(Icons.home_filled),
+              elevation: 10.0,
+            ),
+            bottomNavigationBar: SizedBox(
+              height: 40,
+              child: BottomAppBar(
+                  color: Colors.red[100],
+                  shape: const CircularNotchedRectangle(),
+                  child: Container()),
+            ));
+      },
     );
   }
 
@@ -738,7 +771,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                       orderDataController.fetchOrderData(
                                           customerCode:
                                               controller.levelCode.value);
-                                      Get.to(ViewOpenOrderPage(tag: "View Open Order"));
+                                      Get.to(ViewOpenOrderPage(
+                                          tag: "View Open Order"));
                                     },
                                   ),
                                   ListTile(
@@ -828,7 +862,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                           // customerProfileData
                                           );
                                     },
-                                  ),                 ListTile(
+                                  ),
+                                  ListTile(
                                     title: Text(
                                       "Take Payment",
                                       style: TextStyle(
@@ -841,8 +876,9 @@ class _CheckInPageState extends State<CheckInPage> {
                                       color: primaryColor,
                                     ),
                                     onTap: () {
-                                    Get.to(CollectPaymentPage()  ,arguments:
-                                        controller.levelCode.value);
+                                      Get.to(CollectPaymentPage(),
+                                          arguments:
+                                              controller.levelCode.value);
                                     },
                                   ),
                                 ],
