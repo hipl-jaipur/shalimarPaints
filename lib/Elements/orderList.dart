@@ -6,6 +6,9 @@ import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
 import 'package:shalimar/Model/get_order_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 
+import '../Controller/get_available_stock_data-controller.dart';
+import '../Controller/set_order_data_controller.dart';
+
 class OrderList extends StatefulWidget {
   BuildContext context;
   int index;
@@ -27,7 +30,8 @@ class _OrderListState extends State<OrderList> {
   var totalAmount = 0.0;
 
   GetOrderDataController orderData = Get.put(GetOrderDataController());
-
+  SetOrderDataController setOrderDataController =
+  Get.put(SetOrderDataController());
   @override
   void initState() {
     // TODO: implement initState
@@ -139,6 +143,11 @@ class _OrderListState extends State<OrderList> {
                           height: 30,
                           child: OutlinedButton(
                             onPressed: () {
+                              GetAvailableStockDataController stockController =
+                              Get.put(GetAvailableStockDataController());
+                              stockController.myList.clear();
+                              setOrderDataController.orderEditTag = "Edit";
+                              setOrderDataController.total=0.0;
                               Get.to(MyCartPage(
                                   tag: "Edit",
                                   orderNumber: widget

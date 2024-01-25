@@ -43,6 +43,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
         date = DateFormat('dd/MM/yyyy').format(DateTime.parse(dateList[0]));
       }
     }
+
+    print(stockDataController.myList.length);
   }
 
   @override
@@ -50,7 +52,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
     return GetBuilder<GetAvailableStockDataController>(
         init: GetAvailableStockDataController(),
         builder: (stockDataController) {
-          return Card(
+          return stockDataController.isLoading?CircularProgressIndicator(): Card(
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 10),
               child: Padding(

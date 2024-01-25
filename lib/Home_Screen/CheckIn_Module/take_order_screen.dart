@@ -11,10 +11,13 @@ import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:top_modal_sheet/top_modal_sheet.dart';
 
+import '../../Controller/set_order_data_controller.dart';
 import '../../Elements/filter_sheet_widget.dart';
 
 class TakeOrderPage extends StatefulWidget {
-  const TakeOrderPage({super.key});
+  final String tag;
+
+  const TakeOrderPage({super.key, required this.tag});
 
   @override
   State<TakeOrderPage> createState() => _TakeOrderPageState();
@@ -26,12 +29,16 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
       Get.put(GetAvailableStockDataController());
   SetActivityDetailDataController setActivityController =
       Get.put(SetActivityDetailDataController());
-
+  SetOrderDataController setOrderDataController =
+      Get.put(SetOrderDataController());
   List<Data> productList = [];
 
   @override
   void initState() {
+    SetActivityDetailDataController controller =
+        Get.put(SetActivityDetailDataController());
     // TODO: implement initState
+    stockController.fetchData(customerCode: controller.levelCode.value);
     super.initState();
   }
 
@@ -225,10 +232,17 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                       .myList
                                                                       .length;
                                                               i++) {
-                                                            if (controller.myList[i]['category'] !=
-                                                                    null ) {
-                                                              if (controller.myList[i]['category']
-                                                                          .trim() != 
+                                                            if (controller
+                                                                        .myList[i]
+                                                                    [
+                                                                    'category'] !=
+                                                                null) {
+                                                              if (controller
+                                                                          .myList[
+                                                                              i]
+                                                                              [
+                                                                              'category']
+                                                                          .trim() !=
                                                                       "D"
                                                                   // stockController
                                                                   //     .productCategory
@@ -256,11 +270,34 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                     .catCheck =
                                                                 false;
                                                           } else {
-                                                            Get.to(
-                                                                MyCartPage());
-                                                            controller
-                                                                    .catCheck =
-                                                                false;
+                                                            setOrderDataController
+                                                                .myCartList
+                                                                .clear();
+
+                                                            if (setOrderDataController
+                                                                    .orderEditTag ==
+                                                                "Edit") {
+
+
+                                                              setOrderDataController
+                                                                  .addOrder().whenComplete(() {
+                                                             /*   setOrderDataController
+                                                                    .addAndEdit();*/
+                                                                setOrderDataController
+                                                                    .update();
+
+                                                                Get.back();
+
+                                                              });
+
+                                                            } else {
+                                                              Get.to(MyCartPage(
+                                                                tag: "",
+                                                              ));
+                                                              controller
+                                                                      .catCheck =
+                                                                  false;
+                                                            }
                                                           }
                                                         }
                                                       },

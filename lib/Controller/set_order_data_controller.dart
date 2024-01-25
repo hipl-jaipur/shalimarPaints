@@ -8,11 +8,89 @@ import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Model/get_order_data_model.dart';
+import 'get_available_stock_data-controller.dart';
+
 class SetOrderDataController extends GetxController {
   var isLoading = false.obs;
   TextEditingController remarkController = TextEditingController();
   var customerCode = "".obs;
+
   // var orderNumber = "".obs;
+  var total = 0.0;
+  var orderEditTag = "";
+
+  List<Map<dynamic, dynamic>> myCartList = [];
+  List<Map<dynamic, dynamic>> myCartEditList = [];
+  List<OrderDetailMaster> productList = [];
+
+  Future<void> addOrder() async {
+    isLoading(true);
+    GetAvailableStockDataController stockController =
+        Get.put(GetAvailableStockDataController());
+
+    print("Calling 1_____________");
+    for (var i in stockController.myList) {
+      myCartList.add(i);
+      if (orderEditTag == 'Edit') {
+        myCartEditList.add({
+          "Qty": i['Qty'].toInt(),
+          "productcode": i['productcode'],
+          "name": i['name'],
+          "dpl": i['dpl'],
+          "mrp": i['mrp'],
+        });
+        total =total+i['mrp'];
+        print(total);
+      }
+
+
+    }    update();
+
+    print("add list-------${myCartEditList.length}");
+    print("add data${myCartEditList}");
+    isLoading(false);
+  }
+
+  addAndEdit() {
+    print("Calling 2_____________");
+
+    if (orderEditTag == 'Edit') {
+
+      myCartEditList
+          .removeWhere((item) => item["Qty"] == 0);
+      for (var i in productList!) {
+        total = total + i.mrp!;
+        myCartEditList.add({
+          "Qty": i.qty!.toInt(),
+          "productcode": i.productcode,
+          "name": i.productdesc,
+          "dpl": i.dpl,
+          "mrp": i.mrp,
+        });
+        // total= i.t;
+        // dplPrice = i.dpl;
+        // totalQty = i.qty!.toInt();
+        // totalPrice = i.mrp;
+      }
+
+
+      update();
+
+      print("Edit list-------${myCartEditList.length}");
+      print("Edit data${myCartEditList}");
+    } else {
+      remarkController.text = "";
+      for (var i in myCartList) {
+        total = total + i['mrp'];
+        // dplPrice = i["dpl"];
+        // totalQty = i["Qty"];
+        // totalPrice = i['mrp'];
+      }
+    }
+    update();
+    isLoading(false);
+  }
 
   fetchData(
     BuildContext context,
