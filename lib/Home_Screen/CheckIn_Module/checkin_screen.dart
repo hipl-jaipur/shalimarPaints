@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shalimar/Controller/activity_controller.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/get_customer_data_controller.dart';
@@ -88,11 +93,37 @@ class _CheckInPageState extends State<CheckInPage> {
   var profileImage = "";
   var isLock = false;
   var profileSkip;
+  File? _imageFile;
+  final List<File> imagesList = [];
 
+
+Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 25,
+        maxHeight: 480,
+        maxWidth: 640);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        print("ImageList1: $_imageFile");
+        imagesList.add(_imageFile!);
+      });
+      String imgpath = pickedFile.path;
+      File imgfile = File(imgpath);
+      Uint8List imgbytes = await imgfile.readAsBytes();
+      String bs4str = base64.encode(imgbytes);
+      print("ImageList2: $bs4str");
+
+      
+    }
+  }
   void _modalBottomSheetMenu() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await showModalBottomSheet(
-          isDismissible: false,
+          isDismissible: true,
           context: context,
           builder: (builder) {
             return Obx(
@@ -101,7 +132,7 @@ class _CheckInPageState extends State<CheckInPage> {
                       child: CircularProgressIndicator(),
                     )
                   : WillPopScope(
-                      onWillPop: () async => false,
+                      onWillPop: () async => true,
                       child: Container(
                         height: 150,
                         color: Colors
@@ -138,7 +169,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 100.0, vertical: 10.0),
                                   child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {_pickImage();},
                                     child: Container(
                                       decoration:
                                           BoxDecoration(color: primaryColor),
@@ -159,19 +190,22 @@ class _CheckInPageState extends State<CheckInPage> {
                                 ),
                                 GestureDetector(
                                   onTap: () async {
+                                    Get.back();
                                     SharedPreferences pref =
                                         await SharedPreferences.getInstance();
                                     var empID = pref.getInt("EmployeeId");
                                     teamsController.getEmployData(empID);
                                     var skipProfile =
                                         pref.getInt("ProfileSkip");
-                                    if (skipProfile! <= profileSkip) {
+                                    if (skipProfile! <=
+                                        int.parse(profileSkip)) {
                                       Get.back();
                                       controller.fetchData(
                                           levelCode: controller.levelCode.value,
                                           activityID: 11);
                                       teamsController.update();
                                     } else {
+                                      Get.back();
                                       Get.dialog(
                                           barrierDismissible: false,
                                           Dialog(
@@ -1066,40 +1100,40 @@ class _CheckInPageState extends State<CheckInPage> {
                                     },
                                   ),
                                   ListTile(
-                                    title: Text(
-                                      "Take Order",
-                                      style: TextStyle(
-                                          color: primaryColor,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    leading: Icon(
-                                      Icons.menu_book_outlined,
-                                      color: primaryColor,
-                                    ),
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      stockController.totalQty = 0;
-                                      stockController.totalAmount = 0.0;
-                                      stockController.isVisible = false;
-                                      stockController.myList.clear();
-                                      stockController.d = true;
-                                      stockController.i = false;
-                                      stockController.catCheck = false;
-                                      stockController.sectionlist.clear();
-                                      setOrderDataController.total = 0.0;
+                                      title: Text(
+                                        "Take Order",
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      leading: Icon(
+                                        Icons.menu_book_outlined,
+                                        color: primaryColor,
+                                      ),
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                        stockController.totalQty = 0;
+                                        stockController.totalAmount = 0.0;
+                                        stockController.isVisible = false;
+                                        stockController.myList.clear();
+                                        stockController.d = true;
+                                        stockController.i = false;
+                                        stockController.catCheck = false;
+                                        stockController.sectionlist.clear();
+                                        setOrderDataController.total = 0.0;
 
-                                      /*stockController.fetchData(
+                                        /*stockController.fetchData(
                                           customerCode:
                                               controller.levelCode.value);*/
-                                      setOrderDataController.customerCode
-                                          .value = controller.levelCode.value;
-                                      setOrderDataController.orderEditTag = "";
-                                      Get.to(TakeOrderPage(
-                                        tag: '',
-                                      ));
-                                    }
-                                  ),
+                                        setOrderDataController.customerCode
+                                            .value = controller.levelCode.value;
+                                        setOrderDataController.orderEditTag =
+                                            "";
+                                        Get.to(TakeOrderPage(
+                                          tag: '',
+                                        ));
+                                      }),
                                   ListTile(
                                     title: Text(
                                       "Make Complain",
