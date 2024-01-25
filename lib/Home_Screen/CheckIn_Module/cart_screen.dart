@@ -17,6 +17,7 @@ class MyCartPage extends StatefulWidget {
   String? orderNumber;
   String? orderRemark;
   List<OrderDetailMaster>? productList;
+
   MyCartPage(
       {super.key,
       this.tag,
@@ -36,12 +37,15 @@ class _MyCartPageState extends State<MyCartPage> {
       Get.put(GetAvailableStockDataController());
   var total = 0.0;
   List<Map<dynamic, dynamic>> myCartList = [];
+  List<Map<dynamic, dynamic>> myCartEditList = [];
   final _formKey = GlobalKey<FormState>();
+
   // dynamic dplPrice = 0.0;
   // dynamic totalPrice = 0.0;
   // dynamic totalQty = 0;
   SetActivityDetailDataController setActivityController =
       Get.put(SetActivityDetailDataController());
+
   @override
   void initState() {
     // TODO: implement initState
@@ -60,10 +64,20 @@ class _MyCartPageState extends State<MyCartPage> {
           : "";
       for (var i in widget.productList!) {
         total = total + i.mrp!;
+        myCartEditList.add(
+            {"Qty": i.qty!.toInt(),
+              "productcode":i.productcode,
+            "name":i.productdesc,
+            "dpl":i.dpl,
+            "mrp":i.mrp,
+
+
+            });
         // dplPrice = i.dpl;
         // totalQty = i.qty!.toInt();
         // totalPrice = i.mrp;
       }
+      print(myCartEditList);
     } else {
       setOrderDataController.remarkController.text = "";
       for (var i in myCartList) {
@@ -98,7 +112,8 @@ class _MyCartPageState extends State<MyCartPage> {
                           visible: setActivityController.checkIn,
                           child: TimerWidget())),
                   Padding(
-                       padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0,top: 60.0),
+                      padding: const EdgeInsets.only(
+                          bottom: 18.0, left: 18.0, right: 18.0, top: 60.0),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -267,7 +282,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         // "${totalQty}",
 
                                                         widget.tag == 'Edit'
-                                                            ? "${widget.productList![index].qty!.toInt()}"
+                                                            ? "${myCartEditList[index]["Qty"]}"
                                                             : "${stockController.myList[index]["Qty"].toString()}",
                                                         style: TextStyle(
                                                             color:
@@ -294,7 +309,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                         // "\u{20B9}${totalPrice.toStringAsFixed(2)}/NOS",
 
                                                         widget.tag == 'Edit'
-                                                            ? "\u{20B9}${widget.productList![index].mrp!.toStringAsFixed(2)}/NOS"
+                                                            ? "\u{20B9}${myCartEditList[index]['mrp']!.toStringAsFixed(2)}/NOS"
                                                             : "\u{20B9}${stockController.myList[index]["mrp"].toStringAsFixed(2)}/NOS",
                                                         style: TextStyle(
                                                             color:
@@ -321,75 +336,70 @@ class _MyCartPageState extends State<MyCartPage> {
                                                       setState(() {
                                                         if (widget.tag ==
                                                             'Edit') {
-                                                          if (widget
-                                                                  .productList![
-                                                                      index]
-                                                                  .qty !=
+                                                          if (myCartEditList[index]
+                                                          ["Qty"] !=
                                                               0) {
-                                                            // totalQty--;
-                                                            widget
-                                                                    .productList![
-                                                                        index]
-                                                                    .qty! -
-                                                                1;
+                                                            myCartEditList[index]
+                                                            ["Qty"]--;
 
-                                                            stockController
-                                                                    .totalQty =
-                                                                stockController
-                                                                        .totalQty
-                                                                        .toInt() -
-                                                                    1;
+                                                            myCartEditList[index]
+                                                            ["mrp"] =
+                                                                myCartEditList[index]['dpl'];
 
-                                                            // widget
-                                                            //     .productList![index]
-                                                            //     .mrp = widget
-                                                            //         .productList![
-                                                            //             index]
-                                                            //         .mrp! +
-                                                            //     widget
-                                                            //         .productList![
-                                                            //             index]
-                                                            //         .dpl!;
+
+                                                            myCartEditList[index]
+                                                            ["mrp"] = (myCartEditList[index]['mrp'])! *
+                                                                myCartEditList[index]
+                                                                ["Qty"];
+                                                            myCartEditList[index]
+                                                            ["productcode"] =
+                                                                myCartEditList[index]
+                                                                    ["productcode"];
+                                                            myCartEditList[index]
+                                                            ["name"] =
+                                                            myCartEditList[index]['name'];
+                                                            myCartEditList[index]
+                                                            ["dpl"] =
+                                                            myCartEditList[index]['dpl'];
 
                                                             total = total -
                                                                 widget
                                                                     .productList![
-                                                                        index]
+                                                                index]
                                                                     .dpl!;
 
                                                             stockController
-                                                                    .totalAmount =
+                                                                .totalAmount =
                                                                 total;
-
-                                                            stockController
-                                                                .update();
+                                                            print(myCartEditList);
                                                           }
-                                                        } else {
+                                                          if (myCartEditList[index]
+                                                          ["Qty"] ==
+                                                              0) {
+
+                                                            myCartEditList[index]
+                                                                .remove('productcode');
+                                                            myCartEditList[index]
+                                                                .remove('name');
+                                                            myCartEditList[index]
+                                                                .remove('dpl');
+                                                            myCartEditList[index]
+                                                                .remove('Qty');
+                                                            myCartEditList[index]
+                                                                .remove('mrp');
+
+                                                            print(myCartEditList);
+                                                          }
+                                                        }  else {
                                                           if (stockController
                                                                       .myList[
-                                                                  index]["Qty"] !=
-                                                              0) {
-                                                            stockController
-                                                                    .myList[
-                                                                index]["Qty"]--;
+                                                                  index]["Qty"] != 0) {
+                                                            stockController.myList[index]["Qty"]--;
 
-                                                            stockController
-                                                                    .totalQty =
-                                                                stockController
-                                                                        .totalQty
-                                                                        .toInt() -
-                                                                    1;
+                                                            stockController.totalQty = stockController.totalQty.toInt() - 1;
 
-                                                            stockController
-                                                                        .myList[
-                                                                    index][
-                                                                "mrp"] = stockController
-                                                                            .myList[
-                                                                        index]
-                                                                    ["mrp"] -
-                                                                myCartList[
-                                                                        index]
-                                                                    ["dpl"];
+                                                            stockController.myList[index]["mrp"] = stockController
+                                                                            .myList[index]["mrp"] - myCartList[index]["dpl"];
 
                                                             total = total -
                                                                 myCartList[
@@ -411,7 +421,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                     },
                                                     color: primaryColor),
                                                 Text(widget.tag == 'Edit'
-                                                    ? "${widget.productList![index].qty!.toInt()}"
+                                                    ? "${myCartEditList[index]["Qty"]}"
                                                     : "${stockController.myList[index]["Qty"].toString()}"),
                                                 IconButton(
                                                   icon: Icon(Icons.add_circle),
@@ -420,34 +430,31 @@ class _MyCartPageState extends State<MyCartPage> {
                                                     setState(() {
                                                       if (widget.tag ==
                                                           'Edit') {
-                                                        // totalQty++;
-                                                        widget
-                                                                .productList![
-                                                                    index]
-                                                                .qty! +
-                                                            1;
+                                                        myCartEditList[index]
+                                                        ["Qty"]++;
 
-                                                        // widget.productList![index]
-                                                        //     .mrp = widget
-                                                        //         .productList![index]
-                                                        //         .mrp! +
-                                                        //     widget
-                                                        //         .productList![index]
-                                                        //         .dpl!;
+                                                        myCartEditList[index]
+                                                        ["mrp"] =
+                                                        myCartEditList[index]['dpl'];
 
-                                                        stockController
-                                                                .totalQty =
-                                                            stockController
-                                                                    .totalQty
-                                                                    .toInt() +
-                                                                1;
-                                                        // widget.productList![index]
-                                                        //     .mrp = widget
-                                                        //         .productList![index]
-                                                        //         .mrp! +
-                                                        //     widget
-                                                        //         .productList![index]
-                                                        //         .dpl!;
+
+                                                        myCartEditList[index]
+                                                        ["mrp"] = (myCartEditList[index]['mrp'])! *
+                                                            myCartEditList[index]
+                                                            ["Qty"];
+                                                        myCartEditList[index]
+                                                        ["productcode"] =
+                                                        myCartEditList[index]
+                                                        ["productcode"];
+                                                        myCartEditList[index]
+                                                        ["name"] =
+                                                        myCartEditList[index]['name'];
+                                                        myCartEditList[index]
+                                                        ["dpl"] =
+                                                        myCartEditList[index]['dpl'];
+
+
+                                                        print(myCartEditList);
 
                                                         total = total +
                                                             widget
@@ -598,12 +605,22 @@ class _MyCartPageState extends State<MyCartPage> {
                                         //     Colors.redAccent);
 
                                         // } else {
+
+                                        if(widget.tag=="Edit"){
+                                          setOrderDataController.fetchData(
+                                              context,
+                                              myCartEditList,
+                                              widget.orderNumber != null
+                                                  ? widget.orderNumber
+                                                  : "");
+
+                                        }else{
                                         setOrderDataController.fetchData(
                                             context,
                                             myCartList,
                                             widget.orderNumber != null
                                                 ? widget.orderNumber
-                                                : "");
+                                                : "");}
                                         // }
                                       } else {
                                         showSnackBar(

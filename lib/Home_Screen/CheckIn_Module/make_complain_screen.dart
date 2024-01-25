@@ -193,13 +193,7 @@ class ComplainPageState extends State<ComplainPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final GlobalKey _autocompleteKey = GlobalKey();
-  final GlobalKey _plantAutocompleteKey = GlobalKey();
-  final FocusNode _textFieldFocusNode1 = FocusNode();
-  final FocusNode _textFieldFocusNode2 = FocusNode();
-  final FocusNode _textFieldFocusNodePlant = FocusNode();
-  final TextEditingController _textEditingController = TextEditingController();
-  final TextEditingController _plantEditingController = TextEditingController();
+
 
   static String _displayStringForOption(dynamic option) =>
       option.subcategoryName.toString();
@@ -1468,6 +1462,7 @@ class ComplainPageState extends State<ComplainPage> {
                                                   enabled: true,
                                                   maxLines: 1,
                                                   cursorColor: Colors.black,
+                                                  keyboardType: TextInputType.number,
                                                   style: TextStyle(
                                                       color: Colors.black),
                                                   decoration: InputDecoration(
