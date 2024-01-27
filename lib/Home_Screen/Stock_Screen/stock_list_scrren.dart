@@ -31,7 +31,7 @@ class _StockScreenState extends State<StockScreen> {
   @override
   void initState() {
     // TODO: implement initStates
-
+    stockController.getDepotMasterData("depot");
     super.initState();
   }
   @override

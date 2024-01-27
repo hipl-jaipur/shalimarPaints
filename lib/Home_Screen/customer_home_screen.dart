@@ -9,6 +9,7 @@ import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Controller/stock_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
+import 'package:shalimar/Home_Screen/Ledger_Statement_Screen/ledger_statement_page.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_depot_Screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_region_screen.dart';
@@ -430,6 +431,41 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                       height: 10,
                                                     ),
                                                     Text('Target Vs Actual',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+
+                                                Get.to(
+                                                    LedgerStatementPage());
+
+
+                                            },
+                                            child: Container(
+                                              child: Card(
+                                                child: Center(
+                                                    child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.query_stats_outlined,
+                                                      color: primaryColor,
+                                                      size: 40,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text('Ledger Statement',
                                                         style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 16,

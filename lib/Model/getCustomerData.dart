@@ -46,7 +46,7 @@ GetCustomerData copyWith({  bool? status,
 
 class Data {
   Data({
-      num? customerid, 
+      dynamic? customerid,
       String? customercode, 
       String? customername, 
       String? address1, 
@@ -152,7 +152,7 @@ class Data {
     _column1 = json['Column1'];
     _status = json['Status'];
   }
-  num? _customerid;
+  dynamic? _customerid;
   String? _customercode;
   String? _customername;
   String? _address1;
@@ -186,7 +186,7 @@ class Data {
   dynamic _islock;
   String? _column1;
   String? _status;
-Data copyWith({  num? customerid,
+Data copyWith({  dynamic? customerid,
   String? customercode,
   String? customername,
   String? address1,
@@ -255,7 +255,7 @@ Data copyWith({  num? customerid,
   column1: column1 ?? _column1,
   status: status ?? _status,
 );
-  num? get customerid => _customerid;
+  dynamic? get customerid => _customerid;
   String? get customercode => _customercode;
   String? get customername => _customername;
   String? get address1 => _address1;

@@ -32,7 +32,7 @@ List<dynamic> sectionlist = [];
 @override
 Future<void> onInit() async {
   super.onInit();
-  getDepotMasterData();
+
 }
 
   getStockData(var marketId,idDepot) async {
@@ -99,7 +99,7 @@ Future<void> onInit() async {
       update();
     }
   }
-  getDepotMasterData() async {
+  getDepotMasterData(var tag) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Depot Master Data api called');
@@ -112,7 +112,7 @@ Future<void> onInit() async {
 
       final body ={
         "EmployeeId": empId,
-        "EntityType": "depot"
+        "EntityType": tag
       };
 
       Map<String, String> requestHeaders = {
