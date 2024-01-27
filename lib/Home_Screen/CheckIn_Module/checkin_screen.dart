@@ -10,7 +10,6 @@ import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/get_customer_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_note_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_schedule_data_controller.dart';
-import 'package:shalimar/Controller/get_global_parameter_data_controller.dart';
 import 'package:shalimar/Controller/get_order_data_controller.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
 import 'package:shalimar/Controller/plant_data_controller.dart';
@@ -22,6 +21,7 @@ import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/collect_payment_screen.dart';
+import 'package:shalimar/Home_Screen/CheckIn_Module/edit_customer_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/make_complain_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/take_note_screen.dart';
@@ -83,21 +83,20 @@ class _CheckInPageState extends State<CheckInPage> {
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
   ActivityController activityController = Get.put(ActivityController());
-  GetGlobalParameterDataController getGlobalParameterDataController =
-      Get.put(GetGlobalParameterDataController());
+  // GetGlobalParameterDataController getGlobalParameterDataController =
+  //     Get.put(GetGlobalParameterDataController());
   TeamsController teamsController = Get.put(TeamsController());
 
   // TimerService timerService = Get.find<TimerService>();
   // final TimerController timerController = TimerController();
   final TimerService timerService = Get.put(TimerService());
   var profileImage = "";
-  var isLock = false;
-  var profileSkip;
+  var isLock = true;
+  var profileSkip, skipProfile;
   File? _imageFile;
   final List<File> imagesList = [];
 
-
-Future<void> _pickImage() async {
+  Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
         source: ImageSource.camera,
@@ -116,10 +115,9 @@ Future<void> _pickImage() async {
       Uint8List imgbytes = await imgfile.readAsBytes();
       String bs4str = base64.encode(imgbytes);
       print("ImageList2: $bs4str");
-
-      
     }
   }
+
   void _modalBottomSheetMenu() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await showModalBottomSheet(
@@ -127,14 +125,14 @@ Future<void> _pickImage() async {
           context: context,
           builder: (builder) {
             return Obx(
-              () => getGlobalParameterDataController.isLoading.value
+              () => teamsController.isLoad.value
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
                   : WillPopScope(
                       onWillPop: () async => true,
                       child: Container(
-                        height: 150,
+                        height: 180,
                         color: Colors
                             .transparent, //could change this to Color(0xFF737373),
                         //so you don't have to change MaterialApp canvasColor
@@ -165,11 +163,22 @@ Future<void> _pickImage() async {
                                         color: Colors.black,
                                         fontSize: 10,
                                         fontWeight: FontWeight.w300)),
+                                const SizedBox(
+                                  height: 5.0,
+                                ),
+                                Text(
+                                    "Profile Skip: $skipProfile/$profileSkip",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w300)),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 100.0, vertical: 10.0),
                                   child: GestureDetector(
-                                    onTap: () {_pickImage();},
+                                    onTap: () {
+                                      _pickImage();
+                                    },
                                     child: Container(
                                       decoration:
                                           BoxDecoration(color: primaryColor),
@@ -190,106 +199,110 @@ Future<void> _pickImage() async {
                                 ),
                                 GestureDetector(
                                   onTap: () async {
-                                    Get.back();
+                                    Navigator.of(context).pop();
                                     SharedPreferences pref =
                                         await SharedPreferences.getInstance();
                                     var empID = pref.getInt("EmployeeId");
                                     teamsController.getEmployData(empID);
                                     var skipProfile =
                                         pref.getInt("ProfileSkip");
-                                    if (skipProfile! <=
-                                        int.parse(profileSkip)) {
-                                      Get.back();
-                                      controller.fetchData(
-                                          levelCode: controller.levelCode.value,
-                                          activityID: 11);
-                                      teamsController.update();
-                                    } else {
-                                      Get.back();
-                                      Get.dialog(
-                                          barrierDismissible: false,
-                                          Dialog(
-                                            backgroundColor: Colors.white,
-                                            child: WillPopScope(
-                                              onWillPop: () async => false,
-                                              child: Container(
-                                                padding: EdgeInsets.all(10),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                    Center(
-                                                      child: Text(
-                                                        "Please Update Profile.",
-                                                        style: TextStyle(
-                                                            color: primaryColor,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                    if (skipProfile != null) {
+                                      if (skipProfile! <
+                                          int.parse(profileSkip)) {
+                                        controller.fetchData(
+                                            levelCode:
+                                                controller.levelCode.value,
+                                            activityID: 11);
+                                        teamsController.update();
+                                      } else {
+                                        Get.dialog(
+                                            barrierDismissible: false,
+                                            Dialog(
+                                              backgroundColor: Colors.white,
+                                              child: WillPopScope(
+                                                onWillPop: () async => false,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 20,
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 10),
-                                                      child: Text(
-                                                        "You have already Skip Profile.",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Get.back();
-                                                      },
-                                                      child: Center(
-                                                        child: Container(
-                                                          height: 40,
-                                                          width: 60,
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration: BoxDecoration(
+                                                      Center(
+                                                        child: Text(
+                                                          "Please Update Profile.",
+                                                          style: TextStyle(
                                                               color:
                                                                   primaryColor,
-                                                              borderRadius:
-                                                                  const BorderRadius
-                                                                      .all(
-                                                                      Radius.circular(
-                                                                          10))),
-                                                          child: Text(
-                                                            "Ok",
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10),
+                                                        child: Text(
+                                                          "You have already Skip Profile.",
+                                                          style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Get.back();
+                                                          _modalBottomSheetMenu();
+                                                        },
+                                                        child: Center(
+                                                          child: Container(
+                                                            height: 40,
+                                                            width: 60,
+                                                            alignment: Alignment
+                                                                .center,
+                                                            decoration: BoxDecoration(
+                                                                color:
+                                                                    primaryColor,
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .all(
+                                                                        Radius.circular(
+                                                                            10))),
+                                                            child: Text(
+                                                              "Ok",
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                  ],
+                                                      SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ));
+                                            ));
+                                      }
                                     }
                                   },
                                   child: const Text(
@@ -317,15 +330,16 @@ Future<void> _pickImage() async {
     getId();
     super.initState();
 
-    getGlobalParameterDataController.fetchData().then((value) {
-      if (value != null) {
-        profileSkip = value!.data![0].parameterValue;
-      }
-    });
+    profileSkip = Get.arguments[1];
 
-    // teamsController.getTeamsData();
+    // getGlobalParameterDataController.fetchData().then((value) {
+    //   if (value != null) {
+    //     profileSkip = value!.data![0].parameterValue;
+    //   }
+    // });
+    
 
-    if (Get.arguments == 0.0) {
+    if (Get.arguments[0] == 0.0) {
       _modalBottomSheetMenu();
     }
 
@@ -346,6 +360,7 @@ Future<void> _pickImage() async {
   getId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     employeeId = prefs.getInt("EmployeeId")!;
+    skipProfile = prefs.getInt("ProfileSkip");
   }
 
   @override
@@ -561,7 +576,9 @@ Future<void> _pickImage() async {
                                                                       : false,
                                                               child: IconButton(
                                                                 onPressed:
-                                                                    () {},
+                                                                    () {
+                                                                      Get.to(EditCustomerPage());
+                                                                    },
                                                                 icon: Icon(
                                                                   Icons.edit,
                                                                 ),

@@ -4,7 +4,9 @@ import 'dart:math' show cos, sqrt, asin;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:shalimar/Controller/get_global_parameter_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
+import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/checkin_screen.dart';
@@ -34,13 +36,17 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
 
   // TimerService timerService = Get.put<TimerService>();
   final TimerService timerService = Get.put(TimerService());
+  TeamsController teamsController = Get.put(TeamsController());
 
+  GetGlobalParameterDataController getGlobalParameterDataController =
+      Get.put(GetGlobalParameterDataController());
   SetActivityDetailDataController controller =
       Get.put(SetActivityDetailDataController());
 
   String? _currentAddress;
   Position? _currentPosition;
-  double? distance;
+  double? distance = 0.0;
+  var profileSkip;
 
   Future<void> _getCurrentPosition() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -115,6 +121,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     _getCurrentPosition();
   }
@@ -231,9 +238,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                 .toString(),
                             Colors.greenAccent);
 
-                        Get.to(
-                          CheckInPage(tag: ""),arguments: distance
-                        );
+                        // Get.to(CheckInPage(tag: ""), arguments: distance);
                         controller.customerId =
                             widget.customerList[widget.index].levelID!.toInt();
                         controller.territoryId = widget.territoryId.toInt();
@@ -251,6 +256,21 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             .customerList[widget.index].address1
                             .toString();
                         controller.isCheckinOnSite.value = true;
+
+                        teamsController.getEmployData(employeeId);
+
+                        getGlobalParameterDataController
+                            .fetchData()
+                            .then((value) {
+                          if (value != null) {
+                            profileSkip = value!.data![0].parameterValue;
+                          }
+                        });
+
+                        Get.to(CheckInPage(tag: ""), arguments:[distance, getGlobalParameterDataController.profileSkip] );
+
+
+
                       } else {
                         showDialog(
                             context: context,

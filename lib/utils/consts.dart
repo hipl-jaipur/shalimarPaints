@@ -3,7 +3,6 @@ class AppConstants {
   static const String BASE_URL = 'https://mayanksoftwares.in/';
   static const String USER_ID = 'userId';
 
-
   static const String login = "${BASE_URL}GetLoginData";
   static const String updateLoginData = "${BASE_URL}UpdateLoginData";
   static const String forgetPassword = "${BASE_URL}ForgetPassword";
@@ -49,13 +48,19 @@ class AppConstants {
   static const String getDepotMasterData =
       "${BASE_URL}GetMasterByEmployeeIdData";
 
-  static const String getActivityDetailData = "${BASE_URL}GetActivityDetailData";
+  static const String getActivityDetailData =
+      "${BASE_URL}GetActivityDetailData";
   static const String getTeamsData = "${BASE_URL}GetEmployeeHireData";
   static const String getEmployeeData = "${BASE_URL}GetEmployeeData";
-  static const String getTargetVsActualData = "${BASE_URL}GetCustomerHireTargetVsActual";
+  static const String getTargetVsActualData =
+      "${BASE_URL}GetCustomerHireTargetVsActual";
   static const String fileUpload = "${BASE_URL}File/UploadWebFile";
   static const String sessionCheck = "${BASE_URL}SessionCheck";
   static const String getPaymentTypeData = "${BASE_URL}GetPaymentTypeData";
   static const String getCustomerData = "${BASE_URL}GetCustomerData";
-  static const String getGlobalParameterData = "${BASE_URL}GetGlobalParameterData";
+  static const String getGlobalParameterData =
+      "${BASE_URL}GetGlobalParameterData";
+  static const String setCustomerData = "${BASE_URL}SetCustomerData";
+  static const String GetLedgerStatementData =
+      "${BASE_URL}GetLedgerStatementData";
 }

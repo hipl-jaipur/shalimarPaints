@@ -10,7 +10,14 @@ import 'package:shalimar/utils/consts.dart';
 
 class GetGlobalParameterDataController extends GetxController {
   var isLoading = false.obs;
+  var profileSkip;
   GetGlobalParameterData? getGlobalParameterData;
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    fetchData();
+  }
 
   fetchData() async {
     try {
@@ -25,8 +32,10 @@ class GetGlobalParameterDataController extends GetxController {
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.getGlobalParameterData),
-          body: jsonEncode(body), headers: requestHeaders);
+      final res = await http.post(
+          Uri.parse(AppConstants.getGlobalParameterData),
+          body: jsonEncode(body),
+          headers: requestHeaders);
 
       print(res);
 
@@ -49,6 +58,7 @@ class GetGlobalParameterDataController extends GetxController {
           if (data['Data'] != null) {
             var result = jsonDecode(res.body);
             getGlobalParameterData = GetGlobalParameterData.fromJson(result);
+            profileSkip = getGlobalParameterData!.data![0].parameterValue;
             return getGlobalParameterData;
           } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);

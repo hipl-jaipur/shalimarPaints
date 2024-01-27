@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Home_Screen/Teams_Module/teams_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +14,8 @@ import '../utils/consts.dart';
 
 class TeamsController extends GetxController {
   var isLoading = false;
+  var isLoad = false.obs;
+
   TeamsDataModel? temasDataList;
   EmployeeDetailsModel? employeeDetailsModel;
   List<Data> filteredLevelFirstList = [];
@@ -235,8 +237,8 @@ class TeamsController extends GetxController {
           var result = jsonDecode(res.body);
           employeeDetailsModel = EmployeeDetailsModel.fromJson(result);
 
-          prefs.setInt(
-              'ProfileSkip', employeeDetailsModel!.data![0].profileSkip!.toInt());
+          prefs.setInt('ProfileSkip',
+              employeeDetailsModel!.data![0].profileSkip!.toInt());
           prefs.setInt('DealerCreation',
               employeeDetailsModel!.data![0].dealerCreation!.toInt());
           // filterStockDataModel = StockShowModel.fromJson(result);
