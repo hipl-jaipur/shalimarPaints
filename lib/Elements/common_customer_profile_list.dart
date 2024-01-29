@@ -281,7 +281,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                         getGlobalParameterDataController.distance = distance;
                         Get.to(
                           CheckInPage(
-                            tag: "",
+                            tag: "Check in On-site",
                           ),
                         );
                       } else {
@@ -337,7 +337,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           Colors.greenAccent);
 
                       Get.to(
-                        CheckInPage(tag: ""),
+                        CheckInPage(tag: "Check in Off-site"),
                       );
                       controller.levelCode.value = widget
                           .customerList[widget.index].levelCode

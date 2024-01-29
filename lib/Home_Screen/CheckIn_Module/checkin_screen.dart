@@ -90,7 +90,7 @@ class _CheckInPageState extends State<CheckInPage> {
   final TimerService timerService = Get.put(TimerService());
 
   var profileImage = "";
-  var isLock = true;
+  var isLock = false;
   var profileSkip, skipProfile;
   File? _imageFile;
   final List<File> imagesList = [];
@@ -351,9 +351,10 @@ class _CheckInPageState extends State<CheckInPage> {
     // if (Get.arguments[0] == 0.0) {
     //   _modalBottomSheetMenu();
     // }
-    
-    if (getGlobalParameterDataController.distance == 0.0) {
-      _modalBottomSheetMenu();
+    if (widget.tag == "Check in On-site") {
+      if (getGlobalParameterDataController.distance == 0.0) {
+        _modalBottomSheetMenu();
+      }
     }
 
     getCustomerDataController
