@@ -10,7 +10,7 @@ import 'package:shalimar/utils/consts.dart';
 
 class GetGlobalParameterDataController extends GetxController {
   var isLoading = false.obs;
-  var profileSkip;
+  var profileSkip, distance;
   GetGlobalParameterData? getGlobalParameterData;
 
   @override

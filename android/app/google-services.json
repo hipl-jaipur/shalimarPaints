@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "587270864719",
+    "project_id": "shalimarsalesforce",
+    "storage_bucket": "shalimarsalesforce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587270864719:android:c03a3961ff82f5e5408f3a",
+        "android_client_info": {
+          "package_name": "com.example.shalimar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3_L7oC0iuWmIq-2GelHtOc2TaniVnEwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

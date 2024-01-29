@@ -136,7 +136,7 @@ class LoginServices {
     }
   }
 
-  static Future updateLoginData(employeeID, userID) async {
+  static Future updateLoginData(employeeID, userID, firebaseToken) async {
     if (kDebugMode) {
       print('update Login Data api called');
     }
@@ -160,7 +160,7 @@ class LoginServices {
       "IMEI": "",
       "IP": "",
       "UserId": userID,
-      "FireBaseToken": ""
+      "FireBaseToken": firebaseToken
     };
 
     final userMaster = {"LoginHistoryMaster": body};

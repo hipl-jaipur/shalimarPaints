@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
@@ -16,8 +17,10 @@ class LoginController extends GetxController {
   var userName = "".obs;
   var division = "".obs;
   var status = false.obs;
+  var firebaseToken;
 
   var isLoading = false.obs;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   Future<void> onInit() async {
@@ -26,6 +29,10 @@ class LoginController extends GetxController {
   }
 
   loginCall() async {
+    _firebaseMessaging.getToken().then((token) {
+      print("Firebase Token: $token");
+      firebaseToken = token;
+    });
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     isLoading(true);
     try {
@@ -55,8 +62,8 @@ class LoginController extends GetxController {
               Email: value['Data'][0]["Email"],
               DesignationName: value['Data'][0]["DesignationName"]));
 
-          LoginServices.updateLoginData(
-                  prefs.getString('Email'), prefs.getInt('EmployeeId'))
+          LoginServices.updateLoginData(prefs.getString('Email'),
+                  prefs.getInt('EmployeeId'), firebaseToken)
               .then((value) {
             if (value != null) {
               showSnackBar(

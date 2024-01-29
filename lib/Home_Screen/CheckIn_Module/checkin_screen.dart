@@ -1,27 +1,28 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:native_exif/native_exif.dart';
 import 'package:shalimar/Controller/activity_controller.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/get_customer_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_note_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_schedule_data_controller.dart';
+import 'package:shalimar/Controller/get_global_parameter_data_controller.dart';
 import 'package:shalimar/Controller/get_order_data_controller.dart';
 import 'package:shalimar/Controller/get_user_activity_master_data_controller.dart';
 import 'package:shalimar/Controller/plant_data_controller.dart';
 import 'package:shalimar/Controller/product_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
+import 'package:shalimar/Controller/set_customer_data_controller.dart';
 import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
+import 'package:shalimar/Home_Screen/CheckIn_Module/add_customer_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/collect_payment_screen.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/edit_customer_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/make_complain_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
 import 'package:shalimar/Home_Screen/CheckIn_Module/take_note_screen.dart';
@@ -34,20 +35,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckInPage extends StatefulWidget {
   String? tag;
-  // String? levelName;
-  // String? levelCode;
-  // String? levelAddress;
-  // bool? isCheckinOnSite;
-  // var startTime;
 
   CheckInPage({
     super.key,
     this.tag,
-    // this.startTime
-    // this.levelName,
-    // this.levelCode,
-    // this.levelAddress,
-    // this.isCheckinOnSite,
   });
 
   @override
@@ -55,8 +46,15 @@ class CheckInPage extends StatefulWidget {
 }
 
 class _CheckInPageState extends State<CheckInPage> {
+  GetGlobalParameterDataController getGlobalParameterDataController =
+      Get.put(GetGlobalParameterDataController());
+
+  SetCustomerDataController setCustomerDataController =
+      Get.put(SetCustomerDataController());
+
   GetCustomerDataController getCustomerDataController =
       Get.put(GetCustomerDataController());
+
   SetActivityDetailDataController controller =
       Get.put(SetActivityDetailDataController());
 
@@ -78,44 +76,55 @@ class _CheckInPageState extends State<CheckInPage> {
       Get.put(GetOrderDataController());
 
   GetNoteDataController noteDataController = Get.put(GetNoteDataController());
+
   GetScheduleDataController scheduleDataController =
       Get.put(GetScheduleDataController());
+
   GetUserActivityController getUserActivityController =
       Get.put(GetUserActivityController());
+
   ActivityController activityController = Get.put(ActivityController());
-  // GetGlobalParameterDataController getGlobalParameterDataController =
-  //     Get.put(GetGlobalParameterDataController());
+
   TeamsController teamsController = Get.put(TeamsController());
 
-  // TimerService timerService = Get.find<TimerService>();
-  // final TimerController timerController = TimerController();
   final TimerService timerService = Get.put(TimerService());
+
   var profileImage = "";
   var isLock = true;
   var profileSkip, skipProfile;
   File? _imageFile;
   final List<File> imagesList = [];
 
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
+  XFile? pickedFile;
+  Exif? exif;
+  Map<String, Object>? attributes;
+  DateTime? shootingDate;
+  ExifLatLong? coordinates;
+  File? _image;
+
+  Future getImage() async {
+    // pickedFile = await picker.pickImage(source: ImageSource.camera);
+    final pickedFile = await ImagePicker().pickImage(
         source: ImageSource.camera,
         imageQuality: 25,
         maxHeight: 480,
         maxWidth: 640);
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
 
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-        print("ImageList1: $_imageFile");
-        imagesList.add(_imageFile!);
-      });
-      String imgpath = pickedFile.path;
-      File imgfile = File(imgpath);
-      Uint8List imgbytes = await imgfile.readAsBytes();
-      String bs4str = base64.encode(imgbytes);
-      print("ImageList2: $bs4str");
-    }
+    exif = await Exif.fromPath(pickedFile!.path);
+    attributes = await exif!.getAttributes();
+    shootingDate = await exif!.getOriginalDate();
+    coordinates = await exif!.getLatLong();
+    setCustomerDataController.lat = coordinates!.latitude;
+    setCustomerDataController.long = coordinates!.longitude;
+    setCustomerDataController.image = pickedFile.path;
+
+    setCustomerDataController.fetchData(
+        context: context, territoryId: controller.territoryId);
   }
 
   void _modalBottomSheetMenu() {
@@ -132,7 +141,6 @@ class _CheckInPageState extends State<CheckInPage> {
                   : WillPopScope(
                       onWillPop: () async => true,
                       child: Container(
-                        height: 180,
                         color: Colors
                             .transparent, //could change this to Color(0xFF737373),
                         //so you don't have to change MaterialApp canvasColor
@@ -143,6 +151,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                     topLeft: Radius.circular(10.0),
                                     topRight: Radius.circular(10.0))),
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
                                   height: 20.0,
@@ -166,8 +175,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                 const SizedBox(
                                   height: 5.0,
                                 ),
-                                Text(
-                                    "Profile Skip: $skipProfile/$profileSkip",
+                                Text("Profile Skip: $skipProfile/$profileSkip",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 10,
@@ -177,7 +185,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                       horizontal: 100.0, vertical: 10.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      _pickImage();
+                                      // _pickImage();
+                                      getImage();
                                     },
                                     child: Container(
                                       decoration:
@@ -330,16 +339,20 @@ class _CheckInPageState extends State<CheckInPage> {
     getId();
     super.initState();
 
-    profileSkip = Get.arguments[1];
+    // profileSkip = Get.arguments[1];
+    profileSkip = getGlobalParameterDataController.profileSkip;
 
     // getGlobalParameterDataController.fetchData().then((value) {
     //   if (value != null) {
     //     profileSkip = value!.data![0].parameterValue;
     //   }
     // });
-    
 
-    if (Get.arguments[0] == 0.0) {
+    // if (Get.arguments[0] == 0.0) {
+    //   _modalBottomSheetMenu();
+    // }
+    
+    if (getGlobalParameterDataController.distance == 0.0) {
       _modalBottomSheetMenu();
     }
 
@@ -575,10 +588,19 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                       ? isLock
                                                                       : false,
                                                               child: IconButton(
-                                                                onPressed:
-                                                                    () {
-                                                                      Get.to(EditCustomerPage());
-                                                                    },
+                                                                onPressed: () {
+                                                                  Get.to(
+                                                                      AddCustomerPage(
+                                                                    territoryId:
+                                                                        controller
+                                                                            .territoryId,
+                                                                    territoryName:
+                                                                        controller
+                                                                            .territoryName,
+                                                                    tag:
+                                                                        "Edit Customer",
+                                                                  ));
+                                                                },
                                                                 icon: Icon(
                                                                   Icons.edit,
                                                                 ),

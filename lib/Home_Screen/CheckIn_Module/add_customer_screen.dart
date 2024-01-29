@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_geocoder/geocoder.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_exif/native_exif.dart';
@@ -11,10 +12,10 @@ import 'package:shalimar/utils/images.dart';
 import '../../Controller/set_customer_complaint_data_controller.dart';
 
 class AddCustomerPage extends StatefulWidget {
-  var territoryId, territoryName;
+  var territoryId, territoryName, tag;
 
   AddCustomerPage(
-      {super.key, required this.territoryId, required this.territoryName});
+      {super.key, this.territoryId, this.territoryName, required this.tag});
 
   @override
   State<AddCustomerPage> createState() => _AddCustomerPageState();
@@ -36,7 +37,8 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   Exif? exif;
   Map<String, Object>? attributes;
   DateTime? shootingDate;
-  ExifLatLong? coordinates;
+  ExifLatLong? coordinate;
+  // String stAddress = '';
 
   Future getImage() async {
     // pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -47,19 +49,35 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
         maxWidth: 640);
     setState(() {
       if (pickedFile != null) {
-       _image = File(pickedFile.path);
-    }
+        _image = File(pickedFile.path);
+      }
     });
 
     exif = await Exif.fromPath(pickedFile!.path);
     attributes = await exif!.getAttributes();
     shootingDate = await exif!.getOriginalDate();
-    coordinates = await exif!.getLatLong();
-    controller.lat = coordinates!.latitude;
-    controller.long = coordinates!.longitude;
-    controller.image = pickedFile.path;
+    coordinate = await exif!.getLatLong();
 
-    
+    controller.lat = coordinate!.latitude;
+
+    controller.long = coordinate!.longitude;
+    controller.image = pickedFile.path;
+    // controller.state = attributes!.state;
+
+    final coordinates = new Coordinates(controller.lat, controller.long);
+    var address =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = address.first;
+
+    // on below line we have set the address to string
+    setState(() {
+      // stAddress = first.addressLine.toString();
+      controller.addrsssTwoCont.text = first.adminArea!;
+      controller.cityCont.text = first.locality!;
+      controller.postalCodeCont.text = first.postalCode!;
+      controller.distCont.text = first.locality!;
+      controller.localityCont.text = first.locality!;
+    });
   }
 
   Future getImageUser() async {
@@ -133,7 +151,9 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                               width: 10,
                             ),
                             Text(
-                              "Add Customer",
+                              widget.tag == "Edit Customer"
+                                  ? "Edit Customer"
+                                  : "Add Customer",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
@@ -187,6 +207,12 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                             ],
                           ),
                         ),
+                        Center(
+                            child: Text('Profile Picture',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white))),
                         SizedBox(
                           height: 10,
                         ),
@@ -409,6 +435,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
+                                        readOnly: true,
                                         textCapitalization:
                                             TextCapitalization.words,
                                         autovalidateMode:
@@ -459,6 +486,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
+                                        readOnly: true,
                                         textCapitalization:
                                             TextCapitalization.words,
                                         autovalidateMode:
@@ -509,6 +537,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
+                                        readOnly: true,
                                         textCapitalization:
                                             TextCapitalization.words,
                                         autovalidateMode:
@@ -559,9 +588,9 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
+                                        readOnly: true,
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
-                                        // controller:  paymentController.amountController,
                                         controller: controller.localityCont,
                                         cursorColor: Colors.black,
                                         keyboardType: TextInputType.text,
@@ -608,10 +637,13 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
+                                        // initialValue: controller.postalCode,
+                                        controller: controller.postalCodeCont,
+                                        readOnly: true,
                                         maxLength: 6,
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
-                                        controller: controller.postalCodeCont,
+                                        // controller: controller.postalCodeCont,
                                         textInputAction: TextInputAction.done,
                                         cursorColor: Colors.black,
                                         keyboardType: TextInputType.number,
@@ -1283,10 +1315,89 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                         onTap: () {
                                           if (formKey.currentState!
                                               .validate()) {
-                                            controller.fetchData(
-                                                context: context,
-                                                territoryId:
-                                                    widget.territoryId);
+                                            if (_image != null) {
+                                              controller.fetchData(
+                                                  context: context,
+                                                  territoryId:
+                                                      widget.territoryId);
+                                            } else {
+                                              // showSnackBar("Alert!!", "Please Upload Profile Picture.", Colors.redAccent);
+                                              Get.dialog(
+                                                barrierDismissible: true,
+                                                Dialog(
+                                                  backgroundColor: Colors.white,
+                                                  child: WillPopScope(
+                                                    onWillPop: () async => true,
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20)),
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Padding(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10),
+                                                            child: Text(
+                                                              "Please Add Profile Picture.",
+                                                              style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              Get.back();
+                                                            },
+                                                            child: Center(
+                                                              child: Container(
+                                                                height: 40,
+                                                                width: 60,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                decoration: BoxDecoration(
+                                                                    color:
+                                                                        primaryColor,
+                                                                    borderRadius:
+                                                                        const BorderRadius
+                                                                            .all(
+                                                                            Radius.circular(10))),
+                                                                child: Text(
+                                                                  "Ok",
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            }
                                           }
                                         },
                                         child: Container(

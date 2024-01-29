@@ -19,13 +19,16 @@ class CustomerProfileList extends StatefulWidget {
   int index;
   BuildContext context;
   int territoryId;
+  String territoryName;
 
-  CustomerProfileList(
-      {super.key,
-      required this.customerList,
-      required this.index,
-      required this.context,
-      required this.territoryId});
+  CustomerProfileList({
+    super.key,
+    required this.customerList,
+    required this.index,
+    required this.context,
+    required this.territoryId,
+    required this.territoryName,
+  });
 
   @override
   State<CustomerProfileList> createState() => _CustomerProfileListState();
@@ -238,10 +241,10 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                 .toString(),
                             Colors.greenAccent);
 
-                        // Get.to(CheckInPage(tag: ""), arguments: distance);
                         controller.customerId =
                             widget.customerList[widget.index].levelID!.toInt();
                         controller.territoryId = widget.territoryId.toInt();
+                        controller.territoryName = widget.territoryName;
 
                         controller.checkInlevelName.value = widget
                             .customerList[widget.index].levelName
@@ -267,10 +270,20 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           }
                         });
 
-                        Get.to(CheckInPage(tag: ""), arguments:[distance, getGlobalParameterDataController.profileSkip] );
-
-
-
+                        // Get.to(
+                        //     CheckInPage(
+                        //       tag: "",
+                        //     ),
+                        //     arguments: [
+                        //       distance,
+                        //       getGlobalParameterDataController.profileSkip
+                        //     ]);
+                        getGlobalParameterDataController.distance = distance;
+                        Get.to(
+                          CheckInPage(
+                            tag: "",
+                          ),
+                        );
                       } else {
                         showDialog(
                             context: context,
@@ -285,10 +298,6 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                     onPressed: () {
                                       // Navigator.pop(context);
                                       Get.back();
-
-                                      // Get.off(
-                                      //   CheckInPage(),
-                                      // );
                                     },
                                   ),
                                 ],

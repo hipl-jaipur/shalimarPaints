@@ -1,14 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:shalimar/Home_Screen/Stock_Screen/stock_suk_details_screen.dart';
 
 import '../../Controller/get_available_stock_data-controller.dart';
 import '../../Controller/set_activity_detail_data_controller.dart';
 import '../../Controller/stock_controller.dart';
-import '../../Elements/common_searchbar_widget.dart';
 import '../../Elements/timer_widget.dart';
 import '../../utils/colors.dart';
 import '../../utils/images.dart';
@@ -320,7 +316,9 @@ class _StockScreenState extends State<StockScreen> {
                                             Container(
                                               height: 300,
                                               color: primaryLight,
-                                              child: ListView.builder(
+                                              child: stockController
+                                                    .depotMasterDataModel != null ?
+                                              ListView.builder(
                                                 itemCount: stockController
                                                     .depotMasterDataModel!.data!.length,
                                                 itemBuilder: (BuildContext context, dynamic index) {
@@ -354,7 +352,7 @@ class _StockScreenState extends State<StockScreen> {
                                                     ),
                                                   );
                                                 },
-                                              ),
+                                              ) : SizedBox(child: Text("No Record Found")),
                                             ),
 
                                           ],

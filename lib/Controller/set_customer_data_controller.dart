@@ -22,6 +22,7 @@ class SetCustomerDataController extends GetxController {
   var image = "";
   var lat = 0.0;
   var long = 0.0;
+  // var state, city,district, locality ;
 
   fetchData({required BuildContext context, var territoryId}) async {
     try {
@@ -42,7 +43,7 @@ class SetCustomerDataController extends GetxController {
         "district": distCont.text,
         "territoryid": territoryId,
         "telephone": telephoneCont.text,
-        "potential": 0,
+        "potential": localityCont.text,
         "Latitude": lat,
         "Longitude": long,
         "Image": image,

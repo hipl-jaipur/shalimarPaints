@@ -1,5 +1,5 @@
 class AppConstants {
-  static const String APP_NAME = 'Shalimar';
+  static const String APP_NAME = 'Rise';
   static const String BASE_URL = 'https://mayanksoftwares.in/';
   static const String USER_ID = 'userId';
 

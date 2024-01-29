@@ -36,6 +36,7 @@ class SetActivityDetailDataController extends GetxController {
   var levelAddress = "".obs;
   var isCheckinOnSite = false.obs;
   var territoryId = 0;
+  var territoryName = "";
   var customerId = 0;
 
   var attendanceId=0;

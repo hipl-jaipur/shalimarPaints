@@ -27,7 +27,6 @@ class TimerWidget extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        height: 50,
         width: double.infinity,
         color: Colors.white,
         child: Row(
@@ -39,6 +38,7 @@ class TimerWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       controller.checkInlevelName.value,

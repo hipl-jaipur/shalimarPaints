@@ -399,7 +399,8 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                               customerList:
                                                                   customerTypeList,
                                                               territoryId:
-                                                                  levelID)
+                                                                  levelID,
+                                                                  territoryName: customerName,)
                                                           : SizedBox();
                                                     },
                                                   ),
@@ -435,7 +436,7 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
               if (dealerCreation != null) {
                 if (dealerCre! < int.parse(dealerCreation)) {
                   Get.to(AddCustomerPage(
-                      territoryId: levelID, territoryName: customerName));
+                      territoryId: levelID, territoryName: customerName, tag: "Add Customer",));
                   teamsController.update();
                 } else {
                   Get.dialog(
@@ -494,7 +495,8 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                             ),
                           ),
                         ),
-                      ));
+                      )
+                      );
                 }
               }
             },
