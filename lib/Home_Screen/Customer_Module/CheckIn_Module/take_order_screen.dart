@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
+import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_order-widget.dart';
+import 'package:shalimar/Elements/filter_sheet_widget.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/cart_screen.dart';
 import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:top_modal_sheet/top_modal_sheet.dart';
-
-import '../../Controller/set_order_data_controller.dart';
-import '../../Elements/filter_sheet_widget.dart';
 
 class TakeOrderPage extends StatefulWidget {
   final String tag;

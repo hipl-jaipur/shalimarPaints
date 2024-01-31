@@ -75,8 +75,6 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
     super.initState();
   }
 
- 
-
   final _formKey = GlobalKey<FormState>();
 
   SetActivityDetailDataController setActivityController =
@@ -101,12 +99,16 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                   Positioned(
                     child: Stack(
                       children: [
-                        Positioned(child:  Visibility(
-                                              visible:
-                                                  setActivityController.checkIn,
-                                              child: TimerWidget())),
+                        Positioned(
+                            child: Visibility(
+                                visible: setActivityController.checkIn,
+                                child: TimerWidget())),
                         Padding(
-                            padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0,top: 50.0),
+                            padding: const EdgeInsets.only(
+                                bottom: 18.0,
+                                left: 18.0,
+                                right: 18.0,
+                                top: 50.0),
                             child: SingleChildScrollView(
                               child: Column(
                                 children: [
@@ -150,7 +152,8 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                             children: [
                                               Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: <Widget>[
                                                   Row(
                                                     children: [
@@ -160,14 +163,18 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                             primaryColor, // Change the active radio button color here
                                                         fillColor:
                                                             MaterialStateProperty
-                                                                .all(primaryColor),
-                                                        groupValue: selectedOption,
+                                                                .all(
+                                                                    primaryColor),
+                                                        groupValue:
+                                                            selectedOption,
                                                         onChanged: (value) {
                                                           setState(() {
-                                                            selectedOption = value!;
+                                                            selectedOption =
+                                                                value!;
                                                             scheduleController
-                                                                .schdulefor
-                                                                .value = "Visit";
+                                                                    .schdulefor
+                                                                    .value =
+                                                                "Visit";
                                                             print(
                                                                 "Button value: $value");
                                                           });
@@ -187,15 +194,18 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                     children: [
                                                       Radio(
                                                         value: 2,
-                                                        groupValue: selectedOption,
+                                                        groupValue:
+                                                            selectedOption,
                                                         activeColor:
                                                             primaryColor, // Change the active radio button color here
                                                         fillColor:
                                                             MaterialStateProperty
-                                                                .all(primaryColor),
+                                                                .all(
+                                                                    primaryColor),
                                                         onChanged: (value) {
                                                           setState(() {
-                                                            selectedOption = value!;
+                                                            selectedOption =
+                                                                value!;
                                                             scheduleController
                                                                 .schdulefor
                                                                 .value = "Call";
@@ -242,25 +252,30 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                 enabled: true,
                                                 maxLines: 1,
                                                 cursorColor: Colors.black,
-                                                style:
-                                                    TextStyle(color: Colors.black),
+                                                style: TextStyle(
+                                                    color: Colors.black),
                                                 decoration: InputDecoration(
                                                     prefixIcon: Icon(
                                                       Icons.calendar_month,
                                                       color: Colors.black,
                                                     ),
                                                     contentPadding:
-                                                        const EdgeInsets.fromLTRB(
-                                                            20.0, 0.0, 20.0, 0.0),
-                                                    border: OutlineInputBorder(),
+                                                        const EdgeInsets
+                                                            .fromLTRB(20.0, 0.0,
+                                                            20.0, 0.0),
+                                                    border:
+                                                        OutlineInputBorder(),
                                                     focusedBorder:
                                                         OutlineInputBorder(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        3)),
-                                                            borderSide: BorderSide(
-                                                              color: Colors.black,
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            3)),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color:
+                                                                  Colors.black,
                                                             )),
                                                     enabledBorder:
                                                         OutlineInputBorder(
@@ -289,10 +304,12 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                   Expanded(
                                                     child: TextFormField(
                                                       onTap: () {
-                                                        _selectStartTime(context);
+                                                        _selectStartTime(
+                                                            context);
                                                       },
-                                                      controller: scheduleController
-                                                          .startTimeController,
+                                                      controller:
+                                                          scheduleController
+                                                              .startTimeController,
                                                       readOnly: true,
                                                       validator: (value) {
                                                         if (value == null ||
@@ -306,43 +323,54 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                       cursorColor: Colors.black,
                                                       style: TextStyle(
                                                           color: Colors.black),
-                                                      decoration: InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .fromLTRB(20.0,
-                                                                  0.0, 20.0, 0.0),
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .all(Radius
+                                                      decoration:
+                                                          InputDecoration(
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .fromLTRB(
+                                                                      20.0,
+                                                                      0.0,
+                                                                      20.0,
+                                                                      0.0),
+                                                              border:
+                                                                  OutlineInputBorder(),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                      borderRadius: BorderRadius.all(
+                                                                          Radius
                                                                               .circular(
                                                                                   3)),
-                                                                  borderSide:
-                                                                      BorderSide(
+                                                                      borderSide:
+                                                                          BorderSide(
+                                                                        color: Colors
+                                                                            .black,
+                                                                      )),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide: BorderSide(
                                                                     color: Colors
-                                                                        .black,
-                                                                  )),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
+                                                                        .black), //<-- SEE HERE
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.0),
+                                                              ),
+                                                              hintText:
+                                                                  "Start Time",
+                                                              hintStyle:
+                                                                  TextStyle(
                                                                 color: Colors
-                                                                    .black), //<-- SEE HERE
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(5.0),
-                                                          ),
-                                                          hintText: "Start Time",
-                                                          hintStyle: TextStyle(
-                                                            color: Colors.black,
-                                                          ),
-                                                          labelText: "Start Time",
-                                                          labelStyle: TextStyle(
-                                                            color: Colors.black,
-                                                          ),
-                                                          focusColor: Colors.black),
+                                                                    .black,
+                                                              ),
+                                                              labelText:
+                                                                  "Start Time",
+                                                              labelStyle:
+                                                                  TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              focusColor:
+                                                                  Colors.black),
                                                     ),
                                                   ),
                                                   SizedBox(
@@ -353,8 +381,9 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                       onTap: () {
                                                         _selectEndTime(context);
                                                       },
-                                                      controller: scheduleController
-                                                          .endTimeController,
+                                                      controller:
+                                                          scheduleController
+                                                              .endTimeController,
                                                       readOnly: true,
                                                       validator: (value) {
                                                         if (value == null ||
@@ -368,43 +397,53 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                       cursorColor: Colors.black,
                                                       style: TextStyle(
                                                           color: Colors.black),
-                                                      decoration: InputDecoration(
-                                                          contentPadding:
-                                                              const EdgeInsets
-                                                                  .fromLTRB(20.0,
-                                                                  0.0, 20.0, 0.0),
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .all(Radius
-                                                                              .circular(
-                                                                                  3)),
-                                                                  borderSide:
-                                                                      BorderSide(
+                                                      decoration:
+                                                          InputDecoration(
+                                                              contentPadding:
+                                                                  const EdgeInsets
+                                                                      .fromLTRB(
+                                                                      20.0,
+                                                                      0.0,
+                                                                      20.0,
+                                                                      0.0),
+                                                              border:
+                                                                  OutlineInputBorder(),
+                                                              focusedBorder:
+                                                                  OutlineInputBorder(
+                                                                      borderRadius: BorderRadius.all(Radius
+                                                                          .circular(
+                                                                              3)),
+                                                                      borderSide:
+                                                                          BorderSide(
+                                                                        color: Colors
+                                                                            .black,
+                                                                      )),
+                                                              enabledBorder:
+                                                                  OutlineInputBorder(
+                                                                borderSide: BorderSide(
                                                                     color: Colors
-                                                                        .black,
-                                                                  )),
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
+                                                                        .black), //<-- SEE HERE
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5.0),
+                                                              ),
+                                                              hintText:
+                                                                  "End Time",
+                                                              hintStyle:
+                                                                  TextStyle(
                                                                 color: Colors
-                                                                    .black), //<-- SEE HERE
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(5.0),
-                                                          ),
-                                                          hintText: "End Time",
-                                                          hintStyle: TextStyle(
-                                                            color: Colors.black,
-                                                          ),
-                                                          labelText: "End Time",
-                                                          labelStyle: TextStyle(
-                                                            color: Colors.black,
-                                                          ),
-                                                          focusColor: Colors.black),
+                                                                    .black,
+                                                              ),
+                                                              labelText:
+                                                                  "End Time",
+                                                              labelStyle:
+                                                                  TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
+                                                              focusColor:
+                                                                  Colors.black),
                                                     ),
                                                   ),
                                                 ],
@@ -424,7 +463,7 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                               //     ? Container(
                                               //         height: 300,
                                               //         child:
-                        
+
                                               //         ListView.builder(
                                               //           itemCount: controller
                                               //               .activitityData!.data!.length,
@@ -459,7 +498,7 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                               //           },
                                               //         ))
                                               //     : SizedBox(),
-                        
+
                                               controller.activitityData != null
                                                   ? Container(
                                                       height: 300,
@@ -469,7 +508,8 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                             .data!
                                                             .length,
                                                         itemBuilder:
-                                                            (BuildContext context,
+                                                            (BuildContext
+                                                                    context,
                                                                 int index) {
                                                           return Row(
                                                             children: [
@@ -481,28 +521,39 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                                           .data![
                                                                               index]
                                                                           .userActivityID),
-                                                                  onChanged: (v) {
-                                                                    setState(() {
-                                                                      if (controller
-                                                                          .sectionlist
-                                                                          .contains(controller
-                                                                              .activitityData!
-                                                                              .data![
-                                                                                  index]
-                                                                              .userActivityID)) {
+                                                                  onChanged:
+                                                                      (v) {
+                                                                    setState(
+                                                                        () {
+                                                                      if (controller.sectionlist.contains(controller
+                                                                          .activitityData!
+                                                                          .data![
+                                                                              index]
+                                                                          .userActivityID)) {
                                                                         controller.sectionlist.remove(controller
                                                                             .activitityData!
-                                                                            .data![
-                                                                                index]
+                                                                            .data![index]
                                                                             .userActivityID);
                                                                       } else {
                                                                         controller.sectionlist.add(controller
                                                                             .activitityData!
-                                                                            .data![
-                                                                                index]
+                                                                            .data![index]
                                                                             .userActivityID);
+
+                                                                        // controller
+                                                                        //     .checkListItems
+                                                                        //     .add({
+                                                                        //   "useractivityid": controller
+                                                                        //       .activitityData!
+                                                                        //       .data![index]
+                                                                        //       .userActivityID,
+                                                                        //   "remark": controller
+                                                                        //       .activitityData!
+                                                                        //       .data![index]
+                                                                        //       .activityName
+                                                                        // });
                                                                       }
-                        
+
                                                                       controller
                                                                           .update();
                                                                       print(controller
@@ -513,13 +564,16 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                                 child: Text(
                                                                   controller
                                                                       .activitityData!
-                                                                      .data![index]
+                                                                      .data![
+                                                                          index]
                                                                       .activityName
                                                                       .toString(),
-                                                                  style: TextStyle(
+                                                                  style:
+                                                                      TextStyle(
                                                                     color: Colors
                                                                         .black,
-                                                                    fontSize: 16,
+                                                                    fontSize:
+                                                                        16,
                                                                     fontFamily:
                                                                         'Raleway',
                                                                     fontWeight:
@@ -543,21 +597,26 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                 controller: scheduleController
                                                     .remarkController,
                                                 cursorColor: Colors.black,
-                                                style:
-                                                    TextStyle(color: Colors.black),
+                                                style: TextStyle(
+                                                    color: Colors.black),
                                                 decoration: InputDecoration(
                                                     contentPadding:
-                                                        const EdgeInsets.fromLTRB(
-                                                            20.0, 40.0, 20.0, 0.0),
-                                                    border: OutlineInputBorder(),
+                                                        const EdgeInsets
+                                                            .fromLTRB(20.0,
+                                                            40.0, 20.0, 0.0),
+                                                    border:
+                                                        OutlineInputBorder(),
                                                     focusedBorder:
                                                         OutlineInputBorder(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        3)),
-                                                            borderSide: BorderSide(
-                                                              color: Colors.black,
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            3)),
+                                                            borderSide:
+                                                                BorderSide(
+                                                              color:
+                                                                  Colors.black,
                                                             )),
                                                     enabledBorder:
                                                         OutlineInputBorder(
@@ -597,7 +656,8 @@ class _ScheduleVisitPageState extends State<ScheduleVisitPage> {
                                                         context: context,
                                                         levelCode:
                                                             setActivityController
-                                                                .levelCode.value);
+                                                                .levelCode
+                                                                .value);
                                                   }
                                                 },
                                               )

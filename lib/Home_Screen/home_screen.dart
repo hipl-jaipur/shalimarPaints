@@ -7,7 +7,7 @@ import 'package:shalimar/Home_Screen/customer_support_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Activity_Screen/activity_screen.dart';
+import 'customer_activity_screen.dart';
 
 class MyHomePage extends StatefulWidget {
   String EmployeeName;

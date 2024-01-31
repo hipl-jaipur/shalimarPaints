@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shalimar/Controller/set_customer_complaint_data_controller.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
 import 'package:shalimar/utils/images.dart';
 
-import '../../Controller/set_customer_complaint_data_controller.dart';
 
 class EditCustomerPage extends StatefulWidget {
   const EditCustomerPage({super.key});

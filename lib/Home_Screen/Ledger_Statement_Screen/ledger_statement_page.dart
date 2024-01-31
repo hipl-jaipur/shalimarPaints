@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../Controller/get_customer_data_controller.dart';
@@ -24,10 +23,12 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
       TextEditingController();
 
   StockController stockController = Get.put(StockController());
-  LedgerStatementController ledgerStatementController =
-      Get.put(LedgerStatementController());
+  // LedgerStatementController ledgerStatementController =
+  //     Get.put(LedgerStatementController());
   GetCustomerDataController getCustomerDataController =
       Get.put(GetCustomerDataController());
+  // var totalAmount = 0.0;
+  // var totalBalance = 0.0;
 
   @override
   void initState() {
@@ -40,9 +41,9 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
     return Scaffold(
         body: GetBuilder<LedgerStatementController>(
       init: LedgerStatementController(),
-      builder: (ledgerStatementController) {
+      builder: (cont) {
         return ModalProgressHUD(
-          inAsyncCall: ledgerStatementController.isLoading,
+          inAsyncCall: cont.isLoading,
           child: SafeArea(
             child: Stack(
               children: [
@@ -61,24 +62,28 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                           SizedBox(
                             height: 0,
                           ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: IconButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: Icon(
-                                  Icons.arrow_circle_left,
-                                  color: Colors.white,
-                                  size: 40,
-                                )),
-                          ),
-                          Text(
-                            " Customer Ledger",
-                            style: TextStyle(
-                                color: primaryLight,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                          Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_circle_left,
+                                    color: Colors.white,
+                                    size: 40,
+                                  )),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                " Customer Ledger",
+                                style: TextStyle(
+                                    color: primaryLight,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
                           Container(
                             child: Card(
@@ -90,11 +95,9 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        ledgerStatementController
-                                                .isVisibleTerritory =
-                                            !ledgerStatementController
-                                                .isVisibleTerritory;
-                                        ledgerStatementController.update();
+                                        cont.isVisibleTerritory =
+                                            !cont.isVisibleTerritory;
+                                        cont.update();
                                       },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(
@@ -110,8 +113,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              ledgerStatementController
-                                                  .territoryName,
+                                              cont.territoryName,
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -129,13 +131,10 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        if (ledgerStatementController
-                                            .onTapCustomer) {
-                                          ledgerStatementController
-                                                  .isVisibleCustomer =
-                                              !ledgerStatementController
-                                                  .isVisibleCustomer;
-                                          ledgerStatementController.update();
+                                        if (cont.onTapCustomer) {
+                                          cont.isVisibleCustomer =
+                                              !cont.isVisibleCustomer;
+                                          cont.update();
                                         }
                                       },
                                       child: Container(
@@ -157,13 +156,13 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                 child: FittedBox(
                                                   fit: BoxFit.fill,
                                                   child: Text(
-                                                    ledgerStatementController
-                                                        .customerName,
+                                                    cont.customerName,
                                                     style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 16,
                                                       fontFamily: 'Raleway',
-                                                      fontWeight: FontWeight.w700,
+                                                      fontWeight:
+                                                          FontWeight.w700,
                                                     ),
                                                   ),
                                                 ),
@@ -178,8 +177,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                       height: 10,
                                     ),
                                     Visibility(
-                                      visible: ledgerStatementController
-                                          .isVisibleTerritory,
+                                      visible: cont.isVisibleTerritory,
                                       child: Column(
                                         children: [
                                           Container(
@@ -193,8 +191,6 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                               textCapitalization:
                                                   TextCapitalization.words,
                                               decoration: InputDecoration(
-
-
                                                 hintText: 'Search',
                                                 prefixIcon: IconButton(
                                                     onPressed: () {},
@@ -241,23 +237,21 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                                       .toLowerCase())
                                                           ? GestureDetector(
                                                               onTap: () {
-                                                                ledgerStatementController.isLoading=true;
-                                                                ledgerStatementController
-                                                                        .idTerritory =
+                                                                cont.isLoading =
+                                                                    true;
+                                                                cont.idTerritory =
                                                                     stockController
                                                                         .depotMasterDataModel!
                                                                         .data![
                                                                             index]!
                                                                         .levelID!;
 
-                                                                ledgerStatementController
-                                                                        .territoryName =
-                                                                    stockController
-                                                                        .depotMasterDataModel!
-                                                                        .data![
-                                                                            index]!
-                                                                        .levelName
-                                                                        .toString();
+                                                                cont.territoryName = stockController
+                                                                    .depotMasterDataModel!
+                                                                    .data![
+                                                                        index]!
+                                                                    .levelName
+                                                                    .toString();
                                                                 getCustomerDataController
                                                                     .fetchData(
                                                                         0,
@@ -268,28 +262,23 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                                             .levelID!)
                                                                     .then(
                                                                         (value) {
-                                                                          ledgerStatementController.isLoading=false;
+                                                                  cont.isLoading =
+                                                                      false;
 
-                                                                          if (value !=
+                                                                  if (value !=
                                                                       null) {
-                                                                    ledgerStatementController
-                                                                            .isVisibleTerritory =
+                                                                    cont.isVisibleTerritory =
                                                                         false;
-                                                                    ledgerStatementController
-                                                                            .onTapCustomer =
+                                                                    cont.onTapCustomer =
                                                                         true;
-                                                                    ledgerStatementController
-                                                                            .idCustomer =
+                                                                    cont.idCustomer =
                                                                         "0";
-                                                                    ledgerStatementController
-                                                                            .customerName =
+                                                                    cont.customerName =
                                                                         "Select Customer";
-                                                                    ledgerStatementController
-                                                                        .update();
+                                                                    cont.update();
                                                                   }
                                                                 });
-                                                                ledgerStatementController
-                                                                    .update();
+                                                                cont.update();
                                                               },
                                                               child: Container(
                                                                 padding:
@@ -304,7 +293,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                                       .toString(),
                                                                   style:
                                                                       TextStyle(
-                                                                    color: ledgerStatementController.idTerritory ==
+                                                                    color: cont.idTerritory ==
                                                                             stockController.depotMasterDataModel!.data![index].levelID
                                                                         ? primaryColor
                                                                         : Colors.black,
@@ -332,8 +321,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                     getCustomerDataController.getCustomerData !=
                                             null
                                         ? Visibility(
-                                            visible: ledgerStatementController
-                                                .isVisibleCustomer,
+                                            visible: cont.isVisibleCustomer,
                                             child: Column(
                                               children: [
                                                 Container(
@@ -399,27 +387,22 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                                       .toLowerCase())
                                                           ? GestureDetector(
                                                               onTap: () {
-                                                                ledgerStatementController
-                                                                        .idCustomer =
+                                                                cont.idCustomer =
                                                                     getCustomerDataController
                                                                         .getCustomerData!
                                                                         .data![
                                                                             index]!
                                                                         .customercode!;
 
-                                                                ledgerStatementController
-                                                                        .customerName =
-                                                                    getCustomerDataController
-                                                                        .getCustomerData!
-                                                                        .data![
-                                                                            index]!
-                                                                        .customername
-                                                                        .toString();
-                                                                ledgerStatementController
-                                                                        .isVisibleCustomer =
+                                                                cont.customerName = getCustomerDataController
+                                                                    .getCustomerData!
+                                                                    .data![
+                                                                        index]!
+                                                                    .customername
+                                                                    .toString();
+                                                                cont.isVisibleCustomer =
                                                                     false;
-                                                                ledgerStatementController
-                                                                    .update();
+                                                                cont.update();
                                                               },
                                                               child: Container(
                                                                 padding:
@@ -434,7 +417,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                                       .toString(),
                                                                   style:
                                                                       TextStyle(
-                                                                    color: ledgerStatementController.idCustomer ==
+                                                                    color: cont.idCustomer ==
                                                                             getCustomerDataController.getCustomerData!.data![index].customerid
                                                                         ? primaryColor
                                                                         : Colors.black,
@@ -459,17 +442,11 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                         : SizedBox(),
                                     GestureDetector(
                                       onTap: () {
-                                        if (ledgerStatementController
-                                                    .idTerritory !=
-                                                0 &&
-                                            ledgerStatementController
-                                                .idCustomer.isNotEmpty) {
-                                          ledgerStatementController
-                                              .getLedgerStatementData(
-                                                  ledgerStatementController
-                                                      .idTerritory,
-                                                  ledgerStatementController
-                                                      .idCustomer);
+                                        if (cont.idTerritory != 0 &&
+                                            cont.idCustomer.isNotEmpty) {
+                                          cont.getLedgerStatementData(
+                                              cont.idTerritory,
+                                              cont.idCustomer);
                                         } else {
                                           showSnackBar(
                                               "Error!!",
@@ -508,12 +485,9 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                               ),
                             ),
                           ),
-                          ledgerStatementController.ledgerStatementModel !=
-                                      null &&
-                                  ledgerStatementController
-                                      .ledgerStatementModel!
-                                      .ledgerStatementMaster!
-                                      .isNotEmpty
+                          cont.ledgerStatementModel != null &&
+                                  cont.ledgerStatementModel!
+                                      .ledgerStatementMaster!.isNotEmpty
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -537,7 +511,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              ledgerStatementController
+                                              cont
                                                   .ledgerStatementModel!
                                                   .ledgerStatementMaster![0]
                                                   .customername
@@ -548,7 +522,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              "(${ledgerStatementController.ledgerStatementModel!.ledgerStatementMaster![0].customercode.toString()})",
+                                              "(${cont.ledgerStatementModel!.ledgerStatementMaster![0].customercode.toString()})",
                                               style: TextStyle(
                                                   color: primaryColor,
                                                   fontSize: 12,
@@ -571,7 +545,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              ledgerStatementController
+                                              cont
                                                   .ledgerStatementModel!
                                                   .ledgerStatementMaster![0]
                                                   .territoryName
@@ -598,7 +572,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              ledgerStatementController
+                                              cont
                                                   .ledgerStatementModel!
                                                   .ledgerStatementMaster![0]
                                                   .address
@@ -625,7 +599,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             Text(
-                                              ledgerStatementController
+                                              cont
                                                   .ledgerStatementModel!
                                                   .ledgerStatementMaster![0]
                                                   .openBalance!
@@ -686,37 +660,34 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                     ListView.builder(
                                       shrinkWrap: true,
                                       physics: ScrollPhysics(),
-                                      itemCount: ledgerStatementController
+                                      itemCount: cont
                                           .ledgerStatementModel!
                                           .ledgerStatementMaster![0]
                                           .ledgerStatementDetailMaster!
                                           .length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        ledgerStatementController.totalAmount =
-                                            ledgerStatementController
-                                                    .totalAmount +
-                                                ledgerStatementController
-                                                    .ledgerStatementModel!
-                                                    .ledgerStatementMaster![0]
-                                                    .ledgerStatementDetailMaster![
-                                                        index]
-                                                    .creditAmt +
-                                                ledgerStatementController
-                                                    .ledgerStatementModel!
-                                                    .ledgerStatementMaster![0]
-                                                    .ledgerStatementDetailMaster![
-                                                        index]
-                                                    .debitAmt;
-                                        ledgerStatementController.totalBalance =
-                                            ledgerStatementController
-                                                    .totalBalance +
-                                                ledgerStatementController
-                                                    .ledgerStatementModel!
-                                                    .ledgerStatementMaster![0]
-                                                    .ledgerStatementDetailMaster![
-                                                        index]
-                                                    .balance;
+                                        cont.totalAmount = cont.totalAmount +
+                                            cont
+                                                .ledgerStatementModel!
+                                                .ledgerStatementMaster![0]
+                                                .ledgerStatementDetailMaster![
+                                                    index]
+                                                .creditAmt +
+                                            cont
+                                                .ledgerStatementModel!
+                                                .ledgerStatementMaster![0]
+                                                .ledgerStatementDetailMaster![
+                                                    index]
+                                                .debitAmt;
+
+                                        cont.totalBalance = cont.totalBalance +
+                                            cont
+                                                .ledgerStatementModel!
+                                                .ledgerStatementMaster![0]
+                                                .ledgerStatementDetailMaster![
+                                                    index]
+                                                .balance;
 
                                         return Container(
                                           height: 30,
@@ -736,7 +707,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                ledgerStatementController
+                                                cont
                                                     .ledgerStatementModel!
                                                     .ledgerStatementMaster![0]
                                                     .ledgerStatementDetailMaster![
@@ -750,7 +721,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                         FontWeight.w500),
                                               ),
                                               Text(
-                                                "${ledgerStatementController.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].documentNo.toString()}(${ledgerStatementController.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].documentType.toString()})",
+                                                "${cont.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].documentNo.toString()}(${cont.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].documentType.toString()})",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 12,
@@ -758,7 +729,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                         FontWeight.w500),
                                               ),
                                               Text(
-                                                "${ledgerStatementController.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index]!.dc.toString() == "Dr" ? ledgerStatementController.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].debitAmt!.toStringAsFixed(2) : ledgerStatementController.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].creditAmt!.toStringAsFixed(2)}(${ledgerStatementController.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].dc.toString().toUpperCase()})",
+                                                "${cont.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index]!.dc.toString() == "Dr" ? cont.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].debitAmt!.toStringAsFixed(2) : cont.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].creditAmt!.toStringAsFixed(2)}(${cont.ledgerStatementModel!.ledgerStatementMaster![0].ledgerStatementDetailMaster![index].dc.toString().toUpperCase()})",
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 12,
@@ -766,7 +737,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                         FontWeight.w500),
                                               ),
                                               Text(
-                                                ledgerStatementController
+                                                cont
                                                     .ledgerStatementModel!
                                                     .ledgerStatementMaster![0]
                                                     .ledgerStatementDetailMaster![
@@ -800,22 +771,24 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                 color: primaryLight,
                                                 fontWeight: FontWeight.w500),
                                           ),
+                                          // Text(
+                                          //   cont.totalAmount != null
+                                          //       ? cont.totalAmount
+                                          //           .toStringAsFixed(2)
+                                          //       : "",
+                                          //   style: TextStyle(
+                                          //       color: primaryLight,
+                                          //       fontSize: 12,
+                                          //       fontWeight: FontWeight.w500),
+                                          // ),
+                                          // SizedBox(
+                                          //   width: 20,
+                                          // ),
                                           Text(
-                                            ledgerStatementController
-                                                .totalAmount
-                                                .toStringAsFixed(2),
-                                            style: TextStyle(
-                                                color: primaryLight,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            ledgerStatementController
-                                                .totalBalance
-                                                .toStringAsFixed(2),
+                                            cont.totalBalance != null
+                                                ? cont.totalBalance
+                                                    .toStringAsFixed(2)
+                                                : "",
                                             style: TextStyle(
                                                 color: primaryLight,
                                                 fontSize: 12,

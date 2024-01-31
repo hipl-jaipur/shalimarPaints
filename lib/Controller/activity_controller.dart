@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Elements/commom_snackbar_widget.dart';
 import '../Model/ActivityDataModel.dart';
 import '../Model/AvtivityMasterDataModel.dart';
-import '../Model/StockShowModel.dart';
 import '../utils/consts.dart';
 
 class ActivityController extends GetxController {
@@ -29,7 +28,7 @@ class ActivityController extends GetxController {
   //   getActivityMasterData();
   // }
 
-  getActivityData(var customerCode,employeeId) async {
+  getActivityData(var customerCode, employeeId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Activity Data api called');
@@ -52,7 +51,7 @@ class ActivityController extends GetxController {
           body: jsonEncode(body), headers: requestHeaders);
       print(res);
       if (kDebugMode) {
-        print("******Get Stock  API called****");
+        print("******Get  Activity Data  API called****");
         print(AppConstants.getActivityData);
         print(requestHeaders);
         print(body);

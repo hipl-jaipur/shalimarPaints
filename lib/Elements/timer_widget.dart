@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/checkin_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/customer_detail_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Home_Screen/CheckIn_Module/checkin_screen.dart';
 
 class TimerWidget extends StatelessWidget {
   String? tag;

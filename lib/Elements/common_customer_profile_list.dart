@@ -4,15 +4,17 @@ import 'dart:math' show cos, sqrt, asin;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:shalimar/Controller/get_customer_note_data_controller.dart';
 import 'package:shalimar/Controller/get_global_parameter_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/checkin_screen.dart';
 import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Home_Screen/Customer_Module/CheckIn_Module/checkin_screen.dart';
 
 class CustomerProfileList extends StatefulWidget {
   List<Data> customerList;
@@ -45,6 +47,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
       Get.put(GetGlobalParameterDataController());
   SetActivityDetailDataController controller =
       Get.put(SetActivityDetailDataController());
+  GetNoteDataController noteDataController = Get.put(GetNoteDataController());
 
   String? _currentAddress;
   Position? _currentPosition;
@@ -284,6 +287,9 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             tag: "Check in On-site",
                           ),
                         );
+                        noteDataController.fetchData(widget
+                            .customerList[widget.index].levelCode
+                            .toString());
                       } else {
                         showDialog(
                             context: context,
@@ -347,6 +353,10 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           .toString();
                       controller.levelAddress.value =
                           widget.customerList[widget.index].address1.toString();
+
+                      noteDataController.fetchData(widget
+                          .customerList[widget.index].levelCode
+                          .toString());
                       //   controller.isCheckinOnSite.value = false;
                       // }
                       // else {

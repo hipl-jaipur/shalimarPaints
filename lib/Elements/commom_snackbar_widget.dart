@@ -17,29 +17,29 @@ void showSnackBar(textMessage, String messgae, MaterialAccentColor bgColor) {
   );
 }
 
-class CheckInSnackBarPage extends StatelessWidget {
-  const CheckInSnackBarPage({Key? key}) : super(key: key);
+// class CheckInSnackBarPage extends StatelessWidget {
+//   const CheckInSnackBarPage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          final snackBar = SnackBar(
-            content: const Text('Hi, I am a SnackBar!'),
-            backgroundColor: (Colors.black12),
-            action: SnackBarAction(
-              label: 'dismiss',
-              onPressed: () {
-              },
-            ),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
-        child: const Text(
-          'Click to Display a SnackBar',
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: ElevatedButton(
+//         onPressed: () {
+//           final snackBar = SnackBar(
+//             content: const Text('Hi, I am a SnackBar!'),
+//             backgroundColor: (Colors.black12),
+//             action: SnackBarAction(
+//               label: 'dismiss',
+//               onPressed: () {
+//               },
+//             ),
+//           );
+//           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+//         },
+//         child: const Text(
+//           'Click to Display a SnackBar',
+//         ),
+//       ),
+//     );
+//   }
+// }

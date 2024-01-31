@@ -1,18 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:shalimar/Controller/payment_controller.dart';
+import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
+import 'package:shalimar/Controller/set_customer_complaint_data_controller.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
+import 'package:shalimar/Elements/timer_widget.dart';
+import 'package:shalimar/Model/PaymentTypeModel.dart';
 import 'package:shalimar/utils/images.dart';
 
-import '../../Controller/payment_controller.dart';
-import '../../Controller/set_activity_detail_data_controller.dart';
-import '../../Controller/set_customer_complaint_data_controller.dart';
-import '../../Elements/timer_widget.dart';
-import '../../Model/PaymentTypeModel.dart';
 
 class CollectPaymentPage extends StatefulWidget {
   const CollectPaymentPage({super.key});

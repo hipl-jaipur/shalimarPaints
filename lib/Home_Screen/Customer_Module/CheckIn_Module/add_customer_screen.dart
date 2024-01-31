@@ -9,7 +9,7 @@ import 'package:shalimar/Controller/set_customer_data_controller.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
-import '../../Controller/set_customer_complaint_data_controller.dart';
+import '../../../Controller/set_customer_complaint_data_controller.dart';
 
 class AddCustomerPage extends StatefulWidget {
   var territoryId, territoryName, tag;

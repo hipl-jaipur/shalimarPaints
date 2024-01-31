@@ -6,18 +6,17 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Model/GetcustomerNoteDataModel.dart';
-import 'package:shalimar/Model/zone_data_model.dart';
 import 'package:shalimar/utils/consts.dart';
 
 class GetNoteDataController extends GetxController {
   var isLoading = false.obs;
   GetcustomerNoteDataModel? getcustomerNoteDataModel;
-  // var levelCode = "".obs;
+  // var levelCode = "";
 
   // @override
   // Future<void> onInit() async {
   //   super.onInit();
-  //   fetchData();
+  //   fetchData("");
   // }
 
   fetchData(String levelCode) async {

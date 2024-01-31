@@ -12,13 +12,12 @@ import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/set_customer_complaint_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Controller/upload_image_controller.dart';
+import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_button_widget.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
+import 'package:shalimar/Model/plant_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
-
-import '../../Elements/commom_snackbar_widget.dart';
-import '../../Model/plant_data_model.dart';
 
 class ComplainPage extends StatefulWidget {
   const ComplainPage({super.key});
@@ -82,7 +81,7 @@ class ComplainPageState extends State<ComplainPage> {
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(
-        source: ImageSource.camera,
+        source: ImageSource.gallery,
         imageQuality: 25,
         maxHeight: 480,
         maxWidth: 640);

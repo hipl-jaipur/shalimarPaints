@@ -5,12 +5,13 @@ import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
 import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/take_order_screen.dart';
 import 'package:shalimar/Model/get_order_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
-import '../../Controller/get_available_stock_data-controller.dart';
+import '../../../Controller/get_available_stock_data-controller.dart';
+import 'take_order_screen.dart';
+
 
 class MyCartPage extends StatefulWidget {
   String? tag;

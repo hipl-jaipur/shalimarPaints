@@ -7,7 +7,7 @@ import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Elements/common_customer_profile_list.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/add_customer_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/add_customer_screen.dart';
 import 'package:shalimar/Model/customer_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';

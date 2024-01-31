@@ -8,8 +8,8 @@ import 'package:shalimar/Controller/get_user_activity_master_data_controller.dar
 import 'package:shalimar/Controller/outstanding_controller.dart';
 import 'package:shalimar/Controller/stock_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
-import 'package:shalimar/Home_Screen/Customer_Module/my_scedule_screen.dart';
 import 'package:shalimar/Home_Screen/Ledger_Statement_Screen/ledger_statement_page.dart';
+import 'package:shalimar/Home_Screen/My_Schedule_Screen/my_scedule_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_depot_Screen.dart';
 import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_region_screen.dart';

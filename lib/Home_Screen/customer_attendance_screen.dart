@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
+import 'package:shalimar/Elements/common_date_formet_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
-import '../Elements/common_searchbar_widget.dart';
 import '../Elements/timer_widget.dart';
 
 class CustomerAttendanceScreen extends StatefulWidget {
@@ -24,6 +23,7 @@ class CustomerAttendanceScreen extends StatefulWidget {
 
 class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
   final TextEditingController _searchController = TextEditingController();
+ 
 
   SetActivityDetailDataController dataController =
       Get.put(SetActivityDetailDataController());
@@ -42,6 +42,7 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
   }
 
   Future<void> getAddressesFromCoordinatesList() async {
+
     for (var coordinates in dataController.getActivityDetailDataModel!.data!) {
       double latitude = coordinates.latitude!;
       double longitude = coordinates.longitude!;
@@ -108,6 +109,7 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                     height:
                                         setActivityController.checkIn ? 40 : 20,
                                   ),
+                                  
                                   widget.tag
                                       ? Row(
                                           children: [
@@ -198,7 +200,69 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                             )
                                           ],
                                         )
-                                      : searchBar(_searchController),
+                                      : TextField(
+                                            controller: _searchController,
+                                            textInputAction:
+                                                TextInputAction.search,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              contentPadding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20.0, 0.0, 20.0, 0.0),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(30)),
+                                                  borderSide: BorderSide(
+                                                    color: Color(0xffECE6E6),
+                                                  )),
+                                              disabledBorder:
+                                                  OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  30)),
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Color(0xffECE6E6),
+                                                      )),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(30)),
+                                                  borderSide: BorderSide(
+                                                    color: Color(0xffECE6E6),
+                                                  )),
+                                              hintText: 'Search',
+                                              prefixIcon: IconButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.arrow_circle_left,
+                                                    color: primaryColor,
+                                                    size: 40,
+                                                  )),
+                                              // suffixIcon: IconButton(
+                                              //     onPressed: () {},
+                                              //     icon: Icon(
+                                              //       Icons.sort_rounded,
+                                              //       color: primaryColor,
+                                              //       size: 40,
+                                              //     )),
+                                            ),
+                                            onChanged: (v) {
+                                              setState(() {});
+                                            },
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                      // searchBar(_searchController),
                                   SizedBox(
                                     height: 20,
                                   ),
@@ -254,10 +318,14 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                                               .toString());
 
                                                       // Format the DateTime object to display in the desired format
+                                                      // String formattedDateTime =
+                                                      //     DateFormat(
+                                                      //             'yyyy-MM-dd ( h:mm a )')
+                                                      //         .format(time);
+
                                                       String formattedDateTime =
-                                                          DateFormat(
-                                                                  'yyyy-MM-dd ( h:mm a )')
-                                                              .format(time);
+                                                          dateFormat(
+                                                              time.toString());
 
                                                       double latitude = controller
                                                           .getActivityDetailDataModel!
@@ -273,56 +341,68 @@ class _CustomerAttendanceScreenState extends State<CustomerAttendanceScreen> {
                                                               ? addresses[index]
                                                               : '';
 
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10.0),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              border: Border.all(
-                                                                  color:
-                                                                      primaryColor),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                          "Activity Name: ${controller.getActivityDetailDataModel!.data![index].activityName}"),
-                                                                      // Text(
-                                                                      //     "Status: ${controller.getActivityDetailDataModel!.data![index].status}")
-                                                                    ],
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                      'Address: $address'),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                      "Date: ${formattedDateTime}"),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                ]),
-                                                          ),
-                                                        ),
-                                                      );
+                                                      return controller
+                                                              .getActivityDetailDataModel!
+                                                              .data![index]!
+                                                              .activityName!
+                                                              .toLowerCase()
+                                                              .contains(
+                                                                  _searchController
+                                                                      .text
+                                                                      .toLowerCase())
+                                                          ? Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(
+                                                                      10.0),
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        color:
+                                                                            primaryColor),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10)),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          8.0),
+                                                                  child: Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text("Activity Name: ${controller.getActivityDetailDataModel!.data![index].activityName}"),
+                                                                            // Text(
+                                                                            //     "Status: ${controller.getActivityDetailDataModel!.data![index].status}")
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              5,
+                                                                        ),
+                                                                        Text(
+                                                                            'Address: $address'),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              5,
+                                                                        ),
+                                                                        Text(
+                                                                            "Date: ${formattedDateTime}"),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              5,
+                                                                        ),
+                                                                      ]),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : SizedBox();
                                                     },
                                                   ),
                                           ),

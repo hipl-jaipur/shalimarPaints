@@ -21,13 +21,13 @@ import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/add_customer_screen.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/collect_payment_screen.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/make_complain_screen.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/schedule_visit_screen.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/take_note_screen.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/take_order_screen.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/view_open_order_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/add_customer_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/collect_payment_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/make_complain_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/schedule_visit_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/take_note_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/take_order_screen.dart';
+import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/view_open_order_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/consts.dart';
 import 'package:shalimar/utils/images.dart';
@@ -338,9 +338,11 @@ class _CheckInPageState extends State<CheckInPage> {
     // TODO: implement initState
     getId();
     super.initState();
+    // noteDataController.levelCode = controller.levelCode.value;
 
     // profileSkip = Get.arguments[1];
     profileSkip = getGlobalParameterDataController.profileSkip;
+    getUserActivityController.fetchData();
 
     // getGlobalParameterDataController.fetchData().then((value) {
     //   if (value != null) {
@@ -366,7 +368,7 @@ class _CheckInPageState extends State<CheckInPage> {
       }
     });
     // TimerService().startTimer();
-    noteDataController.fetchData(controller.levelCode.value);
+    // noteDataController.fetchData(controller.levelCode.value);
     scheduleDataController.fetchData(controller.levelCode.value, 0, true);
     activityController.getActivityData(controller.levelCode.value, employeeId);
   }
@@ -655,6 +657,112 @@ class _CheckInPageState extends State<CheckInPage> {
                                         ),
                                         Row(
                                           mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Customer History",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ],
+                                        ),
+                                        GetBuilder<ActivityController>(
+                                          init: ActivityController(),
+                                          builder: (controller) {
+                                            return SizedBox(
+                                              height: 250.0,
+                                              child: Card(
+                                                child: controller
+                                                                .activityDataModel ==
+                                                            null ||
+                                                        controller
+                                                                .activityDataModel!
+                                                                .data!
+                                                                .length ==
+                                                            0
+                                                    ? Center(
+                                                        child: Text(
+                                                        "No Data Available",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ))
+                                                    : ListView.builder(
+                                                        itemCount: controller
+                                                            .activityDataModel!
+                                                            .data!
+                                                            .length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10.0),
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                  border: Border
+                                                                      .all(
+                                                                          color:
+                                                                              primaryColor),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10)),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Text(
+                                                                              "${controller.activityDataModel!.data![index].activityName}"),
+                                                                        ],
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                          "Code: ${controller.activityDataModel!.data![index].customerCode}"),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                          "Descriptiion: ${controller.activityDataModel!.data![index].activityDescription}"),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                          "${controller.activityDataModel!.data![index].createdOn}")
+                                                                    ]),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
@@ -668,6 +776,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                               onTap: () {
                                                 getUserActivityController
                                                     .fetchData();
+
                                                 Get.to(ScheduleVisitPage());
                                               },
                                               child: Container(
@@ -790,103 +899,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                         SizedBox(
                                           height: 20,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Customer History",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 250.0,
-                                          child: Card(
-                                            child: activityController
-                                                            .activityDataModel ==
-                                                        null ||
-                                                    activityController
-                                                            .activityDataModel!
-                                                            .data!
-                                                            .length ==
-                                                        0
-                                                ? Center(
-                                                    child: Text(
-                                                    "No Data Available",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ))
-                                                : ListView.builder(
-                                                    itemCount:
-                                                        activityController
-                                                            .activityDataModel!
-                                                            .data!
-                                                            .length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10.0),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              border: Border.all(
-                                                                  color:
-                                                                      primaryColor),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10)),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    children: [
-                                                                      Text(
-                                                                          "${activityController.activityDataModel!.data![index].activityName}"),
-                                                                    ],
-                                                                  ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                      "Code: ${activityController.activityDataModel!.data![index].customerCode}"),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                      "Descriptiion: ${activityController.activityDataModel!.data![index].activityDescription}"),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Text(
-                                                                      "${activityController.activityDataModel!.data![index].createdOn}")
-                                                                ]),
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
+
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -908,9 +921,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                                           .levelCode.value,
                                                       controller
                                                           .levelAddress.value
-                                                    ]
-                                                    // customerProfileData
-                                                    );
+                                                    ]);
                                               },
                                               child: Container(
                                                 padding: EdgeInsets.all(8),
@@ -943,18 +954,17 @@ class _CheckInPageState extends State<CheckInPage> {
                                         ),
                                         GetBuilder<GetNoteDataController>(
                                             init: GetNoteDataController(),
-                                            builder: (noteDataController) {
+                                            builder: (dataController) {
                                               return SizedBox(
                                                 height: 250.0,
                                                 child: Card(
-                                                  child: noteDataController
+                                                  child: dataController
                                                                   .getcustomerNoteDataModel ==
                                                               null ||
-                                                          noteDataController
-                                                                  .getcustomerNoteDataModel!
-                                                                  .data!
-                                                                  .length ==
-                                                              0
+                                                          dataController
+                                                              .getcustomerNoteDataModel!
+                                                              .data!
+                                                              .isEmpty
                                                       ? Center(
                                                           child: Text(
                                                           "No Data Available",
@@ -964,11 +974,10 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                       .w500),
                                                         ))
                                                       : ListView.builder(
-                                                          itemCount:
-                                                              noteDataController
-                                                                  .getcustomerNoteDataModel!
-                                                                  .data!
-                                                                  .length,
+                                                          itemCount: dataController
+                                                              .getcustomerNoteDataModel!
+                                                              .data!
+                                                              .length,
                                                           itemBuilder:
                                                               (context, index) {
                                                             return Padding(
@@ -999,10 +1008,10 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                               MainAxisAlignment.spaceBetween,
                                                                           children: [
                                                                             Text(
-                                                                              "Note: ${noteDataController.getcustomerNoteDataModel!.data![index].note}",
+                                                                              "Note: ${dataController.getcustomerNoteDataModel!.data![index].note}",
                                                                               style: TextStyle(color: primaryColor),
                                                                             ),
-                                                                            Text("${noteDataController.getcustomerNoteDataModel!.data![index].createdOn}")
+                                                                            Text("${dataController.getcustomerNoteDataModel!.data![index].createdOn}")
                                                                           ],
                                                                         ),
                                                                         SizedBox(
@@ -1010,13 +1019,13 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                               5,
                                                                         ),
                                                                         Text(
-                                                                            "Code: ${noteDataController.getcustomerNoteDataModel!.data![index].customerCode}"),
+                                                                            "Code: ${dataController.getcustomerNoteDataModel!.data![index].customerCode}"),
                                                                         SizedBox(
                                                                           height:
                                                                               5,
                                                                         ),
                                                                         Text(
-                                                                            "Descriptiion: ${noteDataController.getcustomerNoteDataModel!.data![index].activityDescription}"),
+                                                                            "Descriptiion: ${dataController.getcustomerNoteDataModel!.data![index].activityDescription}"),
                                                                       ]),
                                                                 ),
                                                               ),

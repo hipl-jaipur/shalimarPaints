@@ -10,34 +10,32 @@ import '../Elements/commom_snackbar_widget.dart';
 import '../Model/LedgerStatementModel.dart';
 import '../utils/consts.dart';
 
-class LedgerStatementController extends GetxController{
-  var isLoading =false;
+class LedgerStatementController extends GetxController {
+  var isLoading = false;
 
-  var isVisibleTerritory =false;
-  var isVisibleCustomer =false;
-  var onTapCustomer =false;
-  var territoryName="Select Territory";
-  var customerName="Select Customer";
-  int idTerritory=0;
-  var idCustomer="";
-  var totalAmount=0.0;
-  var totalBalance=0.0;
+  var isVisibleTerritory = false;
+  var isVisibleCustomer = false;
+  var onTapCustomer = false;
+  var territoryName = "Select Territory";
+  var customerName = "Select Customer";
+  int idTerritory = 0;
+  var idCustomer = "";
+  var totalAmount = 0.0;
+  var totalBalance = 0.0;
   LedgerStatementModel? ledgerStatementModel;
-  getLedgerStatementData(var territoryId,customerId) async {
+
+  getLedgerStatementData(var territoryId, customerId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Ledger Data api called');
 
     try {
-      isLoading =true;
+      isLoading = true;
       update();
 
       print('Get OutStanding Data API called');
 
-      final body = {
-        "TerritoryId": territoryId,
-        "CustomerCode": customerId
-      };
+      final body = {"TerritoryId": territoryId, "CustomerCode": customerId};
 
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -45,8 +43,10 @@ class LedgerStatementController extends GetxController{
 
       print("**********");
 
-      final res = await http.post(Uri.parse(AppConstants.GetLedgerStatementData),
-          body: jsonEncode(body), headers: requestHeaders);
+      final res = await http.post(
+          Uri.parse(AppConstants.GetLedgerStatementData),
+          body: jsonEncode(body),
+          headers: requestHeaders);
       print(res);
       if (kDebugMode) {
         print("******Get Ledger  API called****");
@@ -66,7 +66,11 @@ class LedgerStatementController extends GetxController{
         if (data != null) {
           var result = jsonDecode(res.body);
           ledgerStatementModel = LedgerStatementModel.fromJson(result);
-
+          for (var i in ledgerStatementModel!
+              .ledgerStatementMaster![0].ledgerStatementDetailMaster!) {
+            totalAmount = totalAmount + i.creditAmt + i.debitAmt;
+            totalBalance = totalBalance + i.balance;
+          }
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
@@ -80,13 +84,9 @@ class LedgerStatementController extends GetxController{
         print('Error while getting data is $e');
       }
     } finally {
-      isLoading= false;
+      isLoading = false;
 
       update();
     }
   }
-
-
-
-
 }

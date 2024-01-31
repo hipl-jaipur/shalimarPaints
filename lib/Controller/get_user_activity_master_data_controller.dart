@@ -12,11 +12,11 @@ class GetUserActivityController extends GetxController {
   var isLoading = false.obs;
   ActivitityData? activitityData;
   List<dynamic> sectionlist = [];
-
+  
   // @override
   // Future<void> onInit() async {
-  //   super.onInit();
-  //   fetchData();
+    //   super.onInit();
+    //   fetchData();
   // }
 
   fetchData() async {
@@ -58,7 +58,7 @@ class GetUserActivityController extends GetxController {
           if (data['Data'] != null) {
             var result = jsonDecode(res.body);
             activitityData = ActivitityData.fromJson(result);
-          } else {
+                      } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);
             return null;
           }

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/get_order_data_controller.dart';
-import 'package:shalimar/Home_Screen/CheckIn_Module/cart_screen.dart';
 import 'package:shalimar/Model/get_order_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 
 import '../Controller/get_available_stock_data-controller.dart';
 import '../Controller/set_order_data_controller.dart';
+import '../Home_Screen/Customer_Module/CheckIn_Module/cart_screen.dart';
 
 class OrderList extends StatefulWidget {
   BuildContext context;
