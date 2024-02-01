@@ -219,16 +219,19 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              "Level",
-              style: TextStyle(
-                  color: blackTextColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
-              textAlign: TextAlign.start,
-            ),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 15),
+          //   child: Text(
+          //     "Level",
+          //     style: TextStyle(
+          //         color: blackTextColor,
+          //         fontSize: 14,
+          //         fontWeight: FontWeight.bold),
+          //     textAlign: TextAlign.start,
+          //   ),
+          // ),
+          SizedBox(
+            height: 5,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -239,11 +242,12 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                     child: Container(
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade500),
+                      color: Colors.red,
+                      border: Border.all(color: Colors.red.shade500),
                       borderRadius: BorderRadius.circular(20)),
                   child: Flexible(
                     child: Text(
-                      "OS: ${widget.customerList[widget.index].os!.toInt()}",
+                      "OD: ${widget.customerList[widget.index].os!.toInt()}",
                       style: TextStyle(fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center,
                     ),
@@ -256,7 +260,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                     child: Container(
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade500),
+                      color: Colors.yellow,
+                      border: Border.all(color: Colors.yellow.shade500),
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(
                     "Target: ${widget.customerList[widget.index].target!.toInt()}",
@@ -271,7 +276,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                     child: Container(
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade500),
+                      color: Colors.green,
+                      border: Border.all(color: Colors.green.shade500),
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(
                     "Sale: ${widget.customerList[widget.index].sale!.toInt()}",
@@ -348,7 +354,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                         //       distance,
                         //       getGlobalParameterDataController.profileSkip
                         //     ]);
-                        
+
                         getGlobalParameterDataController.distance = distance;
                         Get.to(
                           CheckInPage(
