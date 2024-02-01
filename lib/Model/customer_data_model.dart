@@ -63,6 +63,9 @@ class Data {
     dynamic longitude,
     dynamic customerType,
     num? hirelevel,
+    num? sale,
+    num? target,
+    num? os,
   }) {
     _entitytype = entitytype;
     _parentLevelID = parentLevelID;
@@ -78,6 +81,9 @@ class Data {
     _longitude = longitude;
     _customerType = customerType;
     _hirelevel = hirelevel;
+    _sale = sale;
+    _target = target;
+    _os = os;
   }
 
   Data.fromJson(dynamic json) {
@@ -95,6 +101,9 @@ class Data {
     _longitude = json['Longitude'];
     _customerType = json['CustomerType'];
     _hirelevel = json['Hirelevel'];
+    _os = json['os'];
+    _target = json['target'];
+    _sale = json['sale'];
   }
   String? _entitytype;
   num? _parentLevelID;
@@ -110,6 +119,9 @@ class Data {
   dynamic _longitude;
   dynamic _customerType;
   num? _hirelevel;
+  num? _os;
+  num? _target;
+  num? _sale;
   Data copyWith({
     String? entitytype,
     num? parentLevelID,
@@ -125,6 +137,9 @@ class Data {
     dynamic longitude,
     dynamic customerType,
     num? hirelevel,
+    num? os,
+    num? target,
+    num? sale,
   }) =>
       Data(
         entitytype: entitytype ?? _entitytype,
@@ -141,6 +156,9 @@ class Data {
         longitude: longitude ?? _longitude,
         customerType: customerType ?? _customerType,
         hirelevel: hirelevel ?? _hirelevel,
+        os: os ?? _os,
+        target: target ?? _target,
+        sale: sale ?? _sale,
       );
   String? get entitytype => _entitytype;
   num? get parentLevelID => _parentLevelID;
@@ -156,6 +174,9 @@ class Data {
   dynamic get longitude => _longitude;
   dynamic get customerType => _customerType;
   num? get hirelevel => _hirelevel;
+  num? get os => _os;
+  num? get target => _target;
+  num? get sale => _sale;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -173,6 +194,9 @@ class Data {
     map['Longitude'] = _longitude;
     map['CustomerType'] = _customerType;
     map['Hirelevel'] = _hirelevel;
+    map['os'] = _os;
+    map['target'] = _target;
+    map['sale'] = _sale;
     return map;
   }
 }

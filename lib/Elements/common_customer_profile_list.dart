@@ -138,219 +138,187 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
 
   @override
   Widget build(BuildContext context) {
-    return  Card(
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: CircleAvatar(
-                      child: Icon(
-                        Icons.person_sharp,
-                        size: 50,
-                      ),
+    return Card(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.person_sharp,
+                      size: 50,
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 250,
-                            child: Text(
-                                widget.customerList[widget.index].levelName
-                                    .toString(),
-                                maxLines: 2,
-                                style: TextStyle(
-                                    color: blackTextColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400)),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                              "ID:${widget.customerList[widget.index].levelCode.toString()}",
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 250,
+                          child: Text(
+                              widget.customerList[widget.index].levelName
+                                  .toString(),
+                              maxLines: 2,
                               style: TextStyle(
                                   color: blackTextColor,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400)),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 250,
-                            child: Text(
-                              widget.customerList[widget.index].address1
-                                  .toString(),
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          Text(
-                              distance != 0.0 && distance != null
-                                  ? "Distance: ${distance!.toInt()} KM Away"
-                                  : "Distance: ? KM Away",
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400)),
-                          SizedBox(
-                            height: 5,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        if (controller.checkIn == false) {
-                          controller.checkIn = true;
-                          controller.update();
-                          timerService.timer = Timer.periodic(
-                              Duration(seconds: 1), timerService.onTimerTick);
-                          controller.checkinCustomer = widget
-                              .customerList[widget.index].levelName
-                              .toString();
-                          controller.fetchData(
-                              levelCode: widget
-                                  .customerList[widget.index].levelCode
-                                  .toString(),
-                              activityID: 8);
-                          showSnackBar(
-                              "You are CheckedIn at",
-                              widget.customerList[widget.index].levelName
-                                  .toString(),
-                              Colors.greenAccent);
-
-                          controller.customerId = widget
-                              .customerList[widget.index].levelID!
-                              .toInt();
-                          controller.territoryId = widget.territoryId.toInt();
-                          controller.territoryName = widget.territoryName;
-
-                          controller.checkInlevelName.value = widget
-                              .customerList[widget.index].levelName
-                              .toString();
-                          controller.levelCode.value = widget
-                              .customerList[widget.index].levelCode
-                              .toString();
-                          controller.levelName.value = widget
-                              .customerList[widget.index].levelName
-                              .toString();
-                          controller.levelAddress.value = widget
-                              .customerList[widget.index].address1
-                              .toString();
-                          controller.isCheckinOnSite.value = true;
-
-                          teamsController.getEmployData(employeeId);
-
-                          getGlobalParameterDataController
-                              .fetchData()
-                              .then((value) {
-                            if (value != null) {
-                              profileSkip = value!.data![0].parameterValue;
-                            }
-                          });
-
-                          // Get.to(
-                          //     CheckInPage(
-                          //       tag: "",
-                          //     ),
-                          //     arguments: [
-                          //       distance,
-                          //       getGlobalParameterDataController.profileSkip
-                          //     ]);
-                          getGlobalParameterDataController.distance = distance;
-                          Get.to(
-                            CheckInPage(
-                              tag: "Check in On-site",
-                            ),
-                          );
-                          noteDataController.fetchData(widget
-                              .customerList[widget.index].levelCode
-                              .toString());
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Alert!!'),
-                                  content: Text(
-                                      "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      child: Text('Ok'),
-                                      onPressed: () {
-                                        // Navigator.pop(context);
-                                        Get.back();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: primaryColor),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Text(
-                          "Check in On-site",
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.center,
                         ),
-                      ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                            "ID:${widget.customerList[widget.index].levelCode.toString()}",
+                            style: TextStyle(
+                                color: blackTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          width: 250,
+                          child: Text(
+                            widget.customerList[widget.index].address1
+                                .toString(),
+                            maxLines: 2,
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                        Text(
+                            distance != 0.0 && distance != null
+                                ? "Distance: ${distance!.toInt()} KM Away"
+                                : "Distance: ? KM Away",
+                            style: TextStyle(
+                                color: primaryColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Text(
+              "Level",
+              style: TextStyle(
+                  color: blackTextColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.start,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade500),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Flexible(
+                    child: Text(
+                      "OS: ${widget.customerList[widget.index].os!.toInt()}",
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        // if (controller.checkIn == false) {
-                        //  // controller.checkIn = true;
+                )),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade500),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    "Target: ${widget.customerList[widget.index].target!.toInt()}",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
+                  ),
+                )),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                    child: Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade500),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    "Sale: ${widget.customerList[widget.index].sale!.toInt()}",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
+                  ),
+                ))
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      if (controller.checkIn == false) {
+                        controller.checkIn = true;
+                        controller.update();
+                        timerService.timer = Timer.periodic(
+                            Duration(seconds: 1), timerService.onTimerTick);
+                        controller.checkinCustomer = widget
+                            .customerList[widget.index].levelName
+                            .toString();
                         controller.fetchData(
                             levelCode: widget
                                 .customerList[widget.index].levelCode
                                 .toString(),
-                            activityID: 9);
+                            activityID: 8);
                         showSnackBar(
                             "You are CheckedIn at",
                             widget.customerList[widget.index].levelName
                                 .toString(),
                             Colors.greenAccent);
 
-                        Get.to(
-                          CheckInPage(tag: "Check in Off-site"),
-                        );
+                        controller.customerId =
+                            widget.customerList[widget.index].levelID!.toInt();
+                        controller.territoryId = widget.territoryId.toInt();
+                        controller.territoryName = widget.territoryName;
+
+                        controller.checkInlevelName.value = widget
+                            .customerList[widget.index].levelName
+                            .toString();
                         controller.levelCode.value = widget
                             .customerList[widget.index].levelCode
                             .toString();
@@ -360,56 +328,149 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                         controller.levelAddress.value = widget
                             .customerList[widget.index].address1
                             .toString();
+                        controller.isCheckinOnSite.value = true;
 
+                        teamsController.getEmployData(employeeId);
+
+                        getGlobalParameterDataController
+                            .fetchData()
+                            .then((value) {
+                          if (value != null) {
+                            profileSkip = value!.data![0].parameterValue;
+                          }
+                        });
+
+                        // Get.to(
+                        //     CheckInPage(
+                        //       tag: "",
+                        //     ),
+                        //     arguments: [
+                        //       distance,
+                        //       getGlobalParameterDataController.profileSkip
+                        //     ]);
+                        
+                        getGlobalParameterDataController.distance = distance;
+                        Get.to(
+                          CheckInPage(
+                            tag: "Check in On-site",
+                          ),
+                        );
                         noteDataController.fetchData(widget
                             .customerList[widget.index].levelCode
                             .toString());
-                        //   controller.isCheckinOnSite.value = false;
-                        // }
-                        // else {
-                        //   showDialog(
-                        //       context: context,
-                        //       builder: (BuildContext context) {
-                        //         return AlertDialog(
-                        //           title: Text('Alert!!'),
-                        //           content: Text(
-                        //               "You are already checkin at ${controller.levelName}, Please CheckOut at ${controller.levelName}"),
-                        //           actions: <Widget>[
-                        //             ElevatedButton(
-                        //               child: Text('Ok'),
-                        //               onPressed: () {
-                        //                 // Navigator.pop(context);
-                        //                 Get.back();
-
-                        //                 // Get.off(
-                        //                 //   CheckInPage(),
-                        //                 // );
-                        //               },
-                        //             ),
-                        //           ],
-                        //         );
-                        //       });
-                        // }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: primaryColor),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Text(
-                          "Check in Off-site",
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.center,
-                        ),
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Alert!!'),
+                                content: Text(
+                                    "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    child: Text('Ok'),
+                                    onPressed: () {
+                                      // Navigator.pop(context);
+                                      Get.back();
+                                    },
+                                  ),
+                                ],
+                              );
+                            });
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: primaryColor),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        "Check in On-site",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                  )
-                ],
-              ),
-            )
-          ]),
-        ),
-      );
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      // if (controller.checkIn == false) {
+                      //  // controller.checkIn = true;
+                      controller.fetchData(
+                          levelCode: widget.customerList[widget.index].levelCode
+                              .toString(),
+                          activityID: 9);
+                      showSnackBar(
+                          "You are CheckedIn at",
+                          widget.customerList[widget.index].levelName
+                              .toString(),
+                          Colors.greenAccent);
+
+                      Get.to(
+                        CheckInPage(tag: "Check in Off-site"),
+                      );
+                      controller.levelCode.value = widget
+                          .customerList[widget.index].levelCode
+                          .toString();
+                      controller.levelName.value = widget
+                          .customerList[widget.index].levelName
+                          .toString();
+                      controller.levelAddress.value =
+                          widget.customerList[widget.index].address1.toString();
+
+                      noteDataController.fetchData(widget
+                          .customerList[widget.index].levelCode
+                          .toString());
+                      //   controller.isCheckinOnSite.value = false;
+                      // }
+                      // else {
+                      //   showDialog(
+                      //       context: context,
+                      //       builder: (BuildContext context) {
+                      //         return AlertDialog(
+                      //           title: Text('Alert!!'),
+                      //           content: Text(
+                      //               "You are already checkin at ${controller.levelName}, Please CheckOut at ${controller.levelName}"),
+                      //           actions: <Widget>[
+                      //             ElevatedButton(
+                      //               child: Text('Ok'),
+                      //               onPressed: () {
+                      //                 // Navigator.pop(context);
+                      //                 Get.back();
+
+                      //                 // Get.off(
+                      //                 //   CheckInPage(),
+                      //                 // );
+                      //               },
+                      //             ),
+                      //           ],
+                      //         );
+                      //       });
+                      // }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: primaryColor),
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        "Check in Off-site",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ]),
+      ),
+    );
   }
 }
 
