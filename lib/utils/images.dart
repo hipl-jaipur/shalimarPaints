@@ -15,6 +15,7 @@ class Images {
   static const String shalimarLogoHorizontal = "assets/images/Shalimar_Logo_Horizontal.png";
   static const String shalimarLogoVerticalWhite = "assets/images/Shalimar_Logo_Vertical_White.png";
   static const String shalimarLogoVertical = "assets/images/Shalimar_Logo_Vertical.png";
+  static const String productShare = "assets/images/product_forword_icon.svg";
   
   static const String passwordicon = "assets/images/password.png";
   static const String emailicon = "assets/images/email.png";

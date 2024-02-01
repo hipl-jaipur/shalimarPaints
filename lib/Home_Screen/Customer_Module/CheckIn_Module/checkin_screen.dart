@@ -549,11 +549,12 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                 )
                                                               : CircleAvatar(
                                                                   backgroundImage:
-                                                                      NetworkImage(profileImage !=
-                                                                              null
-                                                                          ? profileImage
-                                                                          : "",
-                                                                          ),
+                                                                      NetworkImage(
+                                                                    profileImage !=
+                                                                            null
+                                                                        ? profileImage
+                                                                        : "",
+                                                                  ),
                                                                   backgroundColor:
                                                                       Colors
                                                                           .transparent,
@@ -1116,7 +1117,7 @@ class _CheckInPageState extends State<CheckInPage> {
                   height: 36,
                 ),
                 SizedBox(
-                    height: (56 * 6).toDouble(),
+                    height: (66 * 6).toDouble(),
                     child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -1126,6 +1127,7 @@ class _CheckInPageState extends State<CheckInPage> {
                           color: Colors.white,
                         ),
                         child: Stack(
+                          fit: StackFit.expand,
                           alignment: Alignment(0, 0),
                           children: <Widget>[
                             Positioned(
@@ -1274,6 +1276,23 @@ class _CheckInPageState extends State<CheckInPage> {
                                               controller.levelCode.value);
                                     },
                                   ),
+                                  // ListTile(
+                                  //   title: Text(
+                                  //     "Learn & Demo",
+                                  //     style: TextStyle(
+                                  //         color: primaryColor,
+                                  //         fontSize: 16,
+                                  //         fontWeight: FontWeight.bold),
+                                  //   ),
+                                  //   leading: Icon(
+                                  //     Icons.menu_book_outlined,
+                                  //     color: primaryColor,
+                                  //   ),
+                                  //   onTap: () {
+                                  //     Navigator.of(context).pop();
+                                     
+                                  //   },
+                                  // ),
                                 ],
                               ),
                             )

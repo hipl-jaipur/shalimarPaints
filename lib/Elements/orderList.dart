@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/get_order_data_controller.dart';
 import 'package:shalimar/Model/get_order_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
+import 'package:shalimar/utils/images.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../Controller/get_available_stock_data-controller.dart';
 import '../Controller/set_order_data_controller.dart';
@@ -31,7 +34,7 @@ class _OrderListState extends State<OrderList> {
 
   GetOrderDataController orderData = Get.put(GetOrderDataController());
   SetOrderDataController setOrderDataController =
-  Get.put(SetOrderDataController());
+      Get.put(SetOrderDataController());
   @override
   void initState() {
     // TODO: implement initState
@@ -58,13 +61,56 @@ class _OrderListState extends State<OrderList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                  "SAP Order Number#: ${widget.orderDataList![widget.index].sAPordernumber.toString()}",
-                  maxLines: 2,
-                  style: TextStyle(
-                      color: blackTextColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                      "SAP Order Number#: ${widget.orderDataList![widget.index].sAPordernumber.toString()}",
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: blackTextColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
+                  InkWell(
+                      onTap: () async {
+                        var orderDate = widget
+                            .orderDataList![widget.index].orderdate
+                            .toString()
+                            .split(" ");
+                        var orderNumber = widget
+                            .orderDataList![widget.index].ordernumber
+                            .toString();
+                        var totalAmount = widget
+                            .orderDataList![widget.index].orderTotalDPL
+                            .toString();
+                        var totalQty = widget
+                            .orderDataList![widget.index].orderTotalQty!
+                            .toInt();
+
+                        Share.share(
+                            "Order Number: $orderNumber, Order Date: ${orderDate[0]}, Total Amount: $totalAmount, Total Qty: $totalQty");
+                        // final result = await Share.shareXFiles(
+                        //     [XFile('SAP Order Number#')],
+                        //     text: 'Great picture');
+
+                        // if (result.status == ShareResultStatus.success) {
+                        //   print('Thank you for sharing the picture!');
+                        // }
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: primaryColor,
+                              borderRadius: BorderRadius.circular(60)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: SvgPicture.asset(
+                              Images.productShare,
+                              color: Colors.white,
+                            ),
+                          )))
+                  // IconButton(onPressed: () {}, icon: Icon(Icons.share))
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(
@@ -144,10 +190,10 @@ class _OrderListState extends State<OrderList> {
                           child: OutlinedButton(
                             onPressed: () {
                               GetAvailableStockDataController stockController =
-                              Get.put(GetAvailableStockDataController());
+                                  Get.put(GetAvailableStockDataController());
                               stockController.myList.clear();
                               setOrderDataController.orderEditTag = "Edit";
-                              setOrderDataController.total=0.0;
+                              setOrderDataController.total = 0.0;
                               Get.to(MyCartPage(
                                   tag: "Edit",
                                   orderNumber: widget

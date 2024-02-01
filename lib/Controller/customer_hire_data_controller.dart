@@ -41,6 +41,8 @@ class CustomerHireDataController extends GetxController {
   //   getCustomerHireData();
   // }
 
+  
+
   Future getCustomerHireData() async {
     try {
       isLoading(true);

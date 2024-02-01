@@ -31,8 +31,10 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
 
   var terriotoryName = Get.arguments != null ? Get.arguments[0] : "";
   var levelID = Get.arguments != null ? Get.arguments[1] : "";
+
   SetActivityDetailDataController setActivityController =
   Get.put(SetActivityDetailDataController());
+
   @override
   void initState() {
     // TODO: implement initState
@@ -50,12 +52,6 @@ class _MyCustomerTerriotoryPageState extends State<MyCustomerTerriotoryPage> {
     } else {
       terriotoryList.addAll(customerHireDataController.terriotoryList);
     }
-
-    // terriotoryList = levelID != null && levelID != ""
-    //     ? customerHireDataController.terriotoryList
-    //         .where((element) => element.parentLevelID == levelID)
-    //         .toList()
-    //     : customerHireDataController.terriotoryList;
 
     print('customerList1: $terriotoryList');
   }

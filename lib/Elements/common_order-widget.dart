@@ -52,331 +52,376 @@ class _TakeOrderListState extends State<TakeOrderList> {
     return GetBuilder<GetAvailableStockDataController>(
         init: GetAvailableStockDataController(),
         builder: (stockDataController) {
-          return stockDataController.isLoading?CircularProgressIndicator(): Card(
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                        "${widget.productList![widget.index].productcode.toString()} - ${widget.productList![widget.index].productdesc.toString()}",
-                        style: TextStyle(
-                            color: blackTextColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                            "\u{20B9}${widget.productList![widget.index].dpl.toString()}/NOS",
-                            style: TextStyle(
-                                color: blackTextColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400)),
-                        Text(
-                            "Division: ${widget.productList![widget.index].division!}",
-                            style: TextStyle(
+          return stockDataController.isLoading
+              ? CircularProgressIndicator()
+              : Card(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              "${widget.productList![widget.index].productcode.toString()} - ${widget.productList![widget.index].productdesc.toString()}",
+                              style: TextStyle(
+                                  color: blackTextColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                  "\u{20B9}${widget.productList![widget.index].dpl.toString()}/NOS",
+                                  style: TextStyle(
+                                      color: blackTextColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400)),
+                              Text(
+                                  "Division: ${widget.productList![widget.index].division!}",
+                                  style: TextStyle(
+                                      color: primaryColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              IconButton(
+                                  icon: Icon(Icons.remove_circle),
+                                  onPressed: () {
+                                    setState(() {
+                                      stockDataController.catCheck = false;
+                                      if (stockDataController
+                                              .myList[widget.index]["Qty"] !=
+                                          0) {
+                                        stockDataController.myList[widget.index]
+                                            ["Qty"]--;
+
+                                        stockDataController.totalQty =
+                                            stockDataController.totalQty
+                                                    .toInt() -
+                                                1;
+
+                                        //price
+                                        stockDataController.myList[widget.index]
+                                                ["mrp"] =
+                                            widget
+                                                .productList[widget.index].dpl;
+
+                                        stockDataController.totalAmount =
+                                            stockDataController.totalAmount -
+                                                stockDataController
+                                                        .myList[widget.index]
+                                                    ["mrp"];
+
+                                        stockDataController.isVisible = true;
+                                        stockDataController.myList.add({
+                                          "productcode": widget
+                                              .productList[widget.index]
+                                              .productcode,
+                                          "name": widget
+                                              .productList[widget.index]
+                                              .productdesc,
+                                          "dpl": widget
+                                              .productList[widget.index].dpl,
+                                          "mrp": stockDataController.amount,
+                                          "Qty": stockDataController.counter,
+                                          "category": widget
+                                              .productList[widget.index]
+                                              .division!
+                                              .trim()
+                                        });
+                                        stockDataController.myList[widget.index]
+                                            ["mrp"] = (widget
+                                                .productList[widget.index]
+                                                .dpl)! *
+                                            stockDataController
+                                                .myList[widget.index]["Qty"];
+                                        stockDataController.myList[widget.index]
+                                                ["productcode"] =
+                                            widget.productList[widget.index]
+                                                .productcode;
+                                        stockDataController.myList[widget.index]
+                                                ["name"] =
+                                            widget.productList[widget.index]
+                                                .productdesc;
+                                        stockDataController.myList[widget.index]
+                                                ["dpl"] =
+                                            widget
+                                                .productList[widget.index].dpl;
+                                        stockDataController.myList[widget.index]
+                                                ["category"] =
+                                            widget.productList[widget.index]
+                                                .division!
+                                                .trim();
+
+                                        stockDataController.update();
+                                        print(stockDataController.myList);
+                                      }
+                                      if (stockDataController
+                                              .myList[widget.index]["Qty"] ==
+                                          0) {
+                                        // stockDataController.myList
+                                        //     .removeAt(widget.index);
+                                        // Remove  key only for the map at the specified index
+                                        stockDataController.myList[widget.index]
+                                            .remove('category');
+
+                                        stockDataController.myList[widget.index]
+                                            .remove('productcode');
+                                        stockDataController.myList[widget.index]
+                                            .remove('name');
+                                        stockDataController.myList[widget.index]
+                                            .remove('dpl');
+                                        stockDataController.update();
+                                        // print('\nList after removing "age" key at index $indexToRemove:');
+                                        print(stockDataController.myList);
+                                      }
+                                      // setState(() {
+                                      //   stockDataController.myList;
+                                      // });
+                                    });
+                                  },
+                                  color: primaryColor),
+                              Text(stockDataController.myList[widget.index]
+                                      ["Qty"]
+                                  .toString()),
+                              IconButton(
+                                icon: Icon(Icons.add_circle),
                                 color: primaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400)),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(Icons.remove_circle),
-                            onPressed: () {
-                              setState(() {
-                                stockDataController.catCheck = false;
-                                if (stockDataController.myList[widget.index]
-                                        ["Qty"] !=
-                                    0) {
-                                  stockDataController.myList[widget.index]
-                                      ["Qty"]--;
+                                onPressed: () {
+                                  setState(() {
+                                    stockDataController.catCheck = false;
+                                    stockDataController.isVisible = true;
 
-                                  stockDataController.totalQty =
-                                      stockDataController.totalQty.toInt() - 1;
+                                    //qty
+                                    stockDataController.myList[widget.index]
+                                        ["Qty"]++;
 
-                                  //price
-                                  stockDataController.myList[widget.index]
-                                          ["mrp"] =
-                                      widget.productList[widget.index].dpl;
+                                    stockDataController.totalQty =
+                                        stockDataController.totalQty.toInt() +
+                                            1;
 
-                                  stockDataController.totalAmount =
-                                      stockDataController.totalAmount -
-                                          stockDataController
-                                              .myList[widget.index]["mrp"];
+                                    //price
 
-                                  stockDataController.isVisible = true;
-                                  stockDataController.myList.add({
-                                    "productcode": widget
-                                        .productList[widget.index].productcode,
-                                    "name": widget
-                                        .productList[widget.index].productdesc,
-                                    "dpl": widget.productList[widget.index].dpl,
-                                    "mrp": stockDataController.amount,
-                                    "Qty": stockDataController.counter,
-                                    "category": widget
-                                        .productList[widget.index].division!
-                                        .trim()
+                                    stockDataController.myList[widget.index]
+                                            ["mrp"] =
+                                        widget.productList[widget.index].dpl;
+
+                                    stockDataController.totalAmount =
+                                        stockDataController.totalAmount +
+                                            stockDataController
+                                                .myList[widget.index]["mrp"];
+
+                                    stockDataController.myList.add({
+                                      "productcode": widget
+                                          .productList[widget.index]
+                                          .productcode,
+                                      "name": widget.productList[widget.index]
+                                          .productdesc,
+                                      "dpl":
+                                          widget.productList[widget.index].dpl,
+                                      "mrp": stockDataController.amount,
+                                      "Qty": stockDataController.counter,
+                                      "category": widget
+                                          .productList[widget.index].division!
+                                          .trim()
+                                    });
+
+                                    stockDataController.myList[widget.index]
+                                            ["category"] =
+                                        widget
+                                            .productList[widget.index].division!
+                                            .trim();
+
+                                    stockDataController.myList[widget.index]
+                                        ["mrp"] = ((widget
+                                            .productList[widget.index].dpl)! *
+                                        stockDataController.myList[widget.index]
+                                            ["Qty"]);
+
+                                    stockDataController.myList[widget.index]
+                                            ["productcode"] =
+                                        widget.productList[widget.index]
+                                            .productcode;
+
+                                    stockDataController.myList[widget.index]
+                                            ["name"] =
+                                        widget.productList[widget.index]
+                                            .productdesc;
+
+                                    stockDataController.myList[widget.index]
+                                            ["dpl"] =
+                                        widget.productList[widget.index].dpl;
+
+                                    stockDataController.update();
+                                    print(stockDataController
+                                        .myList[widget.index]["totalPrice"]);
+                                    print(stockDataController.myList);
                                   });
-                                  stockDataController.myList[widget.index]
-                                      ["mrp"] = (widget
-                                          .productList[widget.index].dpl)! *
-                                      stockDataController.myList[widget.index]
-                                          ["Qty"];
-                                  stockDataController.myList[widget.index]
-                                          ["productcode"] =
-                                      widget.productList[widget.index]
-                                          .productcode;
-                                  stockDataController.myList[widget.index]
-                                          ["name"] =
-                                      widget.productList[widget.index]
-                                          .productdesc;
-                                  stockDataController.myList[widget.index]
-                                          ["dpl"] =
-                                      widget.productList[widget.index].dpl;
-                                  stockDataController.myList[widget.index]
-                                          ["category"] =
-                                      widget.productList[widget.index].division!
-                                          .trim();
-
-                                  stockDataController.update();
-                                  print(stockDataController.myList);
-                                }
-                                if (stockDataController.myList[widget.index]
-                                        ["Qty"] ==
-                                    0) {
-                                  // stockDataController.myList
-                                  //     .removeAt(widget.index);
-                                  // Remove  key only for the map at the specified index
-                                  stockDataController.myList[widget.index]
-                                      .remove('category');
-
-                                  stockDataController.myList[widget.index]
-                                      .remove('productcode');
-                                  stockDataController.myList[widget.index]
-                                      .remove('name');
-                                  stockDataController.myList[widget.index]
-                                      .remove('dpl');
-                                  stockDataController.update();
-                                  // print('\nList after removing "age" key at index $indexToRemove:');
-                                  print(stockDataController.myList);
-                                }
-                                // setState(() {
-                                //   stockDataController.myList;
-                                // });
-                              });
-                            },
-                            color: primaryColor),
-                        Text(stockDataController.myList[widget.index]["Qty"]
-                            .toString()),
-                        IconButton(
-                          icon: Icon(Icons.add_circle),
-                          color: primaryColor,
-                          onPressed: () {
-                            setState(() {
-                              stockDataController.catCheck = false;
-                              stockDataController.isVisible = true;
-
-                              //qty
-                              stockDataController.myList[widget.index]["Qty"]++;
-
-                             
-                              stockDataController.totalQty =
-                                  stockDataController.totalQty.toInt() + 1;
-
-                              //price
-
-                              stockDataController.myList[widget.index]["mrp"] =
-                                  widget.productList[widget.index].dpl;
-
-                              stockDataController.totalAmount =
-                                  stockDataController.totalAmount +
-                                      stockDataController.myList[widget.index]
-                                          ["mrp"];
-
-                              stockDataController.myList.add({
-                                "productcode": widget
-                                    .productList[widget.index].productcode,
-                                "name": widget
-                                    .productList[widget.index].productdesc,
-                                "dpl": widget.productList[widget.index].dpl,
-                                "mrp": stockDataController.amount,
-                                "Qty": stockDataController.counter,
-                                "category": widget
-                                    .productList[widget.index].division!
-                                    .trim()
-                              });
-
-                              stockDataController.myList[widget.index]
-                                      ["category"] =
-                                  widget.productList[widget.index].division!
-                                      .trim();
-
-                              stockDataController.myList[widget.index]["mrp"] =
-                                  ((widget.productList[widget.index].dpl)! *
-                                      stockDataController.myList[widget.index]
-                                          ["Qty"]);
-
-                              stockDataController.myList[widget.index]
-                                      ["productcode"] =
-                                  widget.productList[widget.index].productcode;
-
-                              stockDataController.myList[widget.index]["name"] =
-                                  widget.productList[widget.index].productdesc;
-
-                              stockDataController.myList[widget.index]["dpl"] =
-                                  widget.productList[widget.index].dpl;
-
-                              stockDataController.update();
-                              print(stockDataController.myList[widget.index]
-                                  ["totalPrice"]);
-                              print(stockDataController.myList);
-                            });
-                          },
-                        ),
-                      ],
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        insetPadding: EdgeInsets.zero,
+                                        contentPadding: EdgeInsets.zero,
+                                        content: Container(
+                                          width: 300,
+                                          height: 200,
+                                          color: primaryLight,
+                                          padding: const EdgeInsets.only(
+                                              top: 12,
+                                              left: 12,
+                                              right: 12,
+                                              bottom: 12),
+                                          child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    InkWell(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: const Icon(Icons
+                                                            .highlight_remove_sharp))
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text("Stock Updated On",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                    Text("${date}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text("Availabe Stock",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                    Text(
+                                                        "${widget.productList[widget.index].availbleQty.toString()}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text("Last Order",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                    Text(
+                                                        "${widget.productList[widget.index].openorderQty.toString()}",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text("Open Order",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                    Text("x",
+                                                        style: TextStyle(
+                                                            color:
+                                                                blackTextColor,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                  ],
+                                                )
+                                              ]),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.info,
+                                    color: primaryColor,
+                                  )),
+                              Text(
+                                  "Available Stock: ${widget.productList[widget.index].availbleQty.toString()}"),
+                              Text(
+                                  "Last Order: ${widget.productList[widget.index].openorderQty.toString()}")
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  insetPadding: EdgeInsets.zero,
-                                  contentPadding: EdgeInsets.zero,
-                                  content: Container(
-                                    width: 300,
-                                    height: 200,
-                                    color: primaryLight,
-                                    padding: const EdgeInsets.only(
-                                        top: 12,
-                                        left: 12,
-                                        right: 12,
-                                        bottom: 12),
-                                    child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              InkWell(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Icon(Icons
-                                                      .highlight_remove_sharp))
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Stock Updated On",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                              Text("${date}",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Availabe Stock",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                              Text(
-                                                  "${widget.productList[widget.index].availbleQty.toString()}",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Last Order",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                              Text(
-                                                  "${widget.productList[widget.index].openorderQty.toString()}",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Open Order",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                              Text("x",
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400)),
-                                            ],
-                                          )
-                                        ]),
-                                  ),
-                                ),
-                              );
-                            },
-                            icon: Icon(
-                              Icons.info,
-                              color: primaryColor,
-                            )),
-                        Text(
-                            "Available Stock: ${widget.productList[widget.index].availbleQty.toString()}"),
-                        Text(
-                            "Last Order: ${widget.productList[widget.index].openorderQty.toString()}")
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
+                  ),
+                );
         });
   }
 }

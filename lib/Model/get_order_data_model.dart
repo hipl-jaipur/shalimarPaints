@@ -58,6 +58,9 @@ class OrderData {
       num? userID,
       num? latitude,
       num? longitude,
+      num? orderTotalQty,
+      num? orderTotalMRP,
+      num? orderTotalDPL,
       String? sAPordernumber, 
       String? sAPRemark, 
       String? orderStatus, 
@@ -88,6 +91,9 @@ class OrderData {
     _territoryName = territoryName;
     _firstName = firstName;
     _orderDetailMaster = orderDetailMaster;
+    _orderTotalQty = orderTotalQty;
+    _orderTotalMRP = orderTotalMRP;
+    _orderTotalDPL = orderTotalDPL;
 }
 
   OrderData.fromJson(dynamic json) {
@@ -111,6 +117,9 @@ class OrderData {
     _depotName = json['depot_name'];
     _territoryName = json['territory_name'];
     _firstName = json['FirstName'];
+    _orderTotalQty = json['OrderTotalQty'];
+    _orderTotalMRP = json['OrderTotalMRP'];
+    _orderTotalDPL = json['OrderTotalDPL'];
     if (json['OrderDetailMaster'] != null) {
       _orderDetailMaster = [];
       json['OrderDetailMaster'].forEach((v) {
@@ -119,6 +128,9 @@ class OrderData {
     }
   }
   num? _activityDetailID;
+  num? _orderTotalQty;
+  num? _orderTotalMRP;
+  num? _orderTotalDPL;
   String? _orderSource;
   String? _customercode;
   String? _customercodeshipto;
@@ -139,7 +151,11 @@ class OrderData {
   String? _territoryName;
   String? _firstName;
   List<OrderDetailMaster>? _orderDetailMaster;
-OrderData copyWith({  num? activityDetailID,
+OrderData copyWith({ 
+  num? activityDetailID,
+  num? orderTotalDPL,
+  num? orderTotalMRP,
+  num? orderTotalQty,
   String? orderSource,
   String? customercode,
   String? customercodeshipto,
@@ -180,9 +196,15 @@ OrderData copyWith({  num? activityDetailID,
   depotName: depotName ?? _depotName,
   territoryName: territoryName ?? _territoryName,
   firstName: firstName ?? _firstName,
+  orderTotalQty: orderTotalQty ?? _orderTotalQty,
+  orderTotalMRP: orderTotalMRP ?? _orderTotalMRP,
+  orderTotalDPL: orderTotalDPL ?? _orderTotalDPL,
   orderDetailMaster: orderDetailMaster ?? _orderDetailMaster,
 );
   num? get activityDetailID => _activityDetailID;
+  num? get orderTotalDPL => _orderTotalDPL;
+  num? get orderTotalMRP => _orderTotalMRP;
+  num? get orderTotalQty => _orderTotalQty;
   String? get orderSource => _orderSource;
   String? get customercode => _customercode;
   String? get customercodeshipto => _customercodeshipto;
@@ -226,6 +248,9 @@ OrderData copyWith({  num? activityDetailID,
     map['depot_name'] = _depotName;
     map['territory_name'] = _territoryName;
     map['FirstName'] = _firstName;
+    map['OrderTotalDPL'] = _orderTotalDPL;
+    map['OrderTotalMRP'] = _orderTotalMRP;
+    map['OrderTotalQty'] = _orderTotalQty;
     if (_orderDetailMaster != null) {
       map['OrderDetailMaster'] = _orderDetailMaster?.map((v) => v.toJson()).toList();
     }

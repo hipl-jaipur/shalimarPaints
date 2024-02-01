@@ -154,15 +154,15 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                     color: Color(0xffECE6E6),
                                                   )),
                                               hintText: 'Search',
-                                              prefixIcon: IconButton(
-                                                  onPressed: () {
-                                                    Get.back();
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.arrow_circle_left,
-                                                    color: primaryColor,
-                                                    size: 40,
-                                                  )),
+                                              // prefixIcon: IconButton(
+                                              //     onPressed: () {
+                                              //       Get.back();
+                                              //     },
+                                              //     icon: Icon(
+                                              //       Icons.arrow_circle_left,
+                                              //       color: primaryColor,
+                                              //       size: 40,
+                                              //     )),
                                               // suffixIcon: IconButton(
                                               //     onPressed: () {},
                                               //     icon: Icon(
