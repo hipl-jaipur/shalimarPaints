@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shalimar/Controller/outstanding_controller.dart';
-import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/Home_Screen/Target_Vs_Actual_Screen/target_vs_actual_depot_screen.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
@@ -104,9 +102,11 @@ class _TargetVsActyalRegionState extends State<TargetVsActyalRegion> {
                                           size: 40,
                                         )),
                                     suffixIcon: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          targetVsActualController.getTargetVsActualData();
+                                        },
                                         icon: Icon(
-                                          Icons.sort_rounded,
+                                          Icons.refresh,
                                           color: primaryColor,
                                           size: 40,
                                         )),

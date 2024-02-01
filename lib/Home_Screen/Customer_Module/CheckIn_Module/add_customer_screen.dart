@@ -61,7 +61,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     controller.lat = coordinate!.latitude;
 
     controller.long = coordinate!.longitude;
-    controller.image = pickedFile.path;
+    controller.image = pickedFile.name;
     // controller.state = attributes!.state;
 
     final coordinates = new Coordinates(controller.lat, controller.long);
@@ -265,7 +265,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "Enter Customer Name",
+                                            // labelText: "Enter Customer Name",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -317,7 +317,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "Enter Mobile Number",
+                                            // labelText: "Enter Mobile Number",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -416,7 +416,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "Street Address",
+                                            // labelText: "Street Address",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -467,7 +467,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "State",
+                                            // labelText: "State",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -518,7 +518,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "District",
+                                            // labelText: "District",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -569,7 +569,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "City",
+                                            // labelText: "City",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -618,7 +618,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "Locality",
+                                            // labelText: "Locality",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -671,7 +671,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "Enter Pincode",
+                                            // labelText: "Enter Pincode",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -720,7 +720,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                             hintStyle: TextStyle(
                                               color: Colors.black,
                                             ),
-                                            labelText: "Area",
+                                            // labelText: "Area",
                                             labelStyle: TextStyle(
                                               color: Colors.black,
                                             ),
@@ -1319,7 +1319,8 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                               controller.fetchData(
                                                   context: context,
                                                   territoryId:
-                                                      widget.territoryId);
+                                                      widget.territoryId,
+                                                  tag: "Add Customer");
                                             } else {
                                               // showSnackBar("Alert!!", "Please Upload Profile Picture.", Colors.redAccent);
                                               Get.dialog(

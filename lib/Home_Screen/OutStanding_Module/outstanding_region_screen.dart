@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
-import 'package:shalimar/Elements/common_searchbar_widget.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
@@ -102,9 +101,11 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                           size: 40,
                                         )),
                                     suffixIcon: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          outStandingController.getOutStandingData();
+                                        },
                                         icon: Icon(
-                                          Icons.sort_rounded,
+                                          Icons.refresh,
                                           color: primaryColor,
                                           size: 40,
                                         )),

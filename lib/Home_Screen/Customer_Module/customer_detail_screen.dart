@@ -62,6 +62,8 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
         .toList();
 
     print('customerList: $customerList');
+
+    
   }
 
   @override
@@ -161,9 +163,15 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                     size: 40,
                                                   )),
                                               suffixIcon: IconButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    // customerHireDataController
+                                                    //     .getCustomerHireData(
+                                                    //         "Update");
+                                                    customerHireDataController
+                                                        .update();
+                                                  },
                                                   icon: Icon(
-                                                    Icons.sort_rounded,
+                                                    Icons.refresh,
                                                     color: primaryColor,
                                                     size: 40,
                                                   )),
@@ -400,7 +408,9 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                                   customerTypeList,
                                                               territoryId:
                                                                   levelID,
-                                                                  territoryName: customerName,)
+                                                              territoryName:
+                                                                  customerName,
+                                                            )
                                                           : SizedBox();
                                                     },
                                                   ),
@@ -436,7 +446,10 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
               if (dealerCreation != null) {
                 if (dealerCre! < int.parse(dealerCreation)) {
                   Get.to(AddCustomerPage(
-                      territoryId: levelID, territoryName: customerName, tag: "Add Customer",));
+                    territoryId: levelID,
+                    territoryName: customerName,
+                    tag: "Add Customer",
+                  ));
                   teamsController.update();
                 } else {
                   Get.dialog(
@@ -495,8 +508,7 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                             ),
                           ),
                         ),
-                      )
-                      );
+                      ));
                 }
               }
             },

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/outstanding_controller.dart';
-import 'package:shalimar/Elements/common_searchbar_widget.dart';
-import 'package:shalimar/Model/OutStandingModel.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 
@@ -97,15 +95,18 @@ class _OutStandingCustomerState extends State<OutStandingCustomer> {
                                     onPressed: () {
                                       Get.back();
                                     },
+                                    
                                     icon: Icon(
                                       Icons.arrow_circle_left,
                                       color: primaryColor,
                                       size: 40,
                                     )),
                                 suffixIcon: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      outStandingController.getOutStandingData();
+                                    },
                                     icon: Icon(
-                                      Icons.sort_rounded,
+                                      Icons.refresh,
                                       color: primaryColor,
                                       size: 40,
                                     )),

@@ -12,11 +12,12 @@ class GetUserActivityController extends GetxController {
   var isLoading = false.obs;
   ActivitityData? activitityData;
   List<dynamic> sectionlist = [];
-  
+  List<Map<String, dynamic>> dataList = [];
+
   // @override
   // Future<void> onInit() async {
-    //   super.onInit();
-    //   fetchData();
+  //   super.onInit();
+  //   fetchData();
   // }
 
   fetchData() async {
@@ -58,7 +59,14 @@ class GetUserActivityController extends GetxController {
           if (data['Data'] != null) {
             var result = jsonDecode(res.body);
             activitityData = ActivitityData.fromJson(result);
-                      } else {
+            for (int i = 0; i < activitityData!.data!.length; i++) {
+              dataList.add({
+                "userActivityID": activitityData!.data![i].userActivityID,
+                "activityName": activitityData!.data![i].activityName,
+                "isChecked": false
+              });
+            }
+          } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);
             return null;
           }

@@ -103,9 +103,11 @@ class _TargetVsActualCustomerState extends State<TargetVsActualCustomer> {
                                           size: 40,
                                         )),
                                     suffixIcon: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          targetVsActualController.getTargetVsActualData();
+                                        },
                                         icon: Icon(
-                                          Icons.sort_rounded,
+                                          Icons.refresh,
                                           color: primaryColor,
                                           size: 40,
                                         )),

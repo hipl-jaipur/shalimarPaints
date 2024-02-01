@@ -90,9 +90,11 @@ class _TargetVsActualZoneState extends State<TargetVsActualZone> {
                                         size: 40,
                                       )),
                                   suffixIcon: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        outStandingController.getOutStandingData();
+                                      },
                                       icon: Icon(
-                                        Icons.sort_rounded,
+                                        Icons.refresh,
                                         color: primaryColor,
                                         size: 40,
                                       )),

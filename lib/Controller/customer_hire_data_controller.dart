@@ -31,6 +31,8 @@ class CustomerHireDataController extends GetxController {
   List<Data> customerList = [];
   // final dataLevel = <Map<String, dynamic>>[];
   List<Map<dynamic, dynamic>> dataLevel = [];
+  // double? distance = 0.0;
+
   // Data? dataLevel;
 
   // @override
@@ -114,6 +116,11 @@ class CustomerHireDataController extends GetxController {
 
             print("List4: ${customerList.length}");
 
+            // if (tag == "Update") {
+            //   if (customerList.length > 0) {
+            //     Get.to(MyCustomerDetailsPage());
+            //   }
+            // } else
             if (zoneList.length > 0) {
               Get.to(MyCustomerZonePage());
             } else if (regionsList.length > 0) {
@@ -125,7 +132,6 @@ class CustomerHireDataController extends GetxController {
             } else if (customerList.length > 0) {
               Get.to(MyCustomerDetailsPage());
             }
-            
           } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);
             return null;

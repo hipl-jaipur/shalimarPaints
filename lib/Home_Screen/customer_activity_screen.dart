@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -24,15 +25,58 @@ class CustomerActivityScreen extends StatefulWidget {
 class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
   final TextEditingController searchController = TextEditingController();
   ActivityController controller = Get.put(ActivityController());
+  List<String> addresses = [];
+
 
   @override
   void initState() {
     // TODO: implement initState
     controller.getActivityData(
-        null, widget.tag == "Team" ? widget.id : employeeId);
+        null, widget.tag == "Team" ? widget.id : employeeId).whenComplete(() {
+      getAddressesFromCoordinatesList();
+    });
     controller.getActivityMasterData();
     super.initState();
+    
+
   }
+
+   Future<void> getAddressesFromCoordinatesList() async {
+
+    for (var coordinates in controller.filterActivityDataModel!.data!) {
+      double latitude = coordinates.latitude!;
+      double longitude = coordinates.longitude!;
+
+      try {
+        List<Placemark> placemarks =
+            await placemarkFromCoordinates(latitude, longitude);
+
+        if (placemarks != null && placemarks.isNotEmpty) {
+          Placemark place = placemarks[0];
+          setState(() {
+            addresses
+                .add("${place.street}, ${place.locality}, ${place.country}");
+          });
+        } else {
+          setState(() {
+            addresses.add("Address not found");
+          });
+        }
+      } catch (e) {
+        print("Error: $e");
+        setState(() {
+          addresses.add("Error getting address");
+        });
+      }
+    }
+  }
+  
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -355,6 +399,25 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                                         index]
                                                                     .createdOn
                                                                     .toString());
+
+                                                            double latitude =
+                                                                controller
+                                                                    .filterActivityDataModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .latitude;
+                                                            double longitude =
+                                                                controller
+                                                                    .filterActivityDataModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .longitude;
+                                                            String address =
+                                                                addresses.length >
+                                                                        index
+                                                                    ? addresses[
+                                                                        index]
+                                                                    : '';
                                                             return controller
                                                                         .filterActivityDataModel!
                                                                         .data![
@@ -388,7 +451,9 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                                           Text(
                                                                               "Activity : ${controller.filterActivityDataModel!.data![index].activityName.toString()}",
                                                                               style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-
+                                                                          Text(
+                                                                              "Address : ${address}",
+                                                                              style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                                                                           Text(
                                                                               date,
                                                                               style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700)),
@@ -399,13 +464,14 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                                     ),
                                                                   )
                                                                 : controller
-                                                                            .filterActivityDataModel!
-                                                                            .data![
-                                                                                index]!
-                                                                            .customername!
-                                                                            .toLowerCase()
-                                                                            .contains(searchController.text
-                                                                                .toLowerCase())
+                                                                        .filterActivityDataModel!
+                                                                        .data![
+                                                                            index]!
+                                                                        .customername!
+                                                                        .toLowerCase()
+                                                                        .contains(searchController
+                                                                            .text
+                                                                            .toLowerCase())
                                                                     ? Card(
                                                                         child:
                                                                             Padding(
@@ -431,6 +497,7 @@ class _CustomerActivityScreenState extends State<CustomerActivityScreen> {
                                                                               ),
                                                                               Text("Activity : ${controller.filterActivityDataModel!.data![index].activityName.toString()}", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
 
+                                                                              Text("Address : ${address}", style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                                                                               Text(date, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700)),
 
                                                                               // Divider(),

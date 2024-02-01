@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:shalimar/Controller/activity_controller.dart';
+import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Controller/get_customer_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_note_data_controller.dart';
@@ -20,6 +21,7 @@ import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Controller/timer_controller.dart';
+import 'package:shalimar/Elements/common_date_formet_widget.dart';
 import 'package:shalimar/Elements/timer_widget.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/add_customer_screen.dart';
 import 'package:shalimar/Home_Screen/Customer_Module/CheckIn_Module/collect_payment_screen.dart';
@@ -84,6 +86,8 @@ class _CheckInPageState extends State<CheckInPage> {
       Get.put(GetUserActivityController());
 
   ActivityController activityController = Get.put(ActivityController());
+  CustomerHireDataController customerHireDataController =
+      Get.put(CustomerHireDataController());
 
   TeamsController teamsController = Get.put(TeamsController());
 
@@ -121,10 +125,15 @@ class _CheckInPageState extends State<CheckInPage> {
     coordinates = await exif!.getLatLong();
     setCustomerDataController.lat = coordinates!.latitude;
     setCustomerDataController.long = coordinates!.longitude;
-    setCustomerDataController.image = pickedFile.path;
+    setCustomerDataController.image = pickedFile.name;
 
     setCustomerDataController.fetchData(
-        context: context, territoryId: controller.territoryId);
+        context: context,
+        territoryId: controller.territoryId,
+        customerID: controller.customerId,
+        tag: "Edit Customer");
+
+    customerHireDataController.update();
   }
 
   void _modalBottomSheetMenu() {
@@ -543,7 +552,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                       NetworkImage(profileImage !=
                                                                               null
                                                                           ? profileImage
-                                                                          : ""),
+                                                                          : "",
+                                                                          ),
                                                                   backgroundColor:
                                                                       Colors
                                                                           .transparent,
@@ -698,6 +708,12 @@ class _CheckInPageState extends State<CheckInPage> {
                                                             .length,
                                                         itemBuilder:
                                                             (context, index) {
+                                                          var date = dateFormat(
+                                                              controller
+                                                                  .activityDataModel!
+                                                                  .data![index]
+                                                                  .createdOn
+                                                                  .toString());
                                                           return Padding(
                                                             padding:
                                                                 const EdgeInsets
@@ -741,13 +757,12 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                             5,
                                                                       ),
                                                                       Text(
-                                                                          "Descriptiion: ${controller.activityDataModel!.data![index].activityDescription}"),
+                                                                          "Description: ${controller.activityDataModel!.data![index].activityDescription}"),
                                                                       SizedBox(
                                                                         height:
                                                                             5,
                                                                       ),
-                                                                      Text(
-                                                                          "${controller.activityDataModel!.data![index].createdOn}")
+                                                                      Text(date)
                                                                     ]),
                                                               ),
                                                             ),
@@ -840,6 +855,13 @@ class _CheckInPageState extends State<CheckInPage> {
                                                             itemBuilder:
                                                                 (context,
                                                                     index) {
+                                                              var date = dateFormatWithoutTime(
+                                                                  scheduleDataController
+                                                                      .getScheduleDataModel!
+                                                                      .data![
+                                                                          index]
+                                                                      .date
+                                                                      .toString());
                                                               return Padding(
                                                                 padding:
                                                                     const EdgeInsets
@@ -869,7 +891,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                                 MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               Text("Schedule For: ${scheduleDataController.getScheduleDataModel!.data![index].schdulefor}"),
-                                                                              Text("Date: ${scheduleDataController.getScheduleDataModel!.data![index].date}")
+                                                                              Text("Date: $date")
                                                                             ],
                                                                           ),
                                                                           SizedBox(
@@ -980,6 +1002,14 @@ class _CheckInPageState extends State<CheckInPage> {
                                                               .length,
                                                           itemBuilder:
                                                               (context, index) {
+                                                            var date = dateFormatWithoutTime(
+                                                                dataController
+                                                                    .getcustomerNoteDataModel!
+                                                                    .data![
+                                                                        index]
+                                                                    .createdOn
+                                                                    .toString());
+
                                                             return Padding(
                                                               padding:
                                                                   const EdgeInsets
@@ -1011,7 +1041,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                                                               "Note: ${dataController.getcustomerNoteDataModel!.data![index].note}",
                                                                               style: TextStyle(color: primaryColor),
                                                                             ),
-                                                                            Text("${dataController.getcustomerNoteDataModel!.data![index].createdOn}")
+                                                                            Text("${date}")
                                                                           ],
                                                                         ),
                                                                         SizedBox(

@@ -22,6 +22,8 @@ class LedgerStatementController extends GetxController {
   var idCustomer = "";
   var totalAmount = 0.0;
   var totalBalance = 0.0;
+  var totalDbAmount = 0.0;
+  var totalCrAmount = 0.0;
   LedgerStatementModel? ledgerStatementModel;
 
   getLedgerStatementData(var territoryId, customerId) async {
@@ -69,7 +71,13 @@ class LedgerStatementController extends GetxController {
           for (var i in ledgerStatementModel!
               .ledgerStatementMaster![0].ledgerStatementDetailMaster!) {
             totalAmount = totalAmount + i.creditAmt + i.debitAmt;
-            totalBalance = totalBalance + i.balance;
+            totalDbAmount = totalDbAmount + i.debitAmt;
+            totalCrAmount = totalCrAmount + i.creditAmt;
+            // totalBalance = totalBalance + i.balance;
+            var lastOpeningBalance = ledgerStatementModel!
+                                                  .ledgerStatementMaster![0]
+                                                  .openBalance!;
+            totalBalance = lastOpeningBalance + totalDbAmount - totalCrAmount;
           }
         } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);

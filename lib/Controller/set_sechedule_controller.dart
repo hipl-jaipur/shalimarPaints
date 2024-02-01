@@ -20,7 +20,7 @@ class SetCustomerScheduleController extends GetxController {
   var scheduleDetailsMaster = [].obs;
   GetScheduleDataController scheduleDataController =
   Get.put(GetScheduleDataController());
-  fetchData({required BuildContext context, required String levelCode}) async {
+  fetchData( {required BuildContext context, required String levelCode, required List dataList,}) async {
     try {
       isLoading(true);
 
@@ -39,7 +39,7 @@ class SetCustomerScheduleController extends GetxController {
         "remark": remarkController.text,
         "isvalid": 0,
         "UserID": EmployeeId,
-        "ScheduleDetailsMaster": scheduleDetailsMaster.value
+        "ScheduleDetailsMaster": dataList
       };
 
       Map<String, String> requestHeaders = {

@@ -24,7 +24,8 @@ class SetCustomerDataController extends GetxController {
   var long = 0.0;
   // var state, city,district, locality ;
 
-  fetchData({required BuildContext context, var territoryId}) async {
+  fetchData(
+      {required BuildContext context, var territoryId, customerID, tag}) async {
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -33,17 +34,17 @@ class SetCustomerDataController extends GetxController {
       print('Set Customer Data API called');
 
       final body = {
-        "customerid": territoryId,
-        "customername": customerNameCont.text,
-        "address1": addrsssOneCont.text,
-        "address2": addrsssTwoCont.text,
-        "address3": addrsssThreeCont.text,
-        "city": cityCont.text,
-        "postalcode": postalCodeCont.text,
-        "district": distCont.text,
-        "territoryid": territoryId,
-        "telephone": telephoneCont.text,
-        "potential": localityCont.text,
+        "customerid": tag == "Edit Customer" ? customerID : null,
+        "customername": tag == "Edit Customer" ? null : customerNameCont.text,
+        "address1": tag == "Edit Customer" ? null : addrsssOneCont.text,
+        "address2": tag == "Edit Customer" ? null : addrsssTwoCont.text,
+        "address3": tag == "Edit Customer" ? null : addrsssThreeCont.text,
+        "city": tag == "Edit Customer" ? null : cityCont.text,
+        "postalcode": tag == "Edit Customer" ? null : postalCodeCont.text,
+        "district": tag == "Edit Customer" ? null : distCont.text,
+        "territoryid": tag == "Edit Customer" ? null : territoryId,
+        "telephone": tag == "Edit Customer" ? null : telephoneCont.text,
+        "potential": tag == "Edit Customer" ? null : localityCont.text,
         "Latitude": lat,
         "Longitude": long,
         "Image": image,

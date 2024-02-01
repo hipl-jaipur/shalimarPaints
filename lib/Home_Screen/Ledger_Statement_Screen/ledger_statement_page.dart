@@ -510,23 +510,27 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500),
                                             ),
-                                            Text(
-                                              cont
-                                                  .ledgerStatementModel!
-                                                  .ledgerStatementMaster![0]
-                                                  .customername
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500),
+                                            Flexible(
+                                              child: Text(
+                                                cont
+                                                    .ledgerStatementModel!
+                                                    .ledgerStatementMaster![0]
+                                                    .customername
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
                                             ),
-                                            Text(
-                                              "(${cont.ledgerStatementModel!.ledgerStatementMaster![0].customercode.toString()})",
-                                              style: TextStyle(
-                                                  color: primaryColor,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500),
+                                            Flexible(
+                                              child: Text(
+                                                "(${cont.ledgerStatementModel!.ledgerStatementMaster![0].customercode.toString()})",
+                                                style: TextStyle(
+                                                    color: primaryColor,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -571,16 +575,18 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500),
                                             ),
-                                            Text(
-                                              cont
-                                                  .ledgerStatementModel!
-                                                  .ledgerStatementMaster![0]
-                                                  .address
-                                                  .toString(),
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500),
+                                            Flexible(
+                                              child: Text(
+                                                cont
+                                                    .ledgerStatementModel!
+                                                    .ledgerStatementMaster![0]
+                                                    .address
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -765,7 +771,7 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            "Total:   ",
+                                            "Closing Balance: ",
                                             style: TextStyle(
                                                 fontSize: 12,
                                                 color: primaryLight,
