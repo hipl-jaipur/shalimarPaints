@@ -18,7 +18,7 @@ import '../utils/consts.dart';
 class CustomerHireDataController extends GetxController {
   var isLoading = false.obs;
   // var zoneList = [].obs;
-  var CustomerList = [].obs;
+  // var CustomerList = [].obs;
   var customerId;
   CustomerDataModel? customerDataModel;
   Data? levelData;

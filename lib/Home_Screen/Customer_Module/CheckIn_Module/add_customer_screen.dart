@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:shalimar/Controller/set_customer_data_controller.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../Controller/set_customer_complaint_data_controller.dart';
 
@@ -38,6 +40,8 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   Map<String, Object>? attributes;
   DateTime? shootingDate;
   ExifLatLong? coordinate;
+  Position? _currentPosition;
+
   // String stAddress = '';
 
   Future getImage() async {
@@ -58,26 +62,163 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     shootingDate = await exif!.getOriginalDate();
     coordinate = await exif!.getLatLong();
 
+    // if (coordinate != null) {
     controller.lat = coordinate!.latitude;
 
     controller.long = coordinate!.longitude;
     controller.image = pickedFile.name;
     // controller.state = attributes!.state;
 
-    final coordinates = new Coordinates(controller.lat, controller.long);
-    var address =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = address.first;
+    if (controller.lat == 0.0 && controller.long == 0.0) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final hasPermission = await _handleLocationPermission();
 
-    // on below line we have set the address to string
-    setState(() {
-      // stAddress = first.addressLine.toString();
-      controller.addrsssTwoCont.text = first.adminArea!;
-      controller.cityCont.text = first.locality!;
-      controller.postalCodeCont.text = first.postalCode!;
-      controller.distCont.text = first.locality!;
-      controller.localityCont.text = first.locality!;
+      if (!hasPermission) return;
+      await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high)
+          .then((Position position) {
+        if (this.mounted) {
+          setState(() async {
+            _currentPosition = position;
+            prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
+            prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
+            final coordinates = Coordinates(
+                _currentPosition!.latitude, _currentPosition!.longitude);
+            var address =
+                await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+                    .findAddressesFromCoordinates(coordinates);
+            // await Geocoder.local.findAddressesFromCoordinates(coordinates);
+            var first = address.first;
+
+            // on below line we have set the address to string
+            setState(() {
+              // stAddress = first.addressLine.toString();
+              controller.addrsssTwoCont.text = first.adminArea!;
+              controller.cityCont.text = first.locality!;
+              controller.postalCodeCont.text = first.postalCode!;
+              controller.distCont.text = first.locality!;
+              controller.localityCont.text = first.locality!;
+            });
+          });
+        }
+      }).catchError((e) {
+        debugPrint(e);
+      });
+      // _getCurrentPosition;
+    } else {
+      final coordinates = Coordinates(controller.lat, controller.long);
+      var address =
+          await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+              .findAddressesFromCoordinates(coordinates);
+      // await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = address.first;
+
+      // on below line we have set the address to string
+      setState(() {
+        // stAddress = first.addressLine.toString();
+        controller.addrsssTwoCont.text = first.adminArea!;
+        controller.cityCont.text = first.locality!;
+        controller.postalCodeCont.text = first.postalCode!;
+        controller.distCont.text = first.locality!;
+        controller.localityCont.text = first.locality!;
+      });
+    }
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      if (this.mounted) {
+        setState(() async {
+          _currentPosition = position;
+          prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
+          prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
+          final coordinates = Coordinates(
+              _currentPosition!.latitude, _currentPosition!.longitude);
+          var address =
+              await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+                  .findAddressesFromCoordinates(coordinates);
+          // await Geocoder.local.findAddressesFromCoordinates(coordinates);
+          var first = address.first;
+
+          // on below line we have set the address to string
+          setState(() {
+            // stAddress = first.addressLine.toString();
+            controller.addrsssTwoCont.text = first.adminArea!;
+            controller.cityCont.text = first.locality!;
+            controller.postalCodeCont.text = first.postalCode!;
+            controller.distCont.text = first.locality!;
+            controller.localityCont.text = first.locality!;
+          });
+        });
+      }
+    }).catchError((e) {
+      debugPrint(e);
     });
+
+    // const LocationSettings locationSettings = LocationSettings(
+    //   accuracy: LocationAccuracy.high,
+    //   distanceFilter: 100,
+    // );
+
+    // _determinePosition();
+
+    // StreamSubscription<Position> positionStream =
+    //     Geolocator.getPositionStream(locationSettings: locationSettings)
+    //         .listen((Position? position) {
+    //   print(position == null
+    //       ? _determinePosition()
+    //       : '${position.latitude.toString()}, ${position.longitude.toString()}');
+    //   _currentPosition = position;
+    //   prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
+    //   prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
+    // });
+
+    // final accuracyStatus = await Geolocator.getLocationAccuracy();
+    // switch (accuracyStatus) {
+    //   case LocationAccuracyStatus.reduced:
+    //     // Precise location switch is OFF.
+    //     break;
+    //   case LocationAccuracyStatus.precise:
+    //     // Precise location switch is ON.
+    //     break;
+    //   case LocationAccuracyStatus.unknown:
+    //     // The platform doesn't support this feature, for example an Android device.
+    //     break;
+    // }
+  }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
   }
 
   Future getImageUser() async {
@@ -435,7 +576,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
-                                        readOnly: true,
+                                        readOnly: false,
                                         textCapitalization:
                                             TextCapitalization.words,
                                         autovalidateMode:
@@ -486,7 +627,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
-                                        readOnly: true,
+                                        readOnly: false,
                                         textCapitalization:
                                             TextCapitalization.words,
                                         autovalidateMode:
@@ -537,7 +678,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
-                                        readOnly: true,
+                                        readOnly: false,
                                         textCapitalization:
                                             TextCapitalization.words,
                                         autovalidateMode:
@@ -588,7 +729,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     ),
                                     SizedBox(height: 10),
                                     TextFormField(
-                                        readOnly: true,
+                                        readOnly: false,
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         controller: controller.localityCont,
@@ -639,7 +780,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
                                     TextFormField(
                                         // initialValue: controller.postalCode,
                                         controller: controller.postalCodeCont,
-                                        readOnly: true,
+                                        readOnly: false,
                                         maxLength: 6,
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,

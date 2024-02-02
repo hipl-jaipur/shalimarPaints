@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shalimar/Home_Screen/customer_attendance_screen.dart';
@@ -39,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _getCurrentPosition() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final hasPermission = await _handleLocationPermission();
+
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
@@ -52,6 +55,37 @@ class _MyHomePageState extends State<MyHomePage> {
     }).catchError((e) {
       debugPrint(e);
     });
+
+    // const LocationSettings locationSettings = LocationSettings(
+    //   accuracy: LocationAccuracy.high,
+    //   distanceFilter: 100,
+    // );
+
+    // _determinePosition();
+
+    // StreamSubscription<Position> positionStream =
+    //     Geolocator.getPositionStream(locationSettings: locationSettings)
+    //         .listen((Position? position) {
+    //   print(position == null
+    //       ? _determinePosition()
+    //       : '${position.latitude.toString()}, ${position.longitude.toString()}');
+    //   _currentPosition = position;
+    //   prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
+    //   prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
+    // });
+
+    // final accuracyStatus = await Geolocator.getLocationAccuracy();
+    // switch (accuracyStatus) {
+    //   case LocationAccuracyStatus.reduced:
+    //     // Precise location switch is OFF.
+    //     break;
+    //   case LocationAccuracyStatus.precise:
+    //     // Precise location switch is ON.
+    //     break;
+    //   case LocationAccuracyStatus.unknown:
+    //     // The platform doesn't support this feature, for example an Android device.
+    //     break;
+    // }
   }
 
   Future<bool> _handleLocationPermission() async {
@@ -83,6 +117,34 @@ class _MyHomePageState extends State<MyHomePage> {
     return true;
   }
 
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,10 +164,12 @@ class _MyHomePageState extends State<MyHomePage> {
       this._page = page;
     });
   }
+
   getId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     employeeId = prefs.getInt("EmployeeId")!;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,8 +182,14 @@ class _MyHomePageState extends State<MyHomePage> {
               EmployeeName: widget.EmployeeName,
               Email: widget.Email,
               DesignationName: widget.DesignationName),
-          CustomerAttendanceScreen(tag: true, id: 0,),
-          CustomerActivityScreen(tag: '', id:employeeId,),
+          CustomerAttendanceScreen(
+            tag: true,
+            id: 0,
+          ),
+          CustomerActivityScreen(
+            tag: '',
+            id: employeeId,
+          ),
           CustomerSupportScreen(),
           CustomerSettingScreen(),
         ],

@@ -138,7 +138,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return GetBuilder<CustomerHireDataController>(builder: (hireDataController) => 
+    Card(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -169,6 +170,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                           width: 250,
                           child: Text(
                               widget.customerList[widget.index].levelName
+                              // hireDataController.customerList[widget.index].levelName
                                   .toString(),
                               maxLines: 2,
                               style: TextStyle(
@@ -219,17 +221,6 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
               ],
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 15),
-          //   child: Text(
-          //     "Level",
-          //     style: TextStyle(
-          //         color: blackTextColor,
-          //         fontSize: 14,
-          //         fontWeight: FontWeight.bold),
-          //     textAlign: TextAlign.start,
-          //   ),
-          // ),
           SizedBox(
             height: 5,
           ),
@@ -240,17 +231,16 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
               children: [
                 Expanded(
                     child: Container(
+                      height: 35,
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       color: Colors.red,
                       border: Border.all(color: Colors.red.shade500),
                       borderRadius: BorderRadius.circular(20)),
-                  child: Flexible(
-                    child: Text(
-                      "OD: ${widget.customerList[widget.index].os!.toInt()}",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.center,
-                    ),
+                  child: Text(
+                    "OD: ${widget.customerList[widget.index].os!.toInt()}",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
                   ),
                 )),
                 SizedBox(
@@ -258,6 +248,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                 ),
                 Expanded(
                     child: Container(
+                      height: 35,
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       color: Colors.yellow,
@@ -274,6 +265,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                 ),
                 Expanded(
                     child: Container(
+                      height: 35,
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       color: Colors.green,
@@ -345,16 +337,6 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             profileSkip = value!.data![0].parameterValue;
                           }
                         });
-
-                        // Get.to(
-                        //     CheckInPage(
-                        //       tag: "",
-                        //     ),
-                        //     arguments: [
-                        //       distance,
-                        //       getGlobalParameterDataController.profileSkip
-                        //     ]);
-
                         getGlobalParameterDataController.distance = distance;
                         Get.to(
                           CheckInPage(
@@ -404,8 +386,6 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      // if (controller.checkIn == false) {
-                      //  // controller.checkIn = true;
                       controller.fetchData(
                           levelCode: widget.customerList[widget.index].levelCode
                               .toString(),
@@ -431,32 +411,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                       noteDataController.fetchData(widget
                           .customerList[widget.index].levelCode
                           .toString());
-                      //   controller.isCheckinOnSite.value = false;
-                      // }
-                      // else {
-                      //   showDialog(
-                      //       context: context,
-                      //       builder: (BuildContext context) {
-                      //         return AlertDialog(
-                      //           title: Text('Alert!!'),
-                      //           content: Text(
-                      //               "You are already checkin at ${controller.levelName}, Please CheckOut at ${controller.levelName}"),
-                      //           actions: <Widget>[
-                      //             ElevatedButton(
-                      //               child: Text('Ok'),
-                      //               onPressed: () {
-                      //                 // Navigator.pop(context);
-                      //                 Get.back();
-
-                      //                 // Get.off(
-                      //                 //   CheckInPage(),
-                      //                 // );
-                      //               },
-                      //             ),
-                      //           ],
-                      //         );
-                      //       });
-                      // }
+                      
                     },
                     child: Container(
                       padding: EdgeInsets.all(8),
@@ -476,7 +431,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
           )
         ]),
       ),
-    );
+    ));
   }
 }
 
