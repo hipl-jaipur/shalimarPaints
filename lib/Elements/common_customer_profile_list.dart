@@ -138,300 +138,319 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CustomerHireDataController>(builder: (hireDataController) => 
-    Card(
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.person_sharp,
-                      size: 50,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Flexible(
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 250,
-                          child: Text(
-                              widget.customerList[widget.index].levelName
-                              // hireDataController.customerList[widget.index].levelName
-                                  .toString(),
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: blackTextColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400)),
+    return GetBuilder<CustomerHireDataController>(
+        builder: (hireDataController) => Card(
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 80,
+                              height: 80,
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.person_sharp,
+                                  size: 50,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 250,
+                                      child: Text(
+                                          widget.customerList[widget.index]
+                                              .levelName
+                                              // hireDataController.customerList[widget.index].levelName
+                                              .toString(),
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              color: blackTextColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400)),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                        "ID:${widget.customerList[widget.index].levelCode.toString()}",
+                                        style: TextStyle(
+                                            color: blackTextColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400)),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    SizedBox(
+                                      width: 250,
+                                      child: Text(
+                                        widget
+                                            .customerList[widget.index].address1
+                                            .toString(),
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                    ),
+                                    Text(
+                                        distance != 0.0 && distance != null
+                                            ? "Distance: ${distance!.toInt()} KM Away"
+                                            : "Distance: ? KM Away",
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400)),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 5,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                                child: Container(
+                              height: 35,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  border:
+                                      Border.all(color: Colors.red.shade500),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                "OD: ${widget.customerList[widget.index].os!.toInt()}",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center,
+                              ),
+                            )),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                                child: Container(
+                              height: 35,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  border:
+                                      Border.all(color: Colors.yellow.shade500),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                "Target: ${widget.customerList[widget.index].target!.toInt()}",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center,
+                              ),
+                            )),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                                child: Container(
+                              height: 35,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  border:
+                                      Border.all(color: Colors.green.shade500),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                "Sale: ${widget.customerList[widget.index].sale!.toInt()}",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center,
+                              ),
+                            ))
+                          ],
                         ),
-                        Text(
-                            "ID:${widget.customerList[widget.index].levelCode.toString()}",
-                            style: TextStyle(
-                                color: blackTextColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400)),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          width: 250,
-                          child: Text(
-                            widget.customerList[widget.index].address1
-                                .toString(),
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.start,
-                          ),
-                        ),
-                        Text(
-                            distance != 0.0 && distance != null
-                                ? "Distance: ${distance!.toInt()} KM Away"
-                                : "Distance: ? KM Away",
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400)),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                    child: Container(
-                      height: 35,
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      border: Border.all(color: Colors.red.shade500),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    "OD: ${widget.customerList[widget.index].os!.toInt()}",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: Container(
-                      height: 35,
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Colors.yellow,
-                      border: Border.all(color: Colors.yellow.shade500),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    "Target: ${widget.customerList[widget.index].target!.toInt()}",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                  ),
-                )),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                    child: Container(
-                      height: 35,
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      border: Border.all(color: Colors.green.shade500),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    "Sale: ${widget.customerList[widget.index].sale!.toInt()}",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
-                  ),
-                ))
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      if (controller.checkIn == false) {
-                        controller.checkIn = true;
-                        controller.update();
-                        timerService.timer = Timer.periodic(
-                            Duration(seconds: 1), timerService.onTimerTick);
-                        controller.checkinCustomer = widget
-                            .customerList[widget.index].levelName
-                            .toString();
-                        controller.fetchData(
-                            levelCode: widget
-                                .customerList[widget.index].levelCode
-                                .toString(),
-                            activityID: 8);
-                        showSnackBar(
-                            "You are CheckedIn at",
-                            widget.customerList[widget.index].levelName
-                                .toString(),
-                            Colors.greenAccent);
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (controller.checkIn == false) {
+                                    controller.checkIn = true;
+                                    controller.update();
+                                    timerService.timer = Timer.periodic(
+                                        Duration(seconds: 1),
+                                        timerService.onTimerTick);
+                                    controller.checkinCustomer = widget
+                                        .customerList[widget.index].levelName
+                                        .toString();
+                                    controller.fetchData(
+                                        levelCode: widget
+                                            .customerList[widget.index]
+                                            .levelCode
+                                            .toString(),
+                                        activityID: 8);
+                                    showSnackBar(
+                                        "You are CheckedIn at",
+                                        widget.customerList[widget.index]
+                                            .levelName
+                                            .toString(),
+                                        Colors.greenAccent);
 
-                        controller.customerId =
-                            widget.customerList[widget.index].levelID!.toInt();
-                        controller.territoryId = widget.territoryId.toInt();
-                        controller.territoryName = widget.territoryName;
+                                    controller.customerId = widget
+                                        .customerList[widget.index].levelID!
+                                        .toInt();
+                                    controller.territoryId =
+                                        widget.territoryId.toInt();
+                                    controller.territoryName =
+                                        widget.territoryName;
 
-                        controller.checkInlevelName.value = widget
-                            .customerList[widget.index].levelName
-                            .toString();
-                        controller.levelCode.value = widget
-                            .customerList[widget.index].levelCode
-                            .toString();
-                        controller.levelName.value = widget
-                            .customerList[widget.index].levelName
-                            .toString();
-                        controller.levelAddress.value = widget
-                            .customerList[widget.index].address1
-                            .toString();
-                        controller.isCheckinOnSite.value = true;
+                                    controller.checkInlevelName.value = widget
+                                        .customerList[widget.index].levelName
+                                        .toString();
+                                    controller.levelCode.value = widget
+                                        .customerList[widget.index].levelCode
+                                        .toString();
+                                    controller.levelName.value = widget
+                                        .customerList[widget.index].levelName
+                                        .toString();
+                                    controller.levelAddress.value = widget
+                                        .customerList[widget.index].address1
+                                        .toString();
+                                    controller.isCheckinOnSite.value = true;
 
-                        teamsController.getEmployData(employeeId);
+                                    teamsController.getEmployData(employeeId);
 
-                        getGlobalParameterDataController
-                            .fetchData()
-                            .then((value) {
-                          if (value != null) {
-                            profileSkip = value!.data![0].parameterValue;
-                          }
-                        });
-                        getGlobalParameterDataController.distance = distance;
-                        Get.to(
-                          CheckInPage(
-                            tag: "Check in On-site",
-                          ),
-                        );
-                        noteDataController.fetchData(widget
-                            .customerList[widget.index].levelCode
-                            .toString());
-                      } else {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Alert!!'),
-                                content: Text(
-                                    "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    child: Text('Ok'),
-                                    onPressed: () {
-                                      // Navigator.pop(context);
-                                      Get.back();
-                                    },
+                                    getGlobalParameterDataController
+                                        .fetchData()
+                                        .then((value) {
+                                      if (value != null) {
+                                        profileSkip =
+                                            value!.data![0].parameterValue;
+                                      }
+                                    });
+                                    getGlobalParameterDataController.distance =
+                                        distance;
+                                    Get.to(
+                                      CheckInPage(
+                                        tag: "Check in On-site",
+                                      ),
+                                    );
+                                    noteDataController.fetchData(widget
+                                        .customerList[widget.index].levelCode
+                                        .toString());
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Alert!!'),
+                                            content: Text(
+                                                "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
+                                            actions: <Widget>[
+                                              ElevatedButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  // Navigator.pop(context);
+                                                  Get.back();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: primaryColor),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Text(
+                                    "Check in On-site",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
                                   ),
-                                ],
-                              );
-                            });
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: primaryColor),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(
-                        "Check in On-site",
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      controller.fetchData(
-                          levelCode: widget.customerList[widget.index].levelCode
-                              .toString(),
-                          activityID: 9);
-                      showSnackBar(
-                          "You are CheckedIn at",
-                          widget.customerList[widget.index].levelName
-                              .toString(),
-                          Colors.greenAccent);
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.fetchData(
+                                      levelCode: widget
+                                          .customerList[widget.index].levelCode
+                                          .toString(),
+                                      activityID: 9);
+                                  showSnackBar(
+                                      "You are CheckedIn at",
+                                      widget
+                                          .customerList[widget.index].levelName
+                                          .toString(),
+                                      Colors.greenAccent);
 
-                      Get.to(
-                        CheckInPage(tag: "Check in Off-site"),
-                      );
-                      controller.levelCode.value = widget
-                          .customerList[widget.index].levelCode
-                          .toString();
-                      controller.levelName.value = widget
-                          .customerList[widget.index].levelName
-                          .toString();
-                      controller.levelAddress.value =
-                          widget.customerList[widget.index].address1.toString();
+                                  Get.to(
+                                    CheckInPage(tag: "Check in Off-site"),
+                                  );
+                                  controller.levelCode.value = widget
+                                      .customerList[widget.index].levelCode
+                                      .toString();
+                                  controller.levelName.value = widget
+                                      .customerList[widget.index].levelName
+                                      .toString();
+                                  controller.levelAddress.value = widget
+                                      .customerList[widget.index].address1
+                                      .toString();
 
-                      noteDataController.fetchData(widget
-                          .customerList[widget.index].levelCode
-                          .toString());
-                      
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: primaryColor),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(
-                        "Check in Off-site",
-                        style: TextStyle(fontWeight: FontWeight.w500),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          )
-        ]),
-      ),
-    ));
+                                  noteDataController.fetchData(widget
+                                      .customerList[widget.index].levelCode
+                                      .toString());
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: primaryColor),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Text(
+                                    "Check in Off-site",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ]),
+              ),
+            ));
   }
 }
 

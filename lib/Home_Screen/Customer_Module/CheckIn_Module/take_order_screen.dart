@@ -132,9 +132,10 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                       ),
                                       SizedBox(
                                         height: 20,
-                                      ),
+                                      ),stockController
+                                              .filterAvailableStockDataModel !=null?
                                       stockController
-                                              .filterAvailableStockDataModel!
+                                              .filterAvailableStockDataModel
                                               .isNotEmpty
                                           ? Expanded(
                                               child: ListView.builder(
@@ -177,7 +178,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold)))),
-                                            ),
+                                            ):SizedBox(),
                                       Visibility(
                                         visible: stockController.isVisible,
                                         child: Padding(

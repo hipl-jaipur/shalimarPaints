@@ -62,8 +62,6 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
         .toList();
 
     print('customerList: $customerList');
-
-    
   }
 
   @override
@@ -444,71 +442,75 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
               var dealerCre = preferences.getInt("DealerCreation");
 
               if (dealerCreation != null) {
-                if (dealerCre! < int.parse(dealerCreation)) {
-                  Get.to(AddCustomerPage(
-                    territoryId: levelID,
-                    territoryName: customerName,
-                    tag: "Add Customer",
-                  ));
-                  teamsController.update();
-                } else {
-                  Get.dialog(
-                      barrierDismissible: true,
-                      Dialog(
-                        backgroundColor: Colors.white,
-                        child: WillPopScope(
-                          onWillPop: () async => true,
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text(
-                                    "You have already Created Customers.",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
+                if (dealerCre != null) {
+                  if (dealerCre! < int.parse(dealerCreation)) {
+                    Get.to(AddCustomerPage(
+                      territoryId: levelID,
+                      territoryName: customerName,
+                      tag: "Add Customer",
+                    ));
+                    teamsController.update();
+                  } else {
+                    Get.dialog(
+                        barrierDismissible: true,
+                        Dialog(
+                          backgroundColor: Colors.white,
+                          child: WillPopScope(
+                            onWillPop: () async => true,
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 20,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.back();
-                                  },
-                                  child: Center(
-                                    child: Container(
-                                      height: 40,
-                                      width: 60,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: primaryColor,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(10))),
-                                      child: Text(
-                                        "Ok",
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Text(
+                                      "You have already Created Customers.",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: Center(
+                                      child: Container(
+                                        height: 40,
+                                        width: 60,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: primaryColor,
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10))),
+                                        child: Text(
+                                          "Ok",
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ));
+                        ));
+                  }
                 }
               }
             },
