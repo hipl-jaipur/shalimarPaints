@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -105,6 +106,7 @@ class _CheckInPageState extends State<CheckInPage> {
   DateTime? shootingDate;
   ExifLatLong? coordinates;
   File? _image;
+  bool isDismissible = false;
 
   Future getImage() async {
     // pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -139,7 +141,7 @@ class _CheckInPageState extends State<CheckInPage> {
   void _modalBottomSheetMenu() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await showModalBottomSheet(
-          isDismissible: true,
+          isDismissible: isDismissible,
           context: context,
           builder: (builder) {
             return Obx(
@@ -148,7 +150,7 @@ class _CheckInPageState extends State<CheckInPage> {
                       child: CircularProgressIndicator(),
                     )
                   : WillPopScope(
-                      onWillPop: () async => true,
+                      onWillPop: () async => isDismissible,
                       child: Container(
                         color: Colors
                             .transparent, //could change this to Color(0xFF737373),
@@ -184,7 +186,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                 const SizedBox(
                                   height: 5.0,
                                 ),
-                                Text("Profile Skip: $skipProfile/$profileSkip",
+                                Text(
+                                    "Profile Skip: ${teamsController.skipProfile.value}/$profileSkip",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 10,
@@ -196,6 +199,10 @@ class _CheckInPageState extends State<CheckInPage> {
                                     onTap: () {
                                       // _pickImage();
                                       getImage();
+                                      isDismissible = true;
+                                      timerService.timer = Timer.periodic(
+                                          Duration(seconds: 1),
+                                          timerService.onTimerTick);
                                     },
                                     child: Container(
                                       decoration:
@@ -232,7 +239,12 @@ class _CheckInPageState extends State<CheckInPage> {
                                                 controller.levelCode.value,
                                             activityID: 11);
                                         teamsController.update();
+                                        isDismissible = true;
+                                        timerService.timer = Timer.periodic(
+                                            Duration(seconds: 1),
+                                            timerService.onTimerTick);
                                       } else {
+                                        isDismissible = false;
                                         Get.dialog(
                                             barrierDismissible: false,
                                             Dialog(
@@ -362,6 +374,7 @@ class _CheckInPageState extends State<CheckInPage> {
     // if (Get.arguments[0] == 0.0) {
     //   _modalBottomSheetMenu();
     // }
+    teamsController.getEmployData(employeeId);
     if (widget.tag == "Check in On-site") {
       if (getGlobalParameterDataController.distance == 0.0) {
         _modalBottomSheetMenu();
@@ -380,6 +393,21 @@ class _CheckInPageState extends State<CheckInPage> {
     // noteDataController.fetchData(controller.levelCode.value);
     scheduleDataController.fetchData(controller.levelCode.value, 0, true);
     activityController.getActivityData(controller.levelCode.value, employeeId);
+
+    // // Configure the background fetch
+    // BackgroundFetch.configure(
+    //   BackgroundFetchConfig(
+    //     minimumFetchInterval: 15, // Set the minimum fetch interval in minutes
+    //     stopOnTerminate: false,
+    //     startOnBoot: true,
+    //     enableHeadless: true,
+    //   ),
+    //   (String taskId) async {
+    //     // Perform your background task here
+    //     print("[BackgroundFetch] Task received: $taskId");
+    //     BackgroundFetch.finish(taskId);
+    //   },
+    // );
   }
 
   getId() async {
@@ -1290,7 +1318,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                   //   ),
                                   //   onTap: () {
                                   //     Navigator.of(context).pop();
-                                     
+
                                   //   },
                                   // ),
                                 ],

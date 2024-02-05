@@ -6,12 +6,6 @@ class TimerService extends GetxService {
   RxInt elapsedSeconds = 0.obs;
   late Timer timer;
 
- /* @override
-  onInit() {
-    super.onInit();
-    // timer = Timer.periodic(Duration(seconds: 1), onTimerTick);
-  }*/
-
   formattedTime({required int timeInSecond}) {
     int sec = timeInSecond % 60;
     int min = (timeInSecond / 60).floor();
@@ -45,6 +39,7 @@ class TimerService extends GetxService {
   @override
   void onClose() {
     timer.cancel();
+    
     super.onClose();
   }
 }

@@ -55,6 +55,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
   String? _currentAddress;
   Position? _currentPosition;
   double? distance = 0.0;
+  double? distanceInMeter = 0.0;
   var profileSkip;
 
   Future<void> _getCurrentPosition() async {
@@ -80,7 +81,9 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
           widget.customerList[widget.index].longitude,
         );
 
-        print("Distance: $distance");
+        distanceInMeter = distance! * 1000;
+        print("Distance In KM: $distance");
+        print("Distance In Meter: $distanceInMeter");
       } else {
         distance = 0.0;
       }
@@ -232,20 +235,32 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Expanded(
                                 child: Container(
                               height: 35,
-                              padding: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   color: Colors.red,
                                   border:
                                       Border.all(color: Colors.red.shade500),
                                   borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                "OD: ${widget.customerList[widget.index].os!.toInt()}",
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Flexible(
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "OS>60: ${widget.customerList[widget.index].os!.toInt()}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 10.0),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
                               ),
                             )),
                             SizedBox(
@@ -254,16 +269,19 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Expanded(
                                 child: Container(
                               height: 35,
-                              padding: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   color: Colors.yellow,
                                   border:
                                       Border.all(color: Colors.yellow.shade500),
                                   borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                "Target: ${widget.customerList[widget.index].target!.toInt()}",
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  "Target: ${widget.customerList[widget.index].target!.toInt()}",
+                                  style: TextStyle(fontSize: 10.0),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             )),
                             SizedBox(
@@ -272,16 +290,21 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Expanded(
                                 child: Container(
                               height: 35,
-                              padding: EdgeInsets.all(5),
+                              padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                   color: Colors.green,
                                   border:
                                       Border.all(color: Colors.green.shade500),
                                   borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                "Sale: ${widget.customerList[widget.index].sale!.toInt()}",
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
+                              child: Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(
+                                    "Sale: ${widget.customerList[widget.index].sale!.toInt()}",
+                                    style: TextStyle(fontSize: 10.0),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                               ),
                             ))
                           ],
@@ -297,83 +320,113 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  if (controller.checkIn == false) {
-                                    controller.checkIn = true;
-                                    controller.update();
-                                    timerService.timer = Timer.periodic(
-                                        Duration(seconds: 1),
-                                        timerService.onTimerTick);
-                                    controller.checkinCustomer = widget
-                                        .customerList[widget.index].levelName
-                                        .toString();
-                                    controller.fetchData(
-                                        levelCode: widget
-                                            .customerList[widget.index]
-                                            .levelCode
-                                            .toString(),
-                                        activityID: 8);
-                                    showSnackBar(
-                                        "You are CheckedIn at",
-                                        widget.customerList[widget.index]
-                                            .levelName
-                                            .toString(),
-                                        Colors.greenAccent);
-
-                                    controller.customerId = widget
-                                        .customerList[widget.index].levelID!
-                                        .toInt();
-                                    controller.territoryId =
-                                        widget.territoryId.toInt();
-                                    controller.territoryName =
-                                        widget.territoryName;
-
-                                    controller.checkInlevelName.value = widget
-                                        .customerList[widget.index].levelName
-                                        .toString();
-                                    controller.levelCode.value = widget
-                                        .customerList[widget.index].levelCode
-                                        .toString();
-                                    controller.levelName.value = widget
-                                        .customerList[widget.index].levelName
-                                        .toString();
-                                    controller.levelAddress.value = widget
-                                        .customerList[widget.index].address1
-                                        .toString();
-                                    controller.isCheckinOnSite.value = true;
-
-                                    teamsController.getEmployData(employeeId);
-
-                                    getGlobalParameterDataController
-                                        .fetchData()
-                                        .then((value) {
-                                      if (value != null) {
-                                        profileSkip =
-                                            value!.data![0].parameterValue;
+                                  if (distanceInMeter! <= 100) {
+                                    if (controller.checkIn == false) {
+                                      controller.checkIn = true;
+                                      controller.update();
+                                      if (distance != 0.0 && distance != null) {
+                                        timerService.timer = Timer.periodic(
+                                            Duration(seconds: 1),
+                                            timerService.onTimerTick);
                                       }
-                                    });
-                                    getGlobalParameterDataController.distance =
-                                        distance;
-                                    Get.to(
-                                      CheckInPage(
-                                        tag: "Check in On-site",
-                                      ),
-                                    );
-                                    noteDataController.fetchData(widget
-                                        .customerList[widget.index].levelCode
-                                        .toString());
+
+                                      controller.checkinCustomer = widget
+                                          .customerList[widget.index].levelName
+                                          .toString();
+                                      controller.fetchData(
+                                          levelCode: widget
+                                              .customerList[widget.index]
+                                              .levelCode
+                                              .toString(),
+                                          activityID: 8);
+                                      showSnackBar(
+                                          "You are CheckedIn at",
+                                          widget.customerList[widget.index]
+                                              .levelName
+                                              .toString(),
+                                          Colors.greenAccent);
+
+                                      controller.customerId = widget
+                                          .customerList[widget.index].levelID!
+                                          .toInt();
+                                      controller.territoryId =
+                                          widget.territoryId.toInt();
+                                      controller.territoryName =
+                                          widget.territoryName;
+
+                                      controller.checkInlevelName.value = widget
+                                          .customerList[widget.index].levelName
+                                          .toString();
+                                      controller.levelCode.value = widget
+                                          .customerList[widget.index].levelCode
+                                          .toString();
+
+                                      controller.checkInlevelCode.value = widget
+                                          .customerList[widget.index].levelCode
+                                          .toString();
+
+                                      controller.levelName.value = widget
+                                          .customerList[widget.index].levelName
+                                          .toString();
+                                      controller.levelAddress.value = widget
+                                          .customerList[widget.index].address1
+                                          .toString();
+                                      controller.isCheckinOnSite.value = true;
+
+                                      teamsController.getEmployData(employeeId);
+
+                                      getGlobalParameterDataController
+                                          .fetchData()
+                                          .then((value) {
+                                        if (value != null) {
+                                          profileSkip =
+                                              value!.data![0].parameterValue;
+                                        }
+                                      });
+                                      getGlobalParameterDataController
+                                          .distance = distance;
+
+                                      Get.to(
+                                        CheckInPage(
+                                          tag: "Check in On-site",
+                                        ),
+                                      );
+
+                                      noteDataController.fetchData(widget
+                                          .customerList[widget.index].levelCode
+                                          .toString());
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Alert!!'),
+                                              content: Text(
+                                                  "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
+                                              actions: <Widget>[
+                                                ElevatedButton(
+                                                  child: Text('Ok'),
+                                                  onPressed: () {
+                                                    // Navigator.pop(context);
+                                                    Get.back();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    }
                                   } else {
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text('Alert!!'),
-                                            content: Text(
-                                                "You are already checkin at ${controller.checkinCustomer}, Please CheckOut at ${controller.checkinCustomer}"),
+                                            title: const Text('Alert!!'),
+                                            content: const Text(
+                                                "You are not on-site"),
                                             actions: <Widget>[
                                               ElevatedButton(
-                                                child: Text('Ok'),
+                                                child: const Text('Ok'),
                                                 onPressed: () {
-                                                  // Navigator.pop(context);
                                                   Get.back();
                                                 },
                                               ),

@@ -28,6 +28,8 @@ class GetAvailableStockDataController extends GetxController {
   int counter = 0;
   double amount = 0.0;
   bool catCheck = false;
+  // List<TextEditingController> qtyTextEditController=[];
+  TextEditingController qtyTextEditController = TextEditingController();
 
   List<Data> filterAvailableStockDataModel = [];
 
@@ -92,6 +94,7 @@ class GetAvailableStockDataController extends GetxController {
                   "totalPrice":totalAmount,*/
               "Qty": counter,
               "mrp": amount,
+              "controller": TextEditingController(text: counter.toString())
               // "category": productCategory.trim()
             });
           }

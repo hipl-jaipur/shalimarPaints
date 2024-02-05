@@ -7,7 +7,6 @@ import 'package:shalimar/Home_Screen/Customer_Module/customer_detail_screen.dart
 import 'package:shalimar/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class TimerWidget extends StatelessWidget {
   String? tag;
   TimerWidget({super.key, this.tag});
@@ -72,7 +71,9 @@ class TimerWidget extends StatelessWidget {
                 // controller.timer!.cancel();
                 // _timer!.cancel();
                 controller.fetchData(
-                    levelCode: controller.levelCode.value, activityID: 10);
+                    levelCode: controller.checkInlevelCode.value,
+                    activityID: 10);
+
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {

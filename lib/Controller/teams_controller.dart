@@ -15,6 +15,7 @@ import '../utils/consts.dart';
 class TeamsController extends GetxController {
   var isLoading = false;
   var isLoad = false.obs;
+  var skipProfile = 0.obs;
 
   TeamsDataModel? temasDataList;
   EmployeeDetailsModel? employeeDetailsModel;
@@ -189,7 +190,6 @@ class TeamsController extends GetxController {
       }
     } finally {
       isLoading = false;
-
       update();
     }
   }
@@ -239,6 +239,8 @@ class TeamsController extends GetxController {
 
           prefs.setInt('ProfileSkip',
               employeeDetailsModel!.data![0].profileSkip!.toInt());
+          skipProfile.value =
+              employeeDetailsModel!.data![0].profileSkip!.toInt();
           prefs.setInt('DealerCreation',
               employeeDetailsModel!.data![0].dealerCreation!.toInt());
           // filterStockDataModel = StockShowModel.fromJson(result);

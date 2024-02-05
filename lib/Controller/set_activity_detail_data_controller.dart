@@ -32,6 +32,7 @@ class SetActivityDetailDataController extends GetxController {
   var isTimerVisible = false.obs;
   var levelName = "".obs;
   var checkInlevelName = "".obs;
+  var checkInlevelCode = "".obs;
   var levelCode = "".obs;
   var levelAddress = "".obs;
   var isCheckinOnSite = false.obs;

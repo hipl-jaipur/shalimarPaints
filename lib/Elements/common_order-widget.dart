@@ -45,6 +45,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
     }
 
     print(stockDataController.myList.length);
+    // stockDataController.qtyTextEditController[widget.index].text = "0";
+    stockDataController.myList[widget.index]["controller"].text = "0";
   }
 
   @override
@@ -94,10 +96,16 @@ class _TakeOrderListState extends State<TakeOrderList> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
+                            children: [
                               IconButton(
                                   icon: Icon(Icons.remove_circle),
                                   onPressed: () {
+                                    // stockDataController.myList[widget.index]
+                                    //         ["Qty"] =
+                                    //     int.parse(stockDataController
+                                    //         .myList[widget.index]["controller"]
+                                    //         .text);
+
                                     setState(() {
                                       stockDataController.catCheck = false;
                                       if (stockDataController
@@ -105,6 +113,12 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                           0) {
                                         stockDataController.myList[widget.index]
                                             ["Qty"]--;
+
+                                        // stockDataController
+                                        //     .myList[widget.index]["controller"]
+                                        //     .text = (stockDataController
+                                        //         .myList[widget.index]["Qty"])
+                                        //     .toString();
 
                                         stockDataController.totalQty =
                                             stockDataController.totalQty
@@ -146,6 +160,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                                 .dpl)! *
                                             stockDataController
                                                 .myList[widget.index]["Qty"];
+
                                         stockDataController.myList[widget.index]
                                                 ["productcode"] =
                                             widget.productList[widget.index]
@@ -192,20 +207,78 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                     });
                                   },
                                   color: primaryColor),
+
                               Text(stockDataController.myList[widget.index]
                                       ["Qty"]
                                   .toString()),
+
+                              // Container(
+                              //   width: 20,
+                              //   child: TextFormField(
+                              //       onTap: () {
+                              //         //  stockDataController.isVisible = true;
+                              //         // if (cont.editingController.text == "0") {
+                              //         //   cont.editingController.clear();
+                              //         // }
+                              //       },
+                              //       textAlign: TextAlign.center,
+                              //       style: TextStyle(
+                              //           fontSize: 12,
+                              //           color: Colors.black,
+                              //           fontWeight: FontWeight.bold),
+                              //       inputFormatters: [
+                              //         FilteringTextInputFormatter.digitsOnly,
+                              //         FilteringTextInputFormatter.allow(
+                              //             RegExp(r'[0-9]'))
+                              //       ],
+                              //       decoration: InputDecoration(
+                              //         hintText: "0",
+                              //         hintStyle: TextStyle(
+                              //             fontSize: 15,
+                              //             color: Colors.black,
+                              //             fontWeight: FontWeight.bold),
+                              //         border: InputBorder.none,
+                              //         contentPadding: EdgeInsets.zero,
+                              //       ),
+                              //       onChanged: (value) {
+                              //         setState(() {
+                              //           stockDataController.isVisible = true;
+
+                              //         });
+                              //       },
+                              //       textInputAction: TextInputAction.go,
+                              //       keyboardType: TextInputType.number,
+                              //       autofocus: false,
+                              //       controller: stockDataController
+                              //           .myList[widget.index]["controller"]
+                              //       ),
+                              // ),
+
                               IconButton(
                                 icon: Icon(Icons.add_circle),
                                 color: primaryColor,
                                 onPressed: () {
+                                  // stockDataController.myList[widget.index]
+                                  //         ["Qty"] =
+                                  //     int.parse(stockDataController
+                                  //         .myList[widget.index]["controller"]
+                                  //         .text);
+
                                   setState(() {
                                     stockDataController.catCheck = false;
                                     stockDataController.isVisible = true;
 
                                     //qty
+                                    // currentValue++;
+
                                     stockDataController.myList[widget.index]
                                         ["Qty"]++;
+
+                                    // stockDataController
+                                    //     .myList[widget.index]["controller"]
+                                    //     .text = (stockDataController
+                                    //         .myList[widget.index]["Qty"])
+                                    //     .toString();
 
                                     stockDataController.totalQty =
                                         stockDataController.totalQty.toInt() +
@@ -423,5 +496,13 @@ class _TakeOrderListState extends State<TakeOrderList> {
                   ),
                 );
         });
+  }
+
+  void updateQuantity(int index, int newQuantity) {
+    setState(() {
+      stockDataController.myList[widget.index]["Qty"] = newQuantity;
+      stockDataController.myList[widget.index]["controller"].text =
+          newQuantity.toString();
+    });
   }
 }
