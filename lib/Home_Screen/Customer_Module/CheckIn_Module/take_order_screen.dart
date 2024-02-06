@@ -132,53 +132,59 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                       ),
                                       SizedBox(
                                         height: 20,
-                                      ),stockController
-                                              .filterAvailableStockDataModel !=null?
+                                      ),
                                       stockController
-                                              .filterAvailableStockDataModel
-                                              .isNotEmpty
-                                          ? Expanded(
-                                              child: ListView.builder(
-                                              itemCount: stockController
-                                                  .filterAvailableStockDataModel!
-                                                  .length,
-                                              itemBuilder: (context, index) {
-                                                return stockController
-                                                        .filterAvailableStockDataModel![
-                                                            index]
-                                                        .productdesc!
-                                                        .toLowerCase()
-                                                        .contains(
-                                                            _searchController
-                                                                .text
-                                                                .toLowerCase())
-                                                    ? TakeOrderList(
-                                                        index: index,
-                                                        context: context,
-                                                        productList: stockController
-                                                            .filterAvailableStockDataModel!)
-                                                    : SizedBox();
-                                              },
-                                            ))
-                                          : Card(
-                                              child: Container(
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              15.0),
-                                                      child: Text(
-                                                          "No Product Available",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)))),
-                                            ):SizedBox(),
+                                                  .filterAvailableStockDataModel !=
+                                              null
+                                          ? stockController
+                                                  .filterAvailableStockDataModel
+                                                  .isNotEmpty
+                                              ? Expanded(
+                                                  child: ListView.builder(
+                                                  itemCount: stockController
+                                                      .filterAvailableStockDataModel!
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return stockController
+                                                            .filterAvailableStockDataModel![
+                                                                index]
+                                                            .productdesc!
+                                                            .toLowerCase()
+                                                            .contains(
+                                                                _searchController
+                                                                    .text
+                                                                    .toLowerCase())
+                                                        ? TakeOrderList(
+                                                            index: index,
+                                                            context: context,
+                                                            productList:
+                                                                stockController
+                                                                    .filterAvailableStockDataModel!)
+                                                        : SizedBox();
+                                                  },
+                                                ))
+                                              : Card(
+                                                  child: Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(15.0),
+                                                          child: Text(
+                                                              "No Product Available",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)))),
+                                                )
+                                          : SizedBox(),
                                       Visibility(
                                         visible: stockController.isVisible,
                                         child: Padding(
@@ -277,19 +283,17 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                             if (setOrderDataController
                                                                     .orderEditTag ==
                                                                 "Edit") {
-
-
                                                               setOrderDataController
-                                                                  .addOrder().whenComplete(() {
-                                                             /*   setOrderDataController
+                                                                  .addOrder()
+                                                                  .whenComplete(
+                                                                      () {
+                                                                /*   setOrderDataController
                                                                     .addAndEdit();*/
                                                                 setOrderDataController
                                                                     .update();
 
                                                                 Get.back();
-
                                                               });
-
                                                             } else {
                                                               Get.to(MyCartPage(
                                                                 tag: "",
