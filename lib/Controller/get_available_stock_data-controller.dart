@@ -94,7 +94,7 @@ class GetAvailableStockDataController extends GetxController {
                   "totalPrice":totalAmount,*/
               "Qty": counter,
               "mrp": amount,
-              "controller": TextEditingController(text: counter.toString())
+              // "controller": TextEditingController(text: counter.toString())
               // "category": productCategory.trim()
             });
           }
