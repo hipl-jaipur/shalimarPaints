@@ -317,6 +317,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                                       ),
                                                       GestureDetector(
                                                         onTap: () {
+                                                          Navigator.of(context).pop();
                                                           Get.back();
                                                           _modalBottomSheetMenu();
                                                         },
