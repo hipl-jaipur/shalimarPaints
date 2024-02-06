@@ -133,6 +133,10 @@ class CustomerHireDataController extends GetxController {
               Get.to(MyCustomerTerriotoryPage());
             } else if (customerList.length > 0) {
               Get.to(MyCustomerDetailsPage());
+            } else{
+              print("AAAA");
+              showSnackBar("Error!!", "No Data Available", Colors.redAccent);
+
             }
           } else {
             showSnackBar("Error!!", data['Message'], Colors.redAccent);

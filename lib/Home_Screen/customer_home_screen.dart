@@ -23,6 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Controller/set_activity_detail_data_controller.dart';
 import '../Controller/target_vs_actual_controller.dart';
+import '../Elements/commom_snackbar_widget.dart';
 import '../Elements/timer_widget.dart';
 import 'Target_Vs_Actual_Screen/target_vas_actual_region_screen.dart';
 import 'Target_Vs_Actual_Screen/target_vs_actual_customer_screen.dart';
@@ -324,6 +325,11 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   0) {
                                                 Get.to(OutStandingCustomer());
                                               }
+                                              else{
+                                                print("aa");
+                                                showSnackBar("Error!!", "No Data Available", Colors.redAccent);
+
+                                              }
                                               // Get.to(OutStandingScreen());
                                             },
                                             child: Container(
@@ -412,6 +418,10 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   0) {
                                                 Get.to(
                                                     TargetVsActualCustomer());
+                                              }
+                                              else{
+                                                showSnackBar("Error!!", "No Data Available", Colors.redAccent);
+
                                               }
                                               // Get.to(OutStandingScreen());
                                             },

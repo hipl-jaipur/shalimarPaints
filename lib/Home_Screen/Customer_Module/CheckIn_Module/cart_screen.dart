@@ -109,7 +109,7 @@ class _MyCartPageState extends State<MyCartPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    print("add");
     print(setOrderDataController.myCartList);
     print(setOrderDataController.myCartList.length);
 
@@ -118,6 +118,9 @@ class _MyCartPageState extends State<MyCartPage> {
                 init: SetOrderDataController(),
                 builder: (setOrderDataController) {
                   setOrderDataController.myCartList.removeWhere((item) => item["Qty"] == 0);
+                  print("remove");
+                  print(setOrderDataController.myCartList);
+                  print(setOrderDataController.myCartList.length);
                   setOrderDataController.myCartEditList
                       .removeWhere((item) => item["Qty"] == 0);
                   return SafeArea(
@@ -219,6 +222,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                             // for (var i in myCartList) {
                                             //   total = total + i['mrp'];
                                             // }
+
                                             return Card(
                                               child: Container(
                                                   margin: EdgeInsets.symmetric(
@@ -341,7 +345,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                                     setOrderDataController.orderEditTag ==
                                                                             "Edit"
                                                                         ? "${setOrderDataController.myCartEditList[index]["Qty"]}"
-                                                                        : "${stockController.myList[index]["Qty"].toString()}",
+                                                                        : "${setOrderDataController.myCartList[index]["Qty"].toString()}",
                                                                     style: TextStyle(
                                                                         color:
                                                                             blackTextColor,
@@ -371,7 +375,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                                     setOrderDataController.orderEditTag ==
                                                                             "Edit"
                                                                         ? "\u{20B9}${setOrderDataController.myCartEditList[index]['mrp']!.toStringAsFixed(2)}/NOS"
-                                                                        : "\u{20B9}${stockController.myList[index]["mrp"].toStringAsFixed(2)}/NOS",
+                                                                        : "\u{20B9}${setOrderDataController.myCartList[index]["mrp"].toStringAsFixed(2)}/NOS",
                                                                     style: TextStyle(
                                                                         color:
                                                                             blackTextColor,
@@ -472,11 +476,11 @@ class _MyCartPageState extends State<MyCartPage> {
                                                                             .myCartEditList);
                                                                       }*/
                                                                     } else {
-                                                                      if (stockController.myList[index]
+                                                                      if (setOrderDataController.myCartList[index]
                                                                               [
                                                                               "Qty"] !=
                                                                           0) {
-                                                                        stockController.myList[index]
+                                                                        setOrderDataController.myCartList[index]
                                                                             [
                                                                             "Qty"]--;
 
@@ -485,9 +489,9 @@ class _MyCartPageState extends State<MyCartPage> {
                                                                                 .toInt() -
                                                                             1;
 
-                                                                        stockController.myList[index]
+                                                                        setOrderDataController.myCartList[index]
                                                                             [
-                                                                            "mrp"] = stockController.myList[index]
+                                                                            "mrp"] = setOrderDataController.myCartList[index]
                                                                                 ["mrp"] -
                                                                             setOrderDataController.myCartList[index]["dpl"];
 
@@ -513,7 +517,7 @@ class _MyCartPageState extends State<MyCartPage> {
                                                                         .orderEditTag ==
                                                                     "Edit"
                                                                 ? "${setOrderDataController.myCartEditList[index]["Qty"]}"
-                                                                : "${stockController.myList[index]["Qty"].toString()}"),
+                                                                : "${setOrderDataController.myCartList[index]["Qty"].toString()}"),
                                                             IconButton(
                                                               icon: Icon(Icons
                                                                   .add_circle),
@@ -590,15 +594,13 @@ class _MyCartPageState extends State<MyCartPage> {
                                                                     print(setOrderDataController
                                                                         .myCartEditList);
                                                                   } else {
-                                                                    stockController
-                                                                            .myList[index]
+                                                                    setOrderDataController.myCartList[index]
                                                                         [
                                                                         "Qty"]++;
 
-                                                                    stockController
-                                                                            .myList[index]
+                                                                    setOrderDataController.myCartList[index]
                                                                         [
-                                                                        "mrp"] = stockController.myList[index]
+                                                                        "mrp"] = setOrderDataController.myCartList[index]
                                                                             [
                                                                             "mrp"] +
                                                                         setOrderDataController.myCartList[index]

@@ -36,6 +36,7 @@ Future<void> onInit() async {
 }
 
   getStockData(var marketId,idDepot) async {
+
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('Stock Data api called');

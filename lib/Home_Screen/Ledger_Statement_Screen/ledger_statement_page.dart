@@ -417,8 +417,8 @@ class _LedgerStatementPageState extends State<LedgerStatementPage> {
                                                                       .toString(),
                                                                   style:
                                                                       TextStyle(
-                                                                    color: cont.idCustomer ==
-                                                                            getCustomerDataController.getCustomerData!.data![index].customerid
+                                                                    color: cont.customerName ==
+                                                                            getCustomerDataController.getCustomerData!.data![index].customername
                                                                         ? primaryColor
                                                                         : Colors.black,
                                                                     fontSize:

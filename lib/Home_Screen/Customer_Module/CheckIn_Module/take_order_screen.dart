@@ -239,9 +239,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                       .length;
                                                               i++) {
                                                             if (controller
-                                                                        .myList[i]
-                                                                    [
-                                                                    'category'] !=
+                                                                        .myList[i]['category'] !=
                                                                 null) {
                                                               if (controller
                                                                           .myList[
@@ -295,6 +293,9 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                 Get.back();
                                                               });
                                                             } else {
+
+                                                              print("add Order");
+                                                              setOrderDataController.total=0.0;
                                                               Get.to(MyCartPage(
                                                                 tag: "",
                                                               ));
