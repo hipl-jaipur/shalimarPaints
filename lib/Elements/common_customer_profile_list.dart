@@ -248,17 +248,16 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                       Border.all(color: Colors.red.shade500),
                                   borderRadius: BorderRadius.circular(20)),
                               child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Flexible(
-                                  child: FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: Text(
-                                      "OS>60: ${widget.customerList[widget.index].os!.toInt()}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10.0),
-                                      textAlign: TextAlign.center,
-                                    ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                                child: FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                  child: Text(
+                                    "OS>60: ${widget.customerList[widget.index].os!.toInt()}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 10.0),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                               ),
@@ -269,7 +268,8 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Expanded(
                                 child: Container(
                               height: 35,
-                              padding: EdgeInsets.all(10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 16),
                               decoration: BoxDecoration(
                                   color: Colors.yellow,
                                   border:
@@ -278,7 +278,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                               child: FittedBox(
                                 fit: BoxFit.fitWidth,
                                 child: Text(
-                                  "Target: ${widget.customerList[widget.index].target!.toInt()}",
+                                  "T: ${widget.customerList[widget.index].target!.toInt()}",
                                   style: TextStyle(fontSize: 10.0),
                                   textAlign: TextAlign.center,
                                 ),
@@ -290,20 +290,19 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Expanded(
                                 child: Container(
                               height: 35,
-                              padding: EdgeInsets.all(15),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 16),
                               decoration: BoxDecoration(
                                   color: Colors.green,
                                   border:
                                       Border.all(color: Colors.green.shade500),
                                   borderRadius: BorderRadius.circular(20)),
-                              child: Flexible(
-                                child: FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Text(
-                                    "Sale: ${widget.customerList[widget.index].sale!.toInt()}",
-                                    style: TextStyle(fontSize: 10.0),
-                                    textAlign: TextAlign.center,
-                                  ),
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  "S: ${widget.customerList[widget.index].sale!.toInt()}",
+                                  style: TextStyle(fontSize: 10.0),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ))

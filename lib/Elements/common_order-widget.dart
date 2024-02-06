@@ -100,6 +100,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
                               IconButton(
                                   icon: Icon(Icons.remove_circle),
                                   onPressed: () {
+                                    
                                     // stockDataController.myList[widget.index]
                                     //         ["Qty"] =
                                     //     int.parse(stockDataController
