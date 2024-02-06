@@ -361,6 +361,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                           ),
                                           GestureDetector(
                                             onTap: () {
+                                              stockController.isSelectSku=false;
+                                              stockController.isSelectDepot=false;
+                                              stockController.isVisibleMarketSector= false;
+                                              stockController.isVisibleMarketDepot= false;
+                                              stockController.showList=false;
+                                              stockController.depotName = "Select Depot";
+                                              stockController.marketSectorName = "Select Market Sector";
+
                                               Get.to(StockScreen());
                                             },
                                             child: Container(
