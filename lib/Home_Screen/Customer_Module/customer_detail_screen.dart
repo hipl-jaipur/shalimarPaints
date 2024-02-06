@@ -162,14 +162,14 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                                   )),
                                               suffixIcon: IconButton(
                                                   onPressed: () {
+                                                    // // customerHireDataController
+                                                    // //     .getCustomerHireData(
+                                                    // //         "Update");
                                                     // customerHireDataController
-                                                    //     .getCustomerHireData(
-                                                    //         "Update");
-                                                    customerHireDataController
-                                                        .update();
+                                                    //     .update();
                                                   },
                                                   icon: Icon(
-                                                    Icons.refresh,
+                                                    Icons.sort,
                                                     color: primaryColor,
                                                     size: 40,
                                                   )),

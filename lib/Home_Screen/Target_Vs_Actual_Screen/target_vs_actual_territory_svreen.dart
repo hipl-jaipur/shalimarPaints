@@ -127,169 +127,51 @@ class _TargetVsActualTerritoryState extends State<TargetVsActualTerritory> {
                             SizedBox(
                               height: 15,
                             ),
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount:
-                                targetVsActualController.filteredTerritorList!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return targetVsActualController
-                                      .filteredTerritorList![index]!.levelName!
-                                      .toLowerCase()
-                                      .contains(searchController.text.toLowerCase())
-                                      ? Card(
-                                    child: Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            targetVsActualController
-                                                .filteredCustomerList =
-                                                targetVsActualController
-                                                    .filteredAllCustomerList!
-                                                    .where((item) =>
-                                                item.parentLevelID ==
-                                                    targetVsActualController
-                                                        .filteredTerritorList![
-                                                    index]
-                                                        .levelID)
-                                                    .toList();
-                                            print(targetVsActualController
-                                                .filteredDepotList!.length);
-                                            Get.to(TargetVsActualCustomer());
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(12),
-                                            color: primaryLight,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(
+                            Obx(() => targetVsActualController.isLoading.value
+                              ? Center(
+                                  child: CircularProgressIndicator(color: Colors.white),
+                                )
+                              : Expanded(
+                                child: ListView.builder(
+                                  itemCount:
+                                  targetVsActualController.filteredTerritorList!.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return targetVsActualController
+                                        .filteredTerritorList![index]!.levelName!
+                                        .toLowerCase()
+                                        .contains(searchController.text.toLowerCase())
+                                        ? Card(
+                                      child: Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              targetVsActualController
+                                                  .filteredCustomerList =
                                                   targetVsActualController
-                                                      .filteredTerritorList![index]
-                                                      .levelName
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                      color: blackTextColor,
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w500,
-                                                      fontFamily: 'Nunito Sans'),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(8),
-                                          color: Color(0xffFFD7D7),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Target",
-                                                style: TextStyle(
-                                                    color: blackTextColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Nunito Sans'),
-                                              ),
-                                              Text(
-                                                targetVsActualController
-                                                    .filteredTerritorList![
-                                                index]
-                                                    .target ==
-                                                    null
-                                                    ? "0"
-                                                    : formatNumber(
-                                                    targetVsActualController
-                                                        .filteredTerritorList![
-                                                    index]
-                                                        .target!
-                                                        .truncate()),
-                                                style: TextStyle(
-                                                    color: blackTextColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Nunito Sans'),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(8),
-                                          color: Color(0xffFFD7D7),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Sales",
-                                                style: TextStyle(
-                                                    color: blackTextColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Nunito Sans'),
-                                              ),
-                                              Text(
-                                                targetVsActualController
-                                                    .filteredTerritorList![
-                                                index]
-                                                    .sales ==
-                                                    null
-                                                    ? "0"
-                                                    : formatNumber(
-                                                    targetVsActualController
-                                                        .filteredTerritorList![
-                                                    index]
-                                                        .sales!
-                                                        .truncate()),
-                                                style: TextStyle(
-                                                    color: blackTextColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Nunito Sans'),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(8),
-                                          color: Color(0xffFFD7D7),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Achivement",
-                                                style: TextStyle(
-                                                    color: blackTextColor,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: 'Nunito Sans'),
-                                              ),
-                                              Row(
+                                                      .filteredAllCustomerList!
+                                                      .where((item) =>
+                                                  item.parentLevelID ==
+                                                      targetVsActualController
+                                                          .filteredTerritorList![
+                                                      index]
+                                                          .levelID)
+                                                      .toList();
+                                              print(targetVsActualController
+                                                  .filteredDepotList!.length);
+                                              Get.to(TargetVsActualCustomer());
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.all(12),
+                                              color: primaryLight,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
                                                     targetVsActualController
-                                                        .filteredTerritorList![
-                                                    index]
-                                                        .achivementPer ==
-                                                        null
-                                                        ? "0"
-                                                        : formatNumber(
-                                                        targetVsActualController
-                                                            .filteredTerritorList![
-                                                        index]
-                                                            .achivementPer!
-                                                            .truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w500,
-                                                        fontFamily: 'Nunito Sans'),
-                                                  ),
-                                                  Text(
-                                                    "%",
+                                                        .filteredTerritorList![index]
+                                                        .levelName
+                                                        .toString(),
                                                     style: TextStyle(
                                                         color: blackTextColor,
                                                         fontSize: 16,
@@ -297,17 +179,140 @@ class _TargetVsActualTerritoryState extends State<TargetVsActualTerritory> {
                                                         fontFamily: 'Nunito Sans'),
                                                   ),
                                                 ],
-                                              )
-                                            ],
+                                              ),
+                                            ),
                                           ),
-                                        ),
-
-                                        // Divider(),
-                                      ],
-                                    ),
-                                  )
-                                      : SizedBox();
-                                },
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            color: Color(0xffFFD7D7),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Target",
+                                                  style: TextStyle(
+                                                      color: blackTextColor,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: 'Nunito Sans'),
+                                                ),
+                                                Text(
+                                                  targetVsActualController
+                                                      .filteredTerritorList![
+                                                  index]
+                                                      .target ==
+                                                      null
+                                                      ? "0"
+                                                      : formatNumber(
+                                                      targetVsActualController
+                                                          .filteredTerritorList![
+                                                      index]
+                                                          .target!
+                                                          .truncate()),
+                                                  style: TextStyle(
+                                                      color: blackTextColor,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: 'Nunito Sans'),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            color: Color(0xffFFD7D7),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Sales",
+                                                  style: TextStyle(
+                                                      color: blackTextColor,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: 'Nunito Sans'),
+                                                ),
+                                                Text(
+                                                  targetVsActualController
+                                                      .filteredTerritorList![
+                                                  index]
+                                                      .sales ==
+                                                      null
+                                                      ? "0"
+                                                      : formatNumber(
+                                                      targetVsActualController
+                                                          .filteredTerritorList![
+                                                      index]
+                                                          .sales!
+                                                          .truncate()),
+                                                  style: TextStyle(
+                                                      color: blackTextColor,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: 'Nunito Sans'),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            color: Color(0xffFFD7D7),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Achivement",
+                                                  style: TextStyle(
+                                                      color: blackTextColor,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w500,
+                                                      fontFamily: 'Nunito Sans'),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      targetVsActualController
+                                                          .filteredTerritorList![
+                                                      index]
+                                                          .achivementPer ==
+                                                          null
+                                                          ? "0"
+                                                          : formatNumber(
+                                                          targetVsActualController
+                                                              .filteredTerritorList![
+                                                          index]
+                                                              .achivementPer!
+                                                              .truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontFamily: 'Nunito Sans'),
+                                                    ),
+                                                    Text(
+                                                      "%",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontFamily: 'Nunito Sans'),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                              
+                                          // Divider(),
+                                        ],
+                                      ),
+                                    )
+                                        : SizedBox();
+                                  },
+                                ),
                               ),
                             )
                           ],

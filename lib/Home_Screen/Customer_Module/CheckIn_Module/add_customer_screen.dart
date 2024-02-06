@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_exif/native_exif.dart';
 import 'package:shalimar/Controller/set_customer_data_controller.dart';
+import 'package:shalimar/Controller/upload_image_controller.dart';
 import 'package:shalimar/utils/colors.dart';
 import 'package:shalimar/utils/images.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,6 +42,8 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   DateTime? shootingDate;
   ExifLatLong? coordinate;
   Position? _currentPosition;
+  ImageUploadController uploadImageController =
+      Get.put(ImageUploadController());
 
   // String stAddress = '';
 
@@ -56,6 +59,11 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
         _image = File(pickedFile.path);
       }
     });
+    complaintController.uploadFileChunked(_image!.path).then((value) {
+      // paymentController.imagsPayment=value['Data'];
+      print(value['Data']);
+      controller.image = value['Data'];
+    });
 
     exif = await Exif.fromPath(pickedFile!.path);
     attributes = await exif!.getAttributes();
@@ -66,7 +74,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     controller.lat = coordinate!.latitude;
 
     controller.long = coordinate!.longitude;
-    controller.image = pickedFile.name;
+    // controller.image = pickedFile.name;
     // controller.state = attributes!.state;
 
     if (controller.lat == 0.0 && controller.long == 0.0) {

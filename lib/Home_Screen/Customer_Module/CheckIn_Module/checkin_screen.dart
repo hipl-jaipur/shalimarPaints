@@ -17,6 +17,7 @@ import 'package:shalimar/Controller/get_user_activity_master_data_controller.dar
 import 'package:shalimar/Controller/plant_data_controller.dart';
 import 'package:shalimar/Controller/product_data_controller.dart';
 import 'package:shalimar/Controller/set_activity_detail_data_controller.dart';
+import 'package:shalimar/Controller/set_customer_complaint_data_controller.dart';
 import 'package:shalimar/Controller/set_customer_data_controller.dart';
 import 'package:shalimar/Controller/set_order_data_controller.dart';
 import 'package:shalimar/Controller/subcategory_data_controller.dart';
@@ -99,6 +100,8 @@ class _CheckInPageState extends State<CheckInPage> {
   var profileSkip, skipProfile;
   File? _imageFile;
   final List<File> imagesList = [];
+  SetCustomerComplaintDataController complaintController =
+      Get.put(SetCustomerComplaintDataController());
 
   XFile? pickedFile;
   Exif? exif;
@@ -121,19 +124,32 @@ class _CheckInPageState extends State<CheckInPage> {
       }
     });
 
+    
+
     exif = await Exif.fromPath(pickedFile!.path);
     attributes = await exif!.getAttributes();
     shootingDate = await exif!.getOriginalDate();
     coordinates = await exif!.getLatLong();
     setCustomerDataController.lat = coordinates!.latitude;
     setCustomerDataController.long = coordinates!.longitude;
-    setCustomerDataController.image = pickedFile.name;
+    // setCustomerDataController.image = pickedFile.name;
 
-    setCustomerDataController.fetchData(
-        context: context,
-        territoryId: controller.territoryId,
-        customerID: controller.customerId,
-        tag: "Edit Customer");
+    // setCustomerDataController.fetchData(
+    //     context: context,
+    //     territoryId: controller.territoryId,
+    //     customerID: controller.customerId,
+    //     tag: "Edit Customer");
+
+    complaintController.uploadFileChunked(_image!.path).then((value) {
+      // paymentController.imagsPayment=value['Data'];
+      print(value['Data']);
+      setCustomerDataController.image = value['Data'];
+      setCustomerDataController.fetchData(
+          context: context,
+          territoryId: controller.territoryId,
+          customerID: controller.customerId,
+          tag: "Edit Customer");
+    });
 
     customerHireDataController.update();
   }

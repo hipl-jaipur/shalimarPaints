@@ -131,268 +131,273 @@ class _OutStandingRegionState extends State<OutStandingRegion> {
                                 SizedBox(
                                   height: 15,
                                 ),
-                                Expanded(
-                                  child: ListView.builder(
-                                    itemCount: outStandingController.filteredRegionList!.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return  outStandingController.filteredRegionList![index]!
-                                          .levelName!
-                                          .toLowerCase()
-                                          .contains(searchController
-                                          .text
-                                          .toLowerCase())?Card(
-                                        child: Column(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                outStandingController.filteredDepotList = outStandingController
-                                                    .filteredAllDepotList!.where((item) => item.parentLevelID == outStandingController.filteredRegionList![index].levelID ).toList();
-                                                print(outStandingController.filteredDepotList!.length);
-                                                Get.to(OutStandingDepot());
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.all(12),
-                                                color: primaryLight,
+                                Obx(() => outStandingController.isLoading.value
+                              ? Center(
+                                  child: CircularProgressIndicator(color: Colors.white),
+                                )
+                              : Expanded(
+                                    child: ListView.builder(
+                                      itemCount: outStandingController.filteredRegionList!.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return  outStandingController.filteredRegionList![index]!
+                                            .levelName!
+                                            .toLowerCase()
+                                            .contains(searchController
+                                            .text
+                                            .toLowerCase())?Card(
+                                          child: Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  outStandingController.filteredDepotList = outStandingController
+                                                      .filteredAllDepotList!.where((item) => item.parentLevelID == outStandingController.filteredRegionList![index].levelID ).toList();
+                                                  print(outStandingController.filteredDepotList!.length);
+                                                  Get.to(OutStandingDepot());
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(12),
+                                                  color: primaryLight,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        outStandingController.filteredRegionList![index].levelName.toString(),
+                                                        style: TextStyle(
+                                                            color: blackTextColor,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.w500,
+                                                            fontFamily: 'Nunito Sans'),
+                                                      ),
+                                                      Text(outStandingController.filteredRegionList![index].bucketTotal==null?"0":formatNumber(outStandingController.filteredRegionList![index].bucketTotal.truncate()),
+                                                        style: TextStyle(
+                                                            color: blackTextColor,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.w500,
+                                                            fontFamily: 'Nunito Sans'),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      outStandingController.filteredRegionList![index].levelName.toString(),
+                                                      "0-30 Days",
                                                       style: TextStyle(
                                                           color: blackTextColor,
                                                           fontSize: 16,
-                                                          fontWeight: FontWeight.w500,
-                                                          fontFamily: 'Nunito Sans'),
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
                                                     ),
-                                                    Text(outStandingController.filteredRegionList![index].bucketTotal==null?"0":formatNumber(outStandingController.filteredRegionList![index].bucketTotal.truncate()),
+                                                    Text(outStandingController.filteredRegionList![index].age030==null?"0":formatNumber(outStandingController.filteredRegionList![index].age030.truncate()),
                                                       style: TextStyle(
                                                           color: blackTextColor,
                                                           fontSize: 16,
-                                                          fontWeight: FontWeight.w500,
-                                                          fontFamily: 'Nunito Sans'),
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
                                                     )
                                                   ],
                                                 ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "0-30 Days",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(outStandingController.filteredRegionList![index].age030==null?"0":formatNumber(outStandingController.filteredRegionList![index].age030.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "31-60 Days",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Text(outStandingController.filteredRegionList![index].age3160==null?"0":formatNumber(outStandingController.filteredRegionList![index].age3160.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "31-60 Days",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(outStandingController.filteredRegionList![index].age3160==null?"0":formatNumber(outStandingController.filteredRegionList![index].age3160.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "61-90 Days",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Text(outStandingController.filteredRegionList![index].age6190==null?"0":formatNumber(outStandingController.filteredRegionList![index].age6190.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "61-90 Days",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(outStandingController.filteredRegionList![index].age6190==null?"0":formatNumber(outStandingController.filteredRegionList![index].age6190.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "91-120 Days",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Text(outStandingController.filteredRegionList![index].age91120==null?"0":formatNumber(outStandingController.filteredRegionList![index].age6190.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "91-120 Days",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(outStandingController.filteredRegionList![index].age91120==null?"0":formatNumber(outStandingController.filteredRegionList![index].age6190.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "121-150 Days",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Text(outStandingController.filteredRegionList![index].age121150==null?"0":formatNumber(outStandingController.filteredRegionList![index].age121150.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "121-150 Days",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(outStandingController.filteredRegionList![index].age121150==null?"0":formatNumber(outStandingController.filteredRegionList![index].age121150.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "151-180 Days",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Text(outStandingController.filteredRegionList![index].age151180==null?"0":formatNumber(outStandingController.filteredRegionList![index].age151180.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "151-180 Days",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(outStandingController.filteredRegionList![index].age151180==null?"0":formatNumber(outStandingController.filteredRegionList![index].age151180.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Over 181 Days",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Text(outStandingController.filteredRegionList![index].age181Above==null?"0":formatNumber(outStandingController.filteredRegionList![index].age181Above.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Over 181 Days",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(outStandingController.filteredRegionList![index].age181Above==null?"0":formatNumber(outStandingController.filteredRegionList![index].age181Above.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-
-                                            // Divider(),
-
-                                          ],
-                                        ),
-                                      ):SizedBox();
-                                    },
+                                  
+                                              // Divider(),
+                                  
+                                            ],
+                                          ),
+                                        ):SizedBox();
+                                      },
+                                    ),
                                   ),
                                 )
                               ],

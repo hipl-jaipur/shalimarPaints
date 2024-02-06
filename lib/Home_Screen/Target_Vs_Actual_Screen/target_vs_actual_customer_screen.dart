@@ -131,177 +131,183 @@ class _TargetVsActualCustomerState extends State<TargetVsActualCustomer> {
                                 SizedBox(
                                   height: 15,
                                 ),
-                                Expanded(
-                                  child:targetVsActualController.filteredCustomerList.isNotEmpty? ListView.builder(
-                                    itemCount: targetVsActualController.filteredCustomerList!.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return targetVsActualController.filteredCustomerList![index]!
-                                          .levelName!
-                                          .toLowerCase()
-                                          .contains(searchController
-                                          .text
-                                          .toLowerCase())?Card(
-                                        child: Column(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                // outStandingController.filteredCustomerList = outStandingController
-                                                //     .filteredAllCustomerList!.where((item) => item.parentLevelID == outStandingController.filteredTerritorList![index].levelID ).toList();
-                                                // print(outStandingController.filteredDepotList!.length);
-                                                // Get.to(OutStandingRegion());
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.all(12),
-                                                color: primaryLight,
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-
-                                                      children: [
-                                                        CircleAvatar(child: Icon(Icons.person),),
-                                                        SizedBox(width: 5,),
-                                                        Flexible(
-                                                          child: Container(
-                                                            child: FittedBox(
-                                                              fit: BoxFit.fill,
-                                                              child: Text(
-                                                                "${targetVsActualController.filteredCustomerList![index].levelName.toString()}(${ targetVsActualController.filteredCustomerList![index].levelCode.toString()})",
-                                                                style: TextStyle(
-                                                                    color: blackTextColor,
-                                                                    fontSize: 16,
-                                                                    fontWeight: FontWeight.w500,
-                                                                    fontFamily: 'NUnit Sans'),
+                                Obx(
+() => targetVsActualController.isLoading.value
+                              ? Center(
+                                  child: CircularProgressIndicator(color: Colors.white),
+                                )
+                              : Expanded(
+                                    child:targetVsActualController.filteredCustomerList.isNotEmpty? ListView.builder(
+                                      itemCount: targetVsActualController.filteredCustomerList!.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return targetVsActualController.filteredCustomerList![index]!
+                                            .levelName!
+                                            .toLowerCase()
+                                            .contains(searchController
+                                            .text
+                                            .toLowerCase())?Card(
+                                          child: Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // outStandingController.filteredCustomerList = outStandingController
+                                                  //     .filteredAllCustomerList!.where((item) => item.parentLevelID == outStandingController.filteredTerritorList![index].levelID ).toList();
+                                                  // print(outStandingController.filteredDepotList!.length);
+                                                  // Get.to(OutStandingRegion());
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(12),
+                                                  color: primaryLight,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                  
+                                                        children: [
+                                                          CircleAvatar(child: Icon(Icons.person),),
+                                                          SizedBox(width: 5,),
+                                                          Flexible(
+                                                            child: Container(
+                                                              child: FittedBox(
+                                                                fit: BoxFit.fill,
+                                                                child: Text(
+                                                                  "${targetVsActualController.filteredCustomerList![index].levelName.toString()}(${ targetVsActualController.filteredCustomerList![index].levelCode.toString()})",
+                                                                  style: TextStyle(
+                                                                      color: blackTextColor,
+                                                                      fontSize: 16,
+                                                                      fontWeight: FontWeight.w500,
+                                                                      fontFamily: 'NUnit Sans'),
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-
-
-                                                      ],
+                                  
+                                  
+                                                        ],
+                                                      ),
+                                  
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Target",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
                                                     ),
-
+                                                    Text(targetVsActualController.filteredCustomerList![index].target==null?"0":formatNumber(targetVsActualController.filteredCustomerList![index].target!.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
                                                   ],
                                                 ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Target",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(targetVsActualController.filteredCustomerList![index].target==null?"0":formatNumber(targetVsActualController.filteredCustomerList![index].target!.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Sales",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Text(targetVsActualController.filteredCustomerList![index].sales==null?"0":formatNumber(targetVsActualController.filteredCustomerList![index].sales!.truncate()),
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Sales",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Text(targetVsActualController.filteredCustomerList![index].sales==null?"0":formatNumber(targetVsActualController.filteredCustomerList![index].sales!.truncate()),
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  )
-                                                ],
+                                              Container(
+                                                padding: EdgeInsets.all(8),
+                                                color: Color(0xffFFD7D7),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Achivement",
+                                                      style: TextStyle(
+                                                          color: blackTextColor,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          fontFamily:
+                                                          'Nunito Sans'),
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        Text(targetVsActualController.filteredCustomerList![index].achivementPer==null?"0":formatNumber(targetVsActualController.filteredCustomerList![index].achivementPer!.truncate()),
+                                                          style: TextStyle(
+                                                              color: blackTextColor,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                              FontWeight.w500,
+                                                              fontFamily:
+                                                              'Nunito Sans'),
+                                                        ),  Text("%",
+                                                          style: TextStyle(
+                                                              color: blackTextColor,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                              FontWeight.w500,
+                                                              fontFamily:
+                                                              'Nunito Sans'),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              color: Color(0xffFFD7D7),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Achivement",
-                                                    style: TextStyle(
-                                                        color: blackTextColor,
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                        fontFamily:
-                                                        'Nunito Sans'),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Text(targetVsActualController.filteredCustomerList![index].achivementPer==null?"0":formatNumber(targetVsActualController.filteredCustomerList![index].achivementPer!.truncate()),
-                                                        style: TextStyle(
-                                                            color: blackTextColor,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                            FontWeight.w500,
-                                                            fontFamily:
-                                                            'Nunito Sans'),
-                                                      ),  Text("%",
-                                                        style: TextStyle(
-                                                            color: blackTextColor,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                            FontWeight.w500,
-                                                            fontFamily:
-                                                            'Nunito Sans'),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-
-
-                                            // Divider(),
-
-                                          ],
-                                        ),
-                                      ):SizedBox();
-                                    },
-                                  ):Center(
-                                    child: Text(
-                                      "No Data Available",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight:
-                                          FontWeight.w500),
+                                  
+                                  
+                                              // Divider(),
+                                  
+                                            ],
+                                          ),
+                                        ):SizedBox();
+                                      },
+                                    ):Center(
+                                      child: Text(
+                                        "No Data Available",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight:
+                                            FontWeight.w500),
+                                      ),
                                     ),
                                   ),
                                 )

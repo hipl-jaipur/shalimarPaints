@@ -55,7 +55,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
   String? _currentAddress;
   Position? _currentPosition;
   double? distance = 0.0;
-  double? distanceInMeter = 0.0;
+  int? distanceInMeter = 0;
   var profileSkip;
 
   Future<void> _getCurrentPosition() async {
@@ -81,7 +81,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
           widget.customerList[widget.index].longitude,
         );
 
-        distanceInMeter = distance! * 1000;
+        distanceInMeter = distance!.toInt() * 1000;
         print("Distance In KM: $distance");
         print("Distance In Meter: $distanceInMeter");
       } else {
