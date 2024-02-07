@@ -31,9 +31,10 @@ class GetAvailableStockDataController extends GetxController {
   double amount = 0.0;
   bool catCheck = false;
   // List<TextEditingController> qtyTextEditController=[];
-  TextEditingController qtyTextEditController = TextEditingController();
+  // TextEditingController qtyTextEditController = TextEditingController();
 
   List<Data> filterAvailableStockDataModel = [];
+  List<TextEditingController> controllers = [];
 
   @override
   Future<void> onInit() async {
@@ -96,7 +97,7 @@ class GetAvailableStockDataController extends GetxController {
                   "totalPrice":totalAmount,*/
               "Qty": counter,
               "mrp": amount,
-              "controller": TextEditingController(text: counter.toString())
+              // "controller": TextEditingController(text: counter.toString())
               // "category": productCategory.trim()
             });
           }

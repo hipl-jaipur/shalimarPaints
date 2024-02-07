@@ -35,7 +35,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
 
   @override
   void initState() {
-    listScrollController.addListener(_scrollListener);
+    // listScrollController.addListener(_scrollListener);
     SetActivityDetailDataController controller =
         Get.put(SetActivityDetailDataController());
     // TODO: implement initState
@@ -147,11 +147,6 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                   .isNotEmpty
                                               ? Expanded(
                                                   child: ListView.builder(
-                                                  controller:
-                                                      listScrollController,
-                                                  keyboardDismissBehavior:
-                                                      ScrollViewKeyboardDismissBehavior
-                                                          .manual,
                                                   itemCount: stockController
                                                       .filterAvailableStockDataModel!
                                                       .length,
