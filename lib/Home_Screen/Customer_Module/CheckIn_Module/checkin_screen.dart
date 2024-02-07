@@ -124,8 +124,6 @@ class _CheckInPageState extends State<CheckInPage> {
       }
     });
 
-    
-
     exif = await Exif.fromPath(pickedFile!.path);
     attributes = await exif!.getAttributes();
     shootingDate = await exif!.getOriginalDate();
@@ -240,7 +238,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                 ),
                                 GestureDetector(
                                   onTap: () async {
-                                    Navigator.of(context).pop();
+                                    // Navigator.of(context).pop();
                                     SharedPreferences pref =
                                         await SharedPreferences.getInstance();
                                     var empID = pref.getInt("EmployeeId");
@@ -250,6 +248,8 @@ class _CheckInPageState extends State<CheckInPage> {
                                     if (skipProfile != null) {
                                       if (skipProfile! <
                                           int.parse(profileSkip)) {
+                                        Navigator.of(context).pop();
+
                                         controller.fetchData(
                                             levelCode:
                                                 controller.levelCode.value,
@@ -261,6 +261,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                             timerService.onTimerTick);
                                       } else {
                                         isDismissible = false;
+                                        // showSnackBar("Please Update Profile.", "You have already Skip Profile.", Colors.redAccent);
                                         Get.dialog(
                                             barrierDismissible: false,
                                             Dialog(
@@ -317,9 +318,10 @@ class _CheckInPageState extends State<CheckInPage> {
                                                       ),
                                                       GestureDetector(
                                                         onTap: () {
-                                                          Navigator.of(context).pop();
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           Get.back();
-                                                          _modalBottomSheetMenu();
+                                                          // _modalBottomSheetMenu();
                                                         },
                                                         child: Center(
                                                           child: Container(

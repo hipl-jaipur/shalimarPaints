@@ -212,7 +212,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                     ),
                                     Text(
                                         distance != 0.0 && distance != null
-                                            ? "Distance: ${distance!.toInt()} KM Away"
+                                            ? distance == 0.0 ? "Loading...":"Distance: ${distance!.toInt()} KM Away"
                                             : "Distance: ? KM Away",
                                         style: TextStyle(
                                             color: primaryColor,
