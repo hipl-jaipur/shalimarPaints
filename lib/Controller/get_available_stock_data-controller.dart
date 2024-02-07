@@ -17,6 +17,7 @@ class GetAvailableStockDataController extends GetxController {
   var d = true;
   var i = false;
   int totalQty = 0;
+  // int qtyIndexWise = 0;
   var totalAmount = 0.0;
   var productCategory = "";
   AvailableStockDataModel? availableStockDataModel;
@@ -25,6 +26,7 @@ class GetAvailableStockDataController extends GetxController {
   List<dynamic> sectionlist = [];
   List<Map<dynamic, dynamic>> myList = [];
   List<Map<dynamic, dynamic>> myNewList = [];
+  // List<Map<dynamic, dynamic>> list = [];
   int counter = 0;
   double amount = 0.0;
   bool catCheck = false;
@@ -94,7 +96,7 @@ class GetAvailableStockDataController extends GetxController {
                   "totalPrice":totalAmount,*/
               "Qty": counter,
               "mrp": amount,
-              // "controller": TextEditingController(text: counter.toString())
+              "controller": TextEditingController(text: counter.toString())
               // "category": productCategory.trim()
             });
           }

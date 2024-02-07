@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
@@ -29,6 +30,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
       Get.put(GetAvailableStockDataController());
   var date = "";
   // var countr = 0;
+  final _formKey = GlobalKey<FormState>();
+
 
   @override
   void initState() {
@@ -45,7 +48,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
     }
 
     print(stockDataController.myList.length);
-    // stockDataController.myList[widget.index]["controller"].text = "0";
+    stockDataController.myList[widget.index]["controller"].text = "0";
   }
 
   @override
@@ -99,11 +102,11 @@ class _TakeOrderListState extends State<TakeOrderList> {
                               IconButton(
                                   icon: Icon(Icons.remove_circle),
                                   onPressed: () {
-                                    // stockDataController.myList[widget.index]
-                                    //         ["Qty"] =
-                                    //     int.parse(stockDataController
-                                    //         .myList[widget.index]["controller"]
-                                    //         .text);
+                                    stockDataController.myList[widget.index]
+                                            ["Qty"] =
+                                        int.parse(stockDataController
+                                            .myList[widget.index]["controller"]
+                                            .text);
 
                                     setState(() {
                                       stockDataController.catCheck = false;
@@ -113,11 +116,11 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                         stockDataController.myList[widget.index]
                                             ["Qty"]--;
 
-                                        // stockDataController
-                                        //     .myList[widget.index]["controller"]
-                                        //     .text = (stockDataController
-                                        //         .myList[widget.index]["Qty"])
-                                        //     .toString();
+                                        stockDataController
+                                            .myList[widget.index]["controller"]
+                                            .text = (stockDataController
+                                                .myList[widget.index]["Qty"])
+                                            .toString();
 
                                         stockDataController.totalQty =
                                             stockDataController.totalQty
@@ -207,161 +210,183 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                   },
                                   color: primaryColor),
 
-                              Text(stockDataController.myList[widget.index]
-                                      ["Qty"]
-                                  .toString()),
+                              // Text(stockDataController.myList[widget.index]
+                              //         ["Qty"]
+                              //     .toString()),
 
-                              // Container(
-                              //   width: 20,
-                              //   child: TextFormField(
-                              //       onTap: () {
-                              //         //  stockDataController.isVisible = true;
-                              //         // if (cont.editingController.text == "0") {
-                              //         //   cont.editingController.clear();
-                              //         // }
-                              //       },
-                              //       textAlign: TextAlign.center,
-                              //       style: TextStyle(
-                              //           fontSize: 12,
-                              //           color: Colors.black,
-                              //           fontWeight: FontWeight.bold),
-                              //       inputFormatters: [
-                              //         FilteringTextInputFormatter.digitsOnly,
-                              //         FilteringTextInputFormatter.allow(
-                              //             RegExp(r'[0-9]'))
-                              //       ],
-                              //       decoration: InputDecoration(
-                              //         hintText: "0",
-                              //         hintStyle: TextStyle(
-                              //             fontSize: 15,
-                              //             color: Colors.black,
-                              //             fontWeight: FontWeight.bold),
-                              //         border: InputBorder.none,
-                              //         contentPadding: EdgeInsets.zero,
-                              //       ),
-                              //       onChanged: (value) {
-                              //         // stockDataController.myList[widget.index]
-                              //         //     ["Qty"] = value;
+                              Container(
+                                width: 20,
+                                child: TextFormField(
+                                    onTap: () {
+                                      //  stockDataController.isVisible = true;
+                                      // if (cont.editingController.text == "0") {
+                                      //   cont.editingController.clear();
+                                      // }
+                                    },
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp(r'[0-9]'))
+                                    ],
+                                    decoration: InputDecoration(
+                                      hintText: "0",
+                                      hintStyle: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.zero,
+                                    ),
+                                    onChanged: (value) {
+                                      // stockDataController.myList[widget.index]
+                                      //     ["Qty"] = value;
 
-                              //         stockDataController.myList[widget.index]
-                              //                 ["Qty"] =
-                              //             int.parse(stockDataController
-                              //                 .myList[widget.index]
-                              //                     ["controller"]
-                              //                 .text);
+                                      stockDataController.myList[widget.index]
+                                              ["Qty"] =
+                                          int.parse(stockDataController
+                                              .myList[widget.index]
+                                                  ["controller"]
+                                              .text);
 
-                              //         setState(() {
-                              //           stockDataController.catCheck = false;
-                              //           stockDataController.isVisible = true;
+                                      setState(() {
+                                        stockDataController.catCheck = false;
+                                        stockDataController.isVisible = true;
 
-                              //           stockDataController
-                              //               .myList[widget.index]["controller"]
-                              //               .text = (stockDataController
-                              //                   .myList[widget.index]["Qty"])
-                              //               .toString();
+                                        stockDataController
+                                            .myList[widget.index]["controller"]
+                                            .text = (stockDataController
+                                                .myList[widget.index]["Qty"])
+                                            .toString();
 
-                              //           // stockDataController.totalQty =
-                              //           //     stockDataController.totalQty
-                              //           //             .toInt() +
-                              //           //         1;
+                                        // stockDataController.totalQty =
+                                        //     stockDataController.totalQty
+                                        //             .toInt() +
+                                        //         1;
 
-                              //           stockDataController.totalQty +=
-                              //               int.parse(stockDataController
-                              //                   .myList[widget.index]
-                              //                       ["controller"]
-                              //                   .text);
+                                        // var qtyIndexWise = int.parse(
+                                        //     stockDataController
+                                        //         .myList[widget.index]
+                                        //             ["controller"]
+                                        //         .text);
 
-                              //           //price
+                                        // stockDataController.totalQty =
+                                        //     qtyIndexWise;
 
-                              //           stockDataController.myList[widget.index]
-                              //               ["mrp"] = widget
-                              //                   .productList[widget.index].dpl *
-                              //               stockDataController
-                              //                   .myList[widget.index]["Qty"];
+                                        //price
 
-                              //           stockDataController.totalAmount =
-                              //               stockDataController.totalAmount +
-                              //                   stockDataController
-                              //                           .myList[widget.index]
-                              //                       ["mrp"];
+                                        stockDataController.myList[widget.index]
+                                            ["mrp"] = widget
+                                                .productList[widget.index].dpl *
+                                            stockDataController
+                                                .myList[widget.index]["Qty"];
 
-                              //           // stockDataController
-                              //           //     .totalAmount = stockDataController
-                              //           //         .myList[widget.index]["mrp"] *
-                              //           //     double.tryParse(stockDataController
-                              //           //         .myList[widget.index]["Qty"]);
+                                        // stockDataController.totalAmount =
+                                        //     stockDataController.totalAmount +
+                                        //     stockDataController
+                                        //         .myList[widget.index]["mrp"];
 
-                              //           // stockDataController.counter = int.tryParse(value)!;
-                              //           // stockDataController.amount = stockDataController.myList[widget.index]["mrp"];
+                                        // stockDataController.list.add({
+                                        //   "quantity": stockDataController
+                                        //       .myList[widget.index]
+                                        //           ["controller"]
+                                        //       .text,
+                                        //   "totalAmount": stockDataController
+                                        //       .myList[widget.index]["mrp"]
+                                        // });
 
-                              //           stockDataController.myList.add({
-                              //             "productcode": widget
-                              //                 .productList[widget.index]
-                              //                 .productcode,
-                              //             "name": widget
-                              //                 .productList[widget.index]
-                              //                 .productdesc,
-                              //             "dpl": widget
-                              //                 .productList[widget.index].dpl,
-                              //             "mrp": stockDataController.amount,
-                              //             "Qty": stockDataController.counter,
-                              //             "category": widget
-                              //                 .productList[widget.index]
-                              //                 .division!
-                              //                 .trim()
-                              //           });
+                                        // print(
+                                        //     "list: ${stockDataController.list}");
 
-                              //           stockDataController.myList[widget.index]
-                              //                   ["category"] =
-                              //               widget.productList[widget.index]
-                              //                   .division!
-                              //                   .trim();
+                                        stockDataController.myList.add({
+                                          "productcode": widget
+                                              .productList[widget.index]
+                                              .productcode,
+                                          "name": widget
+                                              .productList[widget.index]
+                                              .productdesc,
+                                          "dpl": widget
+                                              .productList[widget.index].dpl,
+                                          "mrp": stockDataController.amount,
+                                          "Qty": stockDataController.counter,
+                                          "category": widget
+                                              .productList[widget.index]
+                                              .division!
+                                              .trim()
+                                        });
 
-                              //           stockDataController.myList[widget.index]
-                              //               ["mrp"] = ((widget
-                              //                   .productList[widget.index]
-                              //                   .dpl)! *
-                              //               stockDataController
-                              //                   .myList[widget.index]["Qty"]);
+                                        int totalQty = 0;
+                                        double totalAmnt = 0.0;
+                                        stockDataController.myList
+                                            .forEach((item) {
+                                          //getting the key direectly from the name of the key
+                                          totalQty +=
+                                              int.parse(item["Qty"].toString());
+                                          totalAmnt += item["mrp"];
+                                        });
 
-                              //           stockDataController.myList[widget.index]
-                              //                   ["productcode"] =
-                              //               widget.productList[widget.index]
-                              //                   .productcode;
+                                        // print("totalQty: ${totalQty}");
+                                        stockDataController.totalQty = totalQty;
+                                        stockDataController.totalAmount =
+                                            totalAmnt;
 
-                              //           stockDataController.myList[widget.index]
-                              //                   ["name"] =
-                              //               widget.productList[widget.index]
-                              //                   .productdesc;
+                                        stockDataController.myList[widget.index]
+                                                ["category"] =
+                                            widget.productList[widget.index]
+                                                .division!
+                                                .trim();
 
-                              //           stockDataController.myList[widget.index]
-                              //                   ["dpl"] =
-                              //               widget
-                              //                   .productList[widget.index].dpl;
+                                        stockDataController.myList[widget.index]
+                                            ["mrp"] = ((widget
+                                                .productList[widget.index]
+                                                .dpl)! *
+                                            stockDataController
+                                                .myList[widget.index]["Qty"]);
 
-                              //           stockDataController.update();
-                              //           print(stockDataController
-                              //                   .myList[widget.index]
-                              //               ["totalPrice"]);
-                              //           print(stockDataController.myList);
-                              //         });
-                              //       },
-                              //       textInputAction: TextInputAction.go,
-                              //       keyboardType: TextInputType.number,
-                              //       autofocus: false,
-                              //       controller: stockDataController
-                              //           .myList[widget.index]["controller"]),
-                              // ),
+                                        stockDataController.myList[widget.index]
+                                                ["productcode"] =
+                                            widget.productList[widget.index]
+                                                .productcode;
+
+                                        stockDataController.myList[widget.index]
+                                                ["name"] =
+                                            widget.productList[widget.index]
+                                                .productdesc;
+
+                                        stockDataController.myList[widget.index]
+                                                ["dpl"] =
+                                            widget
+                                                .productList[widget.index].dpl;
+
+                                        stockDataController.update();
+                                        print(stockDataController
+                                                .myList[widget.index]
+                                            ["totalPrice"]);
+                                        print(stockDataController.myList);
+                                      });
+                                      // _formKey.currentState!.validate();
+                                      FocusScope.of(context).requestFocus(FocusNode());
+                                    },
+                                    // textInputAction: TextInputAction.done,
+                                    keyboardType: TextInputType.number,
+                                    // autofocus: false,
+                                    controller: stockDataController
+                                        .myList[widget.index]["controller"]),
+                              ),
 
                               IconButton(
                                 icon: Icon(Icons.add_circle),
                                 color: primaryColor,
                                 onPressed: () {
-                                  // stockDataController.myList[widget.index]
-                                  //         ["Qty"] =
-                                  //     int.parse(stockDataController
-                                  //         .myList[widget.index]["controller"]
-                                  //         .text);
+                                  stockDataController.myList[widget.index]
+                                          ["Qty"] =
+                                      int.parse(stockDataController
+                                          .myList[widget.index]["controller"]
+                                          .text);
 
                                   setState(() {
                                     stockDataController.catCheck = false;
@@ -372,11 +397,11 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                     stockDataController.myList[widget.index]
                                         ["Qty"]++;
 
-                                    // stockDataController
-                                    //     .myList[widget.index]["controller"]
-                                    //     .text = (stockDataController
-                                    //         .myList[widget.index]["Qty"])
-                                    //     .toString();
+                                    stockDataController
+                                        .myList[widget.index]["controller"]
+                                        .text = (stockDataController
+                                            .myList[widget.index]["Qty"])
+                                        .toString();
 
                                     stockDataController.totalQty =
                                         stockDataController.totalQty.toInt() +

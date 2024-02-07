@@ -31,14 +31,20 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
   SetOrderDataController setOrderDataController =
       Get.put(SetOrderDataController());
   List<Data> productList = [];
+  final ScrollController listScrollController = ScrollController();
 
   @override
   void initState() {
+    listScrollController.addListener(_scrollListener);
     SetActivityDetailDataController controller =
         Get.put(SetActivityDetailDataController());
     // TODO: implement initState
     stockController.fetchData(customerCode: controller.levelCode.value);
     super.initState();
+  }
+
+  _scrollListener() {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   @override
@@ -141,6 +147,11 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                   .isNotEmpty
                                               ? Expanded(
                                                   child: ListView.builder(
+                                                  controller:
+                                                      listScrollController,
+                                                  keyboardDismissBehavior:
+                                                      ScrollViewKeyboardDismissBehavior
+                                                          .manual,
                                                   itemCount: stockController
                                                       .filterAvailableStockDataModel!
                                                       .length,
@@ -239,7 +250,9 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                       .length;
                                                               i++) {
                                                             if (controller
-                                                                        .myList[i]['category'] !=
+                                                                        .myList[i]
+                                                                    [
+                                                                    'category'] !=
                                                                 null) {
                                                               if (controller
                                                                           .myList[
@@ -293,9 +306,10 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                 Get.back();
                                                               });
                                                             } else {
-
-                                                              print("add Order");
-                                                              setOrderDataController.total=0.0;
+                                                              print(
+                                                                  "add Order");
+                                                              setOrderDataController
+                                                                  .total = 0.0;
                                                               Get.to(MyCartPage(
                                                                 tag: "",
                                                               ));
