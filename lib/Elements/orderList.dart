@@ -86,9 +86,12 @@ class _OrderListState extends State<OrderList> {
                         var totalQty = widget
                             .orderDataList![widget.index].orderTotalQty!
                             .toInt();
+                        var sapOrderNo = widget
+                            .orderDataList![widget.index].sAPordernumber
+                            .toString();
 
                         Share.share(
-                            "Order Number: $orderNumber, Order Date: ${orderDate[0]}, Total Amount: $totalAmount, Total Qty: $totalQty");
+                            "Order Number: $orderNumber, Order Date: ${orderDate[0]}, Total Amount: $totalAmount, Total Qty: $totalQty, SAP Order Number: $sapOrderNo");
                         // final result = await Share.shareXFiles(
                         //     [XFile('SAP Order Number#')],
                         //     text: 'Great picture');
@@ -268,39 +271,36 @@ class _OrderListState extends State<OrderList> {
                     ),
                   )),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Flexible(
+                    child: Text(
+                      "Remark: ${widget.orderDataList![widget.index].sAPRemark}",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                        color: widget.orderDataList![widget.index]
-                                        .sAPordernumber ==
-                                    null ||
-                                widget.orderDataList![widget.index]
-                                        .sAPordernumber ==
-                                    ""
-                            ? Colors.green.shade100
-                            : Colors.red.shade100,
+                        color: Colors.green.shade100,
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
-                          color: widget.orderDataList![widget.index]
-                                          .sAPordernumber ==
-                                      null ||
-                                  widget.orderDataList![widget.index]
-                                          .sAPordernumber ==
-                                      ""
-                              ? Colors.green
-                              : Colors.red,
+                          color: Colors.green,
                         )),
                     child: Text(
-                      widget.orderDataList![widget.index].sAPordernumber ==
-                                  null ||
-                              widget.orderDataList![widget.index]
-                                      .sAPordernumber ==
-                                  ""
-                          ? "Pending"
-                          : "Close",
+                      widget.orderDataList![widget.index].orderStatus
+                          .toString(),
+                      // widget.orderDataList![widget.index].sAPordernumber ==
+                      //             null ||
+                      //         widget.orderDataList![widget.index]
+                      //                 .sAPordernumber ==
+                      //             ""
+                      //     ? "Pending"
+                      //     : "Close",
                       //  "${widget.orderDataList![widget.index].orderStatus.toString()}",
                       maxLines: 2,
                       style: TextStyle(
