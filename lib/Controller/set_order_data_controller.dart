@@ -40,12 +40,11 @@ class SetOrderDataController extends GetxController {
           "dpl": i['dpl'],
           "mrp": i['mrp'],
         });
-        total =total+i['mrp'];
+        total = total + i['mrp'];
         print(total);
       }
-
-
-    }    update();
+    }
+    update();
 
     print("add list-------${myCartEditList.length}");
     print("add data${myCartEditList}");
@@ -56,9 +55,7 @@ class SetOrderDataController extends GetxController {
     print("Calling 2_____________");
 
     if (orderEditTag == 'Edit') {
-
-      myCartEditList
-          .removeWhere((item) => item["Qty"] == 0);
+      myCartEditList.removeWhere((item) => item["Qty"] == 0);
       for (var i in productList!) {
         total = total + i.mrp!;
         myCartEditList.add({
@@ -73,7 +70,6 @@ class SetOrderDataController extends GetxController {
         // totalQty = i.qty!.toInt();
         // totalPrice = i.mrp;
       }
-
 
       update();
 

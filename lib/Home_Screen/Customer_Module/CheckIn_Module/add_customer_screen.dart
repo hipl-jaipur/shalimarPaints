@@ -59,6 +59,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
         _image = File(pickedFile.path);
       }
     });
+    
     complaintController.uploadFileChunked(_image!.path).then((value) {
       // paymentController.imagsPayment=value['Data'];
       print(value['Data']);
