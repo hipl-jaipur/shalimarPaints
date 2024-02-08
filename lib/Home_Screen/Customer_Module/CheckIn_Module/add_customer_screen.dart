@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_geocoder/geocoder.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_exif/native_exif.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shalimar/Controller/set_customer_data_controller.dart';
 import 'package:shalimar/Controller/upload_image_controller.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -48,7 +49,6 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
   // String stAddress = '';
 
   Future getImage() async {
-    // pickedFile = await picker.pickImage(source: ImageSource.camera);
     final pickedFile = await ImagePicker().pickImage(
         source: ImageSource.camera,
         imageQuality: 25,
@@ -59,9 +59,8 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
         _image = File(pickedFile.path);
       }
     });
-    
+
     complaintController.uploadFileChunked(_image!.path).then((value) {
-      // paymentController.imagsPayment=value['Data'];
       print(value['Data']);
       controller.image = value['Data'];
     });
@@ -71,133 +70,244 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     shootingDate = await exif!.getOriginalDate();
     coordinate = await exif!.getLatLong();
 
-    // if (coordinate != null) {
-    controller.lat = coordinate!.latitude;
+    if (coordinate != null) {
+      controller.lat = coordinate!.latitude;
+      controller.long = coordinate!.longitude;
+      // final coordinates = Coordinates(controller.lat, controller.long);
+      // var address =
+      //     await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+      //         .findAddressesFromCoordinates(coordinates);
+      // var first = address.first;
 
-    controller.long = coordinate!.longitude;
-    // controller.image = pickedFile.name;
-    // controller.state = attributes!.state;
+      GeoData data = await Geocoder2.getDataFromCoordinates(
+          latitude: controller.lat,
+          longitude: controller.long,
+          googleMapApiKey: "AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg");
 
-    if (controller.lat == 0.0 && controller.long == 0.0) {
+      var first = data;
+
+      setState(() {
+        // controller.addrsssTwoCont.text = first.adminArea!;
+        // controller.cityCont.text = first.locality!;
+        // controller.postalCodeCont.text = first.postalCode!;
+        // controller.distCont.text = first.locality!;
+        // controller.localityCont.text = first.locality!;
+
+        controller.addrsssTwoCont.text = first.state;
+        controller.cityCont.text = first.city;
+        controller.postalCodeCont.text = first.postalCode;
+        controller.distCont.text = first.city;
+        controller.localityCont.text = first.city;
+      });
+    } else {
+      // controller.lat = 0.0;
+      // controller.long = 0.0;
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final hasPermission = await _handleLocationPermission();
 
-      if (!hasPermission) return;
-      await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high)
-          .then((Position position) {
-        if (this.mounted) {
-          setState(() async {
-            _currentPosition = position;
-            prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
-            prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
-            final coordinates = Coordinates(
-                _currentPosition!.latitude, _currentPosition!.longitude);
-            var address =
-                await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
-                    .findAddressesFromCoordinates(coordinates);
-            // await Geocoder.local.findAddressesFromCoordinates(coordinates);
-            var first = address.first;
+      if (!hasPermission) {
+        Get.dialog(
+            barrierDismissible: false,
+            Dialog(
+              backgroundColor: Colors.white,
+              child: WillPopScope(
+                onWillPop: () async => false,
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Center(
+                        child: Text(
+                          "Alert!!",
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "Your App Location services are Don't Allow. Please Allow Your App Location services From App Permission.",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigator.of(context)
+                          //     .pop();
+                          openAppSettings();
+                          Get.back();
+                          setState(() {
+                            _image = null;
+                          });
+                        },
+                        child: Center(
+                          child: Container(
+                            height: 40,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(10))),
+                            child: Text(
+                              "Go To Settings",
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ));
+        // return;
+      } else {
+        await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.high)
+            .then((Position position) {
+          if (this.mounted) {
+            setState(() async {
+              _currentPosition = position;
+              prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
+              prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
 
-            // on below line we have set the address to string
-            setState(() {
-              // stAddress = first.addressLine.toString();
-              controller.addrsssTwoCont.text = first.adminArea!;
-              controller.cityCont.text = first.locality!;
-              controller.postalCodeCont.text = first.postalCode!;
-              controller.distCont.text = first.locality!;
-              controller.localityCont.text = first.locality!;
+              // final coordinates = Coordinates(
+              //     _currentPosition!.latitude, _currentPosition!.longitude);
+              // var address =
+              //     await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+              //         .findAddressesFromCoordinates(coordinates);
+
+              GeoData data = await Geocoder2.getDataFromCoordinates(
+                  latitude: _currentPosition!.latitude,
+                  longitude: _currentPosition!.longitude,
+                  googleMapApiKey: "AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg");
+
+              // var first = address.first;
+              var first = data;
+
+              // on below line we have set the address to string
+              setState(() {
+                // stAddress = first.addressLine.toString();
+
+                // controller.addrsssTwoCont.text = first.adminArea!;
+                // controller.cityCont.text = first.locality!;
+                // controller.postalCodeCont.text = first.postalCode!;
+                // controller.distCont.text = first.locality!;
+                // controller.localityCont.text = first.locality!;
+
+                controller.addrsssTwoCont.text = first.state;
+                controller.cityCont.text = first.city!;
+                controller.postalCodeCont.text = first.postalCode!;
+                controller.distCont.text = first.city!;
+                controller.localityCont.text = first.city!;
+              });
             });
-          });
-        }
-      }).catchError((e) {
-        debugPrint(e);
-      });
-      // _getCurrentPosition;
-    } else {
-      final coordinates = Coordinates(controller.lat, controller.long);
-      var address =
-          await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
-              .findAddressesFromCoordinates(coordinates);
-      // await Geocoder.local.findAddressesFromCoordinates(coordinates);
-      var first = address.first;
-
-      // on below line we have set the address to string
-      setState(() {
-        // stAddress = first.addressLine.toString();
-        controller.addrsssTwoCont.text = first.adminArea!;
-        controller.cityCont.text = first.locality!;
-        controller.postalCodeCont.text = first.postalCode!;
-        controller.distCont.text = first.locality!;
-        controller.localityCont.text = first.locality!;
-      });
-    }
-  }
-
-  Future<void> _getCurrentPosition() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final hasPermission = await _handleLocationPermission();
-
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      if (this.mounted) {
-        setState(() async {
-          _currentPosition = position;
-          prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
-          prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
-          final coordinates = Coordinates(
-              _currentPosition!.latitude, _currentPosition!.longitude);
-          var address =
-              await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
-                  .findAddressesFromCoordinates(coordinates);
-          // await Geocoder.local.findAddressesFromCoordinates(coordinates);
-          var first = address.first;
-
-          // on below line we have set the address to string
-          setState(() {
-            // stAddress = first.addressLine.toString();
-            controller.addrsssTwoCont.text = first.adminArea!;
-            controller.cityCont.text = first.locality!;
-            controller.postalCodeCont.text = first.postalCode!;
-            controller.distCont.text = first.locality!;
-            controller.localityCont.text = first.locality!;
-          });
+          }
+        }).catchError((e) {
+          debugPrint(e);
         });
       }
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    }
 
-    // const LocationSettings locationSettings = LocationSettings(
-    //   accuracy: LocationAccuracy.high,
-    //   distanceFilter: 100,
-    // );
+    // if (controller.lat == 0.0 && controller.long == 0.0) {
+    //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   final hasPermission = await _handleLocationPermission();
 
-    // _determinePosition();
+    //   if (!hasPermission) {
+    //     return;
+    //   } else {
+    //     await Geolocator.getCurrentPosition(
+    //             desiredAccuracy: LocationAccuracy.high)
+    //         .then((Position position) {
+    //       if (this.mounted) {
+    //         setState(() async {
+    //           _currentPosition = position;
+    //           prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
+    //           prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
 
-    // StreamSubscription<Position> positionStream =
-    //     Geolocator.getPositionStream(locationSettings: locationSettings)
-    //         .listen((Position? position) {
-    //   print(position == null
-    //       ? _determinePosition()
-    //       : '${position.latitude.toString()}, ${position.longitude.toString()}');
-    //   _currentPosition = position;
-    //   prefs.setDouble('LAT', _currentPosition!.latitude ?? 0.0);
-    //   prefs.setDouble('LNG', _currentPosition!.longitude ?? 0.0);
-    // });
+    //           // final coordinates = Coordinates(
+    //           //     _currentPosition!.latitude, _currentPosition!.longitude);
+    //           // var address =
+    //           //     await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+    //           //         .findAddressesFromCoordinates(coordinates);
 
-    // final accuracyStatus = await Geolocator.getLocationAccuracy();
-    // switch (accuracyStatus) {
-    //   case LocationAccuracyStatus.reduced:
-    //     // Precise location switch is OFF.
-    //     break;
-    //   case LocationAccuracyStatus.precise:
-    //     // Precise location switch is ON.
-    //     break;
-    //   case LocationAccuracyStatus.unknown:
-    //     // The platform doesn't support this feature, for example an Android device.
-    //     break;
+    //           GeoData data = await Geocoder2.getDataFromCoordinates(
+    //               latitude: _currentPosition!.latitude,
+    //               longitude: _currentPosition!.longitude,
+    //               googleMapApiKey: "AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg");
+
+    //           // var first = address.first;
+    //           var first = data;
+
+    //           // on below line we have set the address to string
+    //           setState(() {
+    //             // stAddress = first.addressLine.toString();
+
+    //             // controller.addrsssTwoCont.text = first.adminArea!;
+    //             // controller.cityCont.text = first.locality!;
+    //             // controller.postalCodeCont.text = first.postalCode!;
+    //             // controller.distCont.text = first.locality!;
+    //             // controller.localityCont.text = first.locality!;
+
+    //             controller.addrsssTwoCont.text = first.state;
+    //             controller.cityCont.text = first.city!;
+    //             controller.postalCodeCont.text = first.postalCode!;
+    //             controller.distCont.text = first.city!;
+    //             controller.localityCont.text = first.city!;
+    //           });
+    //         });
+    //       }
+    //     }).catchError((e) {
+    //       debugPrint(e);
+    //     });
+    //   }
+    // } else {
+    //   // final coordinates = Coordinates(controller.lat, controller.long);
+    //   // var address =
+    //   //     await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+    //   //         .findAddressesFromCoordinates(coordinates);
+    //   // var first = address.first;
+
+    //   GeoData data = await Geocoder2.getDataFromCoordinates(
+    //       latitude: controller.lat,
+    //       longitude: controller.long,
+    //       googleMapApiKey: "AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg");
+
+    //   var first = data;
+
+    //   setState(() {
+    //     // controller.addrsssTwoCont.text = first.adminArea!;
+    //     // controller.cityCont.text = first.locality!;
+    //     // controller.postalCodeCont.text = first.postalCode!;
+    //     // controller.distCont.text = first.locality!;
+    //     // controller.localityCont.text = first.locality!;
+
+    //     controller.addrsssTwoCont.text = first.state!;
+    //     controller.cityCont.text = first.city!;
+    //     controller.postalCodeCont.text = first.postalCode!;
+    //     controller.distCont.text = first.city!;
+    //     controller.localityCont.text = first.city!;
+    //   });
     // }
   }
 
@@ -229,40 +339,6 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     }
     return true;
   }
-
-  Future getImageUser() async {
-    final pickedFile = await ImagePicker().pickImage(
-        source: ImageSource.camera,
-        imageQuality: 25,
-        maxHeight: 480,
-        maxWidth: 640);
-
-    setState(() {
-      if (pickedFile != null) {
-        // getImageLocation(pickedFile.path);
-        // _image = File(pickedFile.path);
-      }
-    });
-  }
-
-  // Future<void> getImageLocation(String imagePath) async {
-  //   try {
-  //     Map<String, dynamic> exifData =
-  //         await FlutterExifPlugin.readExifFromFile(imagePath);
-
-  //     double? latitude = exifData['GPS GPSLatitude'] as double?;
-  //     double? longitude = exifData['GPS GPSLongitude'] as double?;
-
-  //     if (latitude != null && longitude != null) {
-  //       print('Latitude: $latitude, Longitude: $longitude');
-  //       // Now you have the latitude and longitude, and you can use them as needed.
-  //     } else {
-  //       print('Image does not contain geolocation information.');
-  //     }
-  //   } catch (e) {
-  //     print('Error reading Exif data: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

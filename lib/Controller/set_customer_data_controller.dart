@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shalimar/Elements/commom_snackbar_widget.dart';
@@ -24,8 +25,30 @@ class SetCustomerDataController extends GetxController {
   var long = 0.0;
   // var state, city,district, locality ;
 
+  
+
   fetchData(
       {required BuildContext context, var territoryId, customerID, tag}) async {
+    if (lat == 0.0 && long == 0.0) {
+      // getLatLongFromAddress();
+
+      var address = addrsssOneCont.text +
+          localityCont.text +
+          cityCont.text +
+          distCont.text +
+          addrsssTwoCont.text +
+          postalCodeCont.text;
+      GeoData data = await Geocoder2.getDataFromAddress(
+          address: address,
+          googleMapApiKey: "AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg");
+
+      print(data.latitude);
+      print(data.longitude);
+      print(data.address);
+      lat = data.latitude;
+      long = data.longitude;
+    }
+
     try {
       isLoading(true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();

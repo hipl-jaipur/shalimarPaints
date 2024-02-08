@@ -405,9 +405,6 @@ class _TakeOrderListState extends State<TakeOrderList> {
                                       stockDataController.myList[widget.index]
                                           ["Qty"]++;
 
-                                      // stockDataController
-                                      //     .myList[widget.index]["controller"]
-                                      //     .text =
                                       stockDataController
                                           .controllers[widget.index]
                                           .text = (stockDataController

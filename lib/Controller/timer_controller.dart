@@ -22,16 +22,16 @@ class TimerService extends GetxService {
 
   void startTimer() {
     print("Start_____Timer");
-   onTimerTick;
+    onTimerTick;
   }
 
   void stopTimer() {
     print("Timer Close");
     print(timer.isActive);
     // if (_timer.isActive==false) {
-      print("Timer Close_____1");
-      elapsedSeconds.value=0;
-      timer.cancel();
+    print("Timer Close_____1");
+    elapsedSeconds.value = 0;
+    timer.cancel();
     super.onClose();
     // }
   }
@@ -39,7 +39,6 @@ class TimerService extends GetxService {
   @override
   void onClose() {
     timer.cancel();
-    
     super.onClose();
   }
 }
