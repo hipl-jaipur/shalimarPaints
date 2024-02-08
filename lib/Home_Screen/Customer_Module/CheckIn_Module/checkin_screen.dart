@@ -1337,10 +1337,15 @@ class _CheckInPageState extends State<CheckInPage> {
                                           customerCode:
                                               controller.levelCode.value);
                                       // setOrderDataController.productList.clear();
-                                      setOrderDataController.myCartList!
-                                          .clear();
-                                      setOrderDataController.myCartEditList!
-                                          .clear();
+                                      stockController.totalQty = 0;
+                                      stockController.totalAmount = 0.0;
+                                      stockController.isVisible = false;
+                                      stockController.myList.clear();
+                                      stockController.controllers.clear();
+                                      stockController.d = true;
+                                      stockController.i = false;
+                                      stockController.catCheck = false;
+                                      stockController.sectionlist.clear();
                                       setOrderDataController.total = 0.0;
 
                                       Get.to(ViewOpenOrderPage(
@@ -1384,6 +1389,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                         stockController.isVisible = false;
                                         stockController.myList.clear();
                                         stockController.controllers.clear();
+                                        setOrderDataController.myCartEditList.clear();
                                         stockController.d = true;
                                         stockController.i = false;
                                         stockController.catCheck = false;

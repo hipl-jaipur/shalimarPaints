@@ -95,6 +95,7 @@ class GetAvailableStockDataController extends GetxController {
                   "name":map.productdesc,
                   "price":map.dpl,
                   "totalPrice":totalAmount,*/
+              "productcode":map.productcode,
               "Qty": counter,
               "mrp": amount,
               // "controller": TextEditingController(text: counter.toString())

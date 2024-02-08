@@ -5,6 +5,8 @@ import 'package:shalimar/Controller/get_available_stock_data-controller.dart';
 import 'package:shalimar/Model/available_stock_data_model.dart';
 import 'package:shalimar/utils/colors.dart';
 
+import '../Controller/set_order_data_controller.dart';
+
 class TakeOrderList extends StatefulWidget {
   int index;
   BuildContext context;
@@ -27,6 +29,9 @@ class TakeOrderList extends StatefulWidget {
 class _TakeOrderListState extends State<TakeOrderList> {
   GetAvailableStockDataController stockDataController =
       Get.put(GetAvailableStockDataController());
+
+  SetOrderDataController setOrderDataController =
+      Get.put(SetOrderDataController());
   var date = "";
 
   // var countr = 0;
@@ -43,10 +48,23 @@ class _TakeOrderListState extends State<TakeOrderList> {
     // TODO: implement initState
 
     super.initState();
-
+print("Edit List-----${setOrderDataController.myCartEditList}");
+   /* for (int i = 0; i < stockDataController.myList.length; i++) {
+      for (int a = 0; a < setOrderDataController.myCartEditList.length; a++) {
+        if (stockDataController.myList[i]["productcode"] ==
+            setOrderDataController.myCartEditList[a]["productcode"]) {
+          stockDataController.controllers.add(TextEditingController(
+              text: setOrderDataController.myCartEditList[a]["Qty"].toString()));
+        } else {
+          stockDataController.controllers.add(TextEditingController(
+              text: stockDataController.myList[i]["Qty"].toString()));
+        }
+      }
+    }*/
     for (int i = 0; i < stockDataController.myList.length; i++) {
       stockDataController.controllers.add(TextEditingController(
-          text: stockDataController.myList[i]['Qty'].toString()));
+          text: stockDataController.myList[i]["Qty"].toString()));
+
     }
 
     for (var i in widget.productList) {

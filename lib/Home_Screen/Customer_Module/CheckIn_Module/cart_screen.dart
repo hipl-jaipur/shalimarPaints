@@ -66,7 +66,7 @@ class _MyCartPageState extends State<MyCartPage> {
           ? setOrderDataController.remarkController.text = widget.orderRemark!
           : "";
     }
-
+print("List Data ???????????????");
     print(stockController.myList);
     print(stockController.myList.length);
     print(setOrderDataController.myCartList.length);
