@@ -28,10 +28,12 @@ class _TakeOrderListState extends State<TakeOrderList> {
   GetAvailableStockDataController stockDataController =
       Get.put(GetAvailableStockDataController());
   var date = "";
+
   // var countr = 0;
   final _formKey = GlobalKey<FormState>();
   final qtyFocus = FocusNode();
   Key keyValue = UniqueKey();
+
   // List<TextEditingController> _controllers = [];
 
   // static GlobalKey<FormState> _screenFormKey = GlobalKey<FormState>();

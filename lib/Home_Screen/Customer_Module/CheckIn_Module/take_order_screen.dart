@@ -276,10 +276,9 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                             showSnackBar(
                                                                 "Sorry!! You are Selected Decorative and Industrial Division Product.",
                                                                 "Please Add Same Division Product.",
-                                                                Colors
-                                                                    .redAccent);
+                                                                Colors.redAccent);
                                                             controller
-                                                                    .catCheck =
+                                                                .catCheck =
                                                                 false;
                                                           } else {
                                                             setOrderDataController
@@ -301,8 +300,7 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                 Get.back();
                                                               });
                                                             } else {
-                                                              print(
-                                                                  "add Order");
+                                                              print("add Order");
                                                               setOrderDataController
                                                                   .total = 0.0;
                                                               Get.to(MyCartPage(

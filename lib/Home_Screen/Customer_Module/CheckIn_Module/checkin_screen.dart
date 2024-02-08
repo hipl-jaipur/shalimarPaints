@@ -1383,6 +1383,7 @@ class _CheckInPageState extends State<CheckInPage> {
                                         stockController.totalAmount = 0.0;
                                         stockController.isVisible = false;
                                         stockController.myList.clear();
+                                        stockController.controllers.clear();
                                         stockController.d = true;
                                         stockController.i = false;
                                         stockController.catCheck = false;

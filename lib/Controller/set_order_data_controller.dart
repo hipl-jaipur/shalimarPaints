@@ -23,7 +23,8 @@ class SetOrderDataController extends GetxController {
   List<Map<dynamic, dynamic>> myCartList = [];
   List<Map<dynamic, dynamic>> myCartEditList = [];
   List<OrderDetailMaster> productList = [];
-
+  List<TextEditingController> qtycontrollers = [];
+  List<int> intValues = [];
   Future<void> addOrder() async {
     isLoading(true);
     GetAvailableStockDataController stockController =
@@ -32,6 +33,8 @@ class SetOrderDataController extends GetxController {
     print("Calling 1_____________");
     for (var i in stockController.myList) {
       myCartList.add(i);
+
+
       if (orderEditTag == 'Edit') {
         myCartEditList.add({
           "Qty": i['Qty'].toInt(),
@@ -40,6 +43,7 @@ class SetOrderDataController extends GetxController {
           "dpl": i['dpl'],
           "mrp": i['mrp'],
         });
+
         total = total + i['mrp'];
         print(total);
       }
@@ -53,7 +57,8 @@ class SetOrderDataController extends GetxController {
 
   addAndEdit() {
     print("Calling 2_____________");
-
+    GetAvailableStockDataController stockController =
+    Get.put(GetAvailableStockDataController());
     if (orderEditTag == 'Edit') {
       myCartEditList.removeWhere((item) => item["Qty"] == 0);
       for (var i in productList!) {
@@ -65,6 +70,7 @@ class SetOrderDataController extends GetxController {
           "dpl": i.dpl,
           "mrp": i.mrp,
         });
+
         // total= i.t;
         // dplPrice = i.dpl;
         // totalQty = i.qty!.toInt();
