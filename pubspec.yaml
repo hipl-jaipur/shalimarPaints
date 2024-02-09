@@ -62,7 +62,7 @@ dependencies:
   flutter_tree: ^2.0.3
   native_exif: ^0.4.1
   google_maps_flutter: ^2.2.8
-  # flutter_geocoder: ^0.2.2-nullsafety
+  flutter_geocoder: ^0.2.2-nullsafety
   firebase_messaging: ^14.7.10
   firebase_core: ^2.24.2
   cloud_firestore: ^4.14.0

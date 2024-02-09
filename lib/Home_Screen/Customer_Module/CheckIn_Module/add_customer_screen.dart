@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_geocoder/geocoder.dart';
 import 'package:geocoder2/geocoder2.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -73,31 +74,31 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     if (coordinate != null) {
       controller.lat = coordinate!.latitude;
       controller.long = coordinate!.longitude;
-      // final coordinates = Coordinates(controller.lat, controller.long);
-      // var address =
-      //     await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
-      //         .findAddressesFromCoordinates(coordinates);
-      // var first = address.first;
+      final coordinates = Coordinates(controller.lat, controller.long);
+      var address =
+          await Geocoder.google("AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg")
+              .findAddressesFromCoordinates(coordinates);
+      var first = address.first;
 
       GeoData data = await Geocoder2.getDataFromCoordinates(
           latitude: controller.lat,
           longitude: controller.long,
           googleMapApiKey: "AIzaSyDBMnFxYQL6wQ2E9SLCoPsjY5mFu_Bpejg");
 
-      var first = data;
+      // var first = data;
 
       setState(() {
-        // controller.addrsssTwoCont.text = first.adminArea!;
-        // controller.cityCont.text = first.locality!;
-        // controller.postalCodeCont.text = first.postalCode!;
-        // controller.distCont.text = first.locality!;
-        // controller.localityCont.text = first.locality!;
+        controller.addrsssTwoCont.text = first.adminArea!;
+        controller.cityCont.text = first.locality!;
+        controller.postalCodeCont.text = first.postalCode!;
+        controller.distCont.text = first.locality!;
+        controller.localityCont.text = first.subLocality!;
 
-        controller.addrsssTwoCont.text = first.state;
-        controller.cityCont.text = first.city;
-        controller.postalCodeCont.text = first.postalCode;
-        controller.distCont.text = first.city;
-        controller.localityCont.text = first.city;
+        // controller.addrsssTwoCont.text = first.state;
+        // controller.cityCont.text = first.city.split(" ").first;
+        // controller.postalCodeCont.text = first.postalCode;
+        // controller.distCont.text = first.city.split(" ").first;
+        // controller.localityCont.text = first.city.split(" ").first;
       });
     } else {
       // controller.lat = 0.0;
