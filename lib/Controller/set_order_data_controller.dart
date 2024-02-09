@@ -25,6 +25,44 @@ class SetOrderDataController extends GetxController {
   List<OrderDetailMaster> productList = [];
   List<TextEditingController> qtycontrollers = [];
   List<int> intValues = [];
+
+
+  totalPrcie(){
+    print("******************1111*************");
+
+    print(myCartEditList.length);
+
+    myCartEditList= removeDuplicateMaps(myCartEditList, (map) => map["productcode"]);
+    print("*****************222**************");
+
+    print(myCartEditList.length);
+    total=0.0;
+    for (var i in myCartEditList) {
+      total = total + i['mrp'];
+      print(total);
+
+
+
+    }
+
+  }
+  List<Map<dynamic, dynamic>> removeDuplicateMaps(List<Map<dynamic, dynamic>> list, Function getKey) {
+    Map<dynamic, Map<dynamic, dynamic>> uniqueMap = {};
+
+    // Iterate through the list and add unique maps to a map with the key as per the specified criteria
+    list.forEach((map) {
+      var key = getKey(map);
+      if (!uniqueMap.containsKey(key)) {
+        uniqueMap[key] = map;
+      }
+    });
+
+    // Convert map values back to list
+    List<Map<dynamic, dynamic>> uniqueList = uniqueMap.values.toList();
+
+    return uniqueList;
+  }
+
   Future<void> addOrder() async {
     isLoading(true);
     GetAvailableStockDataController stockController =

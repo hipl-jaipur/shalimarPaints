@@ -42,6 +42,7 @@ class _TakeOrderListState extends State<TakeOrderList> {
   // List<TextEditingController> _controllers = [];
 
   // static GlobalKey<FormState> _screenFormKey = GlobalKey<FormState>();
+  List<dynamic> matchingValues = [];
 
   @override
   void initState() {
@@ -49,6 +50,8 @@ class _TakeOrderListState extends State<TakeOrderList> {
 
     super.initState();
 print("Edit List-----${setOrderDataController.myCartEditList}");
+print("controller List-----${ stockDataController.controllers}");
+print("controller List-----${ stockDataController.controllers.length}");
    /* for (int i = 0; i < stockDataController.myList.length; i++) {
       for (int a = 0; a < setOrderDataController.myCartEditList.length; a++) {
         if (stockDataController.myList[i]["productcode"] ==
@@ -61,11 +64,34 @@ print("Edit List-----${setOrderDataController.myCartEditList}");
         }
       }
     }*/
-    for (int i = 0; i < stockDataController.myList.length; i++) {
+
+     for (int i = 0; i < stockDataController.myList.length; i++) {
       stockDataController.controllers.add(TextEditingController(
           text: stockDataController.myList[i]["Qty"].toString()));
 
     }
+    // Iterate over elements of array1
+
+    if(setOrderDataController.orderEditTag == "Edit") {
+      for (int i = 0; i < stockDataController.myList.length; i++) {
+        // Iterate over elements of array2
+        for (int j = 0; j < setOrderDataController.myCartEditList.length; j++) {
+          // Compare elements for equality
+          if (stockDataController.myList[i]['productcode'] ==
+              setOrderDataController.myCartEditList[j]['productcode']) {
+            // If match found, store the value
+            // stockDataController.controllers.add(TextEditingController(
+            //     text: setOrderDataController.myCartEditList[j]['Qty'].toString()));
+            stockDataController.controllers[i].text =
+                setOrderDataController.myCartEditList[j]['Qty'].toString();
+          } else {
+            stockDataController.controllers[i].text = "0";
+          }
+        }
+      }
+    }
+
+
 
     for (var i in widget.productList) {
       if (i.lastUpdatedOn == null) {

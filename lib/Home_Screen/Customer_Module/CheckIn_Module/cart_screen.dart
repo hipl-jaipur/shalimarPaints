@@ -66,7 +66,7 @@ class _MyCartPageState extends State<MyCartPage> {
           ? setOrderDataController.remarkController.text = widget.orderRemark!
           : "";
     }
-print("List Data ???????????????");
+    print("List Data ???????????????");
     print(stockController.myList);
     print(stockController.myList.length);
     print(setOrderDataController.myCartList.length);
@@ -438,7 +438,8 @@ print("List Data ???????????????");
                                                                           index]
                                                                       ["dpl"]!;
 
-                                                              stockController.totalAmount =
+                                                              stockController
+                                                                      .totalAmount =
                                                                   setOrderDataController
                                                                       .total;
                                                               print(setOrderDataController
@@ -505,11 +506,20 @@ print("List Data ???????????????");
                                                                       .totalAmount =
                                                                   setOrderDataController
                                                                       .total;
-                                                              for (var a = 0; a < stockController.myList.length; a++) {
-                                                                if (stockController.myList[a]
-                                                                        ['productcode'] ==
-                                                                    setOrderDataController.myCartList[index]
-                                                                        ['productcode']) {
+                                                              for (var a = 0;
+                                                                  a <
+                                                                      stockController
+                                                                          .myList
+                                                                          .length;
+                                                                  a++) {
+                                                                if (stockController
+                                                                            .myList[a]
+                                                                        [
+                                                                        'productcode'] ==
+                                                                    setOrderDataController
+                                                                            .myCartList[index]
+                                                                        [
+                                                                        'productcode']) {
                                                                   stockController
                                                                       .controllers[
                                                                           a]
@@ -729,9 +739,26 @@ print("List Data ???????????????");
                                         if (setOrderDataController
                                                 .orderEditTag ==
                                             "Edit") {
+                                          stockController.totalQty = 0;
+                                          stockController.totalAmount = 0.0;
                                           setOrderDataController.myCartList
                                               .clear();
                                           stockController.myList.clear();
+                                          stockController.isVisible = true;
+                                          for (var i in setOrderDataController
+                                              .myCartEditList) {
+                                            stockController
+                                                .totalQty = int.parse(
+                                                    stockController.totalQty
+                                                        .toString()) +
+                                                int.parse(i["Qty"].toString());
+                                            stockController.totalAmount =
+                                                double.parse(stockController
+                                                        .totalAmount
+                                                        .toString()) +
+                                                    i['mrp'];
+                                          }
+
                                           Get.to(TakeOrderPage(
                                             tag: 'Edit',
                                           ));

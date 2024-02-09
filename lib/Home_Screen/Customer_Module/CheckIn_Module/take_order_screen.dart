@@ -238,23 +238,9 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                               "Please Add Any Product.",
                                                               Colors.redAccent);
                                                         } else {
-                                                          for (int i = 0;
-                                                              i <
-                                                                  controller
-                                                                      .myList
-                                                                      .length;
-                                                              i++) {
-                                                            if (controller
-                                                                        .myList[i]
-                                                                    [
-                                                                    'category'] !=
-                                                                null) {
-                                                              if (controller
-                                                                          .myList[
-                                                                              i]
-                                                                              [
-                                                                              'category']
-                                                                          .trim() !=
+                                                          for (int i = 0; i < controller.myList.length; i++) {
+                                                            if (controller.myList[i]['category'] != null) {
+                                                              if (controller.myList[i]['category'].trim() !=
                                                                       "D"
                                                                   // stockController
                                                                   //     .productCategory
@@ -276,9 +262,10 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                             showSnackBar(
                                                                 "Sorry!! You are Selected Decorative and Industrial Division Product.",
                                                                 "Please Add Same Division Product.",
-                                                                Colors.redAccent);
+                                                                Colors
+                                                                    .redAccent);
                                                             controller
-                                                                .catCheck =
+                                                                    .catCheck =
                                                                 false;
                                                           } else {
                                                             setOrderDataController
@@ -288,19 +275,157 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                             if (setOrderDataController
                                                                     .orderEditTag ==
                                                                 "Edit") {
+                                                              controller.myList
+                                                                  .removeWhere(
+                                                                      (item) =>
+                                                                          item[
+                                                                              "Qty"] ==
+                                                                          0);
+                                                              // GetAvailableStockDataController stockController =
+                                                              // Get.put(GetAvailableStockDataController());
+                                                              print(setOrderDataController.myCartEditList);
+                                                              print("&");
+                                                              print(controller.myList);
+                                                              print(
+                                                                  "Calling 1_____________");
+                                                              if (controller.myList.isNotEmpty) {
+                                                                for (int i = 0; i < stockDataController.myList.length; i++) {
+                                                                  for(int j = 0; j < setOrderDataController.myCartEditList.length; j++){
+
+                                                                    if(stockDataController.myList[i]["productcode"]==setOrderDataController.myCartEditList[j]['productcode']){
+                                                                      var total =stockDataController.myList[i]['dpl']*stockDataController.myList[i]["Qty"];
+
+                                                                     setOrderDataController.myCartEditList[j]["Qty"]=stockDataController.myList[i]["Qty"] ;
+                                                                     setOrderDataController.myCartEditList[j]["mrp"]=total ;
+
+                                                                    }else{
+
+                                                                      var total =stockDataController.myList[i]['dpl']*stockDataController.myList[i]["Qty"];
+
+                                                                      setOrderDataController.myCartEditList.add({
+                                                                    "Qty": stockDataController.myList[i]["Qty"].toInt(),
+                                                                    "productcode":stockDataController.myList[i]['productcode'],
+                                                                    "name": stockDataController.myList[i]['name'],
+                                                                    "dpl": stockDataController.myList[i]['dpl'],
+                                                                    "mrp":total,
+                                                                  });
+
+                                                                    }
+
+
+                                                                    setOrderDataController
+                                                                        .update();
+
+                                                                    // setOrderDataController.total = setOrderDataController.total + stockDataController.myList[i]['mrp'];
+                                                                    print(setOrderDataController.total);
+
+                                                                }}
+                                                                setOrderDataController.totalPrcie();
+                                                                Get.back();
+                                                              /*  setOrderDataController
+                                                                        .myCartEditList.addAll(
+                                                                            controller.myList);*/
+                                                              }else{
+                                                                /*setOrderDataController
+                                                                        .myCartEditList.addAll(
+                                                                            controller.myList);*/
+                                                                setOrderDataController.totalPrcie();
+                                                                Get.back();
+                                                              }
                                                               setOrderDataController
+                                                                  .update();
+
+                                                              print(
+                                                                  "add list-------${setOrderDataController.myCartEditList.length}");
+                                                              print(
+                                                                  "add data${setOrderDataController.myCartEditList}");
+
+                                                              print(setOrderDataController.myCartEditList);
+                                                              print("&");
+                                                              print(controller.myList);
+
+                                                              /*      if (controller
+                                                                  .myList
+                                                                  .isNotEmpty) {
+                                                                setOrderDataController
+                                                                    .myCartEditList
+                                                                    .addAll(controller
+                                                                        .myList);
+                                                                setOrderDataController
+                                                                    .update();
+                                                              }*/
+                                                              /*          setOrderDataController
                                                                   .addOrder()
                                                                   .whenComplete(
                                                                       () {
-                                                                /*   setOrderDataController
-                                                                    .addAndEdit();*/
+                                                                    */ /*   setOrderDataController
+                                                                    .addAndEdit();*/ /*
+                                                                    setOrderDataController
+                                                                        .update();
+
+                                                                    Get.back();
+                                                                  });*/
+
+/*
+
+
+                                                              for (int i = 0; i < stockDataController.myList.length; i++) {
+                                                                // Iterate over elements of array2
+                                                                for (int j = 0; j < setOrderDataController.myCartEditList.length; j++) {
+                                                                  // Compare elements for equality
+                                                                  if (stockDataController.myList[i]['productcode'] == setOrderDataController.myCartEditList[j]['productcode']) {
+                                                                    // If match found, store the value
+                                                                    // matchingValues.add(setOrderDataController.myCartEditList[j]['Qty']);
+                                                                    // stockDataController.controllers.add(TextEditingController(
+                                                                    //     text: setOrderDataController.myCartEditList[j]['Qty'].toString()));
+
+
+                                                                 */ /*   setOrderDataController.myCartEditList[j]
+                                                                    ["category"] =
+                                                                        stockDataController.myList[i]
+                                                                            .division!
+                                                                            .trim();*/ /*
+
+                                                                    setOrderDataController.myCartEditList[j]
+                                                                    ["mrp"] = ((stockDataController.myList[i]
+                                                                        ["dpl"])! *
+                                                                        setOrderDataController.myCartEditList[j]["Qty"]);
+
+                                                                    setOrderDataController.myCartEditList[j]
+                                                                    ["productcode"] =
+                                                                        stockDataController.myList[i]
+                                                                            ["productcode"];
+
+                                                                    setOrderDataController.myCartEditList[j]
+                                                                    ["name"] =
+                                                                        stockDataController.myList[i]
+                                                                            ["productdesc"];
+
+                                                                    setOrderDataController.myCartEditList[j]["dpl"] =
+                                                                        stockDataController.myList[i]["dpl"];
+
+                                                                    stockDataController.controllers[i].text= setOrderDataController.myCartEditList[j]['Qty'].toString();
+                                                                  }
+                                                                }
+                                                              }
+                                                              print(setOrderDataController.myCartEditList);
+                                                              print("&");
+                                                              print(controller.myList);
+                                                              // Get.back();
+                                                          */ /*    setOrderDataController
+                                                                  .addOrder()
+                                                                  .whenComplete(
+                                                                      () {
+                                                                */ /**/ /*   setOrderDataController
+                                                                    .addAndEdit();*/ /**/ /*
                                                                 setOrderDataController
                                                                     .update();
 
-                                                                Get.back();
-                                                              });
+                                                                // Get.back();
+                                                              });*/
                                                             } else {
-                                                              print("add Order");
+                                                              print(
+                                                                  "add Order");
                                                               setOrderDataController
                                                                   .total = 0.0;
                                                               Get.to(MyCartPage(
