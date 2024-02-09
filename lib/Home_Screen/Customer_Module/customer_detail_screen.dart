@@ -466,20 +466,32 @@ class _MyCustomerDetailsPageState extends State<MyCustomerDetailsPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
                                   Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10),
-                                    child: Text(
-                                      "You have already Created Customers.",
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "You have Exceeded the limit of Creation of New Customer.Please Contact Support Team",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                              textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(height: 5,),
+                                        Text(
+                                          "Customer Creation Limit: $dealerCre/$dealerCreation",
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
                                   GestureDetector(

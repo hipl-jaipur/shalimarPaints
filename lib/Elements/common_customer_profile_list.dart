@@ -322,7 +322,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  if (distanceInMeter! <= 100) {
+                                  // if (distanceInMeter! <= 100) {
                                     if (controller.checkIn == false) {
                                       controller.checkIn = true;
                                       controller.update();
@@ -417,25 +417,25 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                             );
                                           });
                                     }
-                                  } else {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text('Alert!!'),
-                                            content: const Text(
-                                                "You are not on-site"),
-                                            actions: <Widget>[
-                                              ElevatedButton(
-                                                child: const Text('Ok'),
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  }
+                                  // } else {
+                                  //   showDialog(
+                                  //       context: context,
+                                  //       builder: (BuildContext context) {
+                                  //         return AlertDialog(
+                                  //           title: const Text('Alert!!'),
+                                  //           content: const Text(
+                                  //               "You are not on-site"),
+                                  //           actions: <Widget>[
+                                  //             ElevatedButton(
+                                  //               child: const Text('Ok'),
+                                  //               onPressed: () {
+                                  //                 Get.back();
+                                  //               },
+                                  //             ),
+                                  //           ],
+                                  //         );
+                                  //       });
+                                  // }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(8),
