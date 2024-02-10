@@ -4,6 +4,7 @@ import 'dart:math' show cos, sqrt, asin;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shalimar/Controller/customer_hire_data_controller.dart';
 import 'package:shalimar/Controller/get_customer_note_data_controller.dart';
 import 'package:shalimar/Controller/get_global_parameter_data_controller.dart';
@@ -57,7 +58,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
   double? distance = 0.0;
   int? distanceInMeter = 0;
   var profileSkip;
-
+  String _currentTime = '';
   Future<void> _getCurrentPosition() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final hasPermission = await _handleLocationPermission();
@@ -138,7 +139,19 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     _getCurrentPosition();
     // customerHireDataController.getCustomerHireData();
   }
-
+  Future<void> _saveCurrentTimeToPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String currentTime = DateTime.now().toIso8601String();
+    DateTime now = DateTime.now();
+    // String formattedDateTimeIntl = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    String formattedTime = DateFormat('h:mm a').format(now);
+    await prefs.setString('currentTime', formattedTime);
+    setState(() {
+      _currentTime = currentTime;
+    });
+    print("++++++++++++++++++++++++++++++++++++++");
+    print(prefs.getString('currentTime'));
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CustomerHireDataController>(
@@ -322,7 +335,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  // if (distanceInMeter! <= 100) {
+                                  if (distanceInMeter! <= 100) {
                                     if (controller.checkIn == false) {
                                       controller.checkIn = true;
                                       controller.update();
@@ -331,7 +344,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                             Duration(seconds: 1),
                                             timerService.onTimerTick);
                                       }
-
+                                      _saveCurrentTimeToPreferences();
                                       controller.checkinCustomer = widget
                                           .customerList[widget.index].levelName
                                           .toString();
@@ -417,25 +430,25 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                             );
                                           });
                                     }
-                                  // } else {
-                                  //   showDialog(
-                                  //       context: context,
-                                  //       builder: (BuildContext context) {
-                                  //         return AlertDialog(
-                                  //           title: const Text('Alert!!'),
-                                  //           content: const Text(
-                                  //               "You are not on-site"),
-                                  //           actions: <Widget>[
-                                  //             ElevatedButton(
-                                  //               child: const Text('Ok'),
-                                  //               onPressed: () {
-                                  //                 Get.back();
-                                  //               },
-                                  //             ),
-                                  //           ],
-                                  //         );
-                                  //       });
-                                  // }
+                                  } else {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Alert!!'),
+                                            content: const Text(
+                                                "You are not on-site"),
+                                            actions: <Widget>[
+                                              ElevatedButton(
+                                                child: const Text('Ok'),
+                                                onPressed: () {
+                                                  Get.back();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  }
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(8),

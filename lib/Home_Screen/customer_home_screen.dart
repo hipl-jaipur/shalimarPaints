@@ -77,443 +77,417 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: GetX<CustomerHireDataController>(
-          init: CustomerHireDataController(),
-          builder: (CustomerHireDataController controller) {
-            return ModalProgressHUD(
-              inAsyncCall: controller.isLoading.value,
-              child: Stack(
-                children: [
-                  SizedBox(
-                      width: double.infinity,
-                      child: Image.asset(
-                        Images.bg_3,
-                        fit: BoxFit.fill,
-                      )),
-                  Positioned(
-                    child: GetBuilder<SetActivityDetailDataController>(
-                        init: SetActivityDetailDataController(),
-                        builder: (controller) {
-                          return Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(18.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    setActivityController.checkIn
-                                        ? SizedBox(
-                                            height: 40,
-                                          )
-                                        : SizedBox(),
-                                    SizedBox(
-                                      width: double.infinity,
-                                      child: Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                        width: 150,
-                                                        height: 60,
-                                                        child: Image.asset(Images
-                                                            .shalimarLogoHorizontal)),
-                                                    Icon(
-                                                      Icons
-                                                          .notifications_rounded,
-                                                      color: primaryColor,
-                                                    )
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  widget.EmployeeName,
-                                                  style: TextStyle(
-                                                      color: primaryColor,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(
-                                                  widget.Email,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                Text(
-                                                  widget.DesignationName,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  textAlign: TextAlign.left,
-                                                )
-                                              ]),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: GridView.count(
-                                        primary: false,
-                                        padding: const EdgeInsets.all(20),
-                                        crossAxisSpacing: 10,
-                                        mainAxisSpacing: 10,
-                                        crossAxisCount: 2,
-                                        children: <Widget>[
-                                          GestureDetector(
-                                            onTap: () {
-                                              // getUserActivityController.fetchData();
-                                              // Get.to(ScheduleVisitPage());
-
-                                              Get.to(MyScedulePage(
-                                                tag: true,
-                                                id: 0,
-                                              ));
-                                            },
-                                            child: Card(
-                                              child: Center(
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons
-                                                          .calendar_month_sharp,
-                                                      color: primaryColor,
-                                                      size: 40,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text("My Schedule",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              final SharedPreferences prefs =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              var division =
-                                                  prefs.getString('Division');
-                                              // zoneDataController.fetchZoneData(zoneId: 0);
-                                              customerHireDataController
-                                                  .getCustomerHireData();
-
-                                              // Get.to(MyCustomerZonePage());
-
-                                              // Get.to(division == 1
-                                              //     ? MyCustomerZonePage()
-                                              //     : division == 2
-                                              //         ? MyCustomerRegionsPage()
-                                              //         : division == 3
-                                              //             ? MyCustomerDepotPage()
-                                              //             : MyCustomerTerriotoryPage());
-                                            },
-                                            child: Card(
-                                              child: Center(
-                                                  child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+        child: Obx(() => ModalProgressHUD(
+          inAsyncCall: outStandingController.isLoading.value,
+          child: GetX<CustomerHireDataController>(
+            init: CustomerHireDataController(),
+            builder: (CustomerHireDataController controller) {
+              return ModalProgressHUD(
+                inAsyncCall: controller.isLoading.value,
+                child: Stack(
+                  children: [
+                    SizedBox(
+                        width: double.infinity,
+                        child: Image.asset(
+                          Images.bg_3,
+                          fit: BoxFit.fill,
+                        )),
+                    Positioned(
+                      child: GetBuilder<SetActivityDetailDataController>(
+                          init: SetActivityDetailDataController(),
+                          builder: (controller) {
+                            return Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(18.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      setActivityController.checkIn
+                                          ? SizedBox(
+                                        height: 40,
+                                      )
+                                          : SizedBox(),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Card(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                                 children: [
-                                                  Icon(
-                                                    Icons.person,
-                                                    color: primaryColor,
-                                                    size: 40,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: [
+                                                      Container(
+                                                          width: 150,
+                                                          height: 60,
+                                                          child: Image.asset(Images
+                                                              .shalimarLogoHorizontal)),
+                                                      Icon(
+                                                        Icons
+                                                            .notifications_rounded,
+                                                        color: primaryColor,
+                                                      )
+                                                    ],
                                                   ),
                                                   SizedBox(
                                                     height: 10,
                                                   ),
-                                                  Text('Customer',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                                ],
-                                              )),
-                                            ),
+                                                  Text(
+                                                    widget.EmployeeName,
+                                                    style: TextStyle(
+                                                        color: primaryColor,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    widget.Email,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w400),
+                                                  ),
+                                                  Text(
+                                                    widget.DesignationName,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                        FontWeight.w400),
+                                                    textAlign: TextAlign.left,
+                                                  )
+                                                ]),
                                           ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              /*       teamsController.filteredLevelFirstList
-                                              .clear();
-                                          teamsController.filteredLevelFirstList =
-                                              teamsController.temasDataList!.data!
-                                                  .where(
-                                                      (item) => item.hirelevel == 1)
-                                                  .toList();*/
-                                              Get.to(TeamsScreen());
-
-                                              // Get.to(TreeNode());
-                                            },
-                                            child: Container(
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: GridView.count(
+                                          primary: false,
+                                          padding: const EdgeInsets.all(20),
+                                          crossAxisSpacing: 10,
+                                          mainAxisSpacing: 10,
+                                          crossAxisCount: 2,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () {
+                                                // getUserActivityController.fetchData();
+                                                // Get.to(ScheduleVisitPage());
+          
+                                                Get.to(MyScedulePage(
+                                                  tag: true,
+                                                  id: 0,
+                                                ));
+                                              },
                                               child: Card(
                                                 child: Center(
                                                   child: Column(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
+                                                    MainAxisAlignment.center,
                                                     children: [
                                                       Icon(
                                                         Icons
-                                                            .people_alt_rounded,
+                                                            .calendar_month_sharp,
                                                         color: primaryColor,
                                                         size: 40,
                                                       ),
                                                       SizedBox(
                                                         height: 10,
                                                       ),
-                                                      Text('Teams',
+                                                      Text("My Schedule",
                                                           style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Colors.black,
                                                               fontSize: 16,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
+                                                              FontWeight
+                                                                  .bold)),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (outStandingController
-                                                      .filteredZoneList.length >
-                                                  0) {
-                                                Get.to(OutStandingZone());
-                                              } else if (outStandingController
-                                                      .filteredAllRegionList
-                                                      .length >
-                                                  0) {
-                                                Get.to(OutStandingRegion());
-                                              } else if (outStandingController
-                                                      .filteredAllDepotList
-                                                      .length >
-                                                  0) {
-                                                Get.to(OutStandingDepot());
-                                              } else if (outStandingController
-                                                      .filteredAllTerritorList
-                                                      .length >
-                                                  0) {
-                                                Get.to(OutStandingTerritory());
-                                              } else if (outStandingController
-                                                      .filteredAllCustomerList
-                                                      .length >
-                                                  0) {
-                                                Get.to(OutStandingCustomer());
-                                              }
-                                              else{
-                                                print("aa");
-                                                showSnackBar("Error!!", "No Data Available", Colors.redAccent);
-
-                                              }
-                                              // Get.to(OutStandingScreen());
-                                            },
-                                            child: Container(
+                                            GestureDetector(
+                                              onTap: () async {
+                                                final SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                                var division =
+                                                prefs.getString('Division');
+                                                // zoneDataController.fetchZoneData(zoneId: 0);
+                                                customerHireDataController
+                                                    .getCustomerHireData();
+          
+                                                // Get.to(MyCustomerZonePage());
+          
+                                                // Get.to(division == 1
+                                                //     ? MyCustomerZonePage()
+                                                //     : division == 2
+                                                //         ? MyCustomerRegionsPage()
+                                                //         : division == 3
+                                                //             ? MyCustomerDepotPage()
+                                                //             : MyCustomerTerriotoryPage());
+                                              },
                                               child: Card(
                                                 child: Center(
                                                     child: Column(
-                                                  mainAxisAlignment:
+                                                      mainAxisAlignment:
                                                       MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.people_alt_rounded,
-                                                      color: primaryColor,
-                                                      size: 40,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text('OutStanding',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                )),
+                                                      children: [
+                                                        Icon(
+                                                          Icons.person,
+                                                          color: primaryColor,
+                                                          size: 40,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text('Customer',
+                                                            style: TextStyle(
+                                                                color: Colors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                FontWeight.bold)),
+                                                      ],
+                                                    )),
                                               ),
                                             ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              stockController.isSelectSku=false;
-                                              stockController.isSelectDepot=false;
-                                              stockController.isVisibleMarketSector= false;
-                                              stockController.isVisibleMarketDepot= false;
-                                              stockController.showList=false;
-                                              stockController.depotName = "Select Depot";
-                                              stockController.marketSectorName = "Select Market Sector";
-
-                                              Get.to(StockScreen());
-                                            },
-                                            child: Container(
-                                              child: Card(
-                                                child: Center(
+                                            GestureDetector(
+                                              onTap: () {
+                                                /*       teamsController.filteredLevelFirstList
+                                                .clear();
+                                            teamsController.filteredLevelFirstList =
+                                                teamsController.temasDataList!.data!
+                                                    .where(
+                                                        (item) => item.hirelevel == 1)
+                                                    .toList();*/
+                                                Get.to(TeamsScreen());
+          
+                                                // Get.to(TreeNode());
+                                              },
+                                              child: Container(
+                                                child: Card(
+                                                  child: Center(
                                                     child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.people_alt_rounded,
-                                                      color: primaryColor,
-                                                      size: 40,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text('Stock',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        Icon(
+                                                          Icons
+                                                              .people_alt_rounded,
+                                                          color: primaryColor,
+                                                          size: 40,
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text('Teams',
+                                                            style: TextStyle(
+                                                                color:
+                                                                Colors.black,
+                                                                fontSize: 16,
+                                                                fontWeight:
                                                                 FontWeight
                                                                     .bold)),
-                                                  ],
-                                                )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (targetVsActualController
-                                                      .filteredZoneList.length >
-                                                  0) {
-                                                Get.to(TargetVsActualZone());
-                                              } else if (targetVsActualController
-                                                      .filteredAllRegionList
-                                                      .length >
-                                                  0) {
-                                                Get.to(TargetVsActyalRegion());
-                                              } else if (targetVsActualController
-                                                      .filteredAllDepotList
-                                                      .length >
-                                                  0) {
-                                                Get.to(TargetVsActualDepot());
-                                              } else if (targetVsActualController
-                                                      .filteredAllTerritorList
-                                                      .length >
-                                                  0) {
-                                                Get.to(
-                                                    TargetVsActualTerritory());
-                                              } else if (targetVsActualController
-                                                      .filteredAllCustomerList
-                                                      .length >
-                                                  0) {
-                                                Get.to(
-                                                    TargetVsActualCustomer());
-                                              }
-                                              else{
-                                                showSnackBar("Error!!", "No Data Available", Colors.redAccent);
-
-                                              }
-                                              // Get.to(OutStandingScreen());
-                                            },
-                                            child: Container(
-                                              child: Card(
-                                                child: Center(
-                                                    child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.tag,
-                                                      color: primaryColor,
-                                                      size: 40,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text('Target Vs Actual',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                )),
+                                            GestureDetector(
+                                              onTap: () {
+                                                outStandingController.getOutStandingData();
+                                                // Get.to(OutStandingScreen());
+                                              },
+                                              child: Container(
+                                                child: Card(
+                                                  child: Center(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.people_alt_rounded,
+                                                            color: primaryColor,
+                                                            size: 40,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Text('OutStanding',
+                                                              style: TextStyle(
+                                                                  color: Colors.black,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                        ],
+                                                      )),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-
+                                            GestureDetector(
+                                              onTap: () {
+                                                stockController.isSelectSku=false;
+                                                stockController.isSelectDepot=false;
+                                                stockController.isVisibleMarketSector= false;
+                                                stockController.isVisibleMarketDepot= false;
+                                                stockController.showList=false;
+                                                stockController.depotName = "Select Depot";
+                                                stockController.marketSectorName = "Select Market Sector";
+          
+                                                Get.to(StockScreen());
+                                              },
+                                              child: Container(
+                                                child: Card(
+                                                  child: Center(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.people_alt_rounded,
+                                                            color: primaryColor,
+                                                            size: 40,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Text('Stock',
+                                                              style: TextStyle(
+                                                                  color: Colors.black,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                        ],
+                                                      )),
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                if (targetVsActualController
+                                                    .filteredZoneList.length >
+                                                    0) {
+                                                  Get.to(TargetVsActualZone());
+                                                } else if (targetVsActualController
+                                                    .filteredAllRegionList
+                                                    .length >
+                                                    0) {
+                                                  Get.to(TargetVsActyalRegion());
+                                                } else if (targetVsActualController
+                                                    .filteredAllDepotList
+                                                    .length >
+                                                    0) {
+                                                  Get.to(TargetVsActualDepot());
+                                                } else if (targetVsActualController
+                                                    .filteredAllTerritorList
+                                                    .length >
+                                                    0) {
+                                                  Get.to(
+                                                      TargetVsActualTerritory());
+                                                } else if (targetVsActualController
+                                                    .filteredAllCustomerList
+                                                    .length >
+                                                    0) {
+                                                  Get.to(
+                                                      TargetVsActualCustomer());
+                                                }
+                                                else{
+                                                  showSnackBar("Error!!", "No Data Available", Colors.redAccent);
+          
+                                                }
+                                                // Get.to(OutStandingScreen());
+                                              },
+                                              child: Container(
+                                                child: Card(
+                                                  child: Center(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.tag,
+                                                            color: primaryColor,
+                                                            size: 40,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Text('Target Vs Actual',
+                                                              style: TextStyle(
+                                                                  color: Colors.black,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                        ],
+                                                      )),
+                                                ),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+          
                                                 Get.to(
                                                     LedgerStatementPage());
-
-
-                                            },
-                                            child: Container(
-                                              child: Card(
-                                                child: Center(
-                                                    child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.query_stats_outlined,
-                                                      color: primaryColor,
-                                                      size: 40,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text('Ledger Statement',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
-                                                )),
+          
+          
+                                              },
+                                              child: Container(
+                                                child: Card(
+                                                  child: Center(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.query_stats_outlined,
+                                                            color: primaryColor,
+                                                            size: 40,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Text('Ledger Statement',
+                                                              style: TextStyle(
+                                                                  color: Colors.black,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                        ],
+                                                      )),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Positioned(
-                                  child: Visibility(
-                                      visible: setActivityController.checkIn,
-                                      child: TimerWidget())),
-                            ],
-                          );
-                        }),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+                                Positioned(
+                                    child: Visibility(
+                                        visible: setActivityController.checkIn,
+                                        child: TimerWidget())),
+                              ],
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),)
       ),
     );
   }

@@ -7,6 +7,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Elements/commom_snackbar_widget.dart';
+import '../Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
+import '../Home_Screen/OutStanding_Module/outstanding_depot_Screen.dart';
+import '../Home_Screen/OutStanding_Module/outstanding_region_screen.dart';
+import '../Home_Screen/OutStanding_Module/outstanding_territory_screen.dart';
+import '../Home_Screen/OutStanding_Module/outstanding_zone_screen.dart';
 import '../Model/OnStandingModel.dart';
 import '../utils/consts.dart';
 
@@ -30,10 +35,11 @@ class OutStandingController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    getOutStandingData();
+    // getOutStandingData();
   }
 
   getOutStandingData() async {
+    isLoading(true);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
     print('OutStanding Data api called');
@@ -97,6 +103,33 @@ class OutStandingController extends GetxController {
               .where((item) => item.entitytype == "Customer")
               .toList();
           print(filteredAllCustomerList!.length);
+
+          if (filteredZoneList.length >
+              0) {
+            Get.to(OutStandingZone());
+          } else if (filteredAllRegionList
+              .length >
+              0) {
+            Get.to(OutStandingRegion());
+          } else if (filteredAllDepotList
+              .length >
+              0) {
+            Get.to(OutStandingDepot());
+          } else if (filteredAllTerritorList
+              .length >
+              0) {
+            Get.to(OutStandingTerritory());
+          } else if (filteredAllCustomerList
+              .length >
+              0) {
+            Get.to(OutStandingCustomer());
+          }
+          else{
+            print("aa");
+            showSnackBar("Error!!", "No Data Available", Colors.redAccent);
+
+          }
+
         }
         else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);

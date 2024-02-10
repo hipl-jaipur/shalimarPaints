@@ -1,13 +1,13 @@
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_geocoder/geocoder.dart';
-import 'package:geocoder2/geocoder2.dart';
+
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:native_exif/native_exif.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shalimar/Controller/set_customer_data_controller.dart';
 import 'package:shalimar/Controller/upload_image_controller.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -48,6 +48,41 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
       Get.put(ImageUploadController());
 
   // String stAddress = '';
+  Future<void> getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude, position.longitude);
+
+      Placemark place = placemarks[0]; // Assuming first result is the most accurate
+
+      String state = place.administrativeArea ?? '';
+      String district = place.subAdministrativeArea ?? '';
+      String city = place.locality ?? '';
+      String pincode = place.postalCode ?? '';
+      String locality = place.subLocality ?? '';
+      controller.addrsssTwoCont.text = state!;
+      controller.cityCont.text = city;
+      controller.postalCodeCont.text = pincode;
+      controller.distCont.text =district;
+      controller.localityCont.text = locality;
+      controller.addrsssOneCont.text=place.name!;
+      controller.lat= position.latitude;
+      controller.long= position.longitude;
+      print('State: $state');
+      print('District: $district');
+      print('City: $city');
+      print('Pincode: $pincode');
+      print('Locality: $locality');
+      print('Locality: $locality');
+      print(position.longitude);
+      print(position.longitude);
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   Future getImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -64,6 +99,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     complaintController.uploadFileChunked(_image!.path).then((value) {
       print(value['Data']);
       controller.image = value['Data'];
+      getCurrentLocation();
     });
 
     exif = await Exif.fromPath(pickedFile!.path);
@@ -71,7 +107,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     shootingDate = await exif!.getOriginalDate();
     coordinate = await exif!.getLatLong();
 
-    if (coordinate != null) {
+    /*if (coordinate != null) {
       controller.lat = coordinate!.latitude;
       controller.long = coordinate!.longitude;
       final coordinates = Coordinates(controller.lat, controller.long);
@@ -228,7 +264,7 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
           debugPrint(e);
         });
       }
-    }
+    }*/
 
     // if (controller.lat == 0.0 && controller.long == 0.0) {
     //   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -340,7 +376,12 @@ class _AddCustomerPageState extends State<AddCustomerPage> {
     }
     return true;
   }
-
+@override
+  void initState() {
+  getCurrentLocation();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
