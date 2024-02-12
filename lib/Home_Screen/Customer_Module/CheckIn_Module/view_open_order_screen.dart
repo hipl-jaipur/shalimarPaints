@@ -9,7 +9,7 @@ import 'package:shalimar/utils/images.dart';
 
 class ViewOpenOrderPage extends StatefulWidget {
   String? tag;
-   ViewOpenOrderPage({super.key, this.tag});
+  ViewOpenOrderPage({super.key, this.tag});
 
   @override
   State<ViewOpenOrderPage> createState() => _ViewOpenOrderPageState();
@@ -19,14 +19,15 @@ class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
   final TextEditingController _searchController = TextEditingController();
   GetOrderDataController orderDataController =
       Get.put(GetOrderDataController());
-      SetActivityDetailDataController setActivityController =
+  SetActivityDetailDataController setActivityController =
       Get.put(SetActivityDetailDataController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
+        child: 
+        Stack(
           children: [
             SizedBox(
                 width: double.infinity,
@@ -35,21 +36,27 @@ class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
                   fit: BoxFit.fill,
                 )),
             Positioned(
-              child: Stack(
+              child: 
+              Stack(
                 children: [
-
-                  Positioned(child:  Visibility(
-                                              visible:
-                                                  setActivityController.checkIn,
-                                              child: TimerWidget())),
+                  Positioned(
+                      child: Visibility(
+                          visible: setActivityController.checkIn,
+                          child: TimerWidget())),
                   Obx(
                     () => orderDataController.isLoading.value
                         ? const Center(
                             child: CircularProgressIndicator(),
                           )
-                        : Padding(
-                            padding: const EdgeInsets.only(bottom: 18.0,left: 18.0,right: 18.0,top: 60.0),
-                            child: Column(
+                        : 
+                        Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 18.0,
+                                left: 18.0,
+                                right: 18.0,
+                                top: 60.0),
+                            child: 
+                            Column(
                               children: [
                                 TextField(
                                   controller: _searchController,
@@ -62,20 +69,20 @@ class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
                                     contentPadding: const EdgeInsets.fromLTRB(
                                         20.0, 0.0, 20.0, 0.0),
                                     focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                         borderSide: BorderSide(
                                           color: Color(0xffECE6E6),
                                         )),
                                     disabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                         borderSide: BorderSide(
                                           color: Color(0xffECE6E6),
                                         )),
                                     enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                         borderSide: BorderSide(
                                           color: Color(0xffECE6E6),
                                         )),
@@ -104,19 +111,18 @@ class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
                                 orderDataController.getOrderDataModel == null ||
                                         orderDataController.getOrderDataModel!
                                                 .orderData!.length ==
                                             0
                                     ? Card(
                                         child: Container(
-                                            width:
-                                                MediaQuery.of(context).size.width,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
                                             child: Padding(
-                                                padding: const EdgeInsets.all(15.0),
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
                                                 child: Text("No Record Found",
                                                     // orderDataController
                                                     //     .noRecord.value,
@@ -129,14 +135,17 @@ class _ViewOpenOrderPageState extends State<ViewOpenOrderPage> {
                                     : Expanded(
                                         child: ListView.builder(
                                           itemCount: orderDataController
-                                              .getOrderDataModel!.orderData!.length,
+                                              .getOrderDataModel!
+                                              .orderData!
+                                              .length,
                                           itemBuilder: (context, index) {
                                             return orderDataController
                                                     .getOrderDataModel!
                                                     .orderData![index]
                                                     .ordernumber!
                                                     .toLowerCase()
-                                                    .contains(_searchController.text
+                                                    .contains(_searchController
+                                                        .text
                                                         .toLowerCase())
                                                 ? OrderList(
                                                     context: context,

@@ -10,11 +10,6 @@ import 'package:shalimar/Controller/stock_controller.dart';
 import 'package:shalimar/Controller/teams_controller.dart';
 import 'package:shalimar/Home_Screen/Ledger_Statement_Screen/ledger_statement_page.dart';
 import 'package:shalimar/Home_Screen/My_Schedule_Screen/my_scedule_screen.dart';
-import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_customer_screen.dart';
-import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_depot_Screen.dart';
-import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_region_screen.dart';
-import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_territory_screen.dart';
-import 'package:shalimar/Home_Screen/OutStanding_Module/outstanding_zone_screen.dart';
 import 'package:shalimar/Home_Screen/Stock_Screen/stock_list_scrren.dart';
 import 'package:shalimar/Home_Screen/Teams_Module/teams_screen.dart';
 import 'package:shalimar/utils/colors.dart';
@@ -71,13 +66,15 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     // TODO: implement initState
     teamsController.getTeamsData();
     super.initState();
+    // targetVsActualController.getTargetVsActualData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Obx(() => ModalProgressHUD(
+          child: Obx(
+        () => ModalProgressHUD(
           inAsyncCall: outStandingController.isLoading.value,
           child: GetX<CustomerHireDataController>(
             init: CustomerHireDataController(),
@@ -101,12 +98,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(18.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       setActivityController.checkIn
                                           ? SizedBox(
-                                        height: 40,
-                                      )
+                                              height: 40,
+                                            )
                                           : SizedBox(),
                                       SizedBox(
                                         width: double.infinity,
@@ -115,12 +113,12 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                             padding: const EdgeInsets.all(10.0),
                                             child: Column(
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Row(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Container(
                                                           width: 150,
@@ -143,7 +141,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                         color: primaryColor,
                                                         fontSize: 16,
                                                         fontWeight:
-                                                        FontWeight.bold),
+                                                            FontWeight.bold),
                                                   ),
                                                   Text(
                                                     widget.Email,
@@ -151,7 +149,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                         color: Colors.black,
                                                         fontSize: 14,
                                                         fontWeight:
-                                                        FontWeight.w400),
+                                                            FontWeight.w400),
                                                   ),
                                                   Text(
                                                     widget.DesignationName,
@@ -159,7 +157,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                         color: Colors.black,
                                                         fontSize: 14,
                                                         fontWeight:
-                                                        FontWeight.w400),
+                                                            FontWeight.w400),
                                                     textAlign: TextAlign.left,
                                                   )
                                                 ]),
@@ -178,7 +176,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                               onTap: () {
                                                 // getUserActivityController.fetchData();
                                                 // Get.to(ScheduleVisitPage());
-          
+
                                                 Get.to(MyScedulePage(
                                                   tag: true,
                                                   id: 0,
@@ -188,7 +186,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                 child: Center(
                                                   child: Column(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Icon(
                                                         Icons
@@ -201,11 +200,12 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                       ),
                                                       Text("My Schedule",
                                                           style: TextStyle(
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontSize: 16,
                                                               fontWeight:
-                                                              FontWeight
-                                                                  .bold)),
+                                                                  FontWeight
+                                                                      .bold)),
                                                     ],
                                                   ),
                                                 ),
@@ -214,16 +214,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                             GestureDetector(
                                               onTap: () async {
                                                 final SharedPreferences prefs =
-                                                await SharedPreferences
-                                                    .getInstance();
+                                                    await SharedPreferences
+                                                        .getInstance();
                                                 var division =
-                                                prefs.getString('Division');
+                                                    prefs.getString('Division');
                                                 // zoneDataController.fetchZoneData(zoneId: 0);
                                                 customerHireDataController
                                                     .getCustomerHireData();
-          
+
                                                 // Get.to(MyCustomerZonePage());
-          
+
                                                 // Get.to(division == 1
                                                 //     ? MyCustomerZonePage()
                                                 //     : division == 2
@@ -235,25 +235,26 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                               child: Card(
                                                 child: Center(
                                                     child: Column(
-                                                      mainAxisAlignment:
+                                                  mainAxisAlignment:
                                                       MainAxisAlignment.center,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.person,
-                                                          color: primaryColor,
-                                                          size: 40,
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Text('Customer',
-                                                            style: TextStyle(
-                                                                color: Colors.black,
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                FontWeight.bold)),
-                                                      ],
-                                                    )),
+                                                  children: [
+                                                    Icon(
+                                                      Icons.person,
+                                                      color: primaryColor,
+                                                      size: 40,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text('Customer',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                )),
                                               ),
                                             ),
                                             GestureDetector(
@@ -266,7 +267,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                         (item) => item.hirelevel == 1)
                                                     .toList();*/
                                                 Get.to(TeamsScreen());
-          
+
                                                 // Get.to(TreeNode());
                                               },
                                               child: Container(
@@ -274,8 +275,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                   child: Center(
                                                     child: Column(
                                                       mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         Icon(
                                                           Icons
@@ -288,12 +289,12 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                         ),
                                                         Text('Teams',
                                                             style: TextStyle(
-                                                                color:
-                                                                Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                                 fontSize: 16,
                                                                 fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
+                                                                    FontWeight
+                                                                        .bold)),
                                                       ],
                                                     ),
                                                   ),
@@ -302,107 +303,133 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                outStandingController.getOutStandingData();
+                                                outStandingController
+                                                    .getOutStandingData();
                                                 // Get.to(OutStandingScreen());
                                               },
                                               child: Container(
                                                 child: Card(
                                                   child: Center(
                                                       child: Column(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.center,
-                                                        children: [
-                                                          Icon(
-                                                            Icons.people_alt_rounded,
-                                                            color: primaryColor,
-                                                            size: 40,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Text('OutStanding',
-                                                              style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 16,
-                                                                  fontWeight:
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .people_alt_rounded,
+                                                        color: primaryColor,
+                                                        size: 40,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text('OutStanding',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
                                                                   FontWeight
                                                                       .bold)),
-                                                        ],
-                                                      )),
+                                                    ],
+                                                  )),
                                                 ),
                                               ),
                                             ),
                                             GestureDetector(
                                               onTap: () {
-                                                stockController.isSelectSku=false;
-                                                stockController.isSelectDepot=false;
-                                                stockController.isVisibleMarketSector= false;
-                                                stockController.isVisibleMarketDepot= false;
-                                                stockController.showList=false;
-                                                stockController.depotName = "Select Depot";
-                                                stockController.marketSectorName = "Select Market Sector";
-          
+                                                stockController.isSelectSku =
+                                                    false;
+                                                stockController.isSelectDepot =
+                                                    false;
+                                                stockController
+                                                        .isVisibleMarketSector =
+                                                    false;
+                                                stockController
+                                                        .isVisibleMarketDepot =
+                                                    false;
+                                                stockController.showList =
+                                                    false;
+                                                stockController.depotName =
+                                                    "Select Depot";
+                                                stockController
+                                                        .marketSectorName =
+                                                    "Select Market Sector";
+
                                                 Get.to(StockScreen());
                                               },
                                               child: Container(
                                                 child: Card(
                                                   child: Center(
                                                       child: Column(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.center,
-                                                        children: [
-                                                          Icon(
-                                                            Icons.people_alt_rounded,
-                                                            color: primaryColor,
-                                                            size: 40,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Text('Stock',
-                                                              style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 16,
-                                                                  fontWeight:
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .people_alt_rounded,
+                                                        color: primaryColor,
+                                                        size: 40,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text('Stock',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
                                                                   FontWeight
                                                                       .bold)),
-                                                        ],
-                                                      )),
+                                                    ],
+                                                  )),
                                                 ),
                                               ),
                                             ),
                                             GestureDetector(
                                               onTap: () {
+                                               
                                                 if (targetVsActualController
-                                                    .filteredZoneList.length >
+                                                        .filteredZoneList
+                                                        .length >
                                                     0) {
+                                                 
                                                   Get.to(TargetVsActualZone());
                                                 } else if (targetVsActualController
-                                                    .filteredAllRegionList
-                                                    .length >
+                                                        .filteredAllRegionList
+                                                        .length >
                                                     0) {
-                                                  Get.to(TargetVsActyalRegion());
+
+                                                  Get.to(
+                                                      TargetVsActyalRegion());
                                                 } else if (targetVsActualController
-                                                    .filteredAllDepotList
-                                                    .length >
+                                                        .filteredAllDepotList
+                                                        .length >
                                                     0) {
+
                                                   Get.to(TargetVsActualDepot());
                                                 } else if (targetVsActualController
-                                                    .filteredAllTerritorList
-                                                    .length >
+                                                        .filteredAllTerritorList
+                                                        .length >
                                                     0) {
+
                                                   Get.to(
                                                       TargetVsActualTerritory());
                                                 } else if (targetVsActualController
-                                                    .filteredAllCustomerList
-                                                    .length >
+                                                        .filteredAllCustomerList
+                                                        .length >
                                                     0) {
+
                                                   Get.to(
                                                       TargetVsActualCustomer());
-                                                }
-                                                else{
-                                                  showSnackBar("Error!!", "No Data Available", Colors.redAccent);
-          
+                                                } else {
+                                                  showSnackBar(
+                                                      "Error!!",
+                                                      "No Data Available",
+                                                      Colors.redAccent);
                                                 }
                                                 // Get.to(OutStandingScreen());
                                               },
@@ -410,61 +437,62 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                                                 child: Card(
                                                   child: Center(
                                                       child: Column(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.center,
-                                                        children: [
-                                                          Icon(
-                                                            Icons.tag,
-                                                            color: primaryColor,
-                                                            size: 40,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Text('Target Vs Actual',
-                                                              style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 16,
-                                                                  fontWeight:
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.tag,
+                                                        color: primaryColor,
+                                                        size: 40,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text('Target Vs Actual',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
                                                                   FontWeight
                                                                       .bold)),
-                                                        ],
-                                                      )),
+                                                    ],
+                                                  )),
                                                 ),
                                               ),
                                             ),
                                             GestureDetector(
                                               onTap: () {
-          
-                                                Get.to(
-                                                    LedgerStatementPage());
-          
-          
+                                                Get.to(LedgerStatementPage());
                                               },
                                               child: Container(
                                                 child: Card(
                                                   child: Center(
                                                       child: Column(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.center,
-                                                        children: [
-                                                          Icon(
-                                                            Icons.query_stats_outlined,
-                                                            color: primaryColor,
-                                                            size: 40,
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Text('Ledger Statement',
-                                                              style: TextStyle(
-                                                                  color: Colors.black,
-                                                                  fontSize: 16,
-                                                                  fontWeight:
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .query_stats_outlined,
+                                                        color: primaryColor,
+                                                        size: 40,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text('Ledger Statement',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
                                                                   FontWeight
                                                                       .bold)),
-                                                        ],
-                                                      )),
+                                                    ],
+                                                  )),
                                                 ),
                                               ),
                                             ),
@@ -487,8 +515,8 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               );
             },
           ),
-        ),)
-      ),
+        ),
+      )),
     );
   }
 }

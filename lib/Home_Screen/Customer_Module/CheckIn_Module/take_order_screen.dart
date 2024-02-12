@@ -238,9 +238,23 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                               "Please Add Any Product.",
                                                               Colors.redAccent);
                                                         } else {
-                                                          for (int i = 0; i < controller.myList.length; i++) {
-                                                            if (controller.myList[i]['category'] != null) {
-                                                              if (controller.myList[i]['category'].trim() !=
+                                                          for (int i = 0;
+                                                              i <
+                                                                  controller
+                                                                      .myList
+                                                                      .length;
+                                                              i++) {
+                                                            if (controller
+                                                                        .myList[i]
+                                                                    [
+                                                                    'category'] !=
+                                                                null) {
+                                                              if (controller
+                                                                          .myList[
+                                                                              i]
+                                                                              [
+                                                                              'category']
+                                                                          .trim() !=
                                                                       "D"
                                                                   // stockController
                                                                   //     .productCategory
@@ -283,53 +297,100 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                                           0);
                                                               // GetAvailableStockDataController stockController =
                                                               // Get.put(GetAvailableStockDataController());
-                                                              print(setOrderDataController.myCartEditList);
+                                                              print(setOrderDataController
+                                                                  .myCartEditList);
                                                               print("&");
-                                                              print(controller.myList);
+                                                              print(controller
+                                                                  .myList);
                                                               print(
                                                                   "Calling 1_____________");
-                                                              if (controller.myList.isNotEmpty) {
-                                                                for (int i = 0; i < stockDataController.myList.length; i++) {
-                                                                  for(int j = 0; j < setOrderDataController.myCartEditList.length; j++){
+                                                              if (controller
+                                                                  .myList
+                                                                  .isNotEmpty) {
+                                                                for (int i = 0;
+                                                                    i <
+                                                                        stockDataController
+                                                                            .myList
+                                                                            .length;
+                                                                    i++) {
+                                                                  for (int j =
+                                                                          0;
+                                                                      j <
+                                                                          setOrderDataController
+                                                                              .myCartEditList
+                                                                              .length;
+                                                                      j++) {
+                                                                    if (stockDataController.myList[i]
+                                                                            [
+                                                                            "productcode"] ==
+                                                                        setOrderDataController.myCartEditList[j]
+                                                                            [
+                                                                            'productcode']) {
+                                                                      var total = stockDataController.myList[i]
+                                                                              [
+                                                                              'dpl'] *
+                                                                          stockDataController.myList[i]
+                                                                              [
+                                                                              "Qty"];
 
-                                                                    if(stockDataController.myList[i]["productcode"]==setOrderDataController.myCartEditList[j]['productcode']){
-                                                                      var total =stockDataController.myList[i]['dpl']*stockDataController.myList[i]["Qty"];
+                                                                      setOrderDataController
+                                                                              .myCartEditList[j]
+                                                                          [
+                                                                          "Qty"] = stockDataController
+                                                                              .myList[i]
+                                                                          [
+                                                                          "Qty"];
+                                                                      setOrderDataController.myCartEditList[j]
+                                                                              [
+                                                                              "mrp"] =
+                                                                          total;
+                                                                    } else {
+                                                                      var total = stockDataController.myList[i]
+                                                                              [
+                                                                              'dpl'] *
+                                                                          stockDataController.myList[i]
+                                                                              [
+                                                                              "Qty"];
 
-                                                                     setOrderDataController.myCartEditList[j]["Qty"]=stockDataController.myList[i]["Qty"] ;
-                                                                     setOrderDataController.myCartEditList[j]["mrp"]=total ;
-
-                                                                    }else{
-
-                                                                      var total =stockDataController.myList[i]['dpl']*stockDataController.myList[i]["Qty"];
-
-                                                                      setOrderDataController.myCartEditList.add({
-                                                                    "Qty": stockDataController.myList[i]["Qty"].toInt(),
-                                                                    "productcode":stockDataController.myList[i]['productcode'],
-                                                                    "name": stockDataController.myList[i]['name'],
-                                                                    "dpl": stockDataController.myList[i]['dpl'],
-                                                                    "mrp":total,
-                                                                  });
-
+                                                                      setOrderDataController
+                                                                          .myCartEditList
+                                                                          .add({
+                                                                        "Qty": stockDataController
+                                                                            .myList[i]["Qty"]
+                                                                            .toInt(),
+                                                                        "productcode":
+                                                                            stockDataController.myList[i]['productcode'],
+                                                                        "name": stockDataController.myList[i]
+                                                                            [
+                                                                            'name'],
+                                                                        "dpl": stockDataController.myList[i]
+                                                                            [
+                                                                            'dpl'],
+                                                                        "mrp":
+                                                                            total,
+                                                                      });
                                                                     }
-
 
                                                                     setOrderDataController
                                                                         .update();
 
                                                                     // setOrderDataController.total = setOrderDataController.total + stockDataController.myList[i]['mrp'];
-                                                                    print(setOrderDataController.total);
-
-                                                                }}
-                                                                setOrderDataController.totalPrcie();
+                                                                    print(setOrderDataController
+                                                                        .total);
+                                                                  }
+                                                                }
+                                                                setOrderDataController
+                                                                    .totalPrcie();
                                                                 Get.back();
-                                                              /*  setOrderDataController
+                                                                /*  setOrderDataController
                                                                         .myCartEditList.addAll(
                                                                             controller.myList);*/
-                                                              }else{
+                                                              } else {
                                                                 /*setOrderDataController
                                                                         .myCartEditList.addAll(
                                                                             controller.myList);*/
-                                                                setOrderDataController.totalPrcie();
+                                                                setOrderDataController
+                                                                    .totalPrcie();
                                                                 Get.back();
                                                               }
                                                               setOrderDataController
@@ -340,9 +401,11 @@ class _TakeOrderPageState extends State<TakeOrderPage> {
                                                               print(
                                                                   "add data${setOrderDataController.myCartEditList}");
 
-                                                              print(setOrderDataController.myCartEditList);
+                                                              print(setOrderDataController
+                                                                  .myCartEditList);
                                                               print("&");
-                                                              print(controller.myList);
+                                                              print(controller
+                                                                  .myList);
 
                                                               /*      if (controller
                                                                   .myList

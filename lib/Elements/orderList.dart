@@ -116,36 +116,35 @@ class _OrderListState extends State<OrderList> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
-                child: Flexible(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Order#: ",
+                child:
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Order#: ",
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: blackTextColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                    Flexible(
+                      child: Text(
+                          "${widget.orderDataList![widget.index].ordernumber.toString()}",
                           maxLines: 2,
                           style: TextStyle(
-                              color: blackTextColor,
+                              color: primaryColor,
                               fontSize: 16,
                               fontWeight: FontWeight.bold)),
-                      Flexible(
-                        child: Text(
-                            "${widget.orderDataList![widget.index].ordernumber.toString()}",
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                      Text(outputDate,
-                          // "${widget.orderDataList![widget.index].orderdate}",
-                          // DateFormat('M/dd/yyyy').format(
-                          //     DateTime.parse(widget.orderDataList![widget.index]
-                          //         .orderdate as String)),
-                          style: TextStyle(
-                              color: blackTextColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400)),
-                    ],
-                  ),
+                    ),
+                    Text(outputDate,
+                        // "${widget.orderDataList![widget.index].orderdate}",
+                        // DateFormat('M/dd/yyyy').format(
+                        //     DateTime.parse(widget.orderDataList![widget.index]
+                        //         .orderdate as String)),
+                        style: TextStyle(
+                            color: blackTextColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400)),
+                  ],
                 ),
               ),
               SizedBox(

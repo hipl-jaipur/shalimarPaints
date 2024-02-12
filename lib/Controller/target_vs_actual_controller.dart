@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +29,7 @@ class TargetVsActualController extends GetxController {
     super.onInit();
     getTargetVsActualData();
   }
+
   getTargetVsActualData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var empId = prefs.getInt("EmployeeId");
@@ -94,8 +94,7 @@ class TargetVsActualController extends GetxController {
               .where((item) => item.entitytype == "Customer")
               .toList();
           print(filteredAllCustomerList!.length);
-        }
-        else {
+        } else {
           showSnackBar("Error!!", data['Message'], Colors.redAccent);
           return null;
         }
@@ -113,7 +112,4 @@ class TargetVsActualController extends GetxController {
       update();
     }
   }
-
-
-
 }

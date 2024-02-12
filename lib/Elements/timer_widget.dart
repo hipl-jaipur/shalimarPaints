@@ -28,8 +28,8 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   var currentTimes = "";
   DateFormat format = DateFormat('h:mm a');
-  int differenceInMinutes=0;
-  int differenceInHours =0;
+  int differenceInMinutes = 0;
+  int differenceInHours = 0;
   Future getData() async {
     print("Get Time_____________");
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -53,11 +53,11 @@ class _TimerWidgetState extends State<TimerWidget> {
     Duration difference = currentTime.difference(time1);
 
     // Convert the duration to hours and minutes
-  differenceInHours = difference.inHours;
-   differenceInMinutes = difference.inMinutes.remainder(60);
+    differenceInHours = difference.inHours;
+    differenceInMinutes = difference.inMinutes.remainder(60);
 
-    print('Time Difference: $differenceInHours hours and $differenceInMinutes minutes');
-
+    print(
+        'Time Difference: $differenceInHours hours and $differenceInMinutes minutes');
   }
 
   @override
@@ -142,7 +142,7 @@ class _TimerWidgetState extends State<TimerWidget> {
                     .whenComplete(() {
                   mainCall();
                   Timer(Duration(seconds: 1), () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     showDialog(
                         context: context,
                         barrierDismissible: false,
@@ -160,7 +160,6 @@ class _TimerWidgetState extends State<TimerWidget> {
                                   Text(
                                       "You are CheckOut at:  ${controller.checkInlevelName.value}"),
                                   Text("Check-in Time: ${currentTimes}"),
-
                                   Text(
                                     'Duration: ${differenceInMinutes} Minutes',
                                     style: TextStyle(fontSize: 20),
@@ -174,7 +173,6 @@ class _TimerWidgetState extends State<TimerWidget> {
                                 onPressed: () async {
                                   SharedPreferences prefs =
                                       await SharedPreferences.getInstance();
-
 
                                   // timerService.elapsedSeconds.value == 0;
                                   // Get.back();

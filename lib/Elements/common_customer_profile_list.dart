@@ -59,6 +59,9 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
   int? distanceInMeter = 0;
   var profileSkip;
   String _currentTime = '';
+  bool loading = false;
+  bool checkInLoading = false;
+
   Future<void> _getCurrentPosition() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final hasPermission = await _handleLocationPermission();
@@ -88,6 +91,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
       } else {
         distance = 0.0;
       }
+      loading = true;
     }).catchError((e) {
       debugPrint(e);
     });
@@ -139,6 +143,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     _getCurrentPosition();
     // customerHireDataController.getCustomerHireData();
   }
+
   Future<void> _saveCurrentTimeToPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String currentTime = DateTime.now().toIso8601String();
@@ -152,6 +157,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
     print("++++++++++++++++++++++++++++++++++++++");
     print(prefs.getString('currentTime'));
   }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CustomerHireDataController>(
@@ -223,14 +229,18 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                         textAlign: TextAlign.start,
                                       ),
                                     ),
-                                    Text(
-                                        distance != 0.0 && distance != null
-                                            ? distance == 0.0 ? "Loading...":"Distance: ${distance!.toInt()} KM Away"
-                                            : "Distance: ? KM Away",
-                                        style: TextStyle(
-                                            color: primaryColor,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400)),
+                                    loading == false
+                                        ? const Center(
+                                            child: Text("Loading..."),
+                                          )
+                                        : Text(
+                                            distance != 0.0 && distance != null
+                                                ? "Distance: ${distance!.toInt()} KM Away"
+                                                : "Distance: ? KM Away",
+                                            style: TextStyle(
+                                                color: primaryColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400)),
                                     SizedBox(
                                       height: 5,
                                     ),
@@ -286,7 +296,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                       Border.all(color: Colors.yellow.shade500),
                                   borderRadius: BorderRadius.circular(20)),
                               child: Padding(
-                                 padding: EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 5),
                                 child: FittedBox(
                                   fit: BoxFit.contain,
@@ -310,7 +320,7 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                       Border.all(color: Colors.green.shade500),
                                   borderRadius: BorderRadius.circular(20)),
                               child: Padding(
-                                 padding: EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 5),
                                 child: FittedBox(
                                   fit: BoxFit.contain,
@@ -337,79 +347,91 @@ class _CustomerProfileListState extends State<CustomerProfileList> {
                                 onTap: () {
                                   if (distanceInMeter! <= 100) {
                                     if (controller.checkIn == false) {
-                                      controller.checkIn = true;
-                                      controller.update();
-                                      if (distance != 0.0 && distance != null) {
-                                        timerService.timer = Timer.periodic(
-                                            Duration(seconds: 1),
-                                            timerService.onTimerTick);
-                                      }
-                                      _saveCurrentTimeToPreferences();
-                                      controller.checkinCustomer = widget
-                                          .customerList[widget.index].levelName
-                                          .toString();
-                                      controller.fetchData(
-                                          levelCode: widget
-                                              .customerList[widget.index]
-                                              .levelCode
-                                              .toString(),
-                                          activityID: 8);
-                                      showSnackBar(
-                                          "You are CheckedIn at",
-                                          widget.customerList[widget.index]
-                                              .levelName
-                                              .toString(),
-                                          Colors.greenAccent);
-
-                                      controller.customerId = widget
-                                          .customerList[widget.index].levelID!
-                                          .toInt();
-                                      controller.territoryId =
-                                          widget.territoryId.toInt();
-                                      controller.territoryName =
-                                          widget.territoryName;
-
-                                      controller.checkInlevelName.value = widget
-                                          .customerList[widget.index].levelName
-                                          .toString();
-                                      controller.levelCode.value = widget
-                                          .customerList[widget.index].levelCode
-                                          .toString();
-
-                                      controller.checkInlevelCode.value = widget
-                                          .customerList[widget.index].levelCode
-                                          .toString();
-
-                                      controller.levelName.value = widget
-                                          .customerList[widget.index].levelName
-                                          .toString();
-                                      controller.levelAddress.value = widget
-                                          .customerList[widget.index].address1
-                                          .toString();
-                                      controller.isCheckinOnSite.value = true;
-
-                                      teamsController.getEmployData(employeeId);
-
-                                      getGlobalParameterDataController
-                                          .fetchData()
-                                          .then((value) {
-                                        if (value != null) {
-                                          profileSkip =
-                                              value!.data![0].parameterValue;
+                                      if (loading) {
+                                        controller.checkIn = true;
+                                        controller.update();
+                                        if (distance != 0.0 &&
+                                            distance != null) {
+                                          timerService.timer = Timer.periodic(
+                                              Duration(seconds: 1),
+                                              timerService.onTimerTick);
                                         }
-                                      });
-                                      getGlobalParameterDataController
-                                          .distance = distance;
+                                        _saveCurrentTimeToPreferences();
+                                        controller.checkinCustomer = widget
+                                            .customerList[widget.index]
+                                            .levelName
+                                            .toString();
+                                        controller.fetchData(
+                                            levelCode: widget
+                                                .customerList[widget.index]
+                                                .levelCode
+                                                .toString(),
+                                            activityID: 8);
+                                        showSnackBar(
+                                            "You are CheckedIn at",
+                                            widget.customerList[widget.index]
+                                                .levelName
+                                                .toString(),
+                                            Colors.greenAccent);
 
-                                      Get.to(
-                                        CheckInPage(
-                                          tag: "Check in On-site",
-                                        ),
-                                      );
+                                        controller.customerId = widget
+                                            .customerList[widget.index].levelID!
+                                            .toInt();
+                                        controller.territoryId =
+                                            widget.territoryId.toInt();
+                                        controller.territoryName =
+                                            widget.territoryName;
 
-                                      noteDataController.fetchData(widget
-                                          .customerList[widget.index].levelCode
-                                          .toString());
+                                        controller.checkInlevelName.value =
+                                            widget.customerList[widget.index]
+                                                .levelName
+                                                .toString();
+                                        controller.levelCode.value = widget
+                                            .customerList[widget.index]
+                                            .levelCode
+                                            .toString();
+
+                                        controller.checkInlevelCode.value =
+                                            widget.customerList[widget.index]
+                                                .levelCode
+                                                .toString();
+
+                                        controller.levelName.value = widget
+                                            .customerList[widget.index]
+                                            .levelName
+                                            .toString();
+                                        controller.levelAddress.value = widget
+                                            .customerList[widget.index].address1
+                                            .toString();
+                                        controller.isCheckinOnSite.value = true;
+
+                                        teamsController
+                                            .getEmployData(employeeId);
+
+                                        getGlobalParameterDataController
+                                            .fetchData()
+                                            .then((value) {
+                                          if (value != null) {
+                                            profileSkip =
+                                                value!.data![0].parameterValue;
+                                          }
+                                        });
+                                        getGlobalParameterDataController
+                                            .distance = distance;
+
+                                        Get.to(
+                                          CheckInPage(
+                                            tag: "Check in On-site",
+                                          ),
+                                        );
+
+                                        noteDataController.fetchData(widget
+                                            .customerList[widget.index]
+                                            .levelCode
+                                            .toString());
+                                      } else {
+                                        showSnackBar("Please Wait...", "Your Current Location is Fetching.", Colors.amberAccent);
+                                      }
                                     } else {
                                       showDialog(
                                           context: context,
